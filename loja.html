@@ -199,7 +199,13 @@
       <button class="modal-close" type="button" data-close-product aria-label="Fechar"><i class="ri-close-line"></i></button>
 
       <div class="product-modal-main">
-        <div id="productModalImage" class="product-modal-image"><span><i class="ri-image-line"></i></span></div>
+        <div class="product-media-gallery">
+          <button id="productModalImage" class="product-modal-image" type="button" aria-label="Abrir foto ampliada">
+            <span><i class="ri-image-line"></i></span>
+          </button>
+
+          <div id="productImageThumbnails" class="product-image-thumbnails is-hidden" aria-label="Outras fotos do produto"></div>
+        </div>
 
         <div class="product-modal-content">
           <span id="productModalCategory" class="product-category-label"></span>
@@ -262,6 +268,28 @@
       </section>
       <footer id="cartFooter" class="cart-footer is-hidden"><div class="cart-summary"><div><span>Subtotal</span><strong id="cartSubtotal">R$ 0,00</strong></div><div id="minimumOrderRow" class="minimum-row is-hidden"><span>Pedido mínimo</span><strong id="minimumOrderValue"></strong></div><div class="cart-total"><span>Total</span><strong id="cartTotal">R$ 0,00</strong></div></div><p id="minimumWarning" class="minimum-warning is-hidden"></p><button id="checkoutButton" class="primary-button checkout-button" type="button"><i class="ri-whatsapp-line"></i><span>Finalizar pedido</span></button><small id="checkoutHint"></small></footer>
     </aside>
+  </div>
+
+  <div id="productImageLightbox" class="product-image-lightbox is-hidden" role="dialog" aria-modal="true" aria-label="Fotos do produto">
+    <div class="product-image-lightbox-backdrop" data-close-product-image></div>
+
+    <section class="product-image-lightbox-card">
+      <button class="product-image-lightbox-close" type="button" data-close-product-image aria-label="Fechar foto">
+        <i class="ri-close-line"></i>
+      </button>
+
+      <button id="productImageLightboxPrev" class="product-image-lightbox-nav product-image-lightbox-prev" type="button" aria-label="Foto anterior">
+        <i class="ri-arrow-left-s-line"></i>
+      </button>
+
+      <div id="productImageLightboxMedia" class="product-image-lightbox-media"></div>
+
+      <button id="productImageLightboxNext" class="product-image-lightbox-nav product-image-lightbox-next" type="button" aria-label="Próxima foto">
+        <i class="ri-arrow-right-s-line"></i>
+      </button>
+
+      <div id="productImageLightboxCounter" class="product-image-lightbox-counter"></div>
+    </section>
   </div>
 
   <div id="galleryLightbox" class="gallery-lightbox is-hidden" role="dialog" aria-modal="true" aria-label="Galeria">
