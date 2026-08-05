@@ -1,13 +1,1 @@
-{
-  "cleanUrls": true,
-  "trailingSlash": false,
-  "headers": [
-    {
-      "source": "/assets/(.*)",
-      "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
-      ]
-    }
-  ]
-}
+{"rewrites":[{"source":"/loja/:slug","destination":"/loja.html?slug=:slug"},{"source":"/delivery/:slug","destination":"/delivery.html?slug=:slug"},{"source":"/agendar/:slug","destination":"/agendar.html?slug=:slug"}]}

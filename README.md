@@ -1,43 +1,21 @@
-# Editor de Agendamentos — Clena
+# Páginas públicas CLENA
 
-Módulo independente para restaurantes, salões, clínicas, consultórios, aulas, locações, espaços e serviços em geral.
+Pacote com três cascas independentes:
+- `/loja/slug`
+- `/delivery/slug`
+- `/agendar/slug`
 
 ## Instalação
+1. Copie os arquivos para a raiz do projeto.
+2. Preserve `assets/js/config.js` e `assets/js/supabase-client.js` caso os seus já estejam funcionando.
+3. Execute `supabase/public-access.sql` depois dos SQLs dos editores.
+4. Faça commit e push.
 
-1. Copie para o projeto:
-   - `editor-agendamentos.html`
-   - `assets/css/scheduling-editor.css`
-   - `assets/js/scheduling-editor.js`
-2. Mantenha os arquivos compartilhados já existentes:
-   - `assets/js/config.js`
-   - `assets/js/supabase-client.js`
-   - `assets/css/base.css`
-3. Execute `supabase/scheduling-editor.sql` no SQL Editor do Supabase.
-4. Libere o link no `index.html`.
+## Testes locais
+Também funcionam assim:
+- `loja.html?slug=minha-loja`
+- `delivery.html?slug=meu-delivery`
+- `agendar.html?slug=meu-negocio`
 
-## Link no menu
-
-```html
-<a class="nav-item" href="./editor-agendamentos.html">
-  <i class="ri-calendar-check-line" aria-hidden="true"></i>
-  <span>Agendamentos</span>
-</a>
-```
-
-## Recursos
-
-- Serviços com duração, valor, capacidade e pagamento próprio.
-- Profissionais, mesas, salas, equipamentos, unidades e outros recursos.
-- Horários semanais, intervalos, bloqueios e datas especiais.
-- Pagamento integral, percentual, sinal fixo ou sem cobrança.
-- PIX, cartão online, pagamento local e comprovante.
-- Clientes, faltas, bloqueios e histórico.
-- Agenda administrativa com status e pagamentos.
-- Confirmação automática ou aprovação manual.
-- Antecedência mínima, janela máxima, intervalo entre horários e cancelamento.
-- Lista de espera, reagendamento, termos, CPF e notificações.
-- Página pública com slug, prévia e publicação.
-
-## Observação sobre gateways
-
-A estrutura do banco está preparada para pagamento online, mas a cobrança real por cartão ou PIX dinâmico exige integração posterior com um gateway, usando funções server-side e chaves secretas na Vercel. Nunca coloque chave secreta no JavaScript do navegador.
+## Importante
+Checkout online real e cobrança automática precisam de API segura na Vercel. Nunca coloque chave secreta de gateway no navegador.
