@@ -1,46 +1,43 @@
-# Editor de Delivery • Clena
+# Editor de Agendamentos — Clena
 
-Módulo independente do Editor de Loja. Usa o mesmo Supabase Auth da dashboard e salva tudo no Supabase.
-
-## Arquivos para copiar
-
-- `editor-delivery.html`
-- `assets/css/delivery-editor.css`
-- `assets/js/delivery-editor.js`
-- `supabase/delivery-editor.sql`
-
-Os arquivos `assets/js/config.js` e `assets/js/supabase-client.js` são os mesmos da dashboard. Não substitua se já estiverem funcionando.
+Módulo independente para restaurantes, salões, clínicas, consultórios, aulas, locações, espaços e serviços em geral.
 
 ## Instalação
 
-1. Execute `supabase/delivery-editor.sql` no SQL Editor do Supabase.
-2. Copie os arquivos para as respectivas pastas do projeto.
-3. Abra `/editor-delivery.html` após entrar na dashboard.
-4. Libere o botão Delivery no `index.html`.
+1. Copie para o projeto:
+   - `editor-agendamentos.html`
+   - `assets/css/scheduling-editor.css`
+   - `assets/js/scheduling-editor.js`
+2. Mantenha os arquivos compartilhados já existentes:
+   - `assets/js/config.js`
+   - `assets/js/supabase-client.js`
+   - `assets/css/base.css`
+3. Execute `supabase/scheduling-editor.sql` no SQL Editor do Supabase.
+4. Libere o link no `index.html`.
 
-## Trecho para liberar no menu
+## Link no menu
 
 ```html
-<a class="nav-item" href="./editor-delivery.html">
-  <i class="ri-motorbike-line" aria-hidden="true"></i>
-  <span>Delivery</span>
+<a class="nav-item" href="./editor-agendamentos.html">
+  <i class="ri-calendar-check-line" aria-hidden="true"></i>
+  <span>Agendamentos</span>
 </a>
 ```
 
 ## Recursos
 
-- Identidade do delivery com logo, capa e cores.
-- Cardápio completo, categorias, promoções e disponibilidade.
-- Grupos de complementos e opções com acréscimo de valor.
-- Entrega e retirada.
-- Regiões, bairros, taxas e pedido mínimo.
-- Horários por dia e abertura/fechamento manual.
-- PIX, cartão, dinheiro e pagamento online.
-- Checkout por WhatsApp, interno ou somente cardápio.
-- Agendamento e observações de pedido.
-- Publicação com slug exclusivo.
-- Estrutura de tabelas de pedidos já preparada.
-- Storage público com escrita protegida por usuário.
-- RLS completa.
+- Serviços com duração, valor, capacidade e pagamento próprio.
+- Profissionais, mesas, salas, equipamentos, unidades e outros recursos.
+- Horários semanais, intervalos, bloqueios e datas especiais.
+- Pagamento integral, percentual, sinal fixo ou sem cobrança.
+- PIX, cartão online, pagamento local e comprovante.
+- Clientes, faltas, bloqueios e histórico.
+- Agenda administrativa com status e pagamentos.
+- Confirmação automática ou aprovação manual.
+- Antecedência mínima, janela máxima, intervalo entre horários e cancelamento.
+- Lista de espera, reagendamento, termos, CPF e notificações.
+- Página pública com slug, prévia e publicação.
 
-A página pública `/delivery/{slug}` será criada como outra casca, separada do editor.
+## Observação sobre gateways
+
+A estrutura do banco está preparada para pagamento online, mas a cobrança real por cartão ou PIX dinâmico exige integração posterior com um gateway, usando funções server-side e chaves secretas na Vercel. Nunca coloque chave secreta no JavaScript do navegador.

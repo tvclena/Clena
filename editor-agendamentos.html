@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#eef7ff" />
+  <meta name="description" content="Editor completo de agendamentos e reservas." />
+  <title>Editor de Agendamentos | Clena</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="./assets/css/base.css" />
+  <link rel="stylesheet" href="./assets/css/scheduling-editor.css" />
+</head>
+<body>
+  <div id="pageLoader" class="page-loader"><span class="loader-dot"></span><p>Carregando agendamentos...</p></div>
+
+  <div id="app" class="app-shell is-hidden">
+    <aside class="sidebar">
+      <a class="brand" href="./index.html"><span class="brand-mark">C</span><span>Clena</span></a>
+      <div class="business-mini">
+        <span id="sidebarAvatar" class="avatar"><i class="ri-calendar-check-line"></i></span>
+        <div><strong id="sidebarName">Meu negócio</strong><small id="sidebarStatus">Rascunho</small></div>
+      </div>
+      <nav id="sectionNav" class="section-nav">
+        <button class="nav-item is-active" data-section="overview"><i class="ri-dashboard-line"></i><span>Visão geral</span></button>
+        <button class="nav-item" data-section="business"><i class="ri-building-4-line"></i><span>Negócio</span></button>
+        <button class="nav-item" data-section="services"><i class="ri-service-line"></i><span>Serviços</span><small id="navServiceCount">0</small></button>
+        <button class="nav-item" data-section="resources"><i class="ri-team-line"></i><span>Profissionais e recursos</span></button>
+        <button class="nav-item" data-section="availability"><i class="ri-time-line"></i><span>Disponibilidade</span></button>
+        <button class="nav-item" data-section="rules"><i class="ri-settings-3-line"></i><span>Regras</span></button>
+        <button class="nav-item" data-section="payments"><i class="ri-bank-card-line"></i><span>Pagamentos</span></button>
+        <button class="nav-item" data-section="customers"><i class="ri-contacts-line"></i><span>Clientes</span></button>
+        <button class="nav-item" data-section="appointments"><i class="ri-calendar-event-line"></i><span>Agenda</span></button>
+        <button class="nav-item" data-section="notifications"><i class="ri-notification-3-line"></i><span>Notificações</span></button>
+        <button class="nav-item" data-section="publish"><i class="ri-global-line"></i><span>Publicação</span></button>
+      </nav>
+      <div class="sidebar-footer">
+        <a class="back-link" href="./index.html"><i class="ri-arrow-left-line"></i> Voltar à dashboard</a>
+      </div>
+    </aside>
+
+    <main class="workspace">
+      <header class="topbar">
+        <div class="topbar-title"><button id="mobileMenu" class="icon-btn"><i class="ri-menu-line"></i></button><div><small>EDITOR DE AGENDAMENTOS</small><h1 id="pageTitle">Visão geral</h1></div></div>
+        <div class="topbar-actions">
+          <button id="previewButton" class="secondary-btn"><i class="ri-smartphone-line"></i> Prévia</button>
+          <button id="saveAllButton" class="primary-btn"><i class="ri-save-line"></i> Salvar tudo</button>
+          <button id="profileButton" class="profile-pill"><span id="profileInitial">C</span><i class="ri-arrow-down-s-line"></i></button>
+          <div id="profileMenu" class="profile-menu is-hidden"><button id="logoutButton"><i class="ri-logout-box-r-line"></i> Sair</button></div>
+        </div>
+      </header>
+
+      <div class="content">
+        <section id="section-overview" class="editor-section is-active">
+          <div class="hero-card">
+            <div><span class="eyebrow">CENTRAL DE RESERVAS</span><h2>Configure uma agenda profissional para qualquer tipo de negócio.</h2><p>Atenda por serviço, profissional, mesa, sala, equipamento, unidade ou recurso. Controle pagamentos antecipados, confirmações, cancelamentos e disponibilidade.</p><div class="hero-actions"><button class="primary-btn" data-go="services"><i class="ri-add-line"></i> Cadastrar serviço</button><button class="secondary-btn" data-go="appointments"><i class="ri-calendar-line"></i> Abrir agenda</button></div></div>
+            <div class="hero-visual"><i class="ri-calendar-schedule-line"></i></div>
+          </div>
+          <div class="stats-grid">
+            <article><span><i class="ri-service-line"></i></span><div><small>Serviços</small><strong id="statServices">0</strong></div></article>
+            <article><span><i class="ri-team-line"></i></span><div><small>Recursos</small><strong id="statResources">0</strong></div></article>
+            <article><span><i class="ri-calendar-check-line"></i></span><div><small>Agendamentos</small><strong id="statAppointments">0</strong></div></article>
+            <article><span><i class="ri-money-dollar-circle-line"></i></span><div><small>Sinais pendentes</small><strong id="statPendingPayments">0</strong></div></article>
+          </div>
+          <div class="two-col">
+            <article class="panel"><div class="panel-head"><div><small>CONFIGURAÇÃO</small><h3>Progresso da agenda</h3></div><strong id="setupPercent">0%</strong></div><div class="progress"><span id="setupBar"></span></div><div id="setupChecklist" class="checklist"></div></article>
+            <article class="panel"><div class="panel-head"><div><small>PRÓXIMOS</small><h3>Agendamentos recentes</h3></div><button class="text-btn" data-go="appointments">Ver agenda</button></div><div id="recentAppointments" class="empty-state"><i class="ri-calendar-todo-line"></i><p>Nenhum agendamento ainda.</p></div></article>
+          </div>
+        </section>
+
+        <section id="section-business" class="editor-section">
+          <div class="section-header"><div><span class="eyebrow">IDENTIDADE</span><h2>Dados do negócio</h2><p>Informações mostradas na página pública de agendamento.</p></div></div>
+          <form id="businessForm" class="panel form-stack">
+            <div class="media-grid">
+              <label class="image-uploader wide"><input id="coverInput" type="file" accept="image/*" hidden><span id="coverPreview"><i class="ri-image-add-line"></i><b>Adicionar capa</b><small>Recomendado: 1600 × 600</small></span></label>
+              <label class="image-uploader square"><input id="logoInput" type="file" accept="image/*" hidden><span id="logoPreview"><i class="ri-store-2-line"></i><b>Logo</b></span></label>
+            </div>
+            <div class="form-grid">
+              <label class="field"><span>Nome do negócio</span><input id="businessName" maxlength="120" required></label>
+              <label class="field"><span>Segmento</span><select id="businessType"><option value="restaurant">Restaurante</option><option value="salon">Salão ou barbearia</option><option value="clinic">Clínica ou consultório</option><option value="service">Prestador de serviço</option><option value="classes">Aulas e treinamentos</option><option value="space">Espaço e locações</option><option value="other">Outro</option></select></label>
+              <label class="field full"><span>Descrição</span><textarea id="businessDescription" rows="4" maxlength="800"></textarea></label>
+              <label class="field"><span>WhatsApp</span><input id="businessWhatsapp" inputmode="tel"></label>
+              <label class="field"><span>Instagram</span><input id="businessInstagram" placeholder="@seunegocio"></label>
+              <label class="field"><span>Telefone</span><input id="businessPhone" inputmode="tel"></label>
+              <label class="field"><span>E-mail comercial</span><input id="businessEmail" type="email"></label>
+              <label class="field full"><span>Endereço</span><input id="businessAddress"></label>
+              <label class="field"><span>Cor principal</span><input id="primaryColor" type="color" value="#2563eb"></label>
+              <label class="field"><span>Fuso horário</span><select id="timezone"><option value="America/Sao_Paulo">Brasília</option><option value="America/Manaus">Manaus</option><option value="America/Fortaleza">Fortaleza</option><option value="America/Recife">Recife</option><option value="America/Bahia">Bahia</option></select></label>
+            </div>
+          </form>
+        </section>
+
+        <section id="section-services" class="editor-section">
+          <div class="section-header"><div><span class="eyebrow">CATÁLOGO</span><h2>Serviços e experiências</h2><p>Cadastre cortes, consultas, mesas, aulas, reservas, procedimentos, locações e qualquer atividade agendável.</p></div><button id="newServiceButton" class="primary-btn"><i class="ri-add-line"></i> Novo serviço</button></div>
+          <div class="toolbar"><div class="search"><i class="ri-search-line"></i><input id="serviceSearch" placeholder="Buscar serviço..."></div><select id="serviceStatusFilter"><option value="all">Todos</option><option value="active">Ativos</option><option value="inactive">Inativos</option></select></div>
+          <div id="serviceList" class="card-list"></div>
+        </section>
+
+        <section id="section-resources" class="editor-section">
+          <div class="section-header"><div><span class="eyebrow">CAPACIDADE</span><h2>Profissionais, mesas e recursos</h2><p>Use recursos para representar funcionários, salas, cadeiras, mesas, equipamentos, quadras ou unidades.</p></div><button id="newResourceButton" class="primary-btn"><i class="ri-add-line"></i> Novo recurso</button></div>
+          <div id="resourceList" class="card-list"></div>
+        </section>
+
+        <section id="section-availability" class="editor-section">
+          <div class="section-header"><div><span class="eyebrow">HORÁRIOS</span><h2>Disponibilidade</h2><p>Defina dias, turnos, intervalos e exceções.</p></div><button id="addBlockButton" class="secondary-btn"><i class="ri-calendar-close-line"></i> Bloquear período</button></div>
+          <div class="two-col align-start">
+            <article class="panel"><div class="panel-head"><div><small>SEMANA PADRÃO</small><h3>Horários de atendimento</h3></div><button id="copyMondayButton" class="text-btn">Copiar segunda</button></div><div id="weeklySchedule" class="week-list"></div></article>
+            <article class="panel"><div class="panel-head"><div><small>EXCEÇÕES</small><h3>Bloqueios e datas especiais</h3></div></div><div id="blockList" class="card-list compact"></div></article>
+          </div>
+        </section>
+
+        <section id="section-rules" class="editor-section">
+          <div class="section-header"><div><span class="eyebrow">OPERAÇÃO</span><h2>Regras de agendamento</h2><p>Controle antecedência, cancelamentos, capacidade e aprovação.</p></div></div>
+          <div class="panel form-grid">
+            <label class="field"><span>Intervalo da grade</span><select id="slotInterval"><option value="5">5 minutos</option><option value="10">10 minutos</option><option value="15">15 minutos</option><option value="30">30 minutos</option><option value="60">60 minutos</option></select></label>
+            <label class="field"><span>Antecedência mínima</span><input id="minNotice" type="number" min="0"><small>Em minutos</small></label>
+            <label class="field"><span>Janela máxima</span><input id="maxAdvanceDays" type="number" min="1"><small>Quantos dias no futuro</small></label>
+            <label class="field"><span>Intervalo entre atendimentos</span><input id="bufferMinutes" type="number" min="0"><small>Em minutos</small></label>
+            <label class="field"><span>Prazo para cancelamento</span><input id="cancellationHours" type="number" min="0"><small>Horas antes</small></label>
+            <label class="field"><span>Limite por cliente/dia</span><input id="maxPerCustomerDay" type="number" min="0"></label>
+            <label class="toggle-row full"><span><b>Confirmação automática</b><small>O agendamento entra confirmado sem análise.</small></span><input id="autoConfirm" type="checkbox"></label>
+            <label class="toggle-row full"><span><b>Permitir lista de espera</b><small>Registra interessados quando não houver horário.</small></span><input id="waitlistEnabled" type="checkbox"></label>
+            <label class="toggle-row full"><span><b>Permitir reagendamento</b><small>Cliente pode escolher outro horário pelo link.</small></span><input id="rescheduleEnabled" type="checkbox"></label>
+            <label class="toggle-row full"><span><b>Solicitar aprovação manual</b><small>Útil para eventos, mesas especiais e procedimentos.</small></span><input id="manualApproval" type="checkbox"></label>
+            <label class="toggle-row full"><span><b>Exigir CPF</b><small>Solicita CPF no checkout.</small></span><input id="requireCpf" type="checkbox"></label>
+            <label class="toggle-row full"><span><b>Exigir aceite dos termos</b><small>Cliente precisa aceitar políticas antes de concluir.</small></span><input id="requireTerms" type="checkbox"></label>
+            <label class="field full"><span>Política de cancelamento</span><textarea id="cancellationPolicy" rows="4"></textarea></label>
+            <label class="field full"><span>Termos e observações</span><textarea id="termsText" rows="5"></textarea></label>
+          </div>
+        </section>
+
+        <section id="section-payments" class="editor-section">
+          <div class="section-header"><div><span class="eyebrow">FINANCEIRO</span><h2>Pagamento antecipado e sinal</h2><p>Defina cobrança total, percentual, valor fixo ou reserva sem pagamento.</p></div></div>
+          <div class="two-col align-start">
+            <article class="panel form-stack">
+              <div class="payment-mode-grid">
+                <label><input type="radio" name="paymentMode" value="none"><span><i class="ri-calendar-check-line"></i><b>Sem pagamento</b><small>Somente reserva</small></span></label>
+                <label><input type="radio" name="paymentMode" value="full"><span><i class="ri-bank-card-line"></i><b>Pagamento integral</b><small>100% antecipado</small></span></label>
+                <label><input type="radio" name="paymentMode" value="percentage"><span><i class="ri-percent-line"></i><b>Sinal percentual</b><small>Parte do valor</small></span></label>
+                <label><input type="radio" name="paymentMode" value="fixed"><span><i class="ri-money-dollar-circle-line"></i><b>Sinal fixo</b><small>Valor definido</small></span></label>
+              </div>
+              <div class="form-grid">
+                <label class="field"><span>Percentual do sinal</span><input id="depositPercentage" type="number" min="0" max="100"></label>
+                <label class="field"><span>Valor fixo do sinal</span><input id="depositFixed" type="number" min="0" step="0.01"></label>
+                <label class="field"><span>Prazo para pagamento</span><input id="paymentDeadlineMinutes" type="number" min="1"><small>Minutos após reservar</small></label>
+                <label class="field"><span>Política de reembolso</span><select id="refundPolicy"><option value="manual">Análise manual</option><option value="full">Reembolso integral</option><option value="partial">Reembolso parcial</option><option value="none">Não reembolsável</option></select></label>
+              </div>
+            </article>
+            <article class="panel form-stack"><div class="panel-head"><div><small>FORMAS ACEITAS</small><h3>Métodos de pagamento</h3></div></div>
+              <label class="toggle-row"><span><b>PIX</b><small>Cobrança via chave ou integração.</small></span><input id="payPix" type="checkbox"></label>
+              <label class="field"><span>Chave PIX</span><input id="pixKey"></label>
+              <label class="field"><span>Nome do recebedor</span><input id="pixReceiver"></label>
+              <label class="toggle-row"><span><b>Cartão online</b><small>Estrutura pronta para gateway.</small></span><input id="payCardOnline" type="checkbox"></label>
+              <label class="toggle-row"><span><b>Pagar no local</b><small>Dinheiro, cartão ou PIX presencial.</small></span><input id="payOnSite" type="checkbox"></label>
+              <label class="toggle-row"><span><b>Comprovante obrigatório</b><small>Cliente envia comprovante para validar.</small></span><input id="requireReceipt" type="checkbox"></label>
+            </article>
+          </div>
+        </section>
+
+        <section id="section-customers" class="editor-section">
+          <div class="section-header"><div><span class="eyebrow">RELACIONAMENTO</span><h2>Clientes</h2><p>Histórico de reservas, observações, faltas e bloqueios.</p></div><button id="newCustomerButton" class="secondary-btn"><i class="ri-user-add-line"></i> Novo cliente</button></div>
+          <div class="toolbar"><div class="search"><i class="ri-search-line"></i><input id="customerSearch" placeholder="Buscar por nome, telefone ou e-mail..."></div></div>
+          <div id="customerList" class="table-wrap"></div>
+        </section>
+
+        <section id="section-appointments" class="editor-section">
+          <div class="section-header"><div><span class="eyebrow">AGENDA</span><h2>Agendamentos</h2><p>Acompanhe reservas, pagamentos, presença e cancelamentos.</p></div><button id="newAppointmentButton" class="primary-btn"><i class="ri-add-line"></i> Novo agendamento</button></div>
+          <div class="toolbar wrap"><input id="appointmentDate" type="date"><select id="appointmentStatus"><option value="all">Todos os status</option><option value="pending">Pendente</option><option value="confirmed">Confirmado</option><option value="completed">Concluído</option><option value="cancelled">Cancelado</option><option value="no_show">Não compareceu</option></select><select id="appointmentResource"><option value="all">Todos os recursos</option></select></div>
+          <div id="appointmentList" class="timeline"></div>
+        </section>
+
+        <section id="section-notifications" class="editor-section">
+          <div class="section-header"><div><span class="eyebrow">AUTOMAÇÃO</span><h2>Notificações e lembretes</h2><p>Mensagens para confirmação, lembrete, pagamento e pós-atendimento.</p></div></div>
+          <div class="panel form-stack">
+            <label class="toggle-row"><span><b>Enviar confirmação</b><small>Ao criar ou confirmar o agendamento.</small></span><input id="notifyConfirmation" type="checkbox"></label>
+            <label class="toggle-row"><span><b>Lembrete automático</b><small>Envia antes do horário marcado.</small></span><input id="notifyReminder" type="checkbox"></label>
+            <div class="form-grid"><label class="field"><span>Antecedência do lembrete</span><input id="reminderHours" type="number" min="1"><small>Horas antes</small></label><label class="field"><span>Canal preferencial</span><select id="notificationChannel"><option value="whatsapp">WhatsApp</option><option value="email">E-mail</option><option value="both">WhatsApp e e-mail</option></select></label></div>
+            <label class="toggle-row"><span><b>Lembrete de pagamento</b><small>Avisa quando o sinal estiver pendente.</small></span><input id="notifyPayment" type="checkbox"></label>
+            <label class="toggle-row"><span><b>Mensagem pós-atendimento</b><small>Solicita avaliação ou envia agradecimento.</small></span><input id="notifyAftercare" type="checkbox"></label>
+            <label class="field full"><span>Mensagem de confirmação</span><textarea id="confirmationMessage" rows="4"></textarea></label>
+            <label class="field full"><span>Mensagem de lembrete</span><textarea id="reminderMessage" rows="4"></textarea></label>
+          </div>
+        </section>
+
+        <section id="section-publish" class="editor-section">
+          <div class="section-header"><div><span class="eyebrow">PÁGINA PÚBLICA</span><h2>Publicar agenda</h2><p>Defina o endereço, status e aparência do agendamento online.</p></div></div>
+          <div class="two-col align-start">
+            <article class="panel form-stack"><label class="field"><span>Endereço público</span><div class="slug-input"><span>/agendar/</span><input id="publicSlug" maxlength="80"></div></label><label class="toggle-row"><span><b>Página publicada</b><small>Permite que clientes façam reservas.</small></span><input id="isPublished" type="checkbox"></label><label class="toggle-row"><span><b>Mostrar preços</b><small>Exibe os valores dos serviços.</small></span><input id="showPrices" type="checkbox"></label><label class="toggle-row"><span><b>Mostrar profissionais</b><small>Cliente pode escolher o profissional ou recurso.</small></span><input id="showResources" type="checkbox"></label><label class="toggle-row"><span><b>Permitir escolha automática</b><small>O sistema seleciona qualquer recurso disponível.</small></span><input id="allowAnyResource" type="checkbox"></label><button id="copyPublicLink" class="secondary-btn"><i class="ri-file-copy-line"></i> Copiar link</button></article>
+            <article class="phone-preview"><div class="phone-top"></div><div id="publicPreview" class="preview-content"></div></article>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div id="modal" class="modal is-hidden"><div class="modal-backdrop" data-close-modal></div><section class="modal-card"><header><div><small id="modalKicker">CADASTRO</small><h2 id="modalTitle">Novo item</h2></div><button class="icon-btn" data-close-modal><i class="ri-close-line"></i></button></header><div id="modalBody"></div></section></div>
+  <div id="previewDrawer" class="drawer is-hidden"><div class="drawer-backdrop" data-close-preview></div><aside><header><h3>Prévia da página</h3><button class="icon-btn" data-close-preview><i class="ri-close-line"></i></button></header><div class="phone-preview large"><div class="phone-top"></div><div id="drawerPreview" class="preview-content"></div></div></aside></div>
+  <div id="toastRegion" class="toast-region"></div>
+
+  <script type="module" src="./assets/js/scheduling-editor.js"></script>
+</body>
+</html>
