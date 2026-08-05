@@ -1066,6 +1066,83 @@ function renderFeatured() {
   bindProductActions($('featuredProducts'));
 }
 
+
+function isProductUnavailable(product) {
+  return product.stock_mode === 'out' ||
+    (product.stock_mode === 'controlled' && Number(product.stock || 0) <= 0);
+}
+
+function getRecommendedProducts(product, limit = 6) {
+  if (!product) return [];
+
+  const available = products.filter((item) =>
+    item.id !== product.id &&
+    item.active !== false &&
+    !isProductUnavailable(item)
+  );
+
+  const sameCategory = available
+    .filter((item) => item.category_id && item.category_id === product.category_id)
+    .sort((a, b) =>
+      Number(b.featured) - Number(a.featured) ||
+      Number(a.position || 0) - Number(b.position || 0)
+    );
+
+  const otherCategories = available
+    .filter((item) => !sameCategory.some((same) => same.id === item.id))
+    .sort((a, b) =>
+      Number(b.featured) - Number(a.featured) ||
+      Number(a.position || 0) - Number(b.position || 0)
+    );
+
+  return [...sameCategory, ...otherCategories].slice(0, limit);
+}
+
+function recommendationCard(product) {
+  const category = categories.find((item) => item.id === product.category_id);
+  const sale = hasSale(product);
+  const image = product.image_url
+    ? `<img src="${escapeHtml(product.image_url)}" alt="${escapeHtml(product.name)}" loading="lazy">`
+    : '<span class="recommendation-placeholder"><i class="ri-image-line"></i></span>';
+
+  return `
+    <button class="recommendation-card" type="button" data-recommended-product="${escapeHtml(product.id)}" aria-label="Ver ${escapeHtml(product.name)}">
+      <span class="recommendation-image">
+        ${image}
+        ${sale ? '<b class="recommendation-sale">OFERTA</b>' : ''}
+      </span>
+      <span class="recommendation-content">
+        ${category ? `<small>${escapeHtml(category.name)}</small>` : ''}
+        <strong>${escapeHtml(product.name)}</strong>
+        <span class="recommendation-price">
+          ${sale ? `<del>${money(product.price)}</del>` : ''}
+          <b>${money(productPrice(product))}</b>
+        </span>
+      </span>
+      <i class="ri-arrow-right-up-line recommendation-arrow" aria-hidden="true"></i>
+    </button>
+  `;
+}
+
+function renderProductRecommendations(product) {
+  const section = $('productRecommendationsSection');
+  const container = $('productRecommendations');
+
+  if (!section || !container) return;
+
+  const recommendations = getRecommendedProducts(product, 6);
+  section.classList.toggle('is-hidden', recommendations.length === 0);
+  container.innerHTML = recommendations.map(recommendationCard).join('');
+
+  $$('[data-recommended-product]', container).forEach((button) => {
+    button.addEventListener('click', () => {
+      openProduct(button.dataset.recommendedProduct);
+      const modalCard = $('productModal')?.querySelector('.product-modal-card');
+      if (modalCard) modalCard.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+}
+
 function openProduct(id) {
   selectedProduct = products.find((product) => product.id === id);
   if (!selectedProduct) return;
@@ -1083,7 +1160,13 @@ function openProduct(id) {
   if (options.length) selectedVariation = options[0];
   $$('input[name="productVariation"]', $('variationOptions')).forEach((input) => input.addEventListener('change', () => { selectedVariation = options.find((item) => item.id === input.value); updateModalTotal(); }));
   updateModalTotal();
-  $('productModal').classList.remove('is-hidden'); document.body.classList.add('no-scroll');
+  renderProductRecommendations(selectedProduct);
+
+  const modalCard = $('productModal')?.querySelector('.product-modal-card');
+  if (modalCard) modalCard.scrollTop = 0;
+
+  $('productModal').classList.remove('is-hidden');
+  document.body.classList.add('no-scroll');
 }
 
 function updateModalTotal() {

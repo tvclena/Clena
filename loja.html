@@ -110,16 +110,50 @@
     <div class="modal-backdrop" data-close-product></div>
     <section class="modal-card product-modal-card">
       <button class="modal-close" type="button" data-close-product aria-label="Fechar"><i class="ri-close-line"></i></button>
-      <div id="productModalImage" class="product-modal-image"><span><i class="ri-image-line"></i></span></div>
-      <div class="product-modal-content">
-        <span id="productModalCategory" class="product-category-label"></span>
-        <h2 id="productModalName"></h2>
-        <p id="productModalDescription"></p>
-        <div id="productModalPrice" class="product-modal-price"></div>
-        <div id="variationArea" class="variation-area is-hidden"><h3>Escolha uma opção</h3><div id="variationOptions" class="variation-options"></div></div>
-        <label class="product-note-field"><span>Observação do item</span><textarea id="productNote" rows="3" maxlength="240" placeholder="Ex.: embalagem para presente"></textarea></label>
-        <div class="product-modal-bottom"><div class="quantity-picker"><button id="decreaseProductQty" type="button">−</button><strong id="productQty">1</strong><button id="increaseProductQty" type="button">+</button></div><button id="addProductToCart" class="primary-button product-add-button" type="button"><span>Adicionar</span><strong id="modalAddPrice"></strong></button></div>
+
+      <div class="product-modal-main">
+        <div id="productModalImage" class="product-modal-image"><span><i class="ri-image-line"></i></span></div>
+
+        <div class="product-modal-content">
+          <span id="productModalCategory" class="product-category-label"></span>
+          <h2 id="productModalName"></h2>
+          <p id="productModalDescription"></p>
+          <div id="productModalPrice" class="product-modal-price"></div>
+
+          <div id="variationArea" class="variation-area is-hidden">
+            <h3>Escolha uma opção</h3>
+            <div id="variationOptions" class="variation-options"></div>
+          </div>
+
+          <label class="product-note-field">
+            <span>Observação do item</span>
+            <textarea id="productNote" rows="3" maxlength="240" placeholder="Ex.: embalagem para presente"></textarea>
+          </label>
+
+          <div class="product-modal-bottom">
+            <div class="quantity-picker" aria-label="Quantidade">
+              <button id="decreaseProductQty" type="button" aria-label="Diminuir quantidade">−</button>
+              <strong id="productQty">1</strong>
+              <button id="increaseProductQty" type="button" aria-label="Aumentar quantidade">+</button>
+            </div>
+            <button id="addProductToCart" class="primary-button product-add-button" type="button">
+              <span>Adicionar</span>
+              <strong id="modalAddPrice"></strong>
+            </button>
+          </div>
+        </div>
       </div>
+
+      <section id="productRecommendationsSection" class="product-recommendations is-hidden" aria-labelledby="productRecommendationsTitle">
+        <div class="product-recommendations-heading">
+          <div>
+            <span class="section-kicker">ESCOLHIDOS PARA VOCÊ</span>
+            <h3 id="productRecommendationsTitle">Você também pode gostar</h3>
+          </div>
+          <small>Toque em um produto para ver os detalhes</small>
+        </div>
+        <div id="productRecommendations" class="product-recommendations-grid" aria-live="polite"></div>
+      </section>
     </section>
   </div>
 
