@@ -746,11 +746,11 @@ body[data-layout="list"] .product-grid {
 }
 
 .product-modal-image img {
-  width: 100%;
-  height: 100%;
-  min-height: 490px;
-  display: block;
-  object-fit: cover;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  background: var(--card) !important;
 }
 
 .product-modal-content {
