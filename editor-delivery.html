@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#fff7ed" />
+  <meta name="description" content="Editor profissional de delivery da Clena." />
+  <title>Editor de Delivery • Clena</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="./assets/css/delivery-editor.css" />
+</head>
+<body>
+  <div id="pageLoader" class="page-loader">
+    <span class="loader-logo"><i class="ri-motorbike-line"></i></span>
+    <strong>Carregando editor de delivery...</strong>
+    <small>Conectando ao Supabase</small>
+  </div>
+
+  <div id="app" class="delivery-app is-hidden">
+    <aside id="sidebar" class="editor-sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-icon"><i class="ri-motorbike-line"></i></span>
+        <div><strong>Clena</strong><small>Delivery</small></div>
+      </div>
+
+      <button id="backDashboardBtn" class="back-button" type="button">
+        <i class="ri-arrow-left-line"></i><span>Voltar à dashboard</span>
+      </button>
+
+      <nav id="editorNav" class="editor-nav" aria-label="Editor de delivery">
+        <p class="nav-label">GESTÃO</p>
+        <button class="nav-item active" type="button" data-section="overview"><i class="ri-dashboard-line"></i><span>Visão geral</span></button>
+        <button class="nav-item" type="button" data-section="menu"><i class="ri-restaurant-2-line"></i><span>Cardápio</span><b id="navItemCount">0</b></button>
+        <button class="nav-item" type="button" data-section="categories"><i class="ri-layout-grid-line"></i><span>Categorias</span></button>
+        <button class="nav-item" type="button" data-section="addons"><i class="ri-add-box-line"></i><span>Complementos</span></button>
+        <p class="nav-label spaced">OPERAÇÃO</p>
+        <button class="nav-item" type="button" data-section="delivery"><i class="ri-map-pin-2-line"></i><span>Entrega e retirada</span></button>
+        <button class="nav-item" type="button" data-section="hours"><i class="ri-time-line"></i><span>Horários</span></button>
+        <button class="nav-item" type="button" data-section="payments"><i class="ri-bank-card-line"></i><span>Pagamentos</span></button>
+        <button class="nav-item" type="button" data-section="appearance"><i class="ri-palette-line"></i><span>Aparência</span></button>
+        <button class="nav-item" type="button" data-section="publish"><i class="ri-global-line"></i><span>Publicação</span></button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="save-state" id="saveIndicator"><span></span><b>Salvo</b></div>
+        <button id="saveAllBtn" class="primary-btn full" type="button"><i class="ri-save-line"></i>Salvar alterações</button>
+      </div>
+    </aside>
+
+    <section class="editor-main">
+      <header class="editor-header">
+        <div class="header-left">
+          <button id="menuBtn" class="icon-btn mobile-menu" type="button"><i class="ri-menu-2-line"></i></button>
+          <div><small id="pageKicker">DELIVERY</small><h1 id="pageTitle">Visão geral</h1></div>
+        </div>
+        <div class="header-actions">
+          <button id="previewBtn" class="outline-btn" type="button"><i class="ri-eye-line"></i>Prévia</button>
+          <div class="profile-chip"><span id="headerAvatar">DE</span><div><strong id="headerStoreName">Meu delivery</strong><small id="headerEmail">—</small></div></div>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section id="section-overview" class="editor-section active">
+          <article class="hero-card">
+            <div>
+              <span class="hero-kicker">CENTRAL DO DELIVERY</span>
+              <h2>Organize sua operação em uma estrutura própria.</h2>
+              <p>Cardápio, adicionais, regiões, taxas, horários, retirada e pagamentos sem misturar com o editor de loja.</p>
+              <div class="hero-actions">
+                <button class="light-btn" type="button" data-go="menu"><i class="ri-add-line"></i>Novo item</button>
+                <button class="glass-btn" type="button" data-go="delivery"><i class="ri-map-pin-line"></i>Configurar entrega</button>
+              </div>
+            </div>
+            <div class="hero-status">
+              <span id="openStatusIcon"><i class="ri-store-2-line"></i></span>
+              <strong id="openStatusText">Fechado</strong>
+              <small id="openStatusHint">Conforme os horários configurados</small>
+            </div>
+          </article>
+
+          <section class="stats-grid">
+            <article class="stat-card"><span class="stat-icon orange"><i class="ri-restaurant-line"></i></span><div><small>Itens ativos</small><strong id="statItems">0</strong></div></article>
+            <article class="stat-card"><span class="stat-icon blue"><i class="ri-layout-grid-line"></i></span><div><small>Categorias</small><strong id="statCategories">0</strong></div></article>
+            <article class="stat-card"><span class="stat-icon green"><i class="ri-map-pin-range-line"></i></span><div><small>Áreas de entrega</small><strong id="statZones">0</strong></div></article>
+            <article class="stat-card"><span class="stat-icon violet"><i class="ri-global-line"></i></span><div><small>Status</small><strong id="statPublish">Rascunho</strong></div></article>
+          </section>
+
+          <section class="overview-grid">
+            <article class="panel-card setup-card">
+              <div class="card-head"><div><small>CONFIGURAÇÃO</small><h3>Progresso do delivery</h3></div><strong id="setupPercent">0%</strong></div>
+              <div class="progress-bar"><span id="setupBar"></span></div>
+              <div id="setupChecklist" class="setup-list"></div>
+            </article>
+            <article class="panel-card quick-card">
+              <div class="card-head"><div><small>ATALHOS</small><h3>Ações rápidas</h3></div></div>
+              <div class="quick-grid">
+                <button type="button" data-go="menu"><i class="ri-restaurant-2-line"></i><span><strong>Cardápio</strong><small>Gerenciar produtos</small></span></button>
+                <button type="button" data-go="hours"><i class="ri-time-line"></i><span><strong>Horários</strong><small>Abertura e fechamento</small></span></button>
+                <button type="button" data-go="delivery"><i class="ri-map-pin-line"></i><span><strong>Taxas</strong><small>Regiões de entrega</small></span></button>
+                <button type="button" data-go="publish"><i class="ri-global-line"></i><span><strong>Publicar</strong><small>Endereço público</small></span></button>
+              </div>
+            </article>
+          </section>
+        </section>
+
+        <section id="section-menu" class="editor-section">
+          <div class="section-toolbar">
+            <div><h2>Cardápio</h2><p>Cadastre pratos, bebidas, combos e promoções.</p></div>
+            <button id="newItemBtn" class="primary-btn" type="button"><i class="ri-add-line"></i>Novo item</button>
+          </div>
+          <article class="panel-card table-card">
+            <div class="filters-row">
+              <label class="search-field"><i class="ri-search-line"></i><input id="itemSearch" type="search" placeholder="Buscar item ou código..." /></label>
+              <select id="itemCategoryFilter"><option value="">Todas as categorias</option></select>
+              <select id="itemStatusFilter"><option value="">Todos os status</option><option value="active">Ativos</option><option value="inactive">Inativos</option><option value="soldout">Esgotados</option></select>
+            </div>
+            <div id="bulkBar" class="bulk-bar is-hidden"><strong><span id="selectedCount">0</span> selecionado(s)</strong><button id="bulkActivate" type="button">Ativar</button><button id="bulkDeactivate" type="button">Desativar</button><button id="bulkSoldout" type="button">Esgotar</button><button id="bulkDelete" class="danger" type="button">Excluir</button></div>
+            <div class="table-wrap">
+              <table><thead><tr><th><input id="selectAllItems" type="checkbox" /></th><th>Item</th><th>Categoria</th><th>Preço</th><th>Disponibilidade</th><th>Status</th><th></th></tr></thead><tbody id="itemTableBody"></tbody></table>
+            </div>
+            <div id="itemsEmpty" class="empty-state"><i class="ri-restaurant-line"></i><h3>Nenhum item cadastrado</h3><p>Crie o primeiro item do seu cardápio.</p><button type="button" data-new-item class="primary-btn">Cadastrar item</button></div>
+          </article>
+        </section>
+
+        <section id="section-categories" class="editor-section">
+          <div class="section-toolbar"><div><h2>Categorias</h2><p>Organize o cardápio em seções fáceis de navegar.</p></div><button id="newCategoryBtn" class="primary-btn" type="button"><i class="ri-add-line"></i>Nova categoria</button></div>
+          <article class="panel-card"><div id="categoryList" class="sortable-list"></div></article>
+        </section>
+
+        <section id="section-addons" class="editor-section">
+          <div class="section-toolbar"><div><h2>Complementos</h2><p>Crie grupos de adicionais para vincular aos itens.</p></div><button id="newAddonGroupBtn" class="primary-btn" type="button"><i class="ri-add-line"></i>Novo grupo</button></div>
+          <article class="panel-card"><div id="addonGroupList" class="addon-groups"></div></article>
+        </section>
+
+        <section id="section-delivery" class="editor-section">
+          <div class="section-toolbar"><div><h2>Entrega e retirada</h2><p>Defina modalidades, pedido mínimo, endereço e regiões.</p></div></div>
+          <div class="settings-grid">
+            <article class="panel-card">
+              <div class="card-head"><div><small>MODALIDADES</small><h3>Como o cliente recebe</h3></div></div>
+              <div class="toggle-list">
+                <label class="toggle-row"><span><i class="ri-motorbike-line"></i><b>Entrega</b><small>Levar o pedido até o cliente</small></span><input id="deliveryEnabled" type="checkbox" /><i></i></label>
+                <label class="toggle-row"><span><i class="ri-shopping-bag-3-line"></i><b>Retirada no local</b><small>Cliente busca o pedido</small></span><input id="pickupEnabled" type="checkbox" /><i></i></label>
+              </div>
+              <div class="form-grid two">
+                <label class="field"><span>Pedido mínimo</span><div class="input-prefix"><b>R$</b><input id="minimumOrder" inputmode="decimal" placeholder="0,00" /></div></label>
+                <label class="field"><span>Tempo médio</span><input id="estimatedTime" type="text" maxlength="60" placeholder="Ex.: 40–60 minutos" /></label>
+                <label class="field"><span>Taxa padrão</span><div class="input-prefix"><b>R$</b><input id="defaultDeliveryFee" inputmode="decimal" placeholder="0,00" /></div></label>
+                <label class="field"><span>Distância máxima (km)</span><input id="maxDistanceKm" type="number" min="0" step="0.1" placeholder="Ex.: 10" /></label>
+              </div>
+              <label class="field"><span>Endereço para retirada</span><textarea id="pickupAddress" rows="3" maxlength="300" placeholder="Rua, número, bairro e referência"></textarea></label>
+              <label class="field"><span>Observação da entrega</span><textarea id="deliveryNote" rows="3" maxlength="400" placeholder="Ex.: taxa pode variar conforme a região"></textarea></label>
+            </article>
+            <article class="panel-card">
+              <div class="card-head"><div><small>REGIÕES</small><h3>Áreas e taxas de entrega</h3></div><button id="newZoneBtn" class="small-btn" type="button"><i class="ri-add-line"></i>Adicionar</button></div>
+              <div id="zoneList" class="zone-list"></div>
+            </article>
+          </div>
+        </section>
+
+        <section id="section-hours" class="editor-section">
+          <div class="section-toolbar"><div><h2>Horários</h2><p>Configure dias, intervalos e status manual.</p></div></div>
+          <div class="settings-grid">
+            <article class="panel-card">
+              <div class="card-head"><div><small>FUNCIONAMENTO</small><h3>Horários semanais</h3></div><button id="copyMondayBtn" class="small-btn" type="button">Copiar segunda</button></div>
+              <div id="hoursList" class="hours-list"></div>
+            </article>
+            <article class="panel-card">
+              <div class="card-head"><div><small>STATUS MANUAL</small><h3>Controle imediato</h3></div></div>
+              <label class="toggle-row highlighted"><span><i class="ri-toggle-line"></i><b>Forçar loja aberta</b><small>Ignora temporariamente os horários</small></span><input id="forceOpen" type="checkbox" /><i></i></label>
+              <label class="toggle-row"><span><i class="ri-close-circle-line"></i><b>Forçar loja fechada</b><small>Bloqueia pedidos mesmo no horário</small></span><input id="forceClosed" type="checkbox" /><i></i></label>
+              <label class="field"><span>Mensagem quando fechado</span><textarea id="closedMessage" rows="4" maxlength="300" placeholder="Ex.: Estamos fechados. Voltamos às 18h."></textarea></label>
+              <label class="field"><span>Último pedido antes do fechamento</span><select id="lastOrderMinutes"><option value="0">Até o horário de fechamento</option><option value="15">15 minutos antes</option><option value="30">30 minutos antes</option><option value="45">45 minutos antes</option><option value="60">1 hora antes</option></select></label>
+            </article>
+          </div>
+        </section>
+
+        <section id="section-payments" class="editor-section">
+          <div class="section-toolbar"><div><h2>Pagamentos</h2><p>Escolha as formas aceitas e instruções ao cliente.</p></div></div>
+          <div class="settings-grid">
+            <article class="panel-card">
+              <div class="card-head"><div><small>FORMAS ACEITAS</small><h3>Pagamento do pedido</h3></div></div>
+              <div class="payment-options">
+                <label><input id="paymentPix" type="checkbox" /><span><i class="ri-qr-code-line"></i><b>PIX</b></span></label>
+                <label><input id="paymentCard" type="checkbox" /><span><i class="ri-bank-card-line"></i><b>Cartão</b></span></label>
+                <label><input id="paymentCash" type="checkbox" /><span><i class="ri-money-dollar-circle-line"></i><b>Dinheiro</b></span></label>
+                <label><input id="paymentOnline" type="checkbox" /><span><i class="ri-secure-payment-line"></i><b>Online</b></span></label>
+              </div>
+              <div class="form-grid two">
+                <label class="field"><span>Chave PIX</span><input id="pixKey" type="text" maxlength="140" /></label>
+                <label class="field"><span>Nome do recebedor</span><input id="pixReceiver" type="text" maxlength="120" /></label>
+              </div>
+              <label class="field"><span>Instruções de pagamento</span><textarea id="paymentNote" rows="4" maxlength="400" placeholder="Ex.: envie o comprovante pelo WhatsApp"></textarea></label>
+            </article>
+            <article class="panel-card">
+              <div class="card-head"><div><small>PEDIDO</small><h3>Finalização</h3></div></div>
+              <label class="field"><span>Canal de recebimento</span><select id="checkoutMode"><option value="whatsapp">WhatsApp</option><option value="internal">Painel interno</option><option value="catalog_only">Somente cardápio</option></select></label>
+              <label class="field"><span>WhatsApp de pedidos</span><input id="orderWhatsapp" type="tel" maxlength="30" placeholder="5577999999999" /></label>
+              <label class="field"><span>Mensagem final</span><textarea id="orderSuccessMessage" rows="4" maxlength="400" placeholder="Obrigado! Seu pedido foi recebido."></textarea></label>
+              <label class="toggle-row"><span><i class="ri-file-list-3-line"></i><b>Solicitar observação</b><small>Permite instruções do cliente</small></span><input id="allowOrderNotes" type="checkbox" /><i></i></label>
+              <label class="toggle-row"><span><i class="ri-calendar-check-line"></i><b>Permitir agendamento</b><small>Cliente escolhe data e horário</small></span><input id="allowScheduling" type="checkbox" /><i></i></label>
+            </article>
+          </div>
+        </section>
+
+        <section id="section-appearance" class="editor-section">
+          <div class="section-toolbar"><div><h2>Aparência</h2><p>Personalize a identidade visual do delivery.</p></div></div>
+          <div class="settings-grid">
+            <article class="panel-card">
+              <div class="card-head"><div><small>IDENTIDADE</small><h3>Dados principais</h3></div></div>
+              <label class="field"><span>Nome do delivery</span><input id="deliveryName" type="text" maxlength="100" /></label>
+              <label class="field"><span>Descrição</span><textarea id="deliveryDescription" rows="4" maxlength="500"></textarea><small><span id="descriptionCount">0</span>/500</small></label>
+              <div class="form-grid two">
+                <label class="field"><span>Instagram</span><input id="deliveryInstagram" type="text" maxlength="100" placeholder="@seuperfil" /></label>
+                <label class="field"><span>Categoria do negócio</span><input id="businessType" type="text" maxlength="100" placeholder="Ex.: Hamburgueria" /></label>
+              </div>
+              <div class="image-grid">
+                <div class="image-editor"><span>Logo</span><div id="logoPreview" class="image-preview square"><i class="ri-image-add-line"></i></div><div><button id="chooseLogoBtn" type="button">Escolher</button><button id="removeLogoBtn" type="button">Remover</button></div><input id="logoInput" type="file" hidden accept="image/png,image/jpeg,image/webp" /></div>
+                <div class="image-editor"><span>Capa</span><div id="coverPreview" class="image-preview cover"><i class="ri-image-add-line"></i></div><div><button id="chooseCoverBtn" type="button">Escolher</button><button id="removeCoverBtn" type="button">Remover</button></div><input id="coverInput" type="file" hidden accept="image/png,image/jpeg,image/webp" /></div>
+              </div>
+            </article>
+            <article class="panel-card">
+              <div class="card-head"><div><small>TEMA</small><h3>Cores e exibição</h3></div></div>
+              <div class="color-row"><label><span>Cor principal</span><div><input id="primaryColor" type="color" /><input id="primaryColorText" type="text" maxlength="7" /></div></label><label><span>Cor de destaque</span><div><input id="accentColor" type="color" /><input id="accentColorText" type="text" maxlength="7" /></div></label></div>
+              <div class="choice-group"><span>Formato dos produtos</span><div id="itemLayoutChoices"><button class="choice active" data-value="cards" type="button"><i class="ri-layout-grid-line"></i><b>Cards</b></button><button class="choice" data-value="compact" type="button"><i class="ri-list-check-2"></i><b>Compacto</b></button></div></div>
+              <label class="toggle-row"><span><i class="ri-image-line"></i><b>Exibir capa</b><small>Mostra imagem no topo</small></span><input id="showCover" type="checkbox" /><i></i></label>
+              <label class="toggle-row"><span><i class="ri-fire-line"></i><b>Mostrar destaques</b><small>Seção especial no início</small></span><input id="showFeatured" type="checkbox" /><i></i></label>
+              <div id="phonePreview" class="phone-preview"><div class="phone-top"></div><div class="phone-cover"></div><div class="phone-store"><span></span><div><b>Meu delivery</b><small>Aberto • 40–60 min</small></div></div><div class="phone-tabs"><i></i><i></i><i></i></div><div class="phone-products"><span></span><span></span><span></span></div></div>
+            </article>
+          </div>
+        </section>
+
+        <section id="section-publish" class="editor-section">
+          <div class="section-toolbar"><div><h2>Publicação</h2><p>Defina o endereço e disponibilize o delivery.</p></div></div>
+          <div class="settings-grid">
+            <article class="panel-card publish-card">
+              <div class="publish-icon"><i class="ri-global-line"></i></div>
+              <h3>Endereço público do delivery</h3>
+              <p>O link será usado na casca pública exclusiva do delivery.</p>
+              <div class="slug-field"><span id="slugOrigin">seusite.com/delivery/</span><input id="deliverySlug" type="text" maxlength="60" placeholder="meu-delivery" /></div>
+              <small id="slugFeedback">Use letras, números e hífens.</small>
+              <button id="copyDeliveryLinkBtn" class="outline-btn" type="button"><i class="ri-file-copy-line"></i>Copiar link</button>
+            </article>
+            <article class="panel-card">
+              <div class="card-head"><div><small>STATUS</small><h3>Disponibilidade pública</h3></div></div>
+              <label class="publish-switch"><input id="deliveryPublished" type="checkbox" /><span><i></i></span><div><b id="publishStatusTitle">Delivery em rascunho</b><small id="publishStatusText">Somente você pode visualizar no editor.</small></div></label>
+              <div class="publication-summary"><div><span>Itens ativos</span><b id="summaryItems">0</b></div><div><span>Categorias</span><b id="summaryCategories">0</b></div><div><span>Entrega</span><b id="summaryDelivery">Não</b></div><div><span>Retirada</span><b id="summaryPickup">Não</b></div></div>
+              <button id="publishSaveBtn" class="primary-btn full" type="button"><i class="ri-save-line"></i>Salvar e atualizar</button>
+            </article>
+          </div>
+        </section>
+      </main>
+    </section>
+  </div>
+
+  <div id="itemModal" class="modal-shell" aria-hidden="true">
+    <div class="modal-backdrop" data-close-item></div>
+    <section class="modal-card large">
+      <header><div><small>ITEM DO CARDÁPIO</small><h2 id="itemModalTitle">Novo item</h2></div><button type="button" data-close-item><i class="ri-close-line"></i></button></header>
+      <div class="modal-body">
+        <input id="itemId" type="hidden" />
+        <div class="item-editor-grid">
+          <div class="item-image-column"><div id="itemImagePreview" class="item-image-preview"><i class="ri-image-add-line"></i><span>Foto do item</span></div><button id="chooseItemImageBtn" type="button">Escolher imagem</button><button id="removeItemImageBtn" class="text-danger" type="button">Remover imagem</button><input id="itemImageInput" type="file" hidden accept="image/png,image/jpeg,image/webp" /></div>
+          <div class="item-fields">
+            <div class="form-grid two"><label class="field"><span>Nome *</span><input id="itemName" type="text" maxlength="120" /></label><label class="field"><span>Código/SKU</span><input id="itemSku" type="text" maxlength="60" /></label></div>
+            <label class="field"><span>Descrição</span><textarea id="itemDescription" rows="3" maxlength="600"></textarea></label>
+            <div class="form-grid three"><label class="field"><span>Categoria</span><select id="itemCategory"><option value="">Sem categoria</option></select></label><label class="field"><span>Preço *</span><div class="input-prefix"><b>R$</b><input id="itemPrice" inputmode="decimal" /></div></label><label class="field"><span>Preço promocional</span><div class="input-prefix"><b>R$</b><input id="itemSalePrice" inputmode="decimal" /></div></label></div>
+            <div class="form-grid three"><label class="field"><span>Tempo de preparo</span><input id="itemPrepTime" type="number" min="0" placeholder="Minutos" /></label><label class="field"><span>Ordem</span><input id="itemPosition" type="number" min="0" /></label><label class="field"><span>Disponibilidade</span><select id="itemAvailability"><option value="available">Disponível</option><option value="soldout">Esgotado</option><option value="scheduled">Por horário</option></select></label></div>
+            <div class="inline-toggles"><label><input id="itemActive" type="checkbox" /><span>Ativo</span></label><label><input id="itemFeatured" type="checkbox" /><span>Destaque</span></label><label><input id="itemAllowNotes" type="checkbox" /><span>Aceitar observações</span></label></div>
+            <div class="linked-addons"><div class="sub-head"><div><strong>Grupos de complementos</strong><small>Selecione os adicionais disponíveis para este item.</small></div></div><div id="itemAddonGroups" class="check-grid"></div></div>
+          </div>
+        </div>
+      </div>
+      <footer><button type="button" class="outline-btn" data-close-item>Cancelar</button><button id="saveItemBtn" class="primary-btn" type="button"><i class="ri-save-line"></i>Salvar item</button></footer>
+    </section>
+  </div>
+
+  <div id="categoryModal" class="modal-shell" aria-hidden="true">
+    <div class="modal-backdrop" data-close-category></div><section class="modal-card small"><header><div><small>CATEGORIA</small><h2 id="categoryModalTitle">Nova categoria</h2></div><button type="button" data-close-category><i class="ri-close-line"></i></button></header><div class="modal-body"><input id="categoryId" type="hidden" /><label class="field"><span>Nome *</span><input id="categoryName" type="text" maxlength="100" /></label><label class="field"><span>Descrição</span><textarea id="categoryDescription" rows="3" maxlength="300"></textarea></label><label class="field"><span>Ícone</span><select id="categoryIcon"><option value="ri-restaurant-line">Pratos</option><option value="ri-goblet-line">Bebidas</option><option value="ri-cake-3-line">Sobremesas</option><option value="ri-fire-line">Destaques</option><option value="ri-bowl-line">Combos</option><option value="ri-leaf-line">Saudável</option></select></label></div><footer><button type="button" class="outline-btn" data-close-category>Cancelar</button><button id="saveCategoryBtn" class="primary-btn" type="button">Salvar</button></footer></section>
+  </div>
+
+  <div id="addonModal" class="modal-shell" aria-hidden="true">
+    <div class="modal-backdrop" data-close-addon></div><section class="modal-card medium"><header><div><small>COMPLEMENTOS</small><h2 id="addonModalTitle">Novo grupo</h2></div><button type="button" data-close-addon><i class="ri-close-line"></i></button></header><div class="modal-body"><input id="addonGroupId" type="hidden" /><div class="form-grid two"><label class="field"><span>Nome do grupo *</span><input id="addonGroupName" maxlength="120" placeholder="Ex.: Escolha o molho" /></label><label class="field"><span>Tipo</span><select id="addonSelectionType"><option value="single">Escolha única</option><option value="multiple">Múltipla escolha</option></select></label><label class="field"><span>Mínimo</span><input id="addonMin" type="number" min="0" value="0" /></label><label class="field"><span>Máximo</span><input id="addonMax" type="number" min="1" value="1" /></label></div><label class="toggle-row"><span><i class="ri-asterisk"></i><b>Grupo obrigatório</b><small>Cliente precisa escolher uma opção</small></span><input id="addonRequired" type="checkbox" /><i></i></label><div class="sub-head"><div><strong>Opções do grupo</strong><small>Informe nome e valor adicional.</small></div><button id="addAddonOptionBtn" class="small-btn" type="button"><i class="ri-add-line"></i>Adicionar</button></div><div id="addonOptionList" class="option-list"></div></div><footer><button type="button" class="outline-btn" data-close-addon>Cancelar</button><button id="saveAddonGroupBtn" class="primary-btn" type="button">Salvar grupo</button></footer></section>
+  </div>
+
+  <div id="zoneModal" class="modal-shell" aria-hidden="true">
+    <div class="modal-backdrop" data-close-zone></div><section class="modal-card small"><header><div><small>REGIÃO DE ENTREGA</small><h2 id="zoneModalTitle">Nova região</h2></div><button type="button" data-close-zone><i class="ri-close-line"></i></button></header><div class="modal-body"><input id="zoneId" type="hidden" /><label class="field"><span>Nome da região *</span><input id="zoneName" maxlength="120" placeholder="Ex.: Centro" /></label><div class="form-grid two"><label class="field"><span>Taxa</span><div class="input-prefix"><b>R$</b><input id="zoneFee" inputmode="decimal" /></div></label><label class="field"><span>Pedido mínimo</span><div class="input-prefix"><b>R$</b><input id="zoneMinimum" inputmode="decimal" /></div></label></div><label class="field"><span>Bairros/CEP atendidos</span><textarea id="zoneAreas" rows="4" maxlength="500" placeholder="Separe por vírgulas"></textarea></label><label class="toggle-row"><span><i class="ri-checkbox-circle-line"></i><b>Região ativa</b><small>Disponível para novos pedidos</small></span><input id="zoneActive" type="checkbox" /><i></i></label></div><footer><button type="button" class="outline-btn" data-close-zone>Cancelar</button><button id="saveZoneBtn" class="primary-btn" type="button">Salvar região</button></footer></section>
+  </div>
+
+  <div id="toastHost" class="toast-host" aria-live="polite"></div>
+  <script type="module" src="./assets/js/delivery-editor.js"></script>
+</body>
+</html>

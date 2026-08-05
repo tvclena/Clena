@@ -1,58 +1,46 @@
-# Editor de Loja — módulo separado
+# Editor de Delivery • Clena
 
-Este pacote adiciona apenas o editor administrativo da loja. Ele usa a mesma autenticação e configuração Supabase da dashboard base.
+Módulo independente do Editor de Loja. Usa o mesmo Supabase Auth da dashboard e salva tudo no Supabase.
 
-## Copiar para o projeto
+## Arquivos para copiar
 
-Copie para a raiz do repositório:
+- `editor-delivery.html`
+- `assets/css/delivery-editor.css`
+- `assets/js/delivery-editor.js`
+- `supabase/delivery-editor.sql`
 
-- `editor-loja.html`
-- `assets/css/store-editor.css`
-- `assets/js/store-editor.js`
+Os arquivos `assets/js/config.js` e `assets/js/supabase-client.js` são os mesmos da dashboard. Não substitua se já estiverem funcionando.
 
-Os arquivos `assets/js/config.js` e `assets/js/supabase-client.js` já existem na dashboard. Não substitua caso estejam iguais.
+## Instalação
 
-## Banco de dados
+1. Execute `supabase/delivery-editor.sql` no SQL Editor do Supabase.
+2. Copie os arquivos para as respectivas pastas do projeto.
+3. Abra `/editor-delivery.html` após entrar na dashboard.
+4. Libere o botão Delivery no `index.html`.
 
-Execute uma única vez no SQL Editor do Supabase:
-
-`supabase/store-editor.sql`
-
-O SQL cria:
-
-- `stores`
-- `store_categories`
-- `store_products`
-- `store_product_variations`
-- bucket público `store-media`
-- índices, triggers e políticas RLS
-
-## Abrir o editor
-
-Depois do login, a rota é:
-
-`/editor-loja.html`
-
-Para liberar no menu principal posteriormente, use:
+## Trecho para liberar no menu
 
 ```html
-<a href="./editor-loja.html">Editar loja</a>
+<a class="nav-item" href="./editor-delivery.html">
+  <i class="ri-motorbike-line" aria-hidden="true"></i>
+  <span>Delivery</span>
+</a>
 ```
 
-## Recursos já incluídos
+## Recursos
 
-- sessão obrigatória pelo Supabase Auth;
-- uma loja por usuário;
-- identidade da loja;
-- logo e banner no Supabase Storage;
-- produtos com foto, preço, promoção, SKU, estoque e destaque;
-- variações com adicional de preço;
-- categorias ordenáveis;
-- pesquisa, filtro, seleção e ações em massa;
-- personalização de cores e formato grade/lista;
-- WhatsApp, pedido mínimo e formas de pagamento;
-- endereço público e status de publicação;
-- prévia responsiva em formato de celular;
-- RLS para separar completamente os dados de cada usuário.
+- Identidade do delivery com logo, capa e cores.
+- Cardápio completo, categorias, promoções e disponibilidade.
+- Grupos de complementos e opções com acréscimo de valor.
+- Entrega e retirada.
+- Regiões, bairros, taxas e pedido mínimo.
+- Horários por dia e abertura/fechamento manual.
+- PIX, cartão, dinheiro e pagamento online.
+- Checkout por WhatsApp, interno ou somente cardápio.
+- Agendamento e observações de pedido.
+- Publicação com slug exclusivo.
+- Estrutura de tabelas de pedidos já preparada.
+- Storage público com escrita protegida por usuário.
+- RLS completa.
 
-A página pública da loja será criada em outro módulo. O botão de prévia já aponta para `/loja/{slug}` e começará a funcionar quando essa casca pública for adicionada.
+A página pública `/delivery/{slug}` será criada como outra casca, separada do editor.
