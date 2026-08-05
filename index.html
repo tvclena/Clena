@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#eef7ff" />
+  <meta name="description" content="Painel administrativo da sua loja." />
+  <title>Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./assets/css/base.css" />
+  <link rel="stylesheet" href="./assets/css/auth.css" />
+  <link rel="stylesheet" href="./assets/css/dashboard.css" />
+  <link rel="stylesheet" href="./assets/css/responsive.css" />
+</head>
+<body>
+  <div id="appLoader" class="app-loader" aria-live="polite">
+    <div class="loader-mark" aria-hidden="true">O</div>
+    <span>Carregando ambiente...</span>
+  </div>
+
+  <main id="authView" class="auth-view is-hidden">
+    <section class="auth-showcase" aria-label="Apresentação do sistema">
+      <div class="brand brand-light">
+        <span class="brand-mark"></span>
+        <span class="brand-name">CLENA</span>
+      </div>
+
+      <div class="showcase-copy">
+        <span class="eyebrow">GESTÃO DIGITAL</span>
+        <h1>Uma base profissional para administrar sua presença online.</h1>
+        <p>
+          Slogan.
+        </p>
+      </div>
+
+      <div class="showcase-preview" aria-hidden="true">
+        <div class="preview-window">
+          <div class="preview-topbar">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="preview-layout">
+            <div class="preview-sidebar"></div>
+            <div class="preview-main">
+              <div class="preview-heading"></div>
+              <div class="preview-cards">
+                <span></span><span></span><span></span>
+                
+
+
+
+
+
+
+
+
+
+                git config --global user.name "Grupo DV"
+
+git config --global user.email "tvclena@gmail.com"
+
+
+
+
+
+
+
+
+              </div>
+              <div class="preview-panel"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="showcase-footer">Ambiente seguro</p>
+    </section>
+
+    <section class="auth-panel">
+      <div class="auth-card">
+        <div class="mobile-brand brand">
+          <span class="brand-mark"></span>
+          <span class="brand-name">Clena</span>
+        </div>
+
+        <div class="auth-heading">
+          <span class="auth-kicker">BEM-VINDO</span>
+          <h2 id="authTitle">Entre na sua conta</h2>
+          <p id="authSubtitle">Acesse a dashboard para gerenciar os dados da sua loja.</p>
+        </div>
+
+        <div class="auth-tabs" role="tablist" aria-label="Acesso">
+          <button id="loginTab" class="auth-tab is-active" type="button" role="tab" aria-selected="true">Entrar</button>
+          <button id="registerTab" class="auth-tab" type="button" role="tab" aria-selected="false">Criar conta</button>
+        </div>
+
+        <form id="authForm" novalidate>
+          <div id="registerFields" class="register-fields is-hidden">
+            <label class="field">
+              <span>Nome da loja</span>
+              <div class="input-wrap">
+                <i class="ri-store-2-line" aria-hidden="true"></i>
+                <input id="storeNameInput" name="storeName" type="text" autocomplete="organization" placeholder="Ex.: Lunna Store" maxlength="90" />
+              </div>
+            </label>
+
+            <label class="field">
+              <span>Nome do responsável</span>
+              <div class="input-wrap">
+                <i class="ri-user-3-line" aria-hidden="true"></i>
+                <input id="responsibleInput" name="responsible" type="text" autocomplete="name" placeholder="Seu nome" maxlength="90" />
+              </div>
+            </label>
+          </div>
+
+          <label class="field">
+            <span>E-mail</span>
+            <div class="input-wrap">
+              <i class="ri-mail-line" aria-hidden="true"></i>
+              <input id="emailInput" name="email" type="email" autocomplete="email" placeholder="voce@empresa.com" required />
+            </div>
+          </label>
+
+          <label class="field">
+            <span>Senha</span>
+            <div class="input-wrap">
+              <i class="ri-lock-2-line" aria-hidden="true"></i>
+              <input id="passwordInput" name="password" type="password" autocomplete="current-password" placeholder="Mínimo de 6 caracteres" minlength="6" required />
+              <button id="togglePassword" class="input-action" type="button" aria-label="Mostrar senha">
+                <i class="ri-eye-line" aria-hidden="true"></i>
+              </button>
+            </div>
+          </label>
+
+          <button id="authSubmit" class="primary-button" type="submit">
+            <span>Entrar</span>
+            <i class="ri-arrow-right-line" aria-hidden="true"></i>
+          </button>
+        </form>
+
+        <button id="forgotPasswordButton" class="text-button" type="button">Esqueci minha senha</button>
+
+        <p class="auth-terms">
+          Ao continuar, você concorda com os termos de uso e a política de privacidade da plataforma.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <div id="dashboardView" class="dashboard-shell is-hidden">
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-brand brand">
+        <span class="brand-mark">O</span>
+        <span class="brand-name">Clena</span>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Menu principal">
+        <p class="nav-label">PAINEL</p>
+        <button class="nav-item is-active" type="button">
+          <i class="ri-layout-grid-line" aria-hidden="true"></i>
+          <span>Dashboard</span>
+        </button>
+
+        <p class="nav-label nav-label-spaced">ESTRUTURA</p>
+        <button class="nav-item is-disabled" type="button" disabled title="Será criado na próxima etapa">
+          <i class="ri-store-2-line" aria-hidden="true"></i>
+          <span>Editor da loja</span>
+          <small>Em breve</small>
+        </button>
+        <button class="nav-item is-disabled" type="button" disabled title="Será criado na próxima etapa">
+          <i class="ri-motorbike-line" aria-hidden="true"></i>
+          <span>Delivery</span>
+          <small>Em breve</small>
+        </button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="security-card">
+          <span class="security-icon"><i class="ri-shield-check-line"></i></span>
+          <div>
+            <strong>Dados protegidos</strong>
+            <p>Autenticação e regras de acesso pelo Supabase.</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
+    <section class="dashboard-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button id="menuButton" class="icon-button menu-button" type="button" aria-label="Abrir menu">
+            <i class="ri-menu-2-line"></i>
+          </button>
+          <div>
+            <p class="topbar-context">PAINEL ADMINISTRATIVO</p>
+            <h2>Dashboard</h2>
+          </div>
+        </div>
+
+        <div class="topbar-actions">
+          <button class="icon-button notification-button" type="button" aria-label="Notificações">
+            <i class="ri-notification-3-line"></i>
+            <span aria-hidden="true"></span>
+          </button>
+
+          <div class="profile-menu-wrap">
+            <button id="profileMenuButton" class="profile-button" type="button" aria-expanded="false">
+              <span id="headerAvatar" class="avatar avatar-small"><span>LO</span></span>
+              <span class="profile-button-copy">
+                <strong id="headerStoreName">Minha loja</strong>
+                <small id="headerEmail">conta@empresa.com</small>
+              </span>
+              <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
+            </button>
+
+            <div id="profileDropdown" class="profile-dropdown is-hidden">
+              <button id="openProfileButton" type="button">
+                <i class="ri-user-settings-line"></i>
+                Editar perfil da loja
+              </button>
+              <button id="logoutButton" class="danger-item" type="button">
+                <i class="ri-logout-box-r-line"></i>
+                Sair da conta
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="main-area">
+        <section class="welcome-panel">
+          <div>
+            <span class="eyebrow eyebrow-blue">VISÃO GERAL</span>
+            <h1 id="welcomeTitle">Olá! Sua dashboard está pronta.</h1>
+            <p>
+              Esta é a estrutura inicial. A partir daqui, cada modelo será construído em uma pasta e uma interface própria, sem misturar loja, delivery e agenda.
+            </p>
+            <button id="welcomeProfileButton" class="secondary-button" type="button">
+              <i class="ri-store-2-line"></i>
+              Completar dados da loja
+            </button>
+          </div>
+
+          <div class="welcome-visual" aria-hidden="true">
+            <div class="visual-orbit orbit-one"></div>
+            <div class="visual-orbit orbit-two"></div>
+            <div class="visual-center">
+              <i class="ri-dashboard-3-line"></i>
+            </div>
+          </div>
+        </section>
+
+        <section class="status-grid" aria-label="Resumo da estrutura">
+          <article class="status-card">
+            <div class="status-card-top">
+              <span class="status-icon status-icon-green"><i class="ri-shield-user-line"></i></span>
+              <span class="status-pill status-pill-green">ATIVO</span>
+            </div>
+            <p>Autenticação</p>
+            <strong>Supabase Auth</strong>
+            <small>Login, cadastro, sessão e recuperação de senha.</small>
+          </article>
+
+          <article class="status-card">
+            <div class="status-card-top">
+              <span class="status-icon status-icon-blue"><i class="ri-database-2-line"></i></span>
+              <span class="status-pill status-pill-green">ATIVO</span>
+            </div>
+            <p>Dados da loja</p>
+            <strong>Tabela profiles</strong>
+            <small>Informações vinculadas exclusivamente ao usuário autenticado.</small>
+          </article>
+
+          <article class="status-card">
+            <div class="status-card-top">
+              <span class="status-icon status-icon-violet"><i class="ri-image-line"></i></span>
+              <span class="status-pill status-pill-green">ATIVO</span>
+            </div>
+            <p>Imagens</p>
+            <strong>Supabase Storage</strong>
+            <small>Avatar da loja salvo em pasta protegida por usuário.</small>
+          </article>
+
+          <article class="status-card">
+            <div class="status-card-top">
+              <span class="status-icon status-icon-orange"><i class="ri-code-s-slash-line"></i></span>
+              <span class="status-pill">PRÓXIMO</span>
+            </div>
+            <p>Arquitetura</p>
+            <strong>Cascas separadas</strong>
+            <small>Loja, delivery e agenda terão páginas e scripts independentes.</small>
+          </article>
+        </section>
+
+        <section class="dashboard-grid">
+          <article class="content-card profile-summary-card">
+            <div class="card-heading">
+              <div>
+                <span class="card-kicker">PERFIL DA LOJA</span>
+                <h3>Dados principais</h3>
+              </div>
+              <button id="summaryEditButton" class="small-button" type="button">Editar</button>
+            </div>
+
+            <div class="profile-summary">
+              <span id="summaryAvatar" class="avatar avatar-large"><span>LO</span></span>
+              <div>
+                <h4 id="summaryStoreName">Minha loja</h4>
+                <p id="summaryResponsible">Responsável não informado</p>
+              </div>
+            </div>
+
+            <div class="info-list">
+              <div>
+                <span><i class="ri-mail-line"></i> E-mail</span>
+                <strong id="summaryEmail">—</strong>
+              </div>
+              <div>
+                <span><i class="ri-whatsapp-line"></i> WhatsApp</span>
+                <strong id="summaryWhatsapp">Não informado</strong>
+              </div>
+            </div>
+          </article>
+
+          <article class="content-card progress-card">
+            <div class="card-heading">
+              <div>
+                <span class="card-kicker">CONFIGURAÇÃO</span>
+                <h3>Progresso da base</h3>
+              </div>
+              <span id="profilePercent" class="progress-percent">50%</span>
+            </div>
+
+            <div class="progress-track" aria-hidden="true">
+              <span id="profileProgressBar" style="width:50%"></span>
+            </div>
+
+            <div class="check-list">
+              <div class="is-complete"><i class="ri-checkbox-circle-fill"></i><span>Conta criada no Supabase Auth</span></div>
+              <div class="is-complete"><i class="ri-checkbox-circle-fill"></i><span>Perfil vinculado ao usuário</span></div>
+              <div id="avatarCheck"><i class="ri-checkbox-blank-circle-line"></i><span>Adicionar foto da loja</span></div>
+              <div id="whatsappCheck"><i class="ri-checkbox-blank-circle-line"></i><span>Adicionar WhatsApp</span></div>
+            </div>
+          </article>
+        </section>
+      </main>
+    </section>
+  </div>
+
+  <div id="profileModal" class="modal is-hidden" role="dialog" aria-modal="true" aria-labelledby="profileModalTitle">
+    <div class="modal-backdrop" data-close-modal></div>
+    <section class="modal-card">
+      <header class="modal-header">
+        <div>
+          <span class="card-kicker">CONFIGURAÇÕES</span>
+          <h2 id="profileModalTitle">Perfil da loja</h2>
+        </div>
+        <button class="icon-button" type="button" data-close-modal aria-label="Fechar">
+          <i class="ri-close-line"></i>
+        </button>
+      </header>
+
+      <form id="profileForm" class="profile-form">
+        <div class="avatar-editor">
+          <span id="modalAvatar" class="avatar avatar-editor-preview"><span>LO</span></span>
+          <div>
+            <strong>Foto da loja</strong>
+            <p>PNG, JPG ou WEBP de até 5 MB.</p>
+            <label class="upload-button" for="avatarInput">
+              <i class="ri-upload-cloud-2-line"></i>
+              Escolher imagem
+            </label>
+            <input id="avatarInput" type="file" accept="image/png,image/jpeg,image/webp" hidden />
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <label class="field">
+            <span>Nome da loja</span>
+            <div class="input-wrap">
+              <i class="ri-store-2-line"></i>
+              <input id="profileStoreName" type="text" maxlength="90" required />
+            </div>
+          </label>
+
+          <label class="field">
+            <span>Nome do responsável</span>
+            <div class="input-wrap">
+              <i class="ri-user-3-line"></i>
+              <input id="profileResponsible" type="text" maxlength="90" />
+            </div>
+          </label>
+
+          <label class="field">
+            <span>WhatsApp</span>
+            <div class="input-wrap">
+              <i class="ri-whatsapp-line"></i>
+              <input id="profileWhatsapp" type="tel" inputmode="tel" placeholder="(77) 99999-9999" maxlength="20" />
+            </div>
+          </label>
+
+          <label class="field">
+            <span>E-mail da conta</span>
+            <div class="input-wrap is-readonly">
+              <i class="ri-mail-line"></i>
+              <input id="profileEmail" type="email" readonly />
+            </div>
+          </label>
+        </div>
+
+        <footer class="modal-footer">
+          <button class="ghost-button" type="button" data-close-modal>Cancelar</button>
+          <button id="saveProfileButton" class="primary-button primary-button-inline" type="submit">
+            <i class="ri-save-line"></i>
+            <span>Salvar alterações</span>
+          </button>
+        </footer>
+      </form>
+    </section>
+  </div>
+
+  <div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+  <script type="module" src="./assets/js/app.js"></script>
+</body>
+</html>
