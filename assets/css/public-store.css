@@ -568,82 +568,59 @@ body[data-layout="list"] .product-grid {
    ========================================================= */
 
 @media (max-width: 720px) {
-  /* área superior de infos */
-  .store-info {
-    margin-top: 8px !important;
-  }
-
-  .store-info-card {
-    border-radius: 18px !important;
-    overflow: hidden;
-  }
-
-  .store-info-card > div {
-    padding: 12px 14px !important;
-    gap: 8px !important;
-    min-height: 64px !important;
-  }
-
-  .store-info-card i {
-    font-size: 18px !important;
-  }
-
-  .store-info-card small {
-    font-size: .68rem !important;
-  }
-
-  .store-info-card strong {
-    font-size: .82rem !important;
-    line-height: 1.2 !important;
-  }
-
-  /* seção catálogo */
-  .catalog-section {
-    padding-block: 26px 40px !important;
-  }
-
-  .catalog-heading {
-    display: block !important;
-    margin-bottom: 16px !important;
-  }
-
-  .catalog-heading h2,
-  .subsection-heading h3 {
-    font-size: 2rem !important;
-    line-height: 1.05 !important;
-    margin: 4px 0 0 !important;
-  }
-
-  .catalog-heading p {
-    margin-top: 8px !important;
-    font-size: .92rem !important;
-    line-height: 1.45 !important;
-    max-width: none !important;
-  }
-
-  .section-kicker {
-    font-size: .68rem !important;
-    letter-spacing: .14em !important;
-  }
-
-  /* busca e ordenação */
   .catalog-tools {
-    grid-template-columns: 1fr !important;
-    gap: 10px !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 145px !important;
+    gap: 8px !important;
+    align-items: center;
+    width: 100%;
   }
 
   .search-box,
   .sort-box {
-    height: 50px !important;
-    min-height: 50px !important;
-    padding: 0 14px !important;
-    border-radius: 14px !important;
+    width: 100%;
+    min-width: 0;
+    height: 46px !important;
+    min-height: 46px !important;
+    padding: 0 11px !important;
+    border-radius: 12px !important;
   }
 
-  .search-box input,
-  .sort-box select {
-    font-size: .94rem !important;
+  .search-box {
+    overflow: hidden;
   }
+
+  .search-box input {
+    width: 100%;
+    min-width: 0;
+    font-size: .84rem !important;
+  }
+
+  .search-box i {
+    flex: none;
+    font-size: 16px;
+  }
+
+  .sort-box {
+    gap: 6px !important;
+    overflow: hidden;
+  }
+
+  .sort-box i {
+    flex: none;
+    font-size: 14px;
+  }
+
+  .sort-box select {
+    width: 100%;
+    min-width: 0 !important;
+    border: 0;
+    padding: 0;
+    font-size: .76rem !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
 
   .search-box button {
     font-size: 17px !important;
