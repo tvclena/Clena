@@ -74,16 +74,131 @@
         </section>
 
         <section class="editor-section" data-editor-section="appearance">
-          <div class="appearance-grid"><div class="panel"><div class="panel-head"><div><span class="eyebrow">ESTILO VISUAL</span><h3>Personalização</h3></div></div><div class="form-grid">
-            <label class="field full"><span>Logo da loja</span><div class="upload-row"><div class="image-preview logo-preview" id="logoPreview"><i class="ri-image-add-line"></i></div><div><input type="file" id="logoInput" accept="image/png,image/jpeg,image/webp" hidden><button class="secondary-btn" id="chooseLogoBtn" type="button"><i class="ri-upload-2-line"></i>Escolher imagem</button><button class="text-btn danger-text" id="removeLogoBtn" type="button">Remover</button><small>PNG, JPG ou WebP. Até 5 MB.</small></div></div></label>
-            <label class="field full"><span>Banner principal</span><div class="banner-upload" id="bannerPreview"><div><i class="ri-image-add-line"></i><strong>Adicionar banner</strong><small>Recomendado: 1600 × 600 px</small></div></div><input type="file" id="bannerInput" accept="image/png,image/jpeg,image/webp" hidden><div class="inline-actions"><button class="secondary-btn" id="chooseBannerBtn" type="button">Escolher banner</button><button class="text-btn danger-text" id="removeBannerBtn" type="button">Remover</button></div></label>
-            <label class="field"><span>Cor principal</span><div class="color-control"><input type="color" id="primaryColor" value="#2563eb"><input id="primaryColorText" value="#2563eb" maxlength="7"></div></label>
-            <label class="field"><span>Cor de destaque</span><div class="color-control"><input type="color" id="accentColor" value="#0f172a"><input id="accentColorText" value="#0f172a" maxlength="7"></div></label>
-            <label class="field full"><span>Formato dos produtos</span><div class="choice-grid" id="productLayoutChoices"><button class="choice active" data-value="grid"><i class="ri-layout-grid-line"></i><strong>Grade</strong><small>Cards lado a lado</small></button><button class="choice" data-value="list"><i class="ri-list-check-2"></i><strong>Lista</strong><small>Mais detalhes por item</small></button></div></label>
-          </div></div><div class="phone-preview-wrap"><div class="phone-preview"><div class="phone-top"></div><div class="phone-screen" id="livePreview"><div class="preview-banner"></div><div class="preview-store"><span class="preview-logo"><i class="ri-store-line"></i></span><strong>Minha loja</strong><small>Sua descrição aparecerá aqui</small></div><div class="preview-categories"><span>Todos</span><span>Novidades</span><span>Destaques</span></div><div class="preview-products"><article><div></div><b>Produto exemplo</b><small>R$ 29,90</small></article><article><div></div><b>Outro produto</b><small>R$ 49,90</small></article></div></div></div><span>Prévia aproximada</span></div></div>
-        </section>
+  <div class="appearance-workspace">
+    <div class="appearance-controls">
+      <div class="appearance-intro panel">
+        <div><span class="eyebrow">IDENTIDADE VISUAL</span><h2>Personalize cada detalhe da sua loja</h2><p>Escolha um tema, ajuste tipografia, capa, cartões, botões, animações e navegação. Todas as escolhas serão salvas no Supabase.</p></div>
+        <button type="button" class="secondary-btn" id="resetAppearanceBtn"><i class="ri-refresh-line"></i>Restaurar padrão</button>
+      </div>
 
-        <section class="editor-section" data-editor-section="checkout">
+      <article class="panel appearance-block">
+        <div class="panel-head"><div><span class="eyebrow">TEMAS</span><h3>Modelos prontos</h3></div><small>O tema aplica um conjunto completo de estilos.</small></div>
+        <div class="theme-grid" id="themeChoices">
+          <button type="button" class="theme-card active" data-theme="minimal"><span class="theme-swatch minimal"></span><strong>Minimal</strong><small>Limpo e comercial</small></button>
+          <button type="button" class="theme-card" data-theme="boutique"><span class="theme-swatch boutique"></span><strong>Boutique</strong><small>Elegante e editorial</small></button>
+          <button type="button" class="theme-card" data-theme="vibrant"><span class="theme-swatch vibrant"></span><strong>Vibrante</strong><small>Cores e energia</small></button>
+          <button type="button" class="theme-card" data-theme="dark"><span class="theme-swatch dark"></span><strong>Noturno</strong><small>Escuro e sofisticado</small></button>
+          <button type="button" class="theme-card" data-theme="organic"><span class="theme-swatch organic"></span><strong>Orgânico</strong><small>Natural e acolhedor</small></button>
+          <button type="button" class="theme-card" data-theme="poster"><span class="theme-swatch poster"></span><strong>Poster</strong><small>Impacto visual</small></button>
+        </div>
+      </article>
+
+      <article class="panel appearance-block">
+        <div class="panel-head"><div><span class="eyebrow">MARCA E CAPA</span><h3>Logo, imagem ou vídeo</h3></div></div>
+        <div class="form-grid">
+          <label class="field full"><span>Logo da loja</span><div class="upload-row"><div class="image-preview logo-preview" id="logoPreview"><i class="ri-image-add-line"></i></div><div><input type="file" id="logoInput" accept="image/png,image/jpeg,image/webp" hidden><button class="secondary-btn" id="chooseLogoBtn" type="button"><i class="ri-upload-2-line"></i>Escolher imagem</button><button class="text-btn danger-text" id="removeLogoBtn" type="button">Remover</button><small>PNG, JPG ou WebP. Até 5 MB.</small></div></div></label>
+          <label class="field full"><span>Tipo de capa</span><div class="choice-grid three" id="coverTypeChoices"><button type="button" class="choice active" data-value="image"><i class="ri-image-line"></i><strong>Imagem</strong><small>Banner tradicional</small></button><button type="button" class="choice" data-value="video"><i class="ri-video-line"></i><strong>Vídeo</strong><small>MP4 ou WebM</small></button><button type="button" class="choice" data-value="gradient"><i class="ri-gradienter-line"></i><strong>Gradiente</strong><small>Somente cores</small></button></div></label>
+          <div class="field full" id="bannerImageFields"><span>Banner principal</span><div class="banner-upload" id="bannerPreview"><div><i class="ri-image-add-line"></i><strong>Adicionar banner</strong><small>Recomendado: 1600 × 600 px</small></div></div><input type="file" id="bannerInput" accept="image/png,image/jpeg,image/webp" hidden><div class="inline-actions"><button class="secondary-btn" id="chooseBannerBtn" type="button">Escolher banner</button><button class="text-btn danger-text" id="removeBannerBtn" type="button">Remover</button></div></div>
+          <div class="field full is-hidden" id="coverVideoFields"><span>Vídeo da capa</span><div class="video-upload" id="coverVideoPreview"><i class="ri-video-upload-line"></i><strong>Nenhum vídeo selecionado</strong><small>MP4 ou WebM, até 50 MB. Sem áudio automático.</small></div><input type="file" id="coverVideoInput" accept="video/mp4,video/webm" hidden><div class="inline-actions"><button class="secondary-btn" id="chooseCoverVideoBtn" type="button"><i class="ri-upload-2-line"></i>Escolher vídeo</button><button class="text-btn danger-text" id="removeCoverVideoBtn" type="button">Remover</button></div><label class="field"><span>Ou URL externa do vídeo</span><input id="coverVideoExternalUrl" type="url" placeholder="https://.../video.mp4"></label></div>
+          <label class="field"><span>Enquadramento da capa</span><select id="coverFit"><option value="cover">Preencher</option><option value="contain">Mostrar inteira</option></select></label>
+          <label class="field"><span>Posição da capa</span><select id="coverPosition"><option value="center">Centro</option><option value="top">Topo</option><option value="bottom">Base</option><option value="left">Esquerda</option><option value="right">Direita</option></select></label>
+          <label class="field"><span>Altura da capa</span><select id="coverHeight"><option value="compact">Compacta</option><option value="medium">Média</option><option value="large">Grande</option><option value="fullscreen">Tela cheia</option></select></label>
+          <label class="field"><span>Escurecimento da capa</span><div class="range-control"><input id="coverOverlay" type="range" min="0" max="80" step="5"><output id="coverOverlayValue">35%</output></div></label>
+          <label class="field"><span>Formato da logo</span><select id="logoShape"><option value="circle">Circular</option><option value="rounded">Quadrada arredondada</option><option value="square">Quadrada</option><option value="free">Sem moldura</option></select></label>
+          <label class="field"><span>Posição da identidade</span><select id="heroAlignment"><option value="left">Esquerda</option><option value="center">Centro</option><option value="right">Direita</option></select></label>
+          <label class="field full"><span>Texto principal sobre a capa</span><input id="heroTitle" maxlength="100" placeholder="Novidades que combinam com você"></label>
+          <label class="field full"><span>Texto complementar</span><textarea id="heroSubtitle" rows="2" maxlength="220" placeholder="Conte uma mensagem curta para seus clientes"></textarea></label>
+          <label class="field"><span>Texto do botão da capa</span><input id="heroButtonText" maxlength="40" placeholder="Ver produtos"></label>
+          <label class="field"><span>Destino do botão</span><select id="heroButtonTarget"><option value="products">Produtos</option><option value="featured">Destaques</option><option value="whatsapp">WhatsApp</option><option value="none">Não mostrar</option></select></label>
+        </div>
+      </article>
+
+      <article class="panel appearance-block">
+        <div class="panel-head"><div><span class="eyebrow">CORES E TIPOGRAFIA</span><h3>Estilo da marca</h3></div></div>
+        <div class="form-grid">
+          <label class="field"><span>Cor principal</span><div class="color-control"><input type="color" id="primaryColor" value="#2563eb"><input id="primaryColorText" value="#2563eb" maxlength="7"></div></label>
+          <label class="field"><span>Cor de destaque</span><div class="color-control"><input type="color" id="accentColor" value="#0f172a"><input id="accentColorText" value="#0f172a" maxlength="7"></div></label>
+          <label class="field"><span>Cor de fundo</span><div class="color-control"><input type="color" id="backgroundColor" value="#f6f8fc"><input id="backgroundColorText" value="#f6f8fc" maxlength="7"></div></label>
+          <label class="field"><span>Cor dos cartões</span><div class="color-control"><input type="color" id="cardColor" value="#ffffff"><input id="cardColorText" value="#ffffff" maxlength="7"></div></label>
+          <label class="field"><span>Cor dos textos</span><div class="color-control"><input type="color" id="textColor" value="#0f172a"><input id="textColorText" value="#0f172a" maxlength="7"></div></label>
+          <label class="field"><span>Cor de textos secundários</span><div class="color-control"><input type="color" id="mutedColor" value="#64748b"><input id="mutedColorText" value="#64748b" maxlength="7"></div></label>
+          <label class="field"><span>Fonte dos textos</span><select id="bodyFont"><option value="Manrope">Manrope</option><option value="Inter">Inter</option><option value="Poppins">Poppins</option><option value="Montserrat">Montserrat</option><option value="Roboto">Roboto</option><option value="Nunito">Nunito</option></select></label>
+          <label class="field"><span>Fonte dos títulos</span><select id="headingFont"><option value="Manrope">Manrope</option><option value="Playfair Display">Playfair Display</option><option value="Fraunces">Fraunces</option><option value="Anton">Anton</option><option value="Montserrat">Montserrat</option><option value="Poppins">Poppins</option></select></label>
+          <label class="field"><span>Peso dos títulos</span><select id="headingWeight"><option value="600">Seminegrito</option><option value="700">Negrito</option><option value="800">Extra negrito</option><option value="900">Máximo</option></select></label>
+          <label class="field"><span>Escala da tipografia</span><select id="fontScale"><option value="compact">Compacta</option><option value="normal">Normal</option><option value="large">Grande</option></select></label>
+        </div>
+      </article>
+
+      <article class="panel appearance-block">
+        <div class="panel-head"><div><span class="eyebrow">PRODUTOS E NAVEGAÇÃO</span><h3>Organização da vitrine</h3></div></div>
+        <div class="form-grid">
+          <label class="field full"><span>Formato dos produtos</span><div class="choice-grid" id="productLayoutChoices"><button type="button" class="choice active" data-value="grid"><i class="ri-layout-grid-line"></i><strong>Grade</strong><small>Cards lado a lado</small></button><button type="button" class="choice" data-value="list"><i class="ri-list-check-2"></i><strong>Lista</strong><small>Mais detalhes por item</small></button></div></label>
+          <label class="field"><span>Produtos por linha no computador</span><select id="desktopColumns"><option value="2">2 colunas</option><option value="3">3 colunas</option><option value="4">4 colunas</option><option value="5">5 colunas</option></select></label>
+          <label class="field"><span>Proporção das fotos</span><select id="productImageRatio"><option value="square">Quadrada</option><option value="portrait">Retrato</option><option value="landscape">Paisagem</option><option value="auto">Automática</option></select></label>
+          <label class="field"><span>Arredondamento dos cartões</span><select id="cardRadius"><option value="none">Sem arredondamento</option><option value="small">Pequeno</option><option value="medium">Médio</option><option value="large">Grande</option></select></label>
+          <label class="field"><span>Sombra dos cartões</span><select id="cardShadow"><option value="none">Nenhuma</option><option value="soft">Suave</option><option value="medium">Média</option><option value="strong">Forte</option></select></label>
+          <label class="field"><span>Posição do texto no cartão</span><select id="productTextAlignment"><option value="left">Esquerda</option><option value="center">Centro</option></select></label>
+          <label class="field"><span>Estilo das categorias</span><select id="categoryStyle"><option value="pills">Botões arredondados</option><option value="underline">Abas sublinhadas</option><option value="cards">Mini cartões</option><option value="minimal">Texto simples</option></select></label>
+        </div>
+        <div class="toggle-list full appearance-toggles">
+          <label><span><i class="ri-search-line"></i><b>Mostrar pesquisa</b></span><input type="checkbox" id="showSearch" checked><i></i></label>
+          <label><span><i class="ri-menu-line"></i><b>Categorias fixas ao rolar</b></span><input type="checkbox" id="stickyCategories"><i></i></label>
+          <label><span><i class="ri-star-line"></i><b>Seção de destaques</b></span><input type="checkbox" id="showFeatured" checked><i></i></label>
+          <label><span><i class="ri-price-tag-3-line"></i><b>Mostrar selo de promoção</b></span><input type="checkbox" id="showSaleBadge" checked><i></i></label>
+          <label><span><i class="ri-eye-line"></i><b>Mostrar descrição nos cartões</b></span><input type="checkbox" id="showProductDescription" checked><i></i></label>
+        </div>
+      </article>
+
+      <article class="panel appearance-block">
+        <div class="panel-head"><div><span class="eyebrow">BOTÕES E ANIMAÇÕES</span><h3>Interações da página</h3></div></div>
+        <div class="form-grid">
+          <label class="field"><span>Formato dos botões</span><select id="buttonStyle"><option value="pill">Pílula</option><option value="rounded">Arredondado</option><option value="square">Reto</option><option value="outline">Contorno</option></select></label>
+          <label class="field"><span>Efeito ao passar o mouse</span><select id="buttonHover"><option value="lift">Elevar</option><option value="scale">Aumentar</option><option value="glow">Brilhar</option><option value="slide">Deslizar</option><option value="none">Nenhum</option></select></label>
+          <label class="field"><span>Animação de entrada</span><select id="pageAnimation"><option value="fade">Suave</option><option value="slide-up">Subir</option><option value="zoom">Zoom</option><option value="cascade">Cascata</option><option value="none">Nenhuma</option></select></label>
+          <label class="field"><span>Animação dos cartões</span><select id="cardAnimation"><option value="lift">Elevar</option><option value="zoom">Zoom da foto</option><option value="border">Borda destacada</option><option value="none">Nenhuma</option></select></label>
+          <label class="field"><span>Velocidade das animações</span><select id="animationSpeed"><option value="fast">Rápida</option><option value="normal">Normal</option><option value="slow">Lenta</option></select></label>
+          <label class="field"><span>Comportamento da rolagem</span><select id="scrollBehavior"><option value="smooth">Suave</option><option value="auto">Normal</option></select></label>
+        </div>
+        <div class="toggle-list full appearance-toggles"><label><span><i class="ri-magic-line"></i><b>Respeitar redução de movimento do dispositivo</b></span><input type="checkbox" id="respectReducedMotion" checked><i></i></label><label><span><i class="ri-arrow-up-line"></i><b>Botão voltar ao topo</b></span><input type="checkbox" id="showBackToTop" checked><i></i></label></div>
+      </article>
+
+      <article class="panel appearance-block">
+        <div class="panel-head"><div><span class="eyebrow">CABEÇALHO E RODAPÉ</span><h3>Elementos institucionais</h3></div></div>
+        <div class="form-grid">
+          <label class="field"><span>Estilo do cabeçalho</span><select id="headerStyle"><option value="transparent">Sobre a capa</option><option value="solid">Fundo sólido</option><option value="floating">Flutuante</option><option value="minimal">Minimalista</option></select></label>
+          <label class="field"><span>Posição do cabeçalho</span><select id="headerPosition"><option value="static">Normal</option><option value="sticky">Fixo ao rolar</option></select></label>
+          <label class="field"><span>Estilo do rodapé</span><select id="footerStyle"><option value="simple">Simples</option><option value="columns">Colunas</option><option value="centered">Centralizado</option><option value="hidden">Oculto</option></select></label>
+          <label class="field"><span>Fundo do rodapé</span><select id="footerBackground"><option value="accent">Cor de destaque</option><option value="primary">Cor principal</option><option value="light">Claro</option><option value="dark">Escuro</option></select></label>
+          <label class="field full"><span>Texto do rodapé</span><input id="footerText" maxlength="160" placeholder="© Minha loja. Todos os direitos reservados."></label>
+        </div>
+        <div class="toggle-list full appearance-toggles"><label><span><i class="ri-instagram-line"></i><b>Mostrar redes sociais</b></span><input type="checkbox" id="showSocialLinks" checked><i></i></label><label><span><i class="ri-whatsapp-line"></i><b>Botão flutuante do WhatsApp</b></span><input type="checkbox" id="floatingWhatsapp" checked><i></i></label><label><span><i class="ri-shopping-cart-line"></i><b>Carrinho flutuante</b></span><input type="checkbox" id="floatingCart" checked><i></i></label></div>
+      </article>
+
+      <article class="panel appearance-block">
+        <div class="panel-head"><div><span class="eyebrow">AVANÇADO</span><h3>Configurações especiais</h3></div></div>
+        <div class="form-grid">
+          <label class="field full"><span>CSS personalizado</span><textarea id="customCss" rows="7" maxlength="12000" placeholder="/* Opcional: use somente propriedades visuais */"></textarea><small>Será aplicado apenas na página pública da loja. Scripts não são permitidos.</small></label>
+        </div>
+      </article>
+    </div>
+
+    <aside class="appearance-preview-column">
+      <div class="preview-sticky">
+        <div class="preview-toolbar"><div><strong>Prévia ao vivo</strong><small>Visual aproximado da página pública</small></div><div class="device-switch"><button type="button" class="active" data-preview-device="mobile"><i class="ri-smartphone-line"></i></button><button type="button" data-preview-device="desktop"><i class="ri-computer-line"></i></button></div></div>
+        <div class="store-live-preview mobile" id="appearanceLivePreview">
+          <div class="alp-header"><span class="alp-logo"><i class="ri-store-line"></i></span><span class="alp-menu"><i class="ri-menu-line"></i></span></div>
+          <div class="alp-cover"><div class="alp-media"></div><div class="alp-overlay"></div><div class="alp-copy"><h3>Minha loja</h3><p>Sua descrição aparecerá aqui</p><button>Ver produtos</button></div></div>
+          <div class="alp-search"><i class="ri-search-line"></i><span>Buscar produtos</span></div>
+          <div class="alp-categories"><span class="active">Todos</span><span>Novidades</span><span>Destaques</span></div>
+          <div class="alp-products"><article><div class="alp-image"></div><span class="alp-sale">OFERTA</span><h4>Produto exemplo</h4><p>Descrição curta do produto</p><strong>R$ 29,90</strong><button><i class="ri-add-line"></i></button></article><article><div class="alp-image"></div><h4>Outro produto</h4><p>Descrição curta do produto</p><strong>R$ 49,90</strong><button><i class="ri-add-line"></i></button></article></div>
+          <div class="alp-footer">Sua loja • Instagram • WhatsApp</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section class="editor-section" data-editor-section="checkout">
           <div class="two-col"><article class="panel"><div class="panel-head"><div><span class="eyebrow">PEDIDOS</span><h3>Como receber pedidos</h3></div></div><div class="form-grid">
             <label class="field full"><span>Modo de finalização</span><select id="checkoutMode"><option value="whatsapp">Enviar pedido pelo WhatsApp</option><option value="catalog_only">Somente catálogo, sem pedido</option></select></label>
             <label class="field"><span>Pedido mínimo (R$)</span><input id="minimumOrder" inputmode="decimal" placeholder="0,00"></label>
@@ -114,6 +229,7 @@
 
   <div class="modal" id="categoryModal" aria-hidden="true"><div class="modal-backdrop" data-close-category></div><div class="modal-card modal-small"><div class="modal-head"><div><span class="eyebrow">CATEGORIA</span><h2 id="categoryModalTitle">Nova categoria</h2></div><button class="icon-btn" data-close-category><i class="ri-close-line"></i></button></div><form id="categoryForm" class="modal-body"><input type="hidden" id="categoryId"><label class="field"><span>Nome *</span><input id="categoryName" maxlength="70" required placeholder="Ex.: Novidades"></label><label class="field"><span>Descrição</span><textarea id="categoryDescription" maxlength="180" rows="3"></textarea></label><label class="field"><span>Ícone</span><select id="categoryIcon"><option value="ri-price-tag-3-line">Etiqueta</option><option value="ri-shirt-line">Moda</option><option value="ri-restaurant-line">Alimentos</option><option value="ri-cake-3-line">Doces</option><option value="ri-gift-line">Presentes</option><option value="ri-smartphone-line">Eletrônicos</option><option value="ri-home-4-line">Casa</option><option value="ri-sparkling-line">Beleza</option></select></label></form><div class="modal-foot"><button class="secondary-btn" data-close-category>Cancelar</button><button class="primary-btn" id="saveCategoryBtn">Salvar categoria</button></div></div></div>
 
+  <script type="module" src="./assets/js/store-appearance.js"></script>
   <script type="module" src="./assets/js/store-editor.js"></script>
 </body>
 </html>

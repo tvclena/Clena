@@ -11,6 +11,9 @@ create table if not exists public.stores (
   instagram text,
   logo_url text,
   banner_url text,
+  cover_type text not null default 'image' check (cover_type in ('image','video','gradient')),
+  cover_video_url text,
+  appearance_settings jsonb not null default '{}'::jsonb check (jsonb_typeof(appearance_settings)='object'),
   primary_color text not null default '#2563eb',
   accent_color text not null default '#0f172a',
   product_layout text not null default 'grid' check (product_layout in ('grid','list')),
@@ -110,7 +113,7 @@ drop trigger if exists store_categories_updated_at on public.store_categories; c
 drop trigger if exists store_products_updated_at on public.store_products; create trigger store_products_updated_at before update on public.store_products for each row execute function public.store_set_updated_at();
 
 insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types)
-values('store-media','store-media',true,5242880,array['image/png','image/jpeg','image/webp'])
+values('store-media','store-media',true,52428800,array['image/png','image/jpeg','image/webp','video/mp4','video/webm'])
 on conflict(id) do update set public=excluded.public,file_size_limit=excluded.file_size_limit,allowed_mime_types=excluded.allowed_mime_types;
 
 drop policy if exists store_media_public_read on storage.objects;
