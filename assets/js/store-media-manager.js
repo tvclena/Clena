@@ -11,7 +11,7 @@ function mediaHtml(item){if(!item.media_url)return '<i class="ri-image-line"></i
 function render(){
  $('bannerCount').textContent=banners.length;$('galleryCount').textContent=gallery.length;$('navMediaCount').textContent=banners.length+gallery.length;
  $('bannerEmpty').classList.toggle('is-hidden',banners.length>0);$('galleryEmpty').classList.toggle('is-hidden',gallery.length>0);
- $('bannerList').innerHTML=banners.map((b,i)=>`<article class="visual-content-card"><div class="visual-thumb">${mediaHtml(b)}</div><div class="visual-content-copy"><h4>${esc(b.title||'Banner sem título')}</h4><p>${esc(b.subtitle||'Sem subtítulo')}</p><div class="visual-meta"><span>${esc(labels[b.position]||b.position)}</span><span>${b.media_type==='video'?'Vídeo':'Imagem'}</span><span>${b.active?'Ativo':'Inativo'}</span><span>${b.device==='all'?'Todos os dispositivos':b.device==='mobile'?'Celular':'Computador'}</span></div></div><div class="visual-actions"><button data-banner-up="${b.id}" title="Subir" ${i===0?'disabled':''}><i class="ri-arrow-up-line"></i></button><button data-banner-down="${b.id}" title="Descer" ${i===banners.length-1?'disabled':''}><i class="ri-arrow-down-line"></i></button><button data-banner-edit="${b.id}" title="Editar"><i class="ri-pencil-line"></i></button><button data-banner-duplicate="${b.id}" title="Duplicar"><i class="ri-file-copy-line"></i></button><button data-banner-delete="${b.id}" title="Excluir"><i class="ri-delete-bin-line"></i></button></div></article>`).join('');
+ $('bannerList').innerHTML=banners.map((b,i)=>`<article class="visual-content-card"><div class="visual-thumb">${mediaHtml(b)}</div><div class="visual-content-copy"><h4>${esc(b.title||'Banner sem título')}</h4><p>${esc(b.subtitle||'Sem subtítulo')}</p><div class="visual-meta"><span>${esc(labels[b.placement]||b.placement)}</span><span>${b.media_type==='video'?'Vídeo':'Imagem'}</span><span>${b.active?'Ativo':'Inativo'}</span><span>${b.device==='all'?'Todos os dispositivos':b.device==='mobile'?'Celular':'Computador'}</span></div></div><div class="visual-actions"><button data-banner-up="${b.id}" title="Subir" ${i===0?'disabled':''}><i class="ri-arrow-up-line"></i></button><button data-banner-down="${b.id}" title="Descer" ${i===banners.length-1?'disabled':''}><i class="ri-arrow-down-line"></i></button><button data-banner-edit="${b.id}" title="Editar"><i class="ri-pencil-line"></i></button><button data-banner-duplicate="${b.id}" title="Duplicar"><i class="ri-file-copy-line"></i></button><button data-banner-delete="${b.id}" title="Excluir"><i class="ri-delete-bin-line"></i></button></div></article>`).join('');
  $('galleryList').innerHTML=gallery.map((g,i)=>`<article class="gallery-admin-card"><div class="gallery-admin-media">${mediaHtml(g)}</div><div class="gallery-admin-body"><h4>${esc(g.title||'Item sem título')}</h4><p>${esc(g.description||'Sem descrição')}</p><div class="gallery-admin-actions"><div class="visual-actions"><button data-gallery-up="${g.id}" ${i===0?'disabled':''}><i class="ri-arrow-up-line"></i></button><button data-gallery-down="${g.id}" ${i===gallery.length-1?'disabled':''}><i class="ri-arrow-down-line"></i></button></div><div class="visual-actions"><button data-gallery-edit="${g.id}"><i class="ri-pencil-line"></i></button><button data-gallery-delete="${g.id}"><i class="ri-delete-bin-line"></i></button></div></div></div></article>`).join('');
  document.dispatchEvent(new CustomEvent('store-media-updated',{detail:{banners:[...banners],gallery:[...gallery]}}));
 }
@@ -19,11 +19,11 @@ async function load(){const [{data:b,error:be},{data:g,error:ge}]=await Promise.
 function clearPreview(kind){if(objectUrls[kind])URL.revokeObjectURL(objectUrls[kind]);objectUrls[kind]='';pending[kind]=null;removeMedia[kind]=false}
 function setPreview(kind,url,type='image'){const el=$(kind==='banner'?'bannerMediaPreview':'galleryMediaPreview');if(!url){el.innerHTML=`<i class="${kind==='banner'?'ri-image-add-line':'ri-gallery-upload-line'}"></i><span>Imagem ou vídeo</span>`;return}el.innerHTML=type==='video'?`<video src="${esc(url)}" autoplay muted loop></video>`:`<img src="${esc(url)}" alt="Prévia">`}
 function localDate(v){if(!v)return'';const d=new Date(v);return Number.isNaN(d.getTime())?'':new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16)}
-function openBanner(id=null,clone=false){clearPreview('banner');$('bannerForm').reset();const b=id?banners.find(x=>x.id===id):null;$('bannerId').value=clone?'':b?.id||'';$('bannerModalTitle').textContent=clone?'Duplicar banner':b?'Editar banner':'Novo banner';$('bannerTitle').value=b?.title||'';$('bannerSubtitle').value=b?.subtitle||'';$('bannerMediaType').value=b?.media_type||'image';$('bannerPosition').value=b?.position||'after_hero';$('bannerHeight').value=b?.height||'medium';$('bannerFit').value=b?.fit||'cover';$('bannerObjectX').value=b?.object_x||'center';$('bannerObjectY').value=b?.object_y||'center';$('bannerTextAlign').value=b?.text_align||'left';$('bannerOverlay').value=b?.overlay??25;$('bannerButtonText').value=b?.button_text||'';$('bannerLinkType').value=b?.link_type||'none';$('bannerLinkValue').value=b?.link_value||'';$('bannerStartsAt').value=localDate(b?.starts_at);$('bannerEndsAt').value=localDate(b?.ends_at);$('bannerDevice').value=b?.device||'all';$('bannerLinkTarget').value=b?.link_target||'same';$('bannerActive').checked=b?.active??true;setPreview('banner',b?.media_url,b?.media_type);$('bannerModal').classList.add('open')}
+function openBanner(id=null,clone=false){clearPreview('banner');$('bannerForm').reset();const b=id?banners.find(x=>x.id===id):null;$('bannerId').value=clone?'':b?.id||'';$('bannerModalTitle').textContent=clone?'Duplicar banner':b?'Editar banner':'Novo banner';$('bannerTitle').value=b?.title||'';$('bannerSubtitle').value=b?.subtitle||'';$('bannerMediaType').value=b?.media_type||'image';$('bannerPosition').value=b?.placement||'after_hero';$('bannerHeight').value=b?.height||'medium';$('bannerFit').value=b?.fit||'cover';$('bannerObjectX').value=b?.object_x||'center';$('bannerObjectY').value=b?.object_y||'center';$('bannerTextAlign').value=b?.text_align||'left';$('bannerOverlay').value=b?.overlay??25;$('bannerButtonText').value=b?.button_text||'';$('bannerLinkType').value=b?.link_type||'none';$('bannerLinkValue').value=b?.link_value||'';$('bannerStartsAt').value=localDate(b?.starts_at);$('bannerEndsAt').value=localDate(b?.ends_at);$('bannerDevice').value=b?.device||'all';$('bannerLinkTarget').value=b?.link_target||'same';$('bannerActive').checked=b?.active??true;setPreview('banner',b?.media_url,b?.media_type);$('bannerModal').classList.add('open')}
 function closeBanner(){$('bannerModal').classList.remove('open');clearPreview('banner')}
 function openGallery(id=null){clearPreview('gallery');$('galleryForm').reset();const g=id?gallery.find(x=>x.id===id):null;$('galleryId').value=g?.id||'';$('galleryModalTitle').textContent=g?'Editar item':'Novo item';$('galleryItemTitle').value=g?.title||'';$('galleryItemDescription').value=g?.description||'';$('galleryMediaType').value=g?.media_type||'image';$('galleryFit').value=g?.fit||'cover';$('galleryObjectX').value=g?.object_x||'center';$('galleryObjectY').value=g?.object_y||'center';$('galleryLinkType').value=g?.link_type||'none';$('galleryLinkValue').value=g?.link_value||'';$('galleryLinkTarget').value=g?.link_target||'same';$('galleryActive').checked=g?.active??true;setPreview('gallery',g?.media_url,g?.media_type);$('galleryModal').classList.add('open')}
 function closeGallery(){$('galleryModal').classList.remove('open');clearPreview('gallery')}
-async function saveBanner(){try{const id=$('bannerId').value,old=id?banners.find(x=>x.id===id):null;let media_url=old?.media_url||null;if(pending.banner){if(old?.media_url)await removeUrl(old.media_url);media_url=await upload(pending.banner,'banners')}else if(removeMedia.banner){await removeUrl(old?.media_url);media_url=null}if(!media_url)throw new Error('Escolha uma imagem ou vídeo para o banner.');const payload={owner_id:ctx.user.id,store_id:ctx.store.id,title:$('bannerTitle').value.trim()||null,subtitle:$('bannerSubtitle').value.trim()||null,media_url,media_type:$('bannerMediaType').value,position:$('bannerPosition').value,height:$('bannerHeight').value,fit:$('bannerFit').value,object_x:$('bannerObjectX').value,object_y:$('bannerObjectY').value,text_align:$('bannerTextAlign').value,overlay:Number($('bannerOverlay').value),button_text:$('bannerButtonText').value.trim()||null,link_type:$('bannerLinkType').value,link_value:$('bannerLinkValue').value.trim()||null,starts_at:$('bannerStartsAt').value||null,ends_at:$('bannerEndsAt').value||null,device:$('bannerDevice').value,link_target:$('bannerLinkTarget').value,active:$('bannerActive').checked,position_order:old?.position_order??banners.length,position_index:old?.position_index??banners.length};let error;if(id)({error}=await ctx.sb.from('store_banners').update(payload).eq('id',id).eq('owner_id',ctx.user.id));else({error}=await ctx.sb.from('store_banners').insert({...payload,position:banners.length}));if(error)throw error;closeBanner();await load();ctx.toast(id?'Banner atualizado.':'Banner criado.')}catch(e){console.error(e);ctx.toast(e.message||'Erro ao salvar banner.','error')}}
+async function saveBanner(){try{const id=$('bannerId').value,old=id?banners.find(x=>x.id===id):null;let media_url=old?.media_url||null;if(pending.banner){if(old?.media_url)await removeUrl(old.media_url);media_url=await upload(pending.banner,'banners')}else if(removeMedia.banner){await removeUrl(old?.media_url);media_url=null}if(!media_url)throw new Error('Escolha uma imagem ou vídeo para o banner.');const payload={owner_id:ctx.user.id,store_id:ctx.store.id,title:$('bannerTitle').value.trim()||null,subtitle:$('bannerSubtitle').value.trim()||null,media_url,media_type:$('bannerMediaType').value,placement:$('bannerPosition').value,height:$('bannerHeight').value,fit:$('bannerFit').value,object_x:$('bannerObjectX').value,object_y:$('bannerObjectY').value,text_align:$('bannerTextAlign').value,overlay:Number($('bannerOverlay').value),button_text:$('bannerButtonText').value.trim()||null,link_type:$('bannerLinkType').value,link_value:$('bannerLinkValue').value.trim()||null,starts_at:$('bannerStartsAt').value||null,ends_at:$('bannerEndsAt').value||null,device:$('bannerDevice').value,link_target:$('bannerLinkTarget').value,active:$('bannerActive').checked,position:old?.position??banners.length};let error;if(id)({error}=await ctx.sb.from('store_banners').update(payload).eq('id',id).eq('owner_id',ctx.user.id));else({error}=await ctx.sb.from('store_banners').insert(payload));if(error)throw error;closeBanner();await load();ctx.toast(id?'Banner atualizado.':'Banner criado.')}catch(e){console.error(e);ctx.toast(e.message||'Erro ao salvar banner.','error')}}
 async function saveGallery(){try{const id=$('galleryId').value,old=id?gallery.find(x=>x.id===id):null;let media_url=old?.media_url||null;if(pending.gallery){if(old?.media_url)await removeUrl(old.media_url);media_url=await upload(pending.gallery,'gallery')}else if(removeMedia.gallery){await removeUrl(old?.media_url);media_url=null}if(!media_url)throw new Error('Escolha uma imagem ou vídeo.');const payload={owner_id:ctx.user.id,store_id:ctx.store.id,title:$('galleryItemTitle').value.trim()||null,description:$('galleryItemDescription').value.trim()||null,media_url,media_type:$('galleryMediaType').value,fit:$('galleryFit').value,object_x:$('galleryObjectX').value,object_y:$('galleryObjectY').value,link_type:$('galleryLinkType').value,link_value:$('galleryLinkValue').value.trim()||null,link_target:$('galleryLinkTarget').value,active:$('galleryActive').checked};let error;if(id)({error}=await ctx.sb.from('store_gallery_items').update(payload).eq('id',id).eq('owner_id',ctx.user.id));else({error}=await ctx.sb.from('store_gallery_items').insert({...payload,position:gallery.length}));if(error)throw error;closeGallery();await load();ctx.toast(id?'Item atualizado.':'Item adicionado.')}catch(e){console.error(e);ctx.toast(e.message||'Erro ao salvar item.','error')}}
 async function reorder(table,list,id,dir){const i=list.findIndex(x=>x.id===id),j=i+dir;if(i<0||j<0||j>=list.length)return;[list[i],list[j]]=[list[j],list[i]];await Promise.all(list.map((x,p)=>ctx.sb.from(table).update({position:p}).eq('id',x.id).eq('owner_id',ctx.user.id)));render()}
 async function del(table,list,id){const item=list.find(x=>x.id===id);if(!confirm('Excluir este item definitivamente?'))return;const {error}=await ctx.sb.from(table).delete().eq('id',id).eq('owner_id',ctx.user.id);if(error)return ctx.toast(error.message,'error');await removeUrl(item?.media_url);await load();ctx.toast('Item excluído.')}
@@ -38,45 +38,17 @@ function bind(){
  $('bannerList').onclick=e=>{const up=e.target.closest('[data-banner-up]'),down=e.target.closest('[data-banner-down]'),edit=e.target.closest('[data-banner-edit]'),dup=e.target.closest('[data-banner-duplicate]'),d=e.target.closest('[data-banner-delete]');if(up)reorder('store_banners',banners,up.dataset.bannerUp,-1);if(down)reorder('store_banners',banners,down.dataset.bannerDown,1);if(edit)openBanner(edit.dataset.bannerEdit);if(dup)openBanner(dup.dataset.bannerDuplicate,true);if(d)del('store_banners',banners,d.dataset.bannerDelete)};
  $('galleryList').onclick=e=>{const up=e.target.closest('[data-gallery-up]'),down=e.target.closest('[data-gallery-down]'),edit=e.target.closest('[data-gallery-edit]'),d=e.target.closest('[data-gallery-delete]');if(up)reorder('store_gallery_items',gallery,up.dataset.galleryUp,-1);if(down)reorder('store_gallery_items',gallery,down.dataset.galleryDown,1);if(edit)openGallery(edit.dataset.galleryEdit);if(d)del('store_gallery_items',gallery,d.dataset.galleryDelete)};
 }
-
-
-
-
-
 export async function initStoreMediaManager(options){
-  ctx = { ...ctx, ...options };
-
-  const verificationBadge = $('verificationBadge');
-
-  if (verificationBadge) {
-    const isVerified = ctx.store?.is_verified === true;
-
-    verificationBadge.classList.toggle('is-verified', isVerified);
-
-    verificationBadge.innerHTML = isVerified
-      ? `
-        <i class="ri-verified-badge-fill"></i>
-        <div>
-          <strong>Loja verificada</strong>
-          <small>Identidade confirmada pela administração.</small>
-        </div>
-      `
-      : `
-        <i class="ri-shield-check-line"></i>
-        <div>
-          <strong>Loja não verificada</strong>
-          <small>
-            A verificação será controlada pelo painel administrativo.
-          </small>
-        </div>
-      `;
-  }
-
-  bind();
-  await load();
-
-  return {
-    getBanners: () => [...banners],
-    getGallery: () => [...gallery]
-  };
+ ctx={...ctx,...options};
+ const v=$('verificationBadge');
+ if(v){
+  const verified=ctx.store?.is_verified===true;
+  v.classList.toggle('is-verified',verified);
+  v.innerHTML=verified
+   ? '<i class="ri-verified-badge-fill"></i><div><strong>Loja verificada</strong><small>Identidade confirmada pela administração.</small></div>'
+   : '<i class="ri-shield-check-line"></i><div><strong>Loja não verificada</strong><small>A verificação será controlada pelo painel administrativo.</small></div>';
+ }
+ bind();
+ await load();
+ return {getBanners:()=>[...banners],getGallery:()=>[...gallery]};
 }

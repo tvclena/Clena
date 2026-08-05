@@ -61,6 +61,14 @@
             </div></article>
             <article class="panel checklist-panel"><div class="panel-head"><div><span class="eyebrow">CHECKLIST</span><h3>O que falta configurar</h3></div></div><div id="setupChecklist" class="checklist"></div></article>
           </div>
+
+          <article id="verificationBadge" class="verification-badge" aria-live="polite">
+            <i class="ri-shield-check-line" aria-hidden="true"></i>
+            <div>
+              <strong>Loja não verificada</strong>
+              <small>A verificação será controlada pelo painel administrativo.</small>
+            </div>
+          </article>
         </section>
 
         <section class="editor-section" data-editor-section="products">
@@ -72,6 +80,86 @@
         <section class="editor-section" data-editor-section="categories">
           <div class="section-toolbar"><div><p>As categorias definem a ordem de navegação da loja.</p></div><button class="primary-btn" id="newCategoryBtn"><i class="ri-add-line"></i>Nova categoria</button></div>
           <div class="category-layout"><div class="panel"><div class="panel-head"><div><span class="eyebrow">ORDEM DA LOJA</span><h3>Categorias cadastradas</h3></div><small>Use as setas para ordenar.</small></div><div id="categoryList" class="category-list"></div></div><div class="info-card"><span><i class="ri-information-line"></i></span><h3>Organização profissional</h3><p>Use nomes curtos e claros. Produtos sem categoria aparecem em “Outros”.</p></div></div>
+        </section>
+
+
+        <section class="editor-section" data-editor-section="media">
+          <div class="section-toolbar">
+            <div>
+              <p>Crie campanhas visuais e galerias que serão exibidas na posição escolhida na loja pública.</p>
+            </div>
+            <div class="toolbar-actions">
+              <button class="secondary-btn" id="newGalleryBtn" type="button"><i class="ri-gallery-upload-line"></i>Novo item da galeria</button>
+              <button class="primary-btn" id="newBannerBtn" type="button"><i class="ri-add-line"></i>Novo banner</button>
+            </div>
+          </div>
+
+          <article class="panel verification-media-panel">
+            <div class="panel-head">
+              <div><span class="eyebrow">EXIBIÇÃO</span><h3>Configurações gerais</h3></div>
+              <small>Essas opções são salvas junto da aparência da loja.</small>
+            </div>
+            <div class="form-grid">
+              <label class="field"><span>Exibição dos banners</span><select id="bannerDisplayMode"><option value="carousel">Carrossel</option><option value="single">Um por vez</option><option value="grid">Grade</option></select></label>
+              <label class="field"><span>Intervalo do autoplay</span><select id="bannerAutoplayDelay"><option value="3000">3 segundos</option><option value="5000">5 segundos</option><option value="7000">7 segundos</option><option value="10000">10 segundos</option></select></label>
+              <label class="field"><span>Altura padrão</span><select id="bannerDefaultHeight"><option value="compact">Compacta</option><option value="medium">Média</option><option value="large">Grande</option></select></label>
+              <label class="field"><span>Transição</span><select id="bannerTransition"><option value="slide">Deslizar</option><option value="fade">Suave</option><option value="zoom">Zoom</option></select></label>
+              <div class="toggle-list full media-toggle-grid">
+                <label><span><i class="ri-play-circle-line"></i><b>Autoplay</b></span><input type="checkbox" id="bannerAutoplay" checked><i></i></label>
+                <label><span><i class="ri-loop-left-line"></i><b>Repetição infinita</b></span><input type="checkbox" id="bannerLoop" checked><i></i></label>
+                <label><span><i class="ri-arrow-left-right-line"></i><b>Mostrar setas</b></span><input type="checkbox" id="bannerArrows" checked><i></i></label>
+                <label><span><i class="ri-more-line"></i><b>Mostrar indicadores</b></span><input type="checkbox" id="bannerDots" checked><i></i></label>
+                <label><span><i class="ri-pause-circle-line"></i><b>Pausar ao interagir</b></span><input type="checkbox" id="bannerPauseInteraction" checked><i></i></label>
+              </div>
+            </div>
+          </article>
+
+          <div class="media-tabs" role="tablist" aria-label="Banners e galeria">
+            <button class="active" type="button" data-media-tab="banners"><i class="ri-layout-top-2-line"></i>Banners <b id="bannerCount">0</b></button>
+            <button type="button" data-media-tab="gallery"><i class="ri-gallery-line"></i>Galeria <b id="galleryCount">0</b></button>
+          </div>
+
+          <div class="media-pane active" data-media-pane="banners">
+            <div id="bannerList" class="visual-content-list"></div>
+            <div id="bannerEmpty" class="empty-state">
+              <span><i class="ri-layout-top-2-line"></i></span>
+              <h3>Nenhum banner cadastrado</h3>
+              <p>Adicione imagens ou vídeos e escolha em qual parte da loja eles devem aparecer.</p>
+              <button class="primary-btn" type="button" data-new-banner><i class="ri-add-line"></i>Novo banner</button>
+            </div>
+          </div>
+
+          <div class="media-pane" data-media-pane="gallery">
+            <article class="panel gallery-settings-panel">
+              <div class="panel-head"><div><span class="eyebrow">GALERIA</span><h3>Formato e posição</h3></div></div>
+              <div class="form-grid">
+                <label class="field"><span>Modelo</span><select id="galleryLayout"><option value="grid">Grade</option><option value="masonry">Mosaico</option><option value="carousel">Carrossel</option><option value="featured">Destaque e miniaturas</option><option value="stories">Stories</option><option value="horizontal">Faixa horizontal</option></select></label>
+                <label class="field"><span>Colunas</span><select id="galleryColumns"><option value="2">2 colunas</option><option value="3">3 colunas</option><option value="4">4 colunas</option><option value="5">5 colunas</option></select></label>
+                <label class="field"><span>Proporção</span><select id="galleryRatio"><option value="square">Quadrada</option><option value="portrait">Retrato</option><option value="landscape">Paisagem</option><option value="auto">Automática</option></select></label>
+                <label class="field"><span>Espaçamento</span><select id="galleryGap"><option value="none">Sem espaço</option><option value="small">Pequeno</option><option value="medium">Médio</option><option value="large">Grande</option></select></label>
+                <label class="field full"><span>Título da seção</span><input id="galleryTitle" maxlength="100" placeholder="Nossa galeria"></label>
+                <label class="field full"><span>Subtítulo</span><input id="gallerySubtitle" maxlength="180" placeholder="Conheça mais detalhes da nossa marca"></label>
+                <label class="field"><span>Posição na loja</span><select id="galleryPosition"><option value="after_hero">Depois da capa</option><option value="before_categories">Antes das categorias</option><option value="after_categories">Depois das categorias</option><option value="before_products">Antes dos produtos</option><option value="after_products">Depois dos produtos</option><option value="before_footer">Antes do rodapé</option></select></label>
+                <div class="toggle-list full media-toggle-grid">
+                  <label><span><i class="ri-fullscreen-line"></i><b>Ampliar ao clicar</b></span><input type="checkbox" id="galleryLightbox" checked><i></i></label>
+                  <label><span><i class="ri-play-circle-line"></i><b>Autoplay</b></span><input type="checkbox" id="galleryAutoplay"><i></i></label>
+                  <label><span><i class="ri-loop-left-line"></i><b>Loop</b></span><input type="checkbox" id="galleryLoop" checked><i></i></label>
+                </div>
+              </div>
+            </article>
+            <div id="galleryList" class="gallery-admin-grid"></div>
+            <div id="galleryEmpty" class="empty-state">
+              <span><i class="ri-gallery-upload-line"></i></span>
+              <h3>Nenhum item na galeria</h3>
+              <p>Adicione imagens ou vídeos para apresentar ambientes, produtos, trabalhos ou campanhas.</p>
+              <button class="primary-btn" type="button" data-new-gallery><i class="ri-add-line"></i>Novo item</button>
+            </div>
+          </div>
+
+          <div class="media-save-bar">
+            <div><strong>Configurações de exibição</strong><small>Use o botão geral “Salvar alterações” no topo para publicar as mudanças.</small></div>
+            <button class="primary-btn" id="saveMediaSettingsBtn" type="button"><i class="ri-save-line"></i>Salvar configurações</button>
+          </div>
         </section>
 
         <section class="editor-section" data-editor-section="appearance">
