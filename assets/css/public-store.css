@@ -1444,3 +1444,182 @@ body[data-header-style="floating"] .header-cart {
   }
 }
 
+/* =========================================================
+   CLENA — CARRINHO MOBILE EM FLUXO ÚNICO
+   Ordem: produtos > dados do cliente > resumo > enviar pedido
+   Sem sobreposição e sem rolagens internas separadas.
+   ========================================================= */
+
+@media (max-width: 520px) {
+  #cartDrawer {
+    overflow: hidden !important;
+  }
+
+  .cart-panel {
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+
+    display: block !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+
+    border-left: 0 !important;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .cart-header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 20 !important;
+
+    min-height: 70px !important;
+    padding: 13px 14px !important;
+
+    background: color-mix(
+      in srgb,
+      var(--card) 97%,
+      transparent
+    ) !important;
+
+    box-shadow: 0 6px 18px rgba(15, 23, 42, .06);
+  }
+
+  /* Produtos ficam primeiro e crescem naturalmente */
+  .cart-items {
+    display: flex !important;
+    flex-direction: column !important;
+
+    min-height: 0 !important;
+    max-height: none !important;
+
+    padding: 12px 10px !important;
+
+    overflow: visible !important;
+
+    background: color-mix(
+      in srgb,
+      var(--background) 58%,
+      var(--card)
+    ) !important;
+  }
+
+  .cart-item {
+    flex: none !important;
+  }
+
+  /* Estado vazio também segue o fluxo */
+  .cart-empty {
+    min-height: calc(100dvh - 70px) !important;
+    padding: 40px 20px !important;
+    overflow: visible !important;
+  }
+
+  /* Formulário vem logo abaixo dos produtos */
+  .checkout-form-area {
+    display: block;
+    position: relative !important;
+
+    max-height: none !important;
+    height: auto !important;
+
+    padding: 18px 12px !important;
+
+    overflow: visible !important;
+
+    border-top: 1px solid var(--line) !important;
+    background: var(--card) !important;
+  }
+
+  .checkout-form-area.is-hidden {
+    display: none !important;
+  }
+
+  .checkout-form-area h3 {
+    margin: 0 0 14px !important;
+    font-size: 1rem !important;
+  }
+
+  .checkout-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .checkout-field,
+  .checkout-field.full {
+    grid-column: auto !important;
+    width: 100% !important;
+  }
+
+  .checkout-field input,
+  .checkout-field select,
+  .checkout-field textarea {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 46px !important;
+
+    padding: 11px 12px !important;
+
+    font-size: 16px !important;
+  }
+
+  .checkout-field textarea {
+    min-height: 82px !important;
+    max-height: 150px !important;
+  }
+
+  /* Resumo e botão vêm por último, sem ficar sobrepostos */
+  .cart-footer {
+    position: relative !important;
+    inset: auto !important;
+    z-index: 1 !important;
+
+    margin: 0 !important;
+    padding:
+      16px
+      12px
+      calc(18px + env(safe-area-inset-bottom))
+      !important;
+
+    background: var(--card) !important;
+    box-shadow: none !important;
+  }
+
+  .cart-footer.is-hidden {
+    display: none !important;
+  }
+
+  .checkout-button {
+    min-height: 50px !important;
+    margin-top: 13px !important;
+  }
+
+  .cart-summary {
+    gap: 8px !important;
+  }
+
+  .cart-summary .cart-total {
+    padding-top: 10px !important;
+    font-size: 1rem !important;
+  }
+
+  .cart-summary .cart-total strong {
+    font-size: 1.2rem !important;
+  }
+}
+
+/* Celulares muito estreitos */
+@media (max-width: 370px) {
+  .cart-items {
+    padding-inline: 8px !important;
+  }
+
+  .checkout-form-area,
+  .cart-footer {
+    padding-inline: 10px !important;
+  }
+}
+
