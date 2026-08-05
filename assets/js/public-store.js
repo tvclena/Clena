@@ -14,7 +14,7 @@ const APPEARANCE_DEFAULTS = {
   desktop_columns:3, product_image_ratio:'square', card_radius:'large', card_shadow:'soft', product_text_alignment:'left', category_style:'pills',
   show_search:true, sticky_categories:false, show_featured:true, show_sale_badge:true, show_product_description:true,
   button_style:'rounded', button_hover:'lift', page_animation:'fade', card_animation:'lift', animation_speed:'normal', scroll_behavior:'smooth', respect_reduced_motion:true,
-  show_back_to_top:true, header_style:'transparent', header_position:'static', footer_style:'simple', footer_background:'accent', footer_text:'', show_social_links:true,
+  show_back_to_top:true, header_style:'transparent', header_position:'sticky', footer_style:'simple', footer_background:'accent', footer_text:'', show_social_links:true,
   social_instagram:'', social_facebook:'', social_tiktok:'', social_youtube:'', social_x:'', social_pinterest:'', floating_whatsapp:true, floating_cart:true, custom_css:'',
   banner_display_mode:'carousel', banner_autoplay:true, banner_autoplay_delay:5000, banner_loop:true, banner_arrows:true, banner_dots:true, banner_pause_interaction:true, banner_default_height:'medium', banner_transition:'slide',
   gallery_layout:'grid', gallery_columns:3, gallery_ratio:'square', gallery_gap:'medium', gallery_title:'Nossa galeria', gallery_subtitle:'', gallery_position:'after_products', gallery_lightbox:true, gallery_autoplay:false, gallery_loop:true
@@ -246,8 +246,7 @@ function applyAppearance() {
   document.body.dataset.headerStyle =
     appearance.header_style || 'transparent';
 
-  document.body.dataset.headerPosition =
-    appearance.header_position || 'static';
+  document.body.dataset.headerPosition = 'sticky';
 
   document.body.dataset.footerStyle =
     appearance.footer_style || 'simple';

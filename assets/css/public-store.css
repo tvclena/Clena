@@ -1153,3 +1153,86 @@ body[data-layout="list"] .product-grid {
     font-size: 16px !important;
   }
 }
+
+/* =========================================================
+   CLENA — TOPO FIXO PERMANENTE
+   Mantém somente o cabeçalho fixo durante a rolagem.
+   ========================================================= */
+
+.site-header,
+body[data-header-position="sticky"] .site-header,
+body[data-header-style="solid"] .site-header,
+body[data-header-position="sticky"][data-header-style="solid"] .site-header {
+  position: fixed !important;
+  z-index: 500 !important;
+  top: 0 !important;
+  right: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  background: color-mix(in srgb, var(--accent) 94%, transparent) !important;
+  color: #fff !important;
+  border-bottom: 1px solid rgba(255, 255, 255, .12) !important;
+  box-shadow: 0 8px 28px rgba(2, 6, 23, .18) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+}
+
+.site-header .header-inner {
+  height: 72px !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.site-header .header-copy,
+.site-header .header-copy strong,
+.site-header .header-copy small {
+  color: #fff !important;
+}
+
+.site-header .header-icon,
+.site-header .header-cart,
+body[data-header-style="solid"] .header-icon,
+body[data-header-style="solid"] .header-cart,
+body[data-header-style="floating"] .header-icon,
+body[data-header-style="floating"] .header-cart {
+  color: #fff !important;
+  background: rgba(15, 23, 42, .22) !important;
+  border-color: rgba(255, 255, 255, .24) !important;
+}
+
+/* Evita que a capa e o restante da página fiquem escondidos atrás do topo */
+.store-app {
+  padding-top: 72px !important;
+}
+
+/* Como o cabeçalho agora ocupa espaço fixo, a capa começa logo abaixo dele */
+.store-hero {
+  margin-top: 0 !important;
+}
+
+@media (max-width: 720px) {
+  .site-header .header-inner {
+    width: calc(100% - 24px) !important;
+    height: 64px !important;
+  }
+
+  .store-app {
+    padding-top: 64px !important;
+  }
+
+  .header-logo {
+    width: 42px !important;
+    height: 42px !important;
+  }
+
+  .header-icon,
+  .header-cart {
+    height: 42px !important;
+  }
+}
+
