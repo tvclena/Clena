@@ -1189,18 +1189,184 @@ function cartItemUnit(item) { return productPrice(item.product) + Number(item.va
 function cartTotal() { return cart.reduce((total, item) => total + cartItemUnit(item) * item.quantity, 0); }
 
 function renderCart() {
-  const count = cart.reduce((total, item) => total + item.quantity, 0);
-  $('headerCartCount').textContent = count; $('floatingCartCount').textContent = count;
-  $('cartItems').innerHTML = cart.map((item, index) => `<article class="cart-item"><div class="cart-item-image">${item.product.image_url ? `<img src="${escapeHtml(item.product.image_url)}" alt="">` : '<i class="ri-image-line"></i>'}</div><div class="cart-item-content"><div class="cart-item-head"><div><h3>${escapeHtml(item.product.name)}</h3>${item.variation ? `<p>${escapeHtml(item.variation.name)}</p>` : ''}${item.note ? `<small>Obs.: ${escapeHtml(item.note)}</small>` : ''}</div><button type="button" data-remove-cart="${index}" aria-label="Remover"><i class="ri-delete-bin-line"></i></button></div><div class="cart-item-bottom"><div class="cart-qty"><button type="button" data-cart-delta="-1" data-cart-index="${index}">−</button><strong>${item.quantity}</strong><button type="button" data-cart-delta="1" data-cart-index="${index}">+</button></div><strong>${money(cartItemUnit(item) * item.quantity)}</strong></div></div></article>`).join('');
-  const empty = !cart.length;
-  $('cartEmpty').classList.toggle('is-hidden', !empty); $('checkoutFormArea').classList.toggle('is-hidden', empty); $('cartFooter').classList.toggle('is-hidden', empty);
-  const total = cartTotal(); $('cartSubtotal').textContent = money(total); $('cartTotal').textContent = money(total);
-  const minimum = Number(store.minimum_order || 0); const under = minimum > 0 && total < minimum;
-  $('minimumOrderRow').classList.toggle('is-hidden', minimum <= 0); $('minimumOrderValue').textContent = money(minimum);
-  $('minimumWarning').classList.toggle('is-hidden', !under); $('minimumWarning').textContent = under ? `Faltam ${money(minimum - total)} para atingir o pedido mínimo.` : '';
-  $('checkoutButton').disabled = under;
-  $$('[data-cart-delta]').forEach((button) => button.addEventListener('click', () => { const item = cart[Number(button.dataset.cartIndex)]; item.quantity += Number(button.dataset.cartDelta); if (item.quantity < 1) cart.splice(Number(button.dataset.cartIndex),1); renderCart(); }));
-  $$('[data-remove-cart]').forEach((button) => button.addEventListener('click', () => { cart.splice(Number(button.dataset.removeCart),1); renderCart(); }));
+  const count = cart.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
+
+  if ($('headerCartCount')) {
+    $('headerCartCount').textContent = count;
+  }
+
+  if ($('floatingCartCount')) {
+    $('floatingCartCount').textContent = count;
+  }
+
+  const cartItems = $('cartItems');
+
+  if (cartItems) {
+    cartItems.innerHTML = cart.map((item, index) => {
+      const image = item.product.image_url
+        ? `<img src="${escapeHtml(item.product.image_url)}" alt="${escapeHtml(item.product.name)}">`
+        : '<i class="ri-image-line" aria-hidden="true"></i>';
+
+      const variation = item.variation
+        ? `<p>${escapeHtml(item.variation.name)}</p>`
+        : '';
+
+      const note = item.note
+        ? `<small title="${escapeHtml(item.note)}">Obs.: ${escapeHtml(item.note)}</small>`
+        : '';
+
+      const itemTotal = money(
+        cartItemUnit(item) * item.quantity
+      );
+
+      return `
+        <article class="cart-item">
+          <div class="cart-item-image">
+            ${image}
+          </div>
+
+          <div class="cart-item-content">
+            <div class="cart-item-head">
+              <div>
+                <h3>${escapeHtml(item.product.name)}</h3>
+                ${variation}
+                ${note}
+              </div>
+
+              <button
+                type="button"
+                data-remove-cart="${index}"
+                aria-label="Remover ${escapeHtml(item.product.name)} do carrinho"
+                title="Remover item"
+              >
+                <i class="ri-delete-bin-line" aria-hidden="true"></i>
+              </button>
+            </div>
+
+            <div class="cart-item-bottom">
+              <div class="cart-qty" aria-label="Quantidade de ${escapeHtml(item.product.name)}">
+                <button
+                  type="button"
+                  data-cart-delta="-1"
+                  data-cart-index="${index}"
+                  aria-label="Diminuir quantidade"
+                >−</button>
+
+                <strong>${item.quantity}</strong>
+
+                <button
+                  type="button"
+                  data-cart-delta="1"
+                  data-cart-index="${index}"
+                  aria-label="Aumentar quantidade"
+                >+</button>
+              </div>
+
+              <strong class="cart-item-total">
+                ${itemTotal}
+              </strong>
+            </div>
+          </div>
+        </article>
+      `;
+    }).join('');
+  }
+
+  const empty = cart.length === 0;
+
+  $('cartEmpty')?.classList.toggle(
+    'is-hidden',
+    !empty
+  );
+
+  $('checkoutFormArea')?.classList.toggle(
+    'is-hidden',
+    empty
+  );
+
+  $('cartFooter')?.classList.toggle(
+    'is-hidden',
+    empty
+  );
+
+  const total = cartTotal();
+
+  if ($('cartSubtotal')) {
+    $('cartSubtotal').textContent = money(total);
+  }
+
+  if ($('cartTotal')) {
+    $('cartTotal').textContent = money(total);
+  }
+
+  const minimum = Number(store.minimum_order || 0);
+  const underMinimum =
+    minimum > 0 &&
+    total < minimum;
+
+  $('minimumOrderRow')?.classList.toggle(
+    'is-hidden',
+    minimum <= 0
+  );
+
+  if ($('minimumOrderValue')) {
+    $('minimumOrderValue').textContent = money(minimum);
+  }
+
+  $('minimumWarning')?.classList.toggle(
+    'is-hidden',
+    !underMinimum
+  );
+
+  if ($('minimumWarning')) {
+    $('minimumWarning').textContent = underMinimum
+      ? `Faltam ${money(minimum - total)} para atingir o pedido mínimo.`
+      : '';
+  }
+
+  if ($('checkoutButton')) {
+    $('checkoutButton').disabled = underMinimum;
+  }
+
+  $$('[data-cart-delta]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const itemIndex = Number(button.dataset.cartIndex);
+      const item = cart[itemIndex];
+
+      if (!item) return;
+
+      item.quantity += Number(
+        button.dataset.cartDelta
+      );
+
+      if (item.quantity < 1) {
+        cart.splice(itemIndex, 1);
+      }
+
+      renderCart();
+    });
+  });
+
+  $$('[data-remove-cart]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const itemIndex = Number(
+        button.dataset.removeCart
+      );
+
+      if (
+        Number.isNaN(itemIndex) ||
+        !cart[itemIndex]
+      ) {
+        return;
+      }
+
+      cart.splice(itemIndex, 1);
+      renderCart();
+    });
+  });
 }
 
 function openCart() { $('cartDrawer').classList.remove('is-hidden'); document.body.classList.add('no-scroll'); }
