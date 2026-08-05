@@ -229,3 +229,6 @@ body[data-layout="grid"] .featured-badge {
 body[data-layout="list"] .product-grid {
   grid-template-columns: 1fr !important;
 }
+.hero-title-row .verified-badge {
+  display: none !important;
+}
