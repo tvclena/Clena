@@ -1234,36 +1234,261 @@ function checkout() {
   if (store.order_note) message.push('', store.order_note);
   window.open(`https://wa.me/${digits(store.whatsapp)}?text=${encodeURIComponent(message.join('\n'))}`, '_blank', 'noopener');
 }
-
 function bindEvents() {
-  $('searchInput').addEventListener('input', () => { $('clearSearch').classList.toggle('is-hidden', !$('searchInput').value); renderProducts(); });
-  $('clearSearch').addEventListener('click', () => { $('searchInput').value = ''; $('clearSearch').classList.add('is-hidden'); renderProducts(); $('searchInput').focus(); });
-  $('sortSelect').addEventListener('change', renderProducts);
-  $('resetFilters').addEventListener('click', () => { currentCategory = 'all'; $('searchInput').value = ''; renderCategories(); renderProducts(); });
-  $('viewAllProducts').addEventListener('click', () => $('catalog').scrollIntoView({ behavior:'smooth' }));
-  $('heroButton').addEventListener('click', () => {
-    const target = appearance.hero_button_target;
-    if (target === 'whatsapp' && digits(store.whatsapp)) return window.open(`https://wa.me/${digits(store.whatsapp)}`, '_blank', 'noopener');
-    if (target && target.startsWith('http')) return window.open(target, '_blank', 'noopener');
-    $('catalog').scrollIntoView({ behavior:'smooth' });
+  $('searchInput')?.addEventListener('input', () => {
+    const clearSearch = $('clearSearch');
+    const searchInput = $('searchInput');
+
+    clearSearch?.classList.toggle(
+      'is-hidden',
+      !searchInput?.value
+    );
+
+    renderProducts();
   });
-  $('headerSearchButton').addEventListener('click', () => { $('catalog').scrollIntoView({ behavior:'smooth' }); setTimeout(() => $('searchInput').focus(), 500); });
-  for (const id of ['headerCartButton','floatingCart']) $(id).addEventListener('click', openCart);
-  $$('[data-close-cart]').forEach((element) => element.addEventListener('click', closeCart));
-  $$('[data-close-product]').forEach((element) => element.addEventListener('click', closeProduct));
-  $('continueShopping').addEventListener('click', () => { closeCart(); $('catalog').scrollIntoView({ behavior:'smooth' }); });
-  $('decreaseProductQty').addEventListener('click', () => { selectedQuantity = Math.max(1, selectedQuantity - 1); updateModalTotal(); });
-  $('increaseProductQty').addEventListener('click', () => { selectedQuantity += 1; updateModalTotal(); });
-  $('addProductToCart').addEventListener('click', addCurrentProduct);
-  $('paymentMethod').addEventListener('change', () => $('changeField').classList.toggle('is-hidden', $('paymentMethod').value !== 'cash'));
-  $('checkoutButton').addEventListener('click', checkout);
-  $('backToTop').addEventListener('click', () => scrollTo({ top:0, behavior:'smooth' }));
-  addEventListener('scroll', () => { if (appearance.show_back_to_top) $('backToTop').classList.toggle('is-hidden', scrollY < 600); });
-  $$('[data-close-gallery-lightbox]').forEach(el=>el.addEventListener('click',closeGalleryLightbox));
-  $('galleryLightboxPrev')?.addEventListener('click',()=>moveGalleryLightbox(-1));
-  $('galleryLightboxNext')?.addEventListener('click',()=>moveGalleryLightbox(1));
-  addEventListener('keydown', (event) => { if (event.key === 'Escape') { closeProduct(); closeCart(); closeGalleryLightbox(); } if (!$('galleryLightbox')?.classList.contains('is-hidden') && event.key === 'ArrowLeft') moveGalleryLightbox(-1); if (!$('galleryLightbox')?.classList.contains('is-hidden') && event.key === 'ArrowRight') moveGalleryLightbox(1); });
+
+  $('clearSearch')?.addEventListener('click', () => {
+    const searchInput = $('searchInput');
+    const clearSearch = $('clearSearch');
+
+    if (searchInput) {
+      searchInput.value = '';
+      searchInput.focus();
+    }
+
+    clearSearch?.classList.add('is-hidden');
+    renderProducts();
+  });
+
+  $('sortSelect')?.addEventListener(
+    'change',
+    renderProducts
+  );
+
+  $('resetFilters')?.addEventListener('click', () => {
+    currentCategory = 'all';
+
+    const searchInput = $('searchInput');
+
+    if (searchInput) {
+      searchInput.value = '';
+    }
+
+    renderCategories();
+    renderProducts();
+  });
+
+  $('viewAllProducts')?.addEventListener('click', () => {
+    $('catalog')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  });
+
+  $('heroButton')?.addEventListener('click', () => {
+    const target = appearance.hero_button_target;
+
+    if (
+      target === 'whatsapp' &&
+      digits(store.whatsapp)
+    ) {
+      window.open(
+        `https://wa.me/${digits(store.whatsapp)}`,
+        '_blank',
+        'noopener'
+      );
+
+      return;
+    }
+
+    if (
+      target &&
+      target.startsWith('http')
+    ) {
+      window.open(
+        target,
+        '_blank',
+        'noopener'
+      );
+
+      return;
+    }
+
+    $('catalog')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  });
+
+  $('headerSearchButton')?.addEventListener(
+    'click',
+    () => {
+      $('catalog')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+
+      setTimeout(() => {
+        $('searchInput')?.focus();
+      }, 500);
+    }
+  );
+
+  [
+    'headerCartButton',
+    'floatingCart'
+  ].forEach((id) => {
+    $(id)?.addEventListener(
+      'click',
+      openCart
+    );
+  });
+
+  $$('[data-close-cart]').forEach((element) => {
+    element.addEventListener(
+      'click',
+      closeCart
+    );
+  });
+
+  $$('[data-close-product]').forEach((element) => {
+    element.addEventListener(
+      'click',
+      closeProduct
+    );
+  });
+
+  $('continueShopping')?.addEventListener(
+    'click',
+    () => {
+      closeCart();
+
+      $('catalog')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  );
+
+  $('decreaseProductQty')?.addEventListener(
+    'click',
+    () => {
+      selectedQuantity = Math.max(
+        1,
+        selectedQuantity - 1
+      );
+
+      updateModalTotal();
+    }
+  );
+
+  $('increaseProductQty')?.addEventListener(
+    'click',
+    () => {
+      selectedQuantity += 1;
+      updateModalTotal();
+    }
+  );
+
+  $('addProductToCart')?.addEventListener(
+    'click',
+    addCurrentProduct
+  );
+
+  $('paymentMethod')?.addEventListener(
+    'change',
+    () => {
+      const paymentMethod = $('paymentMethod');
+
+      $('changeField')?.classList.toggle(
+        'is-hidden',
+        paymentMethod?.value !== 'cash'
+      );
+    }
+  );
+
+  $('checkoutButton')?.addEventListener(
+    'click',
+    checkout
+  );
+
+  $('backToTop')?.addEventListener(
+    'click',
+    () => {
+      scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  );
+
+  addEventListener(
+    'scroll',
+    () => {
+      if (!appearance.show_back_to_top) {
+        return;
+      }
+
+      $('backToTop')?.classList.toggle(
+        'is-hidden',
+        scrollY < 600
+      );
+    },
+    {
+      passive: true
+    }
+  );
+
+  $$('[data-close-gallery-lightbox]').forEach(
+    (element) => {
+      element.addEventListener(
+        'click',
+        closeGalleryLightbox
+      );
+    }
+  );
+
+  $('galleryLightboxPrev')?.addEventListener(
+    'click',
+    () => moveGalleryLightbox(-1)
+  );
+
+  $('galleryLightboxNext')?.addEventListener(
+    'click',
+    () => moveGalleryLightbox(1)
+  );
+
+  addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeProduct();
+      closeCart();
+      closeGalleryLightbox();
+    }
+
+    const galleryLightbox = $('galleryLightbox');
+    const galleryIsOpen =
+      galleryLightbox &&
+      !galleryLightbox.classList.contains('is-hidden');
+
+    if (
+      galleryIsOpen &&
+      event.key === 'ArrowLeft'
+    ) {
+      moveGalleryLightbox(-1);
+    }
+
+    if (
+      galleryIsOpen &&
+      event.key === 'ArrowRight'
+    ) {
+      moveGalleryLightbox(1);
+    }
+  });
 }
+
+
+
+
 async function load() {
   try {
     const slug = slugFromUrl();
