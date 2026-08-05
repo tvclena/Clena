@@ -1,1 +1,141 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Loja</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/assets/css/public-base.css"></head><body><main class="shell"><section id="hero" class="hero"></section><div class="toolbar"><input id="search" placeholder="Buscar produtos"><select id="sort"><option value="position">Ordenar</option><option value="low">Menor preço</option><option value="high">Maior preço</option></select></div><div id="cats" class="chips"></div><section id="products" class="grid"></section></main><button id="cartBtn" class="btn floating">Carrinho <span id="cartCount" class="badge">0</span></button><div id="drawer" class="drawer hidden"><aside class="panel"><div class="row"><h2>Carrinho</h2><button id="close" class="btn secondary">Fechar</button></div><div id="cart"></div><div id="total" class="summary"></div><button id="checkout" class="btn" style="width:100%;margin-top:12px">Finalizar pedido</button></aside></div><script type="module" src="/assets/js/public-store.js"></script></body></html>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f6f8fc" id="themeColorMeta">
+  <meta name="description" content="Loja virtual">
+  <title>Loja</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800;900&family=Nunito:wght@400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/public-store.css">
+</head>
+<body>
+  <div id="pageLoader" class="page-loader" aria-live="polite">
+    <span class="loader-logo"><i class="ri-store-2-line"></i></span>
+    <div class="loader-line"><span></span></div>
+    <p>Carregando loja...</p>
+  </div>
+
+  <div id="storeApp" class="store-app is-hidden">
+    <header id="siteHeader" class="site-header">
+      <div class="header-inner">
+        <a id="headerBrand" class="header-brand" href="#top" aria-label="Início">
+          <span id="headerLogo" class="header-logo"><i class="ri-store-2-line"></i></span>
+          <span class="header-copy"><strong id="headerName">Loja</strong><small id="headerStatus">Catálogo online</small></span>
+        </a>
+        <nav class="header-actions" aria-label="Ações da loja">
+          <button id="headerSearchButton" class="header-icon" type="button" aria-label="Pesquisar"><i class="ri-search-line"></i></button>
+          <a id="headerInstagram" class="header-icon is-hidden" target="_blank" rel="noopener" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
+          <button id="headerCartButton" class="header-cart" type="button"><i class="ri-shopping-bag-3-line"></i><span>Carrinho</span><b id="headerCartCount">0</b></button>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section id="hero" class="store-hero">
+        <div id="heroMedia" class="hero-media"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content shell">
+          <span id="heroLogo" class="hero-logo"><i class="ri-store-2-line"></i></span>
+          <div class="hero-copy">
+            <span id="heroKicker" class="hero-kicker">LOJA ONLINE</span>
+            <h1 id="heroTitle">Minha loja</h1>
+            <p id="heroSubtitle"></p>
+            <div class="hero-actions">
+              <button id="heroButton" class="primary-button" type="button">Ver produtos</button>
+              <a id="heroWhatsapp" class="secondary-button is-hidden" target="_blank" rel="noopener"><i class="ri-whatsapp-line"></i> Falar conosco</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="storeInfo" class="store-info shell">
+        <div class="store-info-card">
+          <div><i class="ri-shield-check-line"></i><span><small>Compra</small><strong>Atendimento direto</strong></span></div>
+          <div id="estimatedInfo" class="is-hidden"><i class="ri-time-line"></i><span><small>Prazo médio</small><strong id="estimatedText"></strong></span></div>
+          <div id="minimumInfo" class="is-hidden"><i class="ri-shopping-basket-line"></i><span><small>Pedido mínimo</small><strong id="minimumText"></strong></span></div>
+          <div><i class="ri-lock-2-line"></i><span><small>Seus dados</small><strong>Enviados com segurança</strong></span></div>
+        </div>
+      </section>
+
+      <section id="catalog" class="catalog-section shell">
+        <div class="catalog-heading">
+          <div><span class="section-kicker">CATÁLOGO</span><h2>Encontre o que procura</h2></div>
+          <p id="catalogDescription">Explore nossos produtos e finalize seu pedido.</p>
+        </div>
+
+        <div id="searchArea" class="catalog-tools">
+          <label class="search-box" for="searchInput"><i class="ri-search-line"></i><input id="searchInput" type="search" placeholder="Buscar produtos..." autocomplete="off"><button id="clearSearch" class="is-hidden" type="button" aria-label="Limpar pesquisa"><i class="ri-close-line"></i></button></label>
+          <label class="sort-box"><i class="ri-arrow-up-down-line"></i><select id="sortSelect" aria-label="Ordenar produtos"><option value="position">Ordem da loja</option><option value="featured">Destaques primeiro</option><option value="low">Menor preço</option><option value="high">Maior preço</option><option value="name">Nome A–Z</option></select></label>
+        </div>
+
+        <div id="categoryBarWrap" class="category-bar-wrap"><div id="categoryBar" class="category-bar" role="tablist"></div></div>
+
+        <section id="featuredSection" class="featured-section is-hidden"><div class="subsection-heading"><div><span class="section-kicker">SELEÇÃO ESPECIAL</span><h3>Produtos em destaque</h3></div><button id="viewAllProducts" class="text-button" type="button">Ver todos <i class="ri-arrow-right-line"></i></button></div><div id="featuredProducts" class="product-grid featured-grid"></div></section>
+
+        <div class="results-heading"><p id="resultCount">0 produtos</p><span id="activeFilterLabel">Todos os produtos</span></div>
+        <section id="productGrid" class="product-grid" aria-live="polite"></section>
+        <div id="emptyProducts" class="empty-state is-hidden"><span><i class="ri-search-eye-line"></i></span><h3>Nenhum produto encontrado</h3><p>Tente outra pesquisa ou categoria.</p><button id="resetFilters" class="primary-button" type="button">Ver todos os produtos</button></div>
+      </section>
+    </main>
+
+    <footer id="siteFooter" class="site-footer">
+      <div class="footer-inner shell">
+        <div class="footer-brand"><span id="footerLogo" class="footer-logo"><i class="ri-store-2-line"></i></span><div><strong id="footerStoreName">Minha loja</strong><p id="footerDescription"></p></div></div>
+        <div id="footerContact" class="footer-column"><h3>Atendimento</h3><a id="footerWhatsapp" class="is-hidden" target="_blank" rel="noopener"><i class="ri-whatsapp-line"></i><span>WhatsApp</span></a><a id="footerInstagram" class="is-hidden" target="_blank" rel="noopener"><i class="ri-instagram-line"></i><span>Instagram</span></a></div>
+        <div id="footerSocialColumn" class="footer-column"><h3>Redes sociais</h3><div id="socialLinks" class="social-links"></div></div>
+      </div>
+      <div class="footer-bottom shell"><p id="footerText"></p><span>Feito com <strong>CLENA</strong></span></div>
+    </footer>
+
+    <button id="floatingWhatsapp" class="floating-action floating-whatsapp is-hidden" type="button" aria-label="Falar no WhatsApp"><i class="ri-whatsapp-line"></i><span>WhatsApp</span></button>
+    <button id="floatingCart" class="floating-action floating-cart" type="button" aria-label="Abrir carrinho"><i class="ri-shopping-bag-3-line"></i><span>Ver carrinho</span><b id="floatingCartCount">0</b></button>
+    <button id="backToTop" class="back-to-top is-hidden" type="button" aria-label="Voltar ao topo"><i class="ri-arrow-up-line"></i></button>
+  </div>
+
+  <div id="productModal" class="modal is-hidden" role="dialog" aria-modal="true" aria-labelledby="productModalName">
+    <div class="modal-backdrop" data-close-product></div>
+    <section class="modal-card product-modal-card">
+      <button class="modal-close" type="button" data-close-product aria-label="Fechar"><i class="ri-close-line"></i></button>
+      <div id="productModalImage" class="product-modal-image"><span><i class="ri-image-line"></i></span></div>
+      <div class="product-modal-content">
+        <span id="productModalCategory" class="product-category-label"></span>
+        <h2 id="productModalName"></h2>
+        <p id="productModalDescription"></p>
+        <div id="productModalPrice" class="product-modal-price"></div>
+        <div id="variationArea" class="variation-area is-hidden"><h3>Escolha uma opção</h3><div id="variationOptions" class="variation-options"></div></div>
+        <label class="product-note-field"><span>Observação do item</span><textarea id="productNote" rows="3" maxlength="240" placeholder="Ex.: embalagem para presente"></textarea></label>
+        <div class="product-modal-bottom"><div class="quantity-picker"><button id="decreaseProductQty" type="button">−</button><strong id="productQty">1</strong><button id="increaseProductQty" type="button">+</button></div><button id="addProductToCart" class="primary-button product-add-button" type="button"><span>Adicionar</span><strong id="modalAddPrice"></strong></button></div>
+      </div>
+    </section>
+  </div>
+
+  <div id="cartDrawer" class="drawer is-hidden" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+    <div class="drawer-backdrop" data-close-cart></div>
+    <aside class="cart-panel">
+      <header class="cart-header"><div><span class="section-kicker">SEU PEDIDO</span><h2 id="cartTitle">Carrinho</h2></div><button type="button" data-close-cart aria-label="Fechar carrinho"><i class="ri-close-line"></i></button></header>
+      <div id="cartItems" class="cart-items"></div>
+      <div id="cartEmpty" class="cart-empty"><span><i class="ri-shopping-bag-line"></i></span><h3>Seu carrinho está vazio</h3><p>Adicione produtos para continuar.</p><button id="continueShopping" class="secondary-button" type="button">Escolher produtos</button></div>
+      <section id="checkoutFormArea" class="checkout-form-area is-hidden">
+        <h3>Dados para finalizar</h3>
+        <div class="checkout-grid">
+          <label class="checkout-field full"><span>Nome *</span><input id="customerName" maxlength="100" autocomplete="name" placeholder="Seu nome"></label>
+          <label class="checkout-field full"><span>WhatsApp *</span><input id="customerPhone" inputmode="tel" maxlength="20" autocomplete="tel" placeholder="(00) 00000-0000"></label>
+          <label id="paymentField" class="checkout-field full"><span>Forma de pagamento</span><select id="paymentMethod"></select></label>
+          <label id="changeField" class="checkout-field full is-hidden"><span>Troco para quanto?</span><input id="cashChange" inputmode="decimal" placeholder="Ex.: 100,00"></label>
+          <label class="checkout-field full"><span>Observações gerais</span><textarea id="orderNotes" rows="3" maxlength="400" placeholder="Informações adicionais do pedido"></textarea></label>
+        </div>
+      </section>
+      <footer id="cartFooter" class="cart-footer is-hidden"><div class="cart-summary"><div><span>Subtotal</span><strong id="cartSubtotal">R$ 0,00</strong></div><div id="minimumOrderRow" class="minimum-row is-hidden"><span>Pedido mínimo</span><strong id="minimumOrderValue"></strong></div><div class="cart-total"><span>Total</span><strong id="cartTotal">R$ 0,00</strong></div></div><p id="minimumWarning" class="minimum-warning is-hidden"></p><button id="checkoutButton" class="primary-button checkout-button" type="button"><i class="ri-whatsapp-line"></i><span>Finalizar pedido</span></button><small id="checkoutHint"></small></footer>
+    </aside>
+  </div>
+
+  <div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+  <style id="customStoreCss"></style>
+  <script type="module" src="/assets/js/public-store.js"></script>
+</body>
+</html>

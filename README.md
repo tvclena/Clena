@@ -1,58 +1,55 @@
-# Editor de Loja — módulo separado
+# Loja pública personalizável — CLENA
 
-Este pacote adiciona apenas o editor administrativo da loja. Ele usa a mesma autenticação e configuração Supabase da dashboard base.
+Esta página pública lê diretamente as configurações salvas pelo Editor da Loja.
 
-## Copiar para o projeto
+## Arquivos
 
-Copie para a raiz do repositório:
+- `loja.html`
+- `assets/css/public-store.css`
+- `assets/js/public-store.js`
+- `assets/js/config.js`
+- `assets/js/supabase-client.js`
+- `vercel.json`
+- `supabase/public-store-access.sql`
 
-- `editor-loja.html`
-- `assets/css/store-editor.css`
-- `assets/js/store-editor.js`
+## Instalação
 
-Os arquivos `assets/js/config.js` e `assets/js/supabase-client.js` já existem na dashboard. Não substitua caso estejam iguais.
+Copie os arquivos mantendo as pastas. Se o projeto já possui `config.js` e `supabase-client.js` funcionando, preserve os seus.
 
-## Banco de dados
+A página funciona em:
 
-Execute uma única vez no SQL Editor do Supabase:
+- `/loja/minha-loja`
+- `/loja.html?slug=minha-loja`
 
-`supabase/store-editor.sql`
+## Configurações respeitadas
 
-O SQL cria:
+- tema visual;
+- imagem, vídeo ou gradiente de capa;
+- altura, enquadramento e posição da capa;
+- intensidade da sobreposição;
+- formato da logo;
+- alinhamento e textos da capa;
+- ação do botão principal;
+- cores completas;
+- fontes e escala tipográfica;
+- grade ou lista;
+- quantidade de colunas;
+- proporção das imagens;
+- arredondamento e sombra dos cartões;
+- alinhamento dos produtos;
+- estilo das categorias;
+- pesquisa e categorias fixas;
+- destaques e selos promocionais;
+- descrição dos produtos;
+- estilo e efeito dos botões;
+- animações da página e cartões;
+- rolagem e redução de movimento;
+- cabeçalho e posição;
+- rodapé e fundo;
+- links sociais;
+- WhatsApp e carrinho flutuantes;
+- CSS personalizado.
 
-- `stores`
-- `store_categories`
-- `store_products`
-- `store_product_variations`
-- bucket público `store-media`
-- índices, triggers e políticas RLS
+## Observação sobre o checkout
 
-## Abrir o editor
-
-Depois do login, a rota é:
-
-`/editor-loja.html`
-
-Para liberar no menu principal posteriormente, use:
-
-```html
-<a href="./editor-loja.html">Editar loja</a>
-```
-
-## Recursos já incluídos
-
-- sessão obrigatória pelo Supabase Auth;
-- uma loja por usuário;
-- identidade da loja;
-- logo e banner no Supabase Storage;
-- produtos com foto, preço, promoção, SKU, estoque e destaque;
-- variações com adicional de preço;
-- categorias ordenáveis;
-- pesquisa, filtro, seleção e ações em massa;
-- personalização de cores e formato grade/lista;
-- WhatsApp, pedido mínimo e formas de pagamento;
-- endereço público e status de publicação;
-- prévia responsiva em formato de celular;
-- RLS para separar completamente os dados de cada usuário.
-
-A página pública da loja será criada em outro módulo. O botão de prévia já aponta para `/loja/{slug}` e começará a funcionar quando essa casca pública for adicionada.
+O checkout gera uma mensagem completa e abre o WhatsApp da loja. O carrinho permanece apenas na memória da página e não grava dados da loja no navegador.
