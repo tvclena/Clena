@@ -75,61 +75,260 @@ function setLoadingState(done) {
 function showFatal(title, message) {
   document.body.innerHTML = `<main class="fatal-state"><span><i class="ri-store-2-line"></i></span><h1>${escapeHtml(title)}</h1><p>${escapeHtml(message)}</p><a href="/">Voltar ao início</a></main>`;
 }
-
 function applyAppearance() {
   const root = document.documentElement;
-  appearance = { ...APPEARANCE_DEFAULTS, ...(store.appearance_settings || {}), cover_type: store.cover_type || store.appearance_settings?.cover_type || 'image' };
-  const coverHeights = { compact:'320px', medium:'470px', large:'620px', fullscreen:'min(880px,100svh)' };
-  const radius = { none:'0px', small:'10px', medium:'18px', large:'28px' };
-  const speed = { fast:'180ms', normal:'320ms', slow:'600ms' };
-  const scale = { small:'.92', normal:'1', large:'1.1' };
 
-  root.style.setProperty('--primary', store.primary_color || '#2563eb');
-  root.style.setProperty('--accent', store.accent_color || '#0f172a');
-  root.style.setProperty('--background', appearance.background_color);
-  root.style.setProperty('--card', appearance.card_color);
-  root.style.setProperty('--text', appearance.text_color);
-  root.style.setProperty('--muted', appearance.muted_color);
-  root.style.setProperty('--body-font', `"${appearance.body_font}",sans-serif`);
-  root.style.setProperty('--heading-font', `"${appearance.heading_font}",sans-serif`);
-  root.style.setProperty('--heading-weight', appearance.heading_weight);
-  root.style.setProperty('--font-scale', scale[appearance.font_scale] || '1');
-  root.style.setProperty('--columns', String(Math.max(2, Math.min(5, Number(appearance.desktop_columns || 3)))));
-  root.style.setProperty('--card-radius', radius[appearance.card_radius] || radius.large);
-  root.style.setProperty('--animation-speed', speed[appearance.animation_speed] || speed.normal);
-  root.style.setProperty('--hero-height', coverHeights[appearance.cover_height] || coverHeights.medium);
-  root.style.setProperty('--overlay-opacity', String(Number(appearance.cover_overlay || 0) / 100));
-  root.style.scrollBehavior = appearance.scroll_behavior === 'smooth' ? 'smooth' : 'auto';
+  appearance = {
+    ...APPEARANCE_DEFAULTS,
+    ...(store.appearance_settings || {}),
+    cover_type:
+      store.cover_type ||
+      store.appearance_settings?.cover_type ||
+      'image'
+  };
 
-  document.body.dataset.theme = appearance.theme;
-  document.body.dataset.layout = store.product_layout || 'grid';
-  document.body.dataset.imageRatio = appearance.product_image_ratio;
-  document.body.dataset.cardRadius = appearance.card_radius;
-  document.body.dataset.cardShadow = appearance.card_shadow;
-  document.body.dataset.productAlign = appearance.product_text_alignment;
-  document.body.dataset.categoryStyle = appearance.category_style;
-  document.body.dataset.buttonStyle = appearance.button_style;
-  document.body.dataset.buttonHover = appearance.button_hover;
-  document.body.dataset.pageAnimation = appearance.page_animation;
-  document.body.dataset.cardAnimation = appearance.card_animation;
-  document.body.dataset.headerStyle = appearance.header_style;
-  document.body.dataset.headerPosition = appearance.header_position;
-  document.body.dataset.footerStyle = appearance.footer_style;
-  document.body.dataset.footerBackground = appearance.footer_background;
+  const coverHeights = {
+    compact: '180px',
+    medium: '320px',
+    large: '480px',
+    fullscreen: '100svh'
+  };
 
-  $('themeColorMeta').content = appearance.background_color || store.primary_color || '#f6f8fc';
-  $('customStoreCss').textContent = String(appearance.custom_css || '').slice(0, 12000);
+  const radius = {
+    none: '0px',
+    small: '10px',
+    medium: '18px',
+    large: '28px'
+  };
 
-  if (appearance.respect_reduced_motion && matchMedia('(prefers-reduced-motion: reduce)').matches) document.body.classList.add('reduce-motion');
-  $('searchArea').classList.toggle('is-hidden', !appearance.show_search);
-  $('categoryBarWrap').classList.toggle('is-sticky', Boolean(appearance.sticky_categories));
-  $('featuredSection').classList.toggle('is-hidden', !appearance.show_featured || !products.some((p) => p.featured));
-  $('siteFooter').classList.toggle('is-hidden', appearance.footer_style === 'hidden');
-  $('floatingWhatsapp').classList.toggle('is-hidden', !appearance.floating_whatsapp || !digits(store.whatsapp));
-  $('floatingCart').classList.toggle('is-hidden', !appearance.floating_cart || store.checkout_mode === 'catalog_only');
-  $('headerCartButton').classList.toggle('is-hidden', store.checkout_mode === 'catalog_only');
-  $('backToTop').classList.toggle('enabled', Boolean(appearance.show_back_to_top));
+  const speed = {
+    fast: '180ms',
+    normal: '320ms',
+    slow: '600ms'
+  };
+
+  const scale = {
+    compact: '.92',
+    small: '.92',
+    normal: '1',
+    large: '1.1'
+  };
+
+  root.style.setProperty(
+    '--primary',
+    store.primary_color || '#2563eb'
+  );
+
+  root.style.setProperty(
+    '--accent',
+    store.accent_color || '#0f172a'
+  );
+
+  root.style.setProperty(
+    '--background',
+    appearance.background_color || '#f6f8fc'
+  );
+
+  root.style.setProperty(
+    '--card',
+    appearance.card_color || '#ffffff'
+  );
+
+  root.style.setProperty(
+    '--text',
+    appearance.text_color || '#0f172a'
+  );
+
+  root.style.setProperty(
+    '--muted',
+    appearance.muted_color || '#64748b'
+  );
+
+  root.style.setProperty(
+    '--body-font',
+    `"${appearance.body_font || 'Manrope'}", sans-serif`
+  );
+
+  root.style.setProperty(
+    '--heading-font',
+    `"${appearance.heading_font || 'Manrope'}", sans-serif`
+  );
+
+  root.style.setProperty(
+    '--heading-weight',
+    appearance.heading_weight || '800'
+  );
+
+  root.style.setProperty(
+    '--font-scale',
+    scale[appearance.font_scale] || '1'
+  );
+
+  root.style.setProperty(
+    '--columns',
+    String(
+      Math.max(
+        2,
+        Math.min(
+          7,
+          Number(appearance.desktop_columns || 3)
+        )
+      )
+    )
+  );
+
+  root.style.setProperty(
+    '--card-radius',
+    radius[appearance.card_radius] || radius.large
+  );
+
+  root.style.setProperty(
+    '--animation-speed',
+    speed[appearance.animation_speed] || speed.normal
+  );
+
+  const selectedCoverHeight =
+    coverHeights[appearance.cover_height] ||
+    coverHeights.medium;
+
+  root.style.setProperty(
+    '--hero-height',
+    selectedCoverHeight
+  );
+
+  root.style.setProperty(
+    '--overlay-opacity',
+    String(
+      Number(appearance.cover_overlay || 0) / 100
+    )
+  );
+
+  root.style.scrollBehavior =
+    appearance.scroll_behavior === 'smooth'
+      ? 'smooth'
+      : 'auto';
+
+  document.body.dataset.theme =
+    appearance.theme || 'minimal';
+
+  document.body.dataset.layout =
+    store.product_layout || 'grid';
+
+  document.body.dataset.imageRatio =
+    appearance.product_image_ratio || 'square';
+
+  document.body.dataset.cardRadius =
+    appearance.card_radius || 'large';
+
+  document.body.dataset.cardShadow =
+    appearance.card_shadow || 'soft';
+
+  document.body.dataset.productAlign =
+    appearance.product_text_alignment || 'left';
+
+  document.body.dataset.categoryStyle =
+    appearance.category_style || 'pills';
+
+  document.body.dataset.buttonStyle =
+    appearance.button_style || 'rounded';
+
+  document.body.dataset.buttonHover =
+    appearance.button_hover || 'lift';
+
+  document.body.dataset.pageAnimation =
+    appearance.page_animation || 'fade';
+
+  document.body.dataset.cardAnimation =
+    appearance.card_animation || 'lift';
+
+  document.body.dataset.headerStyle =
+    appearance.header_style || 'transparent';
+
+  document.body.dataset.headerPosition =
+    appearance.header_position || 'static';
+
+  document.body.dataset.footerStyle =
+    appearance.footer_style || 'simple';
+
+  document.body.dataset.footerBackground =
+    appearance.footer_background || 'accent';
+
+  document.body.dataset.coverHeight =
+    appearance.cover_height || 'medium';
+
+  const themeMeta = $('themeColorMeta');
+
+  if (themeMeta) {
+    themeMeta.content =
+      appearance.background_color ||
+      store.primary_color ||
+      '#f6f8fc';
+  }
+
+  const customCss = $('customStoreCss');
+
+  if (customCss) {
+    customCss.textContent = String(
+      appearance.custom_css || ''
+    ).slice(0, 12000);
+  }
+
+  if (
+    appearance.respect_reduced_motion &&
+    matchMedia('(prefers-reduced-motion: reduce)').matches
+  ) {
+    document.body.classList.add('reduce-motion');
+  } else {
+    document.body.classList.remove('reduce-motion');
+  }
+
+  $('searchArea')?.classList.toggle(
+    'is-hidden',
+    !appearance.show_search
+  );
+
+  $('categoryBarWrap')?.classList.toggle(
+    'is-sticky',
+    Boolean(appearance.sticky_categories)
+  );
+
+  $('featuredSection')?.classList.toggle(
+    'is-hidden',
+    !appearance.show_featured ||
+      !products.some((product) => product.featured)
+  );
+
+  $('siteFooter')?.classList.toggle(
+    'is-hidden',
+    appearance.footer_style === 'hidden'
+  );
+
+  $('floatingWhatsapp')?.classList.toggle(
+    'is-hidden',
+    !appearance.floating_whatsapp ||
+      !digits(store.whatsapp)
+  );
+
+  $('floatingCart')?.classList.toggle(
+    'is-hidden',
+    !appearance.floating_cart ||
+      store.checkout_mode === 'catalog_only'
+  );
+
+  $('headerCartButton')?.classList.toggle(
+    'is-hidden',
+    store.checkout_mode === 'catalog_only'
+  );
+
+  $('backToTop')?.classList.toggle(
+    'enabled',
+    Boolean(appearance.show_back_to_top)
+  );
 }
+
+
+
+
 function renderHero() {
   const hero = $('hero');
   const media = $('heroMedia');
@@ -138,11 +337,33 @@ function renderHero() {
 
   media.innerHTML = '';
   media.classList.remove('gradient-fallback');
-  media.style.backgroundImage = '';
-  media.style.backgroundSize = appearance.cover_fit || 'cover';
-  media.style.backgroundPosition = appearance.cover_position || 'center';
 
-  // Capa em vídeo
+  media.style.backgroundImage = '';
+  media.style.backgroundSize =
+    appearance.cover_fit || 'cover';
+
+  media.style.backgroundPosition =
+    appearance.cover_position || 'center';
+
+  /*
+   * Garante que a altura escolhida no editor
+   * seja aplicada diretamente na capa.
+   */
+  const coverHeights = {
+    compact: '180px',
+    medium: '320px',
+    large: '480px',
+    fullscreen: '100svh'
+  };
+
+  const selectedHeight =
+    coverHeights[appearance.cover_height] ||
+    coverHeights.medium;
+
+  hero.style.height = selectedHeight;
+  hero.style.minHeight = '0';
+  hero.style.maxHeight = selectedHeight;
+
   if (appearance.cover_type === 'video') {
     const source =
       appearance.cover_video_external_url ||
@@ -161,7 +382,10 @@ function renderHero() {
       video.style.width = '100%';
       video.style.height = '100%';
       video.style.display = 'block';
-      video.style.objectFit = appearance.cover_fit || 'cover';
+
+      video.style.objectFit =
+        appearance.cover_fit || 'cover';
+
       video.style.objectPosition =
         appearance.cover_position || 'center';
 
@@ -169,60 +393,73 @@ function renderHero() {
     } else {
       media.classList.add('gradient-fallback');
     }
-  }
-
-  // Capa em gradiente
-  else if (appearance.cover_type === 'gradient') {
+  } else if (appearance.cover_type === 'gradient') {
     media.classList.add('gradient-fallback');
-  }
-
-  // Capa em imagem
-  else if (store.banner_url) {
+  } else if (store.banner_url) {
     const safeBannerUrl = String(store.banner_url)
       .replace(/"/g, '%22');
 
-    media.style.backgroundImage = `url("${safeBannerUrl}")`;
-  }
-
-  // Capa padrão
-  else {
+    media.style.backgroundImage =
+      `url("${safeBannerUrl}")`;
+  } else {
     media.classList.add('gradient-fallback');
   }
 
   /*
-   * Oculta completamente o conteúdo sobreposto da capa:
+   * Remove da capa:
    * - logo grande;
-   * - texto "LOJA ONLINE";
-   * - nome grande da loja;
+   * - LOJA ONLINE;
+   * - nome grande;
+   * - selo grande;
    * - descrição;
-   * - selo da capa;
-   * - botão "Ver produtos".
+   * - botão Ver produtos;
+   * - botão WhatsApp.
    *
-   * O cabeçalho superior continua aparecendo normalmente.
+   * O cabeçalho superior permanece normal.
    */
-  const heroContent = hero.querySelector('.hero-content');
+  const heroContent = hero.querySelector(
+    '.hero-content'
+  );
 
   if (heroContent) {
     heroContent.classList.add('is-hidden');
-    heroContent.setAttribute('aria-hidden', 'true');
+    heroContent.setAttribute(
+      'aria-hidden',
+      'true'
+    );
   }
 
-  // Mantém a configuração de alinhamento da capa.
-  hero.dataset.align = appearance.hero_alignment || 'left';
+  hero.dataset.align =
+    appearance.hero_alignment || 'left';
 
-  // Mantém apenas as logos do cabeçalho e do rodapé.
-  setLogo(
-    $('headerLogo'),
-    store.logo_url,
-    appearance.logo_shape
-  );
+  /*
+   * Mantém somente a logo pequena do cabeçalho
+   * e a logo do rodapé.
+   */
+  const headerLogo = $('headerLogo');
 
-  setLogo(
-    $('footerLogo'),
-    store.logo_url,
-    appearance.logo_shape
-  );
+  if (headerLogo) {
+    setLogo(
+      headerLogo,
+      store.logo_url,
+      appearance.logo_shape
+    );
+  }
+
+  const footerLogo = $('footerLogo');
+
+  if (footerLogo) {
+    setLogo(
+      footerLogo,
+      store.logo_url,
+      appearance.logo_shape
+    );
+  }
 }
+
+
+
+
 
 function setLogo(element, url, shape) {
   element.dataset.shape = shape || 'rounded';

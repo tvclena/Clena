@@ -240,13 +240,18 @@ body[data-layout="list"] .product-grid {
    --hero-height, inclusive no celular.
    ========================================================= */
 .store-hero {
-  height: var(--hero-height) !important;
+  height: var(--hero-height);
   min-height: 0 !important;
+  max-height: var(--hero-height);
 }
+
+
+
 
 @media (max-width: 720px) {
   .store-hero {
     height: var(--hero-height) !important;
     min-height: 0 !important;
+    max-height: var(--hero-height) !important;
   }
 }
