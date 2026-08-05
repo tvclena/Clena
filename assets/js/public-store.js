@@ -640,13 +640,13 @@ function getGalleryItems(track) {
 
 function getNearestGalleryIndex(track, items) {
   if (!items.length) return 0;
-  const trackCenter = track.scrollLeft + (track.clientWidth / 2);
+
+  const reference = track.scrollLeft + 8;
   let nearestIndex = 0;
   let nearestDistance = Infinity;
 
   items.forEach((item, index) => {
-    const itemCenter = item.offsetLeft + (item.offsetWidth / 2);
-    const distance = Math.abs(itemCenter - trackCenter);
+    const distance = Math.abs(item.offsetLeft - reference);
     if (distance < nearestDistance) {
       nearestDistance = distance;
       nearestIndex = index;
@@ -661,11 +661,10 @@ function scrollGalleryToIndex(track, index, behavior = 'smooth') {
   if (!items.length) return;
 
   const safeIndex = Math.max(0, Math.min(items.length - 1, index));
-  const item = items[safeIndex];
-  const left = item.offsetLeft - ((track.clientWidth - item.offsetWidth) / 2);
+  const target = items[safeIndex];
 
   track.scrollTo({
-    left: Math.max(0, left),
+    left: Math.max(0, target.offsetLeft - 2),
     behavior
   });
 }
@@ -684,9 +683,7 @@ function moveGalleryCarousel(section, direction, userInitiated = true) {
 
   if (next >= items.length) {
     next = appearance.gallery_loop ? 0 : items.length - 1;
-  }
-
-  if (next < 0) {
+  } else if (next < 0) {
     next = appearance.gallery_loop ? items.length - 1 : 0;
   }
 
@@ -729,7 +726,6 @@ function initializeGalleryCarousel(section) {
 function renderGallery() {
   clearGalleryTimers();
   $$('.gallery-section').forEach((element) => element.remove());
-
   if (!gallery.length) return;
 
   const placement = appearance.gallery_position || 'after_products';
@@ -748,15 +744,13 @@ function renderGallery() {
       ${appearance.gallery_title ? `<h2>${escapeHtml(appearance.gallery_title)}</h2>` : ''}
       ${appearance.gallery_subtitle ? `<p>${escapeHtml(appearance.gallery_subtitle)}</p>` : ''}
     </div>
-
     <div class="gallery-track" ${layout === 'carousel' ? 'data-gallery-carousel="true"' : ''}>
       ${gallery.map(galleryMedia).join('')}
     </div>
-
-    ${supportsNavigation && gallery.length > 1
-      ? `<button class="gallery-scroll gallery-scroll-prev" type="button" aria-label="Foto anterior"><i class="ri-arrow-left-s-line"></i></button>
-         <button class="gallery-scroll gallery-scroll-next" type="button" aria-label="Próxima foto"><i class="ri-arrow-right-s-line"></i></button>`
-      : ''}
+    ${supportsNavigation && gallery.length > 1 ? `
+      <button class="gallery-scroll gallery-scroll-prev" type="button" aria-label="Foto anterior"><i class="ri-arrow-left-s-line"></i></button>
+      <button class="gallery-scroll gallery-scroll-next" type="button" aria-label="Próxima foto"><i class="ri-arrow-right-s-line"></i></button>
+    ` : ''}
   `;
 
   slot.appendChild(section);
@@ -769,12 +763,12 @@ function renderGallery() {
   } else if (supportsNavigation) {
     section.querySelector('.gallery-scroll-prev')?.addEventListener('click', () => {
       stopGalleryAutoplay(section);
-      track.scrollBy({ left: -track.clientWidth * 0.8, behavior: 'smooth' });
+      track.scrollBy({ left: -track.clientWidth * .8, behavior: 'smooth' });
     });
 
     section.querySelector('.gallery-scroll-next')?.addEventListener('click', () => {
       stopGalleryAutoplay(section);
-      track.scrollBy({ left: track.clientWidth * 0.8, behavior: 'smooth' });
+      track.scrollBy({ left: track.clientWidth * .8, behavior: 'smooth' });
     });
   }
 
@@ -783,11 +777,8 @@ function renderGallery() {
       stopGalleryAutoplay(section);
       const index = Number(item.dataset.galleryIndex);
 
-      if (appearance.gallery_lightbox) {
-        openGalleryLightbox(index);
-      } else {
-        followContentLink(gallery[index]);
-      }
+      if (appearance.gallery_lightbox) openGalleryLightbox(index);
+      else followContentLink(gallery[index]);
     };
 
     item.addEventListener('click', open);
@@ -799,29 +790,19 @@ function renderGallery() {
     });
   });
 
-  if (
-    appearance.gallery_autoplay &&
-    !galleryAutoplayStoppedByUser &&
-    ['horizontal', 'stories'].includes(layout)
-  ) {
+  if (appearance.gallery_autoplay && !galleryAutoplayStoppedByUser && ['horizontal', 'stories'].includes(layout)) {
     const timer = setInterval(() => {
       if (document.hidden || galleryAutoplayStoppedByUser) return;
 
       const reachedEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 10;
-
       if (reachedEnd && appearance.gallery_loop) {
         track.scrollTo({ left: 0, behavior: 'smooth' });
       } else if (!reachedEnd) {
-        track.scrollBy({ left: track.clientWidth * 0.75, behavior: 'smooth' });
+        track.scrollBy({ left: track.clientWidth * .75, behavior: 'smooth' });
       }
     }, 5000);
 
     galleryTimers.push(timer);
-
-    const stopByInteraction = () => stopGalleryAutoplay(section);
-    track.addEventListener('pointerdown', stopByInteraction, { passive: true });
-    track.addEventListener('touchstart', stopByInteraction, { passive: true });
-    track.addEventListener('wheel', stopByInteraction, { passive: true });
   }
 }
 
