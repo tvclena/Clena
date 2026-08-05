@@ -1623,3 +1623,168 @@ body[data-header-style="floating"] .header-cart {
   }
 }
 
+/* =========================================================
+   CLENA — DESKTOP TELA CHEIA E CARDS AJUSTADOS
+   ========================================================= */
+
+/* Usa praticamente toda a largura da tela no computador */
+@media (min-width: 1001px) {
+  :root {
+    --shell: 100%;
+  }
+
+  .shell {
+    width: calc(100% - 48px) !important;
+    max-width: none !important;
+    margin-inline: auto !important;
+  }
+
+  .site-header .header-inner {
+    width: calc(100% - 48px) !important;
+    max-width: none !important;
+  }
+
+  .catalog-section {
+    width: calc(100% - 48px) !important;
+    max-width: none !important;
+  }
+
+  .featured-grid {
+    width: 100% !important;
+  }
+}
+
+/* Corrige os cards no desktop */
+@media (min-width: 721px) {
+  body[data-layout="grid"] .product-card {
+    min-width: 0 !important;
+  }
+
+  body[data-layout="grid"] .product-content {
+    min-width: 0 !important;
+    padding: 12px !important;
+  }
+
+  body[data-layout="grid"] .product-content h3 {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+  }
+
+  body[data-layout="grid"] .product-bottom {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 9px !important;
+    align-items: stretch !important;
+    margin-top: 12px !important;
+  }
+
+  body[data-layout="grid"] .product-price {
+    min-width: 0 !important;
+  }
+
+  body[data-layout="grid"] .product-price strong,
+  body[data-layout="grid"] .product-price small {
+    display: block !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body[data-layout="grid"] .product-action {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 34px !important;
+    padding: 0 8px !important;
+    font-size: .66rem !important;
+    gap: 4px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+  }
+
+  body[data-layout="grid"] .product-action span {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  body[data-layout="grid"] .product-action i {
+    flex: none !important;
+  }
+}
+
+/* Quantidade de colunas mais equilibrada */
+@media (min-width: 1601px) {
+  body[data-layout="grid"] .product-grid {
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+  }
+}
+
+@media (min-width: 1367px) and (max-width: 1600px) {
+  body[data-layout="grid"] .product-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+  }
+}
+
+@media (min-width: 1181px) and (max-width: 1366px) {
+  body[data-layout="grid"] .product-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    gap: 13px !important;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1180px) {
+  body[data-layout="grid"] .product-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+  }
+}
+
+/* Destaques: cards proporcionais e sem sobra exagerada */
+@media (min-width: 1001px) {
+  .featured-grid {
+    display: grid !important;
+    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+    align-items: stretch !important;
+  }
+
+  .featured-grid .product-card {
+    width: 100% !important;
+  }
+}
+
+@media (min-width: 1367px) {
+  .featured-grid {
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (min-width: 1001px) and (max-width: 1366px) {
+  .featured-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Barra de pesquisa e ordenação melhor distribuída */
+@media (min-width: 721px) {
+  .catalog-tools {
+    grid-template-columns: minmax(0, 1fr) 220px !important;
+    width: 100% !important;
+  }
+
+  .sort-box {
+    width: 220px !important;
+  }
+
+  .sort-box select {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+}
+
