@@ -130,42 +130,98 @@ function applyAppearance() {
   $('headerCartButton').classList.toggle('is-hidden', store.checkout_mode === 'catalog_only');
   $('backToTop').classList.toggle('enabled', Boolean(appearance.show_back_to_top));
 }
-
 function renderHero() {
+  const hero = $('hero');
   const media = $('heroMedia');
+
+  if (!hero || !media) return;
+
   media.innerHTML = '';
+  media.classList.remove('gradient-fallback');
   media.style.backgroundImage = '';
   media.style.backgroundSize = appearance.cover_fit || 'cover';
   media.style.backgroundPosition = appearance.cover_position || 'center';
 
+  // Capa em vídeo
   if (appearance.cover_type === 'video') {
-    const source = appearance.cover_video_external_url || store.cover_video_url;
+    const source =
+      appearance.cover_video_external_url ||
+      store.cover_video_url;
+
     if (source) {
       const video = document.createElement('video');
+
       video.src = source;
-      video.autoplay = true; video.muted = true; video.loop = true; video.playsInline = true; video.preload = 'metadata';
+      video.autoplay = true;
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.preload = 'metadata';
+
+      video.style.width = '100%';
+      video.style.height = '100%';
+      video.style.display = 'block';
       video.style.objectFit = appearance.cover_fit || 'cover';
-      video.style.objectPosition = appearance.cover_position || 'center';
+      video.style.objectPosition =
+        appearance.cover_position || 'center';
+
       media.appendChild(video);
-    } else media.classList.add('gradient-fallback');
-  } else if (appearance.cover_type === 'gradient') {
+    } else {
+      media.classList.add('gradient-fallback');
+    }
+  }
+
+  // Capa em gradiente
+  else if (appearance.cover_type === 'gradient') {
     media.classList.add('gradient-fallback');
-  } else if (store.banner_url) {
-    media.style.backgroundImage = `url("${String(store.banner_url).replace(/"/g, '%22')}")`;
-  } else media.classList.add('gradient-fallback');
+  }
 
-  const title = appearance.hero_title || store.name;
-  const subtitle = appearance.hero_subtitle || store.description || '';
-  $('heroTitle').textContent = title;
-  $('heroSubtitle').textContent = subtitle;
-  $('heroSubtitle').classList.toggle('is-hidden', !subtitle);
-  $('heroButton').textContent = appearance.hero_button_text || 'Ver produtos';
-  $('heroButton').classList.toggle('is-hidden', appearance.hero_button_target === 'none');
-  $('hero').dataset.align = appearance.hero_alignment || 'left';
+  // Capa em imagem
+  else if (store.banner_url) {
+    const safeBannerUrl = String(store.banner_url)
+      .replace(/"/g, '%22');
 
-  setLogo($('heroLogo'), store.logo_url, appearance.logo_shape);
-  setLogo($('headerLogo'), store.logo_url, appearance.logo_shape);
-  setLogo($('footerLogo'), store.logo_url, appearance.logo_shape);
+    media.style.backgroundImage = `url("${safeBannerUrl}")`;
+  }
+
+  // Capa padrão
+  else {
+    media.classList.add('gradient-fallback');
+  }
+
+  /*
+   * Oculta completamente o conteúdo sobreposto da capa:
+   * - logo grande;
+   * - texto "LOJA ONLINE";
+   * - nome grande da loja;
+   * - descrição;
+   * - selo da capa;
+   * - botão "Ver produtos".
+   *
+   * O cabeçalho superior continua aparecendo normalmente.
+   */
+  const heroContent = hero.querySelector('.hero-content');
+
+  if (heroContent) {
+    heroContent.classList.add('is-hidden');
+    heroContent.setAttribute('aria-hidden', 'true');
+  }
+
+  // Mantém a configuração de alinhamento da capa.
+  hero.dataset.align = appearance.hero_alignment || 'left';
+
+  // Mantém apenas as logos do cabeçalho e do rodapé.
+  setLogo(
+    $('headerLogo'),
+    store.logo_url,
+    appearance.logo_shape
+  );
+
+  setLogo(
+    $('footerLogo'),
+    store.logo_url,
+    appearance.logo_shape
+  );
 }
 
 function setLogo(element, url, shape) {
