@@ -1328,3 +1328,119 @@ body[data-header-style="floating"] .header-cart {
     height: 42px !important;
   }
 }
+
+/* =========================================================
+   BANNERS MAIS COMPACTOS
+   Desktop: 4 banners por linha
+   Celular: banner horizontal mais baixo
+   ========================================================= */
+
+.banner-carousel .banner-slides {
+  gap: 12px !important;
+  padding: 10px 0 14px !important;
+}
+
+.banner-carousel .promo-banner,
+.banner-carousel .promo-banner.is-active {
+  display: block !important;
+  flex: 0 0 calc((100% - 36px) / 4) !important;
+  width: calc((100% - 36px) / 4) !important;
+  min-height: 0 !important;
+  height: auto !important;
+  aspect-ratio: 16 / 8 !important;
+  border-radius: 15px !important;
+  overflow: hidden !important;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+.banner-carousel .promo-banner-copy {
+  min-height: 0 !important;
+  padding: 36px 13px 13px !important;
+}
+
+.banner-carousel .promo-banner-copy h2 {
+  margin: 0 0 4px !important;
+  font-size: clamp(.9rem, 1.5vw, 1.25rem) !important;
+  line-height: 1.1 !important;
+}
+
+.banner-carousel .promo-banner-copy p {
+  margin: 4px 0 0 !important;
+  font-size: .7rem !important;
+  line-height: 1.3 !important;
+  -webkit-line-clamp: 2;
+}
+
+.banner-carousel .promo-banner-button {
+  min-height: 32px !important;
+  margin-top: 8px !important;
+  padding: 0 10px !important;
+  font-size: .66rem !important;
+}
+
+.banner-carousel .banner-arrow {
+  width: 36px !important;
+  height: 36px !important;
+  font-size: 21px !important;
+}
+
+.banner-carousel .banner-dots {
+  margin-top: 6px !important;
+}
+
+@media (max-width: 900px) and (min-width: 721px) {
+  .banner-carousel .promo-banner,
+  .banner-carousel .promo-banner.is-active {
+    flex: 0 0 calc((100% - 24px) / 3) !important;
+    width: calc((100% - 24px) / 3) !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .banner-carousel .banner-slides {
+    gap: 9px !important;
+    padding: 4px 28px 10px 0 !important;
+  }
+
+  .banner-carousel .promo-banner,
+  .banner-carousel .promo-banner.is-active {
+    flex: 0 0 78% !important;
+    width: 78% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9 !important;
+    border-radius: 14px !important;
+  }
+
+  .banner-carousel .promo-banner-copy {
+    padding: 30px 11px 11px !important;
+  }
+
+  .banner-carousel .promo-banner-copy h2 {
+    font-size: .92rem !important;
+  }
+
+  .banner-carousel .promo-banner-copy p {
+    font-size: .65rem !important;
+  }
+
+  .banner-carousel .promo-banner-button {
+    min-height: 29px !important;
+    font-size: .61rem !important;
+  }
+
+  .banner-carousel .banner-arrow {
+    display: none !important;
+  }
+}
+
+@media (max-width: 440px) {
+  .banner-carousel .promo-banner,
+  .banner-carousel .promo-banner.is-active {
+    flex: 0 0 82% !important;
+    width: 82% !important;
+    aspect-ratio: 16 / 9 !important;
+  }
+}
+
