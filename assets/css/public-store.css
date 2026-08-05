@@ -1788,3 +1788,44 @@ body[data-header-style="floating"] .header-cart {
   }
 }
 
+/* RECOMENDAÇÕES CLICÁVEIS NO COMPUTADOR E CELULAR */
+.product-recommendations {
+  position: relative !important;
+  z-index: 5 !important;
+}
+
+.product-recommendations-grid {
+  position: relative !important;
+  z-index: 6 !important;
+}
+
+.recommendation-card {
+  position: relative !important;
+  z-index: 7 !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  touch-action: manipulation !important;
+}
+
+.recommendation-card * {
+  pointer-events: none !important;
+}
+
+@media (max-width: 720px) {
+  .product-recommendations {
+    position: relative !important;
+    z-index: 20 !important;
+  }
+
+  .product-recommendations-grid {
+    position: relative !important;
+    z-index: 21 !important;
+  }
+
+  .recommendation-card {
+    position: relative !important;
+    z-index: 22 !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+  }
+}
