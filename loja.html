@@ -65,32 +65,127 @@
           <div><i class="ri-lock-2-line"></i><span><small>Seus dados</small><strong>Enviados com segurança</strong></span></div>
         </div>
       </section>
+<section id="catalog" class="catalog-section shell">
+  <div class="catalog-heading">
+    <div>
+      <span class="section-kicker">CATÁLOGO</span>
+      <h2></h2>
+    </div>
 
-      <section id="catalog" class="catalog-section shell">
-        <div class="catalog-heading">
-          <div><span class="section-kicker">CATÁLOGO</span><h2></h2></div>
-          <p id="catalogDescription">Explore nossos produtos e finalize seu pedido.</p>
-        </div>
+    <p id="catalogDescription">
+      Explore nossos produtos e finalize seu pedido.
+    </p>
+  </div>
 
-        <div id="searchArea" class="catalog-tools">
-          <label class="search-box" for="searchInput"><i class="ri-search-line"></i><input id="searchInput" type="search" placeholder="Buscar produtos..." autocomplete="off"><button id="clearSearch" class="is-hidden" type="button" aria-label="Limpar pesquisa"><i class="ri-close-line"></i></button></label>
-          <label class="sort-box"><i class="ri-arrow-up-down-line"></i><select id="sortSelect" aria-label="Ordenar produtos"><option value="position">Ordem da loja</option><option value="featured">Destaques primeiro</option><option value="low">Menor preço</option><option value="high">Maior preço</option><option value="name">Nome A–Z</option></select></label>
-        </div>
+  <!-- DESTAQUES PRIMEIRO -->
+  <section
+    id="featuredSection"
+    class="featured-section is-hidden"
+  >
+    <div class="subsection-heading">
+      <div>
+        <span class="section-kicker"></span>
+        <h3>Produtos em destaque</h3>
+      </div>
 
-        <div id="slot-before_categories" class="content-slot"></div>
+      <button
+        id="viewAllProducts"
+        class="text-button"
+        type="button"
+      >
+        Ver todos
+        <i class="ri-arrow-right-line"></i>
+      </button>
+    </div>
 
-        <div id="categoryBarWrap" class="category-bar-wrap"><div id="categoryBar" class="category-bar" role="tablist"></div></div>
-        <div id="slot-after_categories" class="content-slot"></div>
+    <div
+      id="featuredProducts"
+      class="product-grid featured-grid"
+    ></div>
+  </section>
 
-        <section id="featuredSection" class="featured-section is-hidden"><div class="subsection-heading"><div><span class="section-kicker"></span><h3>Produtos em destaque</h3></div><button id="viewAllProducts" class="text-button" type="button">Ver todos <i class="ri-arrow-right-line"></i></button></div><div id="featuredProducts" class="product-grid featured-grid"></div></section>
+  <!-- PESQUISA E ORDENAÇÃO DEPOIS DOS DESTAQUES -->
+  <div id="searchArea" class="catalog-tools">
+    <label class="search-box" for="searchInput">
+      <i class="ri-search-line"></i>
 
-        <div id="slot-before_products" class="content-slot"></div>
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="Buscar produtos..."
+        autocomplete="off"
+      >
 
-        <div class="results-heading"><p id="resultCount">0 produtos</p><span id="activeFilterLabel">Todos os produtos</span></div>
-        <section id="productGrid" class="product-grid" aria-live="polite"></section>
-        <div id="emptyProducts" class="empty-state is-hidden"><span><i class="ri-search-eye-line"></i></span><h3>Nenhum produto encontrado</h3><p>Tente outra pesquisa ou categoria.</p><button id="resetFilters" class="primary-button" type="button">Ver todos os produtos</button></div>
-        <div id="slot-after_products" class="content-slot"></div>
-      </section>
+      <button
+        id="clearSearch"
+        class="is-hidden"
+        type="button"
+        aria-label="Limpar pesquisa"
+      >
+        <i class="ri-close-line"></i>
+      </button>
+    </label>
+
+    <label class="sort-box">
+      <i class="ri-arrow-up-down-line"></i>
+
+      <select id="sortSelect" aria-label="Ordenar produtos">
+        <option value="position">Ordem da loja</option>
+        <option value="featured">Destaques primeiro</option>
+        <option value="low">Menor preço</option>
+        <option value="high">Maior preço</option>
+        <option value="name">Nome A–Z</option>
+      </select>
+    </label>
+  </div>
+
+  <div id="slot-before_categories" class="content-slot"></div>
+
+  <!-- CATEGORIAS DEPOIS DA PESQUISA -->
+  <div id="categoryBarWrap" class="category-bar-wrap">
+    <div
+      id="categoryBar"
+      class="category-bar"
+      role="tablist"
+    ></div>
+  </div>
+
+  <div id="slot-after_categories" class="content-slot"></div>
+
+  <div id="slot-before_products" class="content-slot"></div>
+
+  <div class="results-heading">
+    <p id="resultCount">0 produtos</p>
+    <span id="activeFilterLabel">Todos os produtos</span>
+  </div>
+
+  <section
+    id="productGrid"
+    class="product-grid"
+    aria-live="polite"
+  ></section>
+
+  <div id="emptyProducts" class="empty-state is-hidden">
+    <span>
+      <i class="ri-search-eye-line"></i>
+    </span>
+
+    <h3>Nenhum produto encontrado</h3>
+
+    <p>Tente outra pesquisa ou categoria.</p>
+
+    <button
+      id="resetFilters"
+      class="primary-button"
+      type="button"
+    >
+      Ver todos os produtos
+    </button>
+  </div>
+
+  <div id="slot-after_products" class="content-slot"></div>
+</section>
+
     </main>
 
     <div id="slot-before_footer" class="content-slot shell"></div>
