@@ -31,3 +31,12 @@ for select to anon using(
     where p.id=product_id and p.active=true and s.is_published=true
   )
 );
+
+
+-- BANNERS E GALERIA PÚBLICOS
+alter table public.store_banners enable row level security;
+alter table public.store_gallery_items enable row level security;
+drop policy if exists store_banners_public_read on public.store_banners;
+create policy store_banners_public_read on public.store_banners for select to anon using(active=true and (starts_at is null or starts_at<=now()) and (ends_at is null or ends_at>=now()) and exists(select 1 from public.stores s where s.id=store_id and s.is_published=true));
+drop policy if exists store_gallery_public_read on public.store_gallery_items;
+create policy store_gallery_public_read on public.store_gallery_items for select to anon using(active=true and exists(select 1 from public.stores s where s.id=store_id and s.is_published=true));

@@ -1,58 +1,20 @@
-# Editor de Loja — módulo separado
+# CLENA — Loja Pública Completa
 
-Este pacote adiciona apenas o editor administrativo da loja. Ele usa a mesma autenticação e configuração Supabase da dashboard base.
+Loja pública que obedece às configurações do Editor da Loja, incluindo temas, cores, fontes, capa, vídeo, produtos, categorias, cabeçalho, rodapé, redes sociais, animações, banners, galeria e selo de verificação.
 
-## Copiar para o projeto
+## Instalação
 
-Copie para a raiz do repositório:
+Substitua `loja.html`, `assets/css/public-store.css` e `assets/js/public-store.js`. Execute `supabase/public-store-access.sql` se as políticas públicas ainda não existirem.
 
-- `editor-loja.html`
-- `assets/css/store-editor.css`
-- `assets/js/store-editor.js`
+Os caminhos dos assets começam em `/assets`, portanto funcionam em `/loja.html?slug=...` e `/loja/:slug`.
 
-Os arquivos `assets/js/config.js` e `assets/js/supabase-client.js` já existem na dashboard. Não substitua caso estejam iguais.
+## Recursos
 
-## Banco de dados
-
-Execute uma única vez no SQL Editor do Supabase:
-
-`supabase/store-editor.sql`
-
-O SQL cria:
-
-- `stores`
-- `store_categories`
-- `store_products`
-- `store_product_variations`
-- bucket público `store-media`
-- índices, triggers e políticas RLS
-
-## Abrir o editor
-
-Depois do login, a rota é:
-
-`/editor-loja.html`
-
-Para liberar no menu principal posteriormente, use:
-
-```html
-<a href="./editor-loja.html">Editar loja</a>
-```
-
-## Recursos já incluídos
-
-- sessão obrigatória pelo Supabase Auth;
-- uma loja por usuário;
-- identidade da loja;
-- logo e banner no Supabase Storage;
-- produtos com foto, preço, promoção, SKU, estoque e destaque;
-- variações com adicional de preço;
-- categorias ordenáveis;
-- pesquisa, filtro, seleção e ações em massa;
-- personalização de cores e formato grade/lista;
-- WhatsApp, pedido mínimo e formas de pagamento;
-- endereço público e status de publicação;
-- prévia responsiva em formato de celular;
-- RLS para separar completamente os dados de cada usuário.
-
-A página pública da loja será criada em outro módulo. O botão de prévia já aponta para `/loja/{slug}` e começará a funcionar quando essa casca pública for adicionada.
+- Banners nas seis posições definidas no editor.
+- Carrossel, banner único ou grade.
+- Autoplay, setas, indicadores, loop, transições e dispositivos.
+- Galeria em grade, mosaico, carrossel, destaque, stories e faixa horizontal.
+- Lightbox para fotos e vídeos.
+- Links para produto, categoria, WhatsApp ou URL externa.
+- Selo de loja verificada quando `stores.is_verified = true`.
+- Carrinho e checkout pelo WhatsApp.

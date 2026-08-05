@@ -25,7 +25,7 @@
       <div class="header-inner">
         <a id="headerBrand" class="header-brand" href="#top" aria-label="Início">
           <span id="headerLogo" class="header-logo"><i class="ri-store-2-line"></i></span>
-          <span class="header-copy"><strong id="headerName">Loja</strong><small id="headerStatus">Catálogo online</small></span>
+          <span class="header-copy"><span class="header-name-row"><strong id="headerName">Loja</strong><span id="headerVerified" class="verified-badge verified-badge-small is-hidden" title="Loja verificada"><i class="ri-verified-badge-fill"></i></span></span><small id="headerStatus">Catálogo online</small></span>
         </a>
         <nav class="header-actions" aria-label="Ações da loja">
           <button id="headerSearchButton" class="header-icon" type="button" aria-label="Pesquisar"><i class="ri-search-line"></i></button>
@@ -43,7 +43,7 @@
           <span id="heroLogo" class="hero-logo"><i class="ri-store-2-line"></i></span>
           <div class="hero-copy">
             <span id="heroKicker" class="hero-kicker">LOJA ONLINE</span>
-            <h1 id="heroTitle">Minha loja</h1>
+            <div class="hero-title-row"><h1 id="heroTitle">Minha loja</h1><span id="heroVerified" class="verified-badge is-hidden"><i class="ri-verified-badge-fill"></i><b>Verificada</b></span></div>
             <p id="heroSubtitle"></p>
             <div class="hero-actions">
               <button id="heroButton" class="primary-button" type="button">Ver produtos</button>
@@ -52,6 +52,7 @@
           </div>
         </div>
       </section>
+      <div id="slot-after_hero" class="content-slot shell"></div>
 
       <section id="storeInfo" class="store-info shell">
         <div class="store-info-card">
@@ -73,15 +74,23 @@
           <label class="sort-box"><i class="ri-arrow-up-down-line"></i><select id="sortSelect" aria-label="Ordenar produtos"><option value="position">Ordem da loja</option><option value="featured">Destaques primeiro</option><option value="low">Menor preço</option><option value="high">Maior preço</option><option value="name">Nome A–Z</option></select></label>
         </div>
 
+        <div id="slot-before_categories" class="content-slot"></div>
+
         <div id="categoryBarWrap" class="category-bar-wrap"><div id="categoryBar" class="category-bar" role="tablist"></div></div>
+        <div id="slot-after_categories" class="content-slot"></div>
 
         <section id="featuredSection" class="featured-section is-hidden"><div class="subsection-heading"><div><span class="section-kicker">SELEÇÃO ESPECIAL</span><h3>Produtos em destaque</h3></div><button id="viewAllProducts" class="text-button" type="button">Ver todos <i class="ri-arrow-right-line"></i></button></div><div id="featuredProducts" class="product-grid featured-grid"></div></section>
+
+        <div id="slot-before_products" class="content-slot"></div>
 
         <div class="results-heading"><p id="resultCount">0 produtos</p><span id="activeFilterLabel">Todos os produtos</span></div>
         <section id="productGrid" class="product-grid" aria-live="polite"></section>
         <div id="emptyProducts" class="empty-state is-hidden"><span><i class="ri-search-eye-line"></i></span><h3>Nenhum produto encontrado</h3><p>Tente outra pesquisa ou categoria.</p><button id="resetFilters" class="primary-button" type="button">Ver todos os produtos</button></div>
+        <div id="slot-after_products" class="content-slot"></div>
       </section>
     </main>
+
+    <div id="slot-before_footer" class="content-slot shell"></div>
 
     <footer id="siteFooter" class="site-footer">
       <div class="footer-inner shell">
@@ -132,6 +141,17 @@
       </section>
       <footer id="cartFooter" class="cart-footer is-hidden"><div class="cart-summary"><div><span>Subtotal</span><strong id="cartSubtotal">R$ 0,00</strong></div><div id="minimumOrderRow" class="minimum-row is-hidden"><span>Pedido mínimo</span><strong id="minimumOrderValue"></strong></div><div class="cart-total"><span>Total</span><strong id="cartTotal">R$ 0,00</strong></div></div><p id="minimumWarning" class="minimum-warning is-hidden"></p><button id="checkoutButton" class="primary-button checkout-button" type="button"><i class="ri-whatsapp-line"></i><span>Finalizar pedido</span></button><small id="checkoutHint"></small></footer>
     </aside>
+  </div>
+
+  <div id="galleryLightbox" class="gallery-lightbox is-hidden" role="dialog" aria-modal="true" aria-label="Galeria">
+    <div class="gallery-lightbox-backdrop" data-close-gallery-lightbox></div>
+    <section class="gallery-lightbox-card">
+      <button class="gallery-lightbox-close" type="button" data-close-gallery-lightbox aria-label="Fechar"><i class="ri-close-line"></i></button>
+      <button id="galleryLightboxPrev" class="gallery-lightbox-nav gallery-lightbox-prev" type="button" aria-label="Anterior"><i class="ri-arrow-left-s-line"></i></button>
+      <div id="galleryLightboxMedia" class="gallery-lightbox-media"></div>
+      <div class="gallery-lightbox-copy"><h2 id="galleryLightboxTitle"></h2><p id="galleryLightboxDescription"></p></div>
+      <button id="galleryLightboxNext" class="gallery-lightbox-nav gallery-lightbox-next" type="button" aria-label="Próximo"><i class="ri-arrow-right-s-line"></i></button>
+    </section>
   </div>
 
   <div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>

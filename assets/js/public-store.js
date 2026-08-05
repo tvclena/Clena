@@ -15,7 +15,9 @@ const APPEARANCE_DEFAULTS = {
   show_search:true, sticky_categories:false, show_featured:true, show_sale_badge:true, show_product_description:true,
   button_style:'rounded', button_hover:'lift', page_animation:'fade', card_animation:'lift', animation_speed:'normal', scroll_behavior:'smooth', respect_reduced_motion:true,
   show_back_to_top:true, header_style:'transparent', header_position:'static', footer_style:'simple', footer_background:'accent', footer_text:'', show_social_links:true,
-  social_instagram:'', social_facebook:'', social_tiktok:'', social_youtube:'', social_x:'', social_pinterest:'', floating_whatsapp:true, floating_cart:true, custom_css:''
+  social_instagram:'', social_facebook:'', social_tiktok:'', social_youtube:'', social_x:'', social_pinterest:'', floating_whatsapp:true, floating_cart:true, custom_css:'',
+  banner_display_mode:'carousel', banner_autoplay:true, banner_autoplay_delay:5000, banner_loop:true, banner_arrows:true, banner_dots:true, banner_pause_interaction:true, banner_default_height:'medium', banner_transition:'slide',
+  gallery_layout:'grid', gallery_columns:3, gallery_ratio:'square', gallery_gap:'medium', gallery_title:'Nossa galeria', gallery_subtitle:'', gallery_position:'after_products', gallery_lightbox:true, gallery_autoplay:false, gallery_loop:true
 };
 
 const SOCIALS = [
@@ -29,6 +31,10 @@ let appearance = { ...APPEARANCE_DEFAULTS };
 let categories = [];
 let products = [];
 let variations = [];
+let banners = [];
+let gallery = [];
+let bannerTimers = [];
+let galleryLightboxIndex = 0;
 let cart = [];
 let currentCategory = 'all';
 let selectedProduct = null;
@@ -168,6 +174,9 @@ function setLogo(element, url, shape) {
 }
 
 function renderStoreInformation() {
+  const verified = store.is_verified === true;
+  $('headerVerified')?.classList.toggle('is-hidden', !verified);
+  $('heroVerified')?.classList.toggle('is-hidden', !verified);
   document.title = store.name;
   document.querySelector('meta[name="description"]').content = store.description || `Loja virtual ${store.name}`;
   $('headerName').textContent = store.name;
@@ -202,6 +211,162 @@ function renderSocialLinks() {
   $('socialLinks').innerHTML = appearance.show_social_links ? links.map((item) => `<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener" aria-label="${item.label}" title="${item.label}"><i class="${item.icon}"></i></a>`).join('') : '';
   $('footerSocialColumn').classList.toggle('is-hidden', !appearance.show_social_links || !links.length);
 }
+
+
+function safeUrl(url) {
+  try { const parsed = new URL(url, location.origin); return ['http:','https:'].includes(parsed.protocol) ? parsed.href : ''; } catch { return ''; }
+}
+
+function mediaObjectPosition(item) {
+  return `${item.object_x || 'center'} ${item.object_y || 'center'}`;
+}
+
+function resolveContentLink(item) {
+  const type = item.link_type || 'none';
+  const value = String(item.link_value || '').trim();
+  if (type === 'external') return safeUrl(value);
+  if (type === 'whatsapp') {
+    const number = digits(value || store.whatsapp);
+    return number ? `https://wa.me/${number}` : '';
+  }
+  if (type === 'product') return value ? `#product-${encodeURIComponent(value)}` : '#catalog';
+  if (type === 'category') return value ? `#category-${encodeURIComponent(value)}` : '#catalog';
+  return '';
+}
+
+function followContentLink(item) {
+  if (!item) return;
+  const type = item.link_type || 'none';
+  const value = String(item.link_value || '').trim();
+  if (type === 'product') {
+    const found = products.find(p => p.id === value || p.slug === value || p.name === value);
+    if (found) return openProduct(found.id);
+  }
+  if (type === 'category') {
+    const found = categories.find(c => c.id === value || c.name === value);
+    if (found) {
+      currentCategory = found.id;
+      renderCategories(); renderProducts();
+      document.querySelector('#catalog')?.scrollIntoView({behavior:'smooth'});
+      return;
+    }
+  }
+  const url = resolveContentLink(item);
+  if (!url) return;
+  if (item.link_target === 'new') window.open(url, '_blank', 'noopener'); else location.href = url;
+}
+
+function bannerMedia(item) {
+  const style = `object-fit:${item.fit || 'cover'};object-position:${mediaObjectPosition(item)}`;
+  return item.media_type === 'video'
+    ? `<video src="${escapeHtml(item.media_url)}" autoplay muted loop playsinline preload="metadata" style="${style}"></video>`
+    : `<img src="${escapeHtml(item.media_url)}" alt="${escapeHtml(item.title || 'Banner')}" loading="lazy" style="${style}">`;
+}
+
+function bannerSlide(item, index) {
+  const hasAction = item.link_type && item.link_type !== 'none';
+  return `<article class="promo-banner banner-height-${escapeHtml(item.height || appearance.banner_default_height || 'medium')}" data-banner-index="${index}" data-device="${escapeHtml(item.device || 'all')}" style="--banner-overlay:${Math.max(0,Math.min(100,Number(item.overlay||0)))/100};--banner-align:${escapeHtml(item.text_align || 'left')}">
+    <div class="promo-banner-media">${bannerMedia(item)}</div><div class="promo-banner-overlay"></div>
+    <div class="promo-banner-copy"><div>${item.title ? `<h2>${escapeHtml(item.title)}</h2>` : ''}${item.subtitle ? `<p>${escapeHtml(item.subtitle)}</p>` : ''}${hasAction ? `<button type="button" class="primary-button promo-banner-button" data-content-action="banner" data-content-id="${escapeHtml(item.id)}">${escapeHtml(item.button_text || 'Saiba mais')} <i class="ri-arrow-right-line"></i></button>` : ''}</div></div>
+  </article>`;
+}
+
+function clearBannerTimers() { bannerTimers.forEach(clearInterval); bannerTimers = []; }
+
+function initializeBannerCarousel(root, items) {
+  const slides = $$('.promo-banner', root);
+  if (slides.length < 2) return;
+  let current = 0;
+  const dots = $$('.banner-dot', root);
+  const show = (next) => {
+    if (appearance.banner_loop) current = (next + slides.length) % slides.length;
+    else current = Math.max(0, Math.min(slides.length - 1, next));
+    slides.forEach((slide,i)=>slide.classList.toggle('is-active',i===current));
+    dots.forEach((dot,i)=>dot.classList.toggle('is-active',i===current));
+  };
+  root.querySelector('[data-banner-prev]')?.addEventListener('click',()=>show(current-1));
+  root.querySelector('[data-banner-next]')?.addEventListener('click',()=>show(current+1));
+  dots.forEach((dot,i)=>dot.addEventListener('click',()=>show(i)));
+  show(0);
+  if (appearance.banner_autoplay) {
+    const timer = setInterval(()=>show(current+1), Math.max(2000, Number(appearance.banner_autoplay_delay || 5000)));
+    bannerTimers.push(timer);
+    if (appearance.banner_pause_interaction) {
+      root.addEventListener('mouseenter',()=>clearInterval(timer),{once:true});
+      root.addEventListener('touchstart',()=>clearInterval(timer),{once:true,passive:true});
+    }
+  }
+}
+
+function renderBanners() {
+  clearBannerTimers();
+  const placements = ['after_hero','before_categories','after_categories','before_products','after_products','before_footer'];
+  placements.forEach((placement) => {
+    const slot = $(`slot-${placement}`); if (!slot) return;
+    const items = banners.filter(b => b.placement === placement && b.active !== false);
+    if (!items.length) { slot.innerHTML=''; slot.classList.remove('has-content'); return; }
+    const mode = appearance.banner_display_mode || 'carousel';
+    const content = items.map((item,index)=>bannerSlide(item,index)).join('');
+    if (mode === 'grid') {
+      slot.innerHTML = `<section class="banner-section banner-grid">${content}</section>`;
+    } else if (mode === 'single') {
+      slot.innerHTML = `<section class="banner-section banner-single">${bannerSlide(items[0],0)}</section>`;
+    } else {
+      slot.innerHTML = `<section class="banner-section banner-carousel transition-${escapeHtml(appearance.banner_transition || 'slide')}"><div class="banner-slides">${content}</div>${appearance.banner_arrows && items.length>1 ? '<button class="banner-arrow banner-prev" data-banner-prev aria-label="Anterior"><i class="ri-arrow-left-s-line"></i></button><button class="banner-arrow banner-next" data-banner-next aria-label="Próximo"><i class="ri-arrow-right-s-line"></i></button>' : ''}${appearance.banner_dots && items.length>1 ? `<div class="banner-dots">${items.map((_,i)=>`<button class="banner-dot" aria-label="Banner ${i+1}"></button>`).join('')}</div>` : ''}</section>`;
+      initializeBannerCarousel(slot.querySelector('.banner-carousel'), items);
+    }
+    slot.classList.add('has-content');
+  });
+  $$('[data-content-action="banner"]').forEach(button=>button.addEventListener('click',()=>followContentLink(banners.find(item=>item.id===button.dataset.contentId))));
+}
+
+function galleryMedia(item, index) {
+  const style = `object-fit:${item.fit || 'cover'};object-position:${mediaObjectPosition(item)}`;
+  const media = item.media_type === 'video'
+    ? `<video src="${escapeHtml(item.media_url)}" muted loop playsinline preload="metadata" style="${style}"></video><span class="gallery-video-icon"><i class="ri-play-fill"></i></span>`
+    : `<img src="${escapeHtml(item.media_url)}" alt="${escapeHtml(item.title || 'Galeria')}" loading="lazy" style="${style}">`;
+  return `<article class="gallery-item" data-gallery-index="${index}" tabindex="0"><div class="gallery-media">${media}</div>${item.title || item.description ? `<div class="gallery-item-copy">${item.title?`<h3>${escapeHtml(item.title)}</h3>`:''}${item.description?`<p>${escapeHtml(item.description)}</p>`:''}</div>`:''}</article>`;
+}
+
+function renderGallery() {
+  $$('.gallery-section').forEach(el=>el.remove());
+  if (!gallery.length) return;
+  const placement = appearance.gallery_position || 'after_products';
+  const slot = $(`slot-${placement}`) || $('slot-after_products');
+  if (!slot) return;
+  const section = document.createElement('section');
+  const layout = appearance.gallery_layout || 'grid';
+  section.className = `gallery-section gallery-layout-${layout} gallery-gap-${appearance.gallery_gap || 'medium'} gallery-ratio-${appearance.gallery_ratio || 'square'}`;
+  section.style.setProperty('--gallery-columns', String(Math.max(2,Math.min(5,Number(appearance.gallery_columns||3)))));
+  section.innerHTML = `<div class="gallery-heading">${appearance.gallery_title ? `<h2>${escapeHtml(appearance.gallery_title)}</h2>`:''}${appearance.gallery_subtitle ? `<p>${escapeHtml(appearance.gallery_subtitle)}</p>`:''}</div><div class="gallery-track">${gallery.map(galleryMedia).join('')}</div>${['carousel','horizontal','stories'].includes(layout)&&gallery.length>1?'<button class="gallery-scroll gallery-scroll-prev" type="button"><i class="ri-arrow-left-s-line"></i></button><button class="gallery-scroll gallery-scroll-next" type="button"><i class="ri-arrow-right-s-line"></i></button>':''}`;
+  slot.appendChild(section); slot.classList.add('has-content');
+  const track = section.querySelector('.gallery-track');
+  section.querySelector('.gallery-scroll-prev')?.addEventListener('click',()=>track.scrollBy({left:-track.clientWidth*.8,behavior:'smooth'}));
+  section.querySelector('.gallery-scroll-next')?.addEventListener('click',()=>track.scrollBy({left:track.clientWidth*.8,behavior:'smooth'}));
+  $$('.gallery-item',section).forEach((item)=>{
+    const open=()=> appearance.gallery_lightbox ? openGalleryLightbox(Number(item.dataset.galleryIndex)) : followContentLink(gallery[Number(item.dataset.galleryIndex)]);
+    item.addEventListener('click',open); item.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')open()});
+  });
+  if (appearance.gallery_autoplay && ['carousel','horizontal','stories'].includes(layout)) {
+    const timer=setInterval(()=>{ const end=track.scrollLeft+track.clientWidth>=track.scrollWidth-10; if(end&&appearance.gallery_loop)track.scrollTo({left:0,behavior:'smooth'});else track.scrollBy({left:track.clientWidth*.75,behavior:'smooth'}); },5000); bannerTimers.push(timer);
+  }
+}
+
+function renderGalleryLightbox() {
+  const item = gallery[galleryLightboxIndex]; if (!item) return;
+  const media = $('galleryLightboxMedia');
+  media.innerHTML = item.media_type === 'video' ? `<video src="${escapeHtml(item.media_url)}" controls autoplay playsinline></video>` : `<img src="${escapeHtml(item.media_url)}" alt="${escapeHtml(item.title || 'Galeria')}">`;
+  $('galleryLightboxTitle').textContent = item.title || '';
+  $('galleryLightboxDescription').textContent = item.description || '';
+  $('galleryLightboxTitle').classList.toggle('is-hidden',!item.title);
+  $('galleryLightboxDescription').classList.toggle('is-hidden',!item.description);
+  const copy=$('galleryLightboxDescription').parentElement;
+  copy.querySelector('.gallery-lightbox-action')?.remove();
+  if(item.link_type && item.link_type!=='none'){const btn=document.createElement('button');btn.type='button';btn.className='primary-button gallery-lightbox-action';btn.innerHTML='Saiba mais <i class="ri-arrow-right-line"></i>';btn.addEventListener('click',()=>followContentLink(item));copy.appendChild(btn);}
+}
+function openGalleryLightbox(index) { galleryLightboxIndex=index; renderGalleryLightbox(); $('galleryLightbox').classList.remove('is-hidden'); document.body.classList.add('no-scroll'); }
+function closeGalleryLightbox() { $('galleryLightbox').classList.add('is-hidden'); $('galleryLightboxMedia').innerHTML=''; document.body.classList.remove('no-scroll'); }
+function moveGalleryLightbox(direction) { galleryLightboxIndex=(galleryLightboxIndex+direction+gallery.length)%gallery.length; renderGalleryLightbox(); }
 
 function renderCategories() {
   const buttons = [{ id:'all', name:'Todos', icon:'ri-apps-2-line' }, ...categories.map((category) => ({ id:category.id, name:category.name, icon:category.icon || 'ri-price-tag-3-line' }))];
@@ -394,7 +559,10 @@ function bindEvents() {
   $('checkoutButton').addEventListener('click', checkout);
   $('backToTop').addEventListener('click', () => scrollTo({ top:0, behavior:'smooth' }));
   addEventListener('scroll', () => { if (appearance.show_back_to_top) $('backToTop').classList.toggle('is-hidden', scrollY < 600); });
-  addEventListener('keydown', (event) => { if (event.key === 'Escape') { closeProduct(); closeCart(); } });
+  $$('[data-close-gallery-lightbox]').forEach(el=>el.addEventListener('click',closeGalleryLightbox));
+  $('galleryLightboxPrev')?.addEventListener('click',()=>moveGalleryLightbox(-1));
+  $('galleryLightboxNext')?.addEventListener('click',()=>moveGalleryLightbox(1));
+  addEventListener('keydown', (event) => { if (event.key === 'Escape') { closeProduct(); closeCart(); closeGalleryLightbox(); } if (!$('galleryLightbox')?.classList.contains('is-hidden') && event.key === 'ArrowLeft') moveGalleryLightbox(-1); if (!$('galleryLightbox')?.classList.contains('is-hidden') && event.key === 'ArrowRight') moveGalleryLightbox(1); });
 }
 
 async function load() {
@@ -405,20 +573,26 @@ async function load() {
     if (storeError) throw storeError;
     if (!storeData) return showFatal('Loja não encontrada', 'Esta loja não existe ou ainda não foi publicada.');
     store = storeData;
-    const [{ data: categoryData, error: categoryError }, { data: productData, error: productError }] = await Promise.all([
+    const [
+      { data: categoryData, error: categoryError },
+      { data: productData, error: productError },
+      { data: bannerData, error: bannerError },
+      { data: galleryData, error: galleryError }
+    ] = await Promise.all([
       db.from('store_categories').select('*').eq('store_id', store.id).order('position'),
-      db.from('store_products').select('*').eq('store_id', store.id).eq('active', true).order('position')
+      db.from('store_products').select('*').eq('store_id', store.id).eq('active', true).order('position'),
+      db.from('store_banners').select('*').eq('store_id',store.id).eq('active',true).order('position'),
+      db.from('store_gallery_items').select('*').eq('store_id',store.id).eq('active',true).order('position')
     ]);
-    if (categoryError) throw categoryError;
-    if (productError) throw productError;
-    categories = categoryData || []; products = productData || [];
+    if (categoryError || productError || bannerError || galleryError) throw categoryError || productError || bannerError || galleryError;
+    categories = categoryData || []; products = productData || []; banners = (bannerData || []).filter(item=>{const now=Date.now();return (!item.starts_at||new Date(item.starts_at).getTime()<=now)&&(!item.ends_at||new Date(item.ends_at).getTime()>=now)}); gallery = galleryData || [];
     const productIds = products.map((product) => product.id);
     if (productIds.length) {
       const { data: variationData, error: variationError } = await db.from('store_product_variations').select('*').in('product_id', productIds).order('position');
       if (variationError) throw variationError;
       variations = variationData || [];
     }
-    applyAppearance(); renderHero(); renderStoreInformation(); renderCategories(); renderFeatured(); renderProducts(); renderPaymentMethods(); renderCart(); bindEvents(); setLoadingState(true);
+    applyAppearance(); renderHero(); renderStoreInformation(); renderCategories(); renderFeatured(); renderProducts(); renderBanners(); renderGallery(); renderPaymentMethods(); renderCart(); bindEvents(); setLoadingState(true);
   } catch (error) {
     console.error(error);
     showFatal('Não foi possível abrir a loja', error?.message || 'Tente novamente em alguns instantes.');
