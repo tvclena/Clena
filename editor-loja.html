@@ -171,6 +171,17 @@
           <label class="field"><span>Fundo do rodapé</span><select id="footerBackground"><option value="accent">Cor de destaque</option><option value="primary">Cor principal</option><option value="light">Claro</option><option value="dark">Escuro</option></select></label>
           <label class="field full"><span>Texto do rodapé</span><input id="footerText" maxlength="160" placeholder="© Minha loja. Todos os direitos reservados."></label>
         </div>
+        <div class="social-editor">
+          <div class="subsection-head"><div><h3>Redes sociais</h3><p>Informe links completos ou apenas o usuário. A prévia mostra somente as redes preenchidas.</p></div></div>
+          <div class="form-grid social-fields">
+            <label class="field"><span><i class="ri-instagram-line"></i> Instagram</span><input id="socialInstagram" maxlength="250" placeholder="@sualoja ou https://instagram.com/sualoja"></label>
+            <label class="field"><span><i class="ri-facebook-circle-line"></i> Facebook</span><input id="socialFacebook" maxlength="250" placeholder="facebook.com/sualoja"></label>
+            <label class="field"><span><i class="ri-tiktok-line"></i> TikTok</span><input id="socialTiktok" maxlength="250" placeholder="@sualoja"></label>
+            <label class="field"><span><i class="ri-youtube-line"></i> YouTube</span><input id="socialYoutube" maxlength="250" placeholder="youtube.com/@sualoja"></label>
+            <label class="field"><span><i class="ri-twitter-x-line"></i> X / Twitter</span><input id="socialX" maxlength="250" placeholder="@sualoja"></label>
+            <label class="field"><span><i class="ri-pinterest-line"></i> Pinterest</span><input id="socialPinterest" maxlength="250" placeholder="pinterest.com/sualoja"></label>
+          </div>
+        </div>
         <div class="toggle-list full appearance-toggles"><label><span><i class="ri-instagram-line"></i><b>Mostrar redes sociais</b></span><input type="checkbox" id="showSocialLinks" checked><i></i></label><label><span><i class="ri-whatsapp-line"></i><b>Botão flutuante do WhatsApp</b></span><input type="checkbox" id="floatingWhatsapp" checked><i></i></label><label><span><i class="ri-shopping-cart-line"></i><b>Carrinho flutuante</b></span><input type="checkbox" id="floatingCart" checked><i></i></label></div>
       </article>
 
@@ -191,7 +202,9 @@
           <div class="alp-search"><i class="ri-search-line"></i><span>Buscar produtos</span></div>
           <div class="alp-categories"><span class="active">Todos</span><span>Novidades</span><span>Destaques</span></div>
           <div class="alp-products"><article><div class="alp-image"></div><span class="alp-sale">OFERTA</span><h4>Produto exemplo</h4><p>Descrição curta do produto</p><strong>R$ 29,90</strong><button><i class="ri-add-line"></i></button></article><article><div class="alp-image"></div><h4>Outro produto</h4><p>Descrição curta do produto</p><strong>R$ 49,90</strong><button><i class="ri-add-line"></i></button></article></div>
-          <div class="alp-footer">Sua loja • Instagram • WhatsApp</div>
+          <div class="alp-footer"><span class="alp-footer-text">Sua loja</span><nav class="alp-socials" aria-label="Redes sociais da prévia"></nav></div>
+          <a class="alp-floating-whatsapp" href="#" aria-label="WhatsApp"><i class="ri-whatsapp-line"></i></a>
+          <button class="alp-floating-cart" type="button" aria-label="Carrinho"><i class="ri-shopping-cart-line"></i><b>0</b></button>
         </div>
       </div>
     </aside>

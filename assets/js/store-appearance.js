@@ -2,109 +2,417 @@ const $ = (id) => document.getElementById(id);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
 export const APPEARANCE_DEFAULTS = {
-  theme: 'minimal', cover_type: 'image', cover_video_external_url: '', cover_fit: 'cover', cover_position: 'center', cover_height: 'medium', cover_overlay: 35,
-  logo_shape: 'rounded', hero_alignment: 'left', hero_title: '', hero_subtitle: '', hero_button_text: 'Ver produtos', hero_button_target: 'products',
-  background_color: '#f6f8fc', card_color: '#ffffff', text_color: '#0f172a', muted_color: '#64748b', body_font: 'Manrope', heading_font: 'Manrope', heading_weight: '800', font_scale: 'normal',
-  desktop_columns: 3, product_image_ratio: 'square', card_radius: 'large', card_shadow: 'soft', product_text_alignment: 'left', category_style: 'pills',
-  show_search: true, sticky_categories: false, show_featured: true, show_sale_badge: true, show_product_description: true,
-  button_style: 'rounded', button_hover: 'lift', page_animation: 'fade', card_animation: 'lift', animation_speed: 'normal', scroll_behavior: 'smooth', respect_reduced_motion: true, show_back_to_top: true,
-  header_style: 'transparent', header_position: 'static', footer_style: 'simple', footer_background: 'accent', footer_text: '', show_social_links: true, floating_whatsapp: true, floating_cart: true,
+  theme: 'minimal',
+  cover_type: 'image',
+  cover_video_external_url: '',
+  cover_fit: 'cover',
+  cover_position: 'center',
+  cover_height: 'medium',
+  cover_overlay: 35,
+  logo_shape: 'rounded',
+  hero_alignment: 'left',
+  hero_title: '',
+  hero_subtitle: '',
+  hero_button_text: 'Ver produtos',
+  hero_button_target: 'products',
+  background_color: '#f6f8fc',
+  card_color: '#ffffff',
+  text_color: '#0f172a',
+  muted_color: '#64748b',
+  body_font: 'Manrope',
+  heading_font: 'Manrope',
+  heading_weight: '800',
+  font_scale: 'normal',
+  desktop_columns: 3,
+  product_image_ratio: 'square',
+  card_radius: 'large',
+  card_shadow: 'soft',
+  product_text_alignment: 'left',
+  category_style: 'pills',
+  show_search: true,
+  sticky_categories: false,
+  show_featured: true,
+  show_sale_badge: true,
+  show_product_description: true,
+  button_style: 'rounded',
+  button_hover: 'lift',
+  page_animation: 'fade',
+  card_animation: 'lift',
+  animation_speed: 'normal',
+  scroll_behavior: 'smooth',
+  respect_reduced_motion: true,
+  show_back_to_top: true,
+  header_style: 'transparent',
+  header_position: 'static',
+  footer_style: 'simple',
+  footer_background: 'accent',
+  footer_text: '',
+  show_social_links: true,
+  social_instagram: '',
+  social_facebook: '',
+  social_tiktok: '',
+  social_youtube: '',
+  social_x: '',
+  social_pinterest: '',
+  floating_whatsapp: true,
+  floating_cart: true,
   custom_css: ''
 };
 
 const fieldMap = {
-  coverVideoExternalUrl:'cover_video_external_url', coverFit:'cover_fit', coverPosition:'cover_position', coverHeight:'cover_height', coverOverlay:'cover_overlay', logoShape:'logo_shape', heroAlignment:'hero_alignment', heroTitle:'hero_title', heroSubtitle:'hero_subtitle', heroButtonText:'hero_button_text', heroButtonTarget:'hero_button_target',
-  backgroundColorText:'background_color', cardColorText:'card_color', textColorText:'text_color', mutedColorText:'muted_color', bodyFont:'body_font', headingFont:'heading_font', headingWeight:'heading_weight', fontScale:'font_scale',
-  desktopColumns:'desktop_columns', productImageRatio:'product_image_ratio', cardRadius:'card_radius', cardShadow:'card_shadow', productTextAlignment:'product_text_alignment', categoryStyle:'category_style',
-  showSearch:'show_search', stickyCategories:'sticky_categories', showFeatured:'show_featured', showSaleBadge:'show_sale_badge', showProductDescription:'show_product_description',
-  buttonStyle:'button_style', buttonHover:'button_hover', pageAnimation:'page_animation', cardAnimation:'card_animation', animationSpeed:'animation_speed', scrollBehavior:'scroll_behavior', respectReducedMotion:'respect_reduced_motion', showBackToTop:'show_back_to_top',
-  headerStyle:'header_style', headerPosition:'header_position', footerStyle:'footer_style', footerBackground:'footer_background', footerText:'footer_text', showSocialLinks:'show_social_links', floatingWhatsapp:'floating_whatsapp', floatingCart:'floating_cart', customCss:'custom_css'
+  coverVideoExternalUrl: 'cover_video_external_url',
+  coverFit: 'cover_fit',
+  coverPosition: 'cover_position',
+  coverHeight: 'cover_height',
+  coverOverlay: 'cover_overlay',
+  logoShape: 'logo_shape',
+  heroAlignment: 'hero_alignment',
+  heroTitle: 'hero_title',
+  heroSubtitle: 'hero_subtitle',
+  heroButtonText: 'hero_button_text',
+  heroButtonTarget: 'hero_button_target',
+  backgroundColorText: 'background_color',
+  cardColorText: 'card_color',
+  textColorText: 'text_color',
+  mutedColorText: 'muted_color',
+  bodyFont: 'body_font',
+  headingFont: 'heading_font',
+  headingWeight: 'heading_weight',
+  fontScale: 'font_scale',
+  desktopColumns: 'desktop_columns',
+  productImageRatio: 'product_image_ratio',
+  cardRadius: 'card_radius',
+  cardShadow: 'card_shadow',
+  productTextAlignment: 'product_text_alignment',
+  categoryStyle: 'category_style',
+  showSearch: 'show_search',
+  stickyCategories: 'sticky_categories',
+  showFeatured: 'show_featured',
+  showSaleBadge: 'show_sale_badge',
+  showProductDescription: 'show_product_description',
+  buttonStyle: 'button_style',
+  buttonHover: 'button_hover',
+  pageAnimation: 'page_animation',
+  cardAnimation: 'card_animation',
+  animationSpeed: 'animation_speed',
+  scrollBehavior: 'scroll_behavior',
+  respectReducedMotion: 'respect_reduced_motion',
+  showBackToTop: 'show_back_to_top',
+  headerStyle: 'header_style',
+  headerPosition: 'header_position',
+  footerStyle: 'footer_style',
+  footerBackground: 'footer_background',
+  footerText: 'footer_text',
+  showSocialLinks: 'show_social_links',
+  socialInstagram: 'social_instagram',
+  socialFacebook: 'social_facebook',
+  socialTiktok: 'social_tiktok',
+  socialYoutube: 'social_youtube',
+  socialX: 'social_x',
+  socialPinterest: 'social_pinterest',
+  floatingWhatsapp: 'floating_whatsapp',
+  floatingCart: 'floating_cart',
+  customCss: 'custom_css'
 };
 
-let current = {...APPEARANCE_DEFAULTS};
-let coverType = 'image';
+const themePresets = {
+  minimal: { body_font:'Manrope', heading_font:'Manrope', heading_weight:'800', background_color:'#f6f8fc', card_color:'#ffffff', text_color:'#0f172a', muted_color:'#64748b', card_radius:'large', card_shadow:'soft', button_style:'rounded', hero_alignment:'left' },
+  boutique: { body_font:'Manrope', heading_font:'Playfair Display', heading_weight:'700', background_color:'#fbf7f3', card_color:'#ffffff', text_color:'#2a201c', muted_color:'#7c6f67', card_radius:'small', card_shadow:'soft', button_style:'square', hero_alignment:'center' },
+  vibrant: { body_font:'Poppins', heading_font:'Poppins', heading_weight:'800', background_color:'#fff8ed', card_color:'#ffffff', text_color:'#251537', muted_color:'#765f82', card_radius:'large', card_shadow:'medium', button_style:'pill', hero_alignment:'center' },
+  dark: { body_font:'Inter', heading_font:'Montserrat', heading_weight:'800', background_color:'#0b1120', card_color:'#111827', text_color:'#f8fafc', muted_color:'#94a3b8', card_radius:'medium', card_shadow:'strong', button_style:'rounded', hero_alignment:'left' },
+  organic: { body_font:'Nunito', heading_font:'Fraunces', heading_weight:'700', background_color:'#f1f5ed', card_color:'#fffdf8', text_color:'#1f3024', muted_color:'#647467', card_radius:'large', card_shadow:'soft', button_style:'pill', hero_alignment:'left' },
+  poster: { body_font:'Inter', heading_font:'Anton', heading_weight:'900', background_color:'#ffffff', card_color:'#ffffff', text_color:'#101010', muted_color:'#575757', card_radius:'none', card_shadow:'none', button_style:'square', hero_alignment:'left' }
+};
 
-function emitChange(){
-  document.dispatchEvent(new CustomEvent('store-appearance-change',{detail:collectAppearance()}));
-  updateAppearancePreview();
+const socialMeta = [
+  ['social_instagram','ri-instagram-line','Instagram','https://instagram.com/'],
+  ['social_facebook','ri-facebook-circle-line','Facebook','https://facebook.com/'],
+  ['social_tiktok','ri-tiktok-line','TikTok','https://tiktok.com/@'],
+  ['social_youtube','ri-youtube-line','YouTube','https://youtube.com/@'],
+  ['social_x','ri-twitter-x-line','X','https://x.com/'],
+  ['social_pinterest','ri-pinterest-line','Pinterest','https://pinterest.com/']
+];
+
+let current = { ...APPEARANCE_DEFAULTS };
+let coverType = 'image';
+let previewContext = {};
+let initialized = false;
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>'"]/g, (char) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#039;', '"':'&quot;' }[char]));
 }
-function setChoice(group,value){
-  $$(`#${group} [data-value]`).forEach(b=>b.classList.toggle('active',b.dataset.value===value));
+
+function normalizeSocialUrl(value, base) {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  if (/^https?:\/\//i.test(raw)) return raw;
+  const clean = raw.replace(/^@/, '').replace(/^\/+/, '');
+  if (/^(instagram|facebook|tiktok|youtube|youtu\.be|x|twitter|pinterest)\.com\//i.test(clean)) return `https://${clean}`;
+  return `${base}${clean}`;
 }
-function setTheme(theme){
-  current.theme=theme;
-  $$('#themeChoices [data-theme]').forEach(b=>b.classList.toggle('active',b.dataset.theme===theme));
-  const presets={
-    minimal:{body_font:'Manrope',heading_font:'Manrope',heading_weight:'800',background_color:'#f6f8fc',card_color:'#ffffff',text_color:'#0f172a',muted_color:'#64748b',card_radius:'large',card_shadow:'soft',button_style:'rounded',hero_alignment:'left'},
-    boutique:{body_font:'Manrope',heading_font:'Playfair Display',heading_weight:'700',background_color:'#fbf7f3',card_color:'#ffffff',text_color:'#2a201c',muted_color:'#7c6f67',card_radius:'small',card_shadow:'soft',button_style:'square',hero_alignment:'center'},
-    vibrant:{body_font:'Poppins',heading_font:'Poppins',heading_weight:'800',background_color:'#fff8ed',card_color:'#ffffff',text_color:'#251537',muted_color:'#765f82',card_radius:'large',card_shadow:'medium',button_style:'pill',hero_alignment:'center'},
-    dark:{body_font:'Inter',heading_font:'Montserrat',heading_weight:'800',background_color:'#0b1120',card_color:'#111827',text_color:'#f8fafc',muted_color:'#94a3b8',card_radius:'medium',card_shadow:'strong',button_style:'rounded',hero_alignment:'left'},
-    organic:{body_font:'Nunito',heading_font:'Fraunces',heading_weight:'700',background_color:'#f1f5ed',card_color:'#fffdf8',text_color:'#1f3024',muted_color:'#647467',card_radius:'large',card_shadow:'soft',button_style:'pill',hero_alignment:'left'},
-    poster:{body_font:'Inter',heading_font:'Anton',heading_weight:'900',background_color:'#ffffff',card_color:'#ffffff',text_color:'#101010',muted_color:'#575757',card_radius:'none',card_shadow:'none',button_style:'square',hero_alignment:'left'}
-  };
-  Object.assign(current,presets[theme]||{});
-  applyAppearance(current,coverType,false);
+
+function emitChange() {
+  const detail = collectAppearance();
+  document.dispatchEvent(new CustomEvent('store-appearance-change', { detail }));
+  updateAppearancePreview(previewContext);
+}
+
+function setChoice(group, value) {
+  $$(`#${group} [data-value]`).forEach((button) => button.classList.toggle('active', button.dataset.value === value));
+}
+
+function setTheme(theme) {
+  current.theme = theme;
+  Object.assign(current, themePresets[theme] || {});
+  applyAppearance(current, coverType, false);
   emitChange();
 }
-function syncColor(picker,text){
-  const p=$(picker),t=$(text); if(!p||!t)return;
-  p.addEventListener('input',()=>{t.value=p.value;emitChange()});
-  t.addEventListener('input',()=>{if(/^#[0-9a-f]{6}$/i.test(t.value))p.value=t.value;emitChange()});
-}
-function toggleCoverFields(){
-  $('bannerImageFields')?.classList.toggle('is-hidden',coverType!=='image');
-  $('coverVideoFields')?.classList.toggle('is-hidden',coverType!=='video');
-  setChoice('coverTypeChoices',coverType);
+
+function syncColor(pickerId, textId) {
+  const picker = $(pickerId);
+  const text = $(textId);
+  if (!picker || !text) return;
+  picker.addEventListener('input', () => {
+    text.value = picker.value;
+    emitChange();
+  });
+  text.addEventListener('input', () => {
+    if (/^#[0-9a-f]{6}$/i.test(text.value)) picker.value = text.value;
+    emitChange();
+  });
 }
 
-export function collectAppearance(){
-  const result={...current,theme:current.theme,cover_type:coverType};
-  Object.entries(fieldMap).forEach(([id,key])=>{
-    const el=$(id); if(!el)return;
-    result[key]=el.type==='checkbox'?el.checked:el.type==='range'||el.type==='number'?Number(el.value):el.value;
+function toggleCoverFields() {
+  $('bannerImageFields')?.classList.toggle('is-hidden', coverType !== 'image');
+  $('coverVideoFields')?.classList.toggle('is-hidden', coverType !== 'video');
+  setChoice('coverTypeChoices', coverType);
+}
+
+export function collectAppearance() {
+  const result = { ...current, theme: current.theme, cover_type: coverType };
+  Object.entries(fieldMap).forEach(([id, key]) => {
+    const element = $(id);
+    if (!element) return;
+    if (element.type === 'checkbox') result[key] = element.checked;
+    else if (element.type === 'range' || element.type === 'number') result[key] = Number(element.value);
+    else result[key] = element.value;
   });
   return result;
 }
 
-export function applyAppearance(settings={},type='image',update=true){
-  current={...APPEARANCE_DEFAULTS,...settings}; coverType=type||current.cover_type||'image';
-  $$('#themeChoices [data-theme]').forEach(b=>b.classList.toggle('active',b.dataset.theme===current.theme));
-  Object.entries(fieldMap).forEach(([id,key])=>{const el=$(id);if(!el)return;const v=current[key];if(el.type==='checkbox')el.checked=!!v;else el.value=v??'';});
-  [['backgroundColor','backgroundColorText'],['cardColor','cardColorText'],['textColor','textColorText'],['mutedColor','mutedColorText']].forEach(([p,t])=>{if($(p)&&$(t))$(p).value=$(t).value});
-  $('coverOverlayValue').textContent=`${Number(current.cover_overlay||0)}%`;
-  toggleCoverFields(); if(update)updateAppearancePreview();
+export function applyAppearance(settings = {}, type = 'image', update = true) {
+  current = { ...APPEARANCE_DEFAULTS, ...settings };
+  coverType = type || current.cover_type || 'image';
+  current.cover_type = coverType;
+
+  $$('#themeChoices [data-theme]').forEach((button) => button.classList.toggle('active', button.dataset.theme === current.theme));
+  Object.entries(fieldMap).forEach(([id, key]) => {
+    const element = $(id);
+    if (!element) return;
+    const value = current[key];
+    if (element.type === 'checkbox') element.checked = Boolean(value);
+    else element.value = value ?? '';
+  });
+
+  [['backgroundColor','backgroundColorText'], ['cardColor','cardColorText'], ['textColor','textColorText'], ['mutedColor','mutedColorText']].forEach(([picker, text]) => {
+    if ($(picker) && $(text) && /^#[0-9a-f]{6}$/i.test($(text).value)) $(picker).value = $(text).value;
+  });
+
+  if ($('coverOverlayValue')) $('coverOverlayValue').textContent = `${Number(current.cover_overlay || 0)}%`;
+  toggleCoverFields();
+  if (update) updateAppearancePreview(previewContext);
 }
 
-export function updateAppearancePreview(context={}){
-  const p=$('appearanceLivePreview'); if(!p)return;
-  const a=collectAppearance();
-  p.dataset.theme=a.theme; p.dataset.layout=context.productLayout||'grid';
-  p.style.setProperty('--ap-primary',context.primaryColor||'#2563eb');
-  p.style.setProperty('--ap-accent',context.accentColor||'#0f172a');
-  p.style.setProperty('--ap-bg',a.background_color); p.style.setProperty('--ap-card',a.card_color); p.style.setProperty('--ap-text',a.text_color); p.style.setProperty('--ap-muted',a.muted_color);
-  p.style.setProperty('--ap-body-font',`"${a.body_font}",sans-serif`); p.style.setProperty('--ap-heading-font',`"${a.heading_font}",sans-serif`); p.style.setProperty('--ap-heading-weight',a.heading_weight);
-  p.style.setProperty('--ap-overlay',Number(a.cover_overlay||0)/100); p.style.setProperty('--ap-columns',Math.min(3,Number(a.desktop_columns||3))); p.dataset.radius=a.card_radius; p.dataset.shadow=a.card_shadow; p.dataset.button=a.button_style; p.dataset.align=a.hero_alignment; p.dataset.ratio=a.product_image_ratio;
-  p.querySelector('.alp-copy h3').textContent=a.hero_title||context.storeName||'Minha loja';
-  p.querySelector('.alp-copy p').textContent=a.hero_subtitle||context.description||'Sua descrição aparecerá aqui';
-  const heroBtn=p.querySelector('.alp-copy button'); heroBtn.textContent=a.hero_button_text||'Ver produtos'; heroBtn.hidden=a.hero_button_target==='none';
-  p.querySelector('.alp-search').hidden=!a.show_search; p.querySelector('.alp-sale').hidden=!a.show_sale_badge; p.querySelectorAll('.alp-products article p').forEach(x=>x.hidden=!a.show_product_description);
-  p.querySelector('.alp-footer').hidden=a.footer_style==='hidden'; p.querySelector('.alp-footer').textContent=a.footer_text||'Sua loja • Instagram • WhatsApp';
-  const media=p.querySelector('.alp-media');
-  if(context.coverPreviewUrl){media.style.backgroundImage=`url('${context.coverPreviewUrl}')`;media.innerHTML='';}
-  else if(a.cover_type==='video'){media.style.backgroundImage='';media.innerHTML='<i class="ri-play-circle-fill"></i><span>Vídeo da capa</span>';}
-  else if(a.cover_type==='gradient'){media.style.backgroundImage=`linear-gradient(135deg,${context.primaryColor||'#2563eb'},${context.accentColor||'#0f172a'})`;media.innerHTML='';}
-  const logo=p.querySelector('.alp-logo'); if(context.logoPreviewUrl)logo.innerHTML=`<img src="${context.logoPreviewUrl}" alt="">`; else logo.innerHTML='<i class="ri-store-line"></i>'; logo.dataset.shape=a.logo_shape;
+function renderPreviewProducts(container, products = []) {
+  const fallback = [
+    { name:'Produto exemplo', description:'Descrição curta do produto', price:29.9, sale_price:24.9, image_url:'', featured:true },
+    { name:'Outro produto', description:'Outra descrição do catálogo', price:49.9, sale_price:null, image_url:'', featured:false }
+  ];
+  const list = (products.length ? products : fallback).filter((product) => product.active !== false).slice(0, 4);
+  container.innerHTML = list.map((product) => {
+    const hasSale = Number(product.sale_price || 0) > 0 && Number(product.sale_price) < Number(product.price || 0);
+    const price = hasSale ? product.sale_price : product.price;
+    return `<article>
+      <div class="alp-image" ${product.image_url ? `style="background-image:url('${escapeHtml(product.image_url)}')"` : ''}></div>
+      ${hasSale ? '<span class="alp-sale">OFERTA</span>' : ''}
+      <h4>${escapeHtml(product.name || 'Produto')}</h4>
+      <p>${escapeHtml(product.description || 'Descrição do produto')}</p>
+      <strong>${new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number(price || 0))}</strong>
+      <button type="button"><i class="ri-add-line"></i></button>
+    </article>`;
+  }).join('');
 }
 
-export function initAppearance(settings={},type='image'){
-  applyAppearance(settings,type,false);
-  $$('#themeChoices [data-theme]').forEach(b=>b.addEventListener('click',()=>setTheme(b.dataset.theme)));
-  $$('#coverTypeChoices [data-value]').forEach(b=>b.addEventListener('click',()=>{coverType=b.dataset.value;toggleCoverFields();emitChange()}));
-  Object.keys(fieldMap).forEach(id=>{const el=$(id);if(!el)return;el.addEventListener(el.type==='range'?'input':'change',()=>{if(id==='coverOverlay')$('coverOverlayValue').textContent=`${el.value}%`;emitChange()});if(['text','url','textarea'].includes(el.type)||el.tagName==='TEXTAREA')el.addEventListener('input',emitChange)});
-  syncColor('backgroundColor','backgroundColorText');syncColor('cardColor','cardColorText');syncColor('textColor','textColorText');syncColor('mutedColor','mutedColorText');
-  $('resetAppearanceBtn')?.addEventListener('click',()=>{if(confirm('Restaurar todas as configurações visuais para o padrão?')){applyAppearance(APPEARANCE_DEFAULTS,'image');emitChange()}});
-  $$('[data-preview-device]').forEach(b=>b.addEventListener('click',()=>{$$('[data-preview-device]').forEach(x=>x.classList.toggle('active',x===b));const p=$('appearanceLivePreview');p.classList.toggle('desktop',b.dataset.previewDevice==='desktop');p.classList.toggle('mobile',b.dataset.previewDevice!=='desktop')}));
-  updateAppearancePreview();
+function renderPreviewCategories(container, categories = []) {
+  const names = ['Todos', ...categories.slice(0, 4).map((category) => category.name).filter(Boolean)];
+  if (names.length === 1) names.push('Novidades', 'Destaques');
+  container.innerHTML = names.map((name, index) => `<span class="${index === 0 ? 'active' : ''}">${escapeHtml(name)}</span>`).join('');
 }
 
-window.StoreAppearance={initAppearance,collectAppearance,applyAppearance,updateAppearancePreview,defaults:APPEARANCE_DEFAULTS};
+function renderSocials(container, appearance, context) {
+  const socialValues = { ...appearance };
+  if (!socialValues.social_instagram && context.instagram) socialValues.social_instagram = context.instagram;
+  const links = socialMeta.map(([key, icon, label, base]) => ({ key, icon, label, url: normalizeSocialUrl(socialValues[key], base) })).filter((item) => item.url);
+  container.innerHTML = appearance.show_social_links
+    ? links.map((item) => `<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener" title="${item.label}" aria-label="${item.label}"><i class="${item.icon}"></i></a>`).join('')
+    : '';
+  container.hidden = !appearance.show_social_links || !links.length;
+}
+
+function setPreviewMedia(media, appearance, context) {
+  media.innerHTML = '';
+  media.style.backgroundImage = '';
+  media.style.backgroundSize = appearance.cover_fit || 'cover';
+  media.style.backgroundPosition = appearance.cover_position || 'center';
+
+  if (appearance.cover_type === 'video') {
+    const videoUrl = context.coverVideoPreviewUrl || appearance.cover_video_external_url || context.coverVideoUrl;
+    if (videoUrl) {
+      const video = document.createElement('video');
+      video.src = videoUrl;
+      video.autoplay = true;
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.preload = 'metadata';
+      video.style.objectFit = appearance.cover_fit || 'cover';
+      video.style.objectPosition = appearance.cover_position || 'center';
+      media.appendChild(video);
+    } else {
+      media.innerHTML = '<i class="ri-play-circle-fill"></i><span>Prévia do vídeo da capa</span>';
+    }
+  } else if (appearance.cover_type === 'gradient') {
+    media.style.backgroundImage = `linear-gradient(135deg,${context.primaryColor || '#2563eb'},${context.accentColor || '#0f172a'})`;
+  } else if (context.coverPreviewUrl) {
+    media.style.backgroundImage = `url('${context.coverPreviewUrl}')`;
+  } else {
+    media.style.backgroundImage = `linear-gradient(135deg,${context.primaryColor || '#2563eb'},${context.accentColor || '#0f172a'})`;
+  }
+}
+
+export function updateAppearancePreview(context = {}) {
+  previewContext = { ...previewContext, ...context };
+  const preview = $('appearanceLivePreview');
+  if (!preview) return;
+  const appearance = collectAppearance();
+
+  preview.dataset.theme = appearance.theme;
+  preview.dataset.layout = previewContext.productLayout || 'grid';
+  preview.dataset.radius = appearance.card_radius;
+  preview.dataset.shadow = appearance.card_shadow;
+  preview.dataset.button = appearance.button_style;
+  preview.dataset.buttonHover = appearance.button_hover;
+  preview.dataset.align = appearance.hero_alignment;
+  preview.dataset.ratio = appearance.product_image_ratio;
+  preview.dataset.textAlign = appearance.product_text_alignment;
+  preview.dataset.categoryStyle = appearance.category_style;
+  preview.dataset.headerStyle = appearance.header_style;
+  preview.dataset.headerPosition = appearance.header_position;
+  preview.dataset.footerStyle = appearance.footer_style;
+  preview.dataset.animation = appearance.page_animation;
+  preview.dataset.cardAnimation = appearance.card_animation;
+  preview.dataset.animationSpeed = appearance.animation_speed;
+  preview.dataset.fontScale = appearance.font_scale;
+
+  preview.style.setProperty('--ap-primary', previewContext.primaryColor || '#2563eb');
+  preview.style.setProperty('--ap-accent', previewContext.accentColor || '#0f172a');
+  preview.style.setProperty('--ap-bg', appearance.background_color);
+  preview.style.setProperty('--ap-card', appearance.card_color);
+  preview.style.setProperty('--ap-text', appearance.text_color);
+  preview.style.setProperty('--ap-muted', appearance.muted_color);
+  preview.style.setProperty('--ap-body-font', `"${appearance.body_font}",sans-serif`);
+  preview.style.setProperty('--ap-heading-font', `"${appearance.heading_font}",sans-serif`);
+  preview.style.setProperty('--ap-heading-weight', appearance.heading_weight);
+  preview.style.setProperty('--ap-overlay', Number(appearance.cover_overlay || 0) / 100);
+  preview.style.setProperty('--ap-columns', Math.max(2, Math.min(5, Number(appearance.desktop_columns || 3))));
+
+  const heightMap = { compact:'145px', medium:'210px', large:'285px', fullscreen:'390px' };
+  preview.style.setProperty('--ap-cover-height', heightMap[appearance.cover_height] || heightMap.medium);
+
+  const title = appearance.hero_title || previewContext.storeName || 'Minha loja';
+  const subtitle = appearance.hero_subtitle || previewContext.description || 'Sua descrição aparecerá aqui';
+  preview.querySelector('.alp-copy h3').textContent = title;
+  preview.querySelector('.alp-copy p').textContent = subtitle;
+  const heroButton = preview.querySelector('.alp-copy button');
+  heroButton.textContent = appearance.hero_button_text || 'Ver produtos';
+  heroButton.hidden = appearance.hero_button_target === 'none';
+
+  preview.querySelector('.alp-search').hidden = !appearance.show_search;
+  const categoriesElement = preview.querySelector('.alp-categories');
+  categoriesElement.hidden = false;
+  categoriesElement.classList.toggle('sticky-demo', Boolean(appearance.sticky_categories));
+  renderPreviewCategories(categoriesElement, previewContext.categories || []);
+
+  renderPreviewProducts(preview.querySelector('.alp-products'), previewContext.products || []);
+  preview.querySelectorAll('.alp-products article p').forEach((element) => { element.hidden = !appearance.show_product_description; });
+  preview.querySelectorAll('.alp-sale').forEach((element) => { element.hidden = !appearance.show_sale_badge; });
+
+  const footer = preview.querySelector('.alp-footer');
+  footer.hidden = appearance.footer_style === 'hidden';
+  footer.dataset.background = appearance.footer_background;
+  footer.querySelector('.alp-footer-text').textContent = appearance.footer_text || `${previewContext.storeName || 'Minha loja'} © ${new Date().getFullYear()}`;
+  renderSocials(footer.querySelector('.alp-socials'), appearance, previewContext);
+
+  const whatsapp = preview.querySelector('.alp-floating-whatsapp');
+  whatsapp.hidden = !appearance.floating_whatsapp || !previewContext.whatsapp;
+  whatsapp.href = previewContext.whatsapp ? `https://wa.me/${String(previewContext.whatsapp).replace(/\D/g,'')}` : '#';
+  const cart = preview.querySelector('.alp-floating-cart');
+  cart.hidden = !appearance.floating_cart;
+
+  setPreviewMedia(preview.querySelector('.alp-media'), appearance, previewContext);
+
+  const logo = preview.querySelector('.alp-logo');
+  logo.dataset.shape = appearance.logo_shape;
+  logo.innerHTML = previewContext.logoPreviewUrl ? `<img src="${escapeHtml(previewContext.logoPreviewUrl)}" alt="Logo">` : '<i class="ri-store-line"></i>';
+}
+
+function bindField(id) {
+  const element = $(id);
+  if (!element) return;
+  const eventName = element.type === 'range' ? 'input' : (element.tagName === 'SELECT' || element.type === 'checkbox' ? 'change' : 'input');
+  element.addEventListener(eventName, () => {
+    if (id === 'coverOverlay' && $('coverOverlayValue')) $('coverOverlayValue').textContent = `${element.value}%`;
+    emitChange();
+  });
+}
+
+export function initAppearance(settings = {}, type = 'image') {
+  applyAppearance(settings, type, false);
+  if (!initialized) {
+    initialized = true;
+    $$('#themeChoices [data-theme]').forEach((button) => button.addEventListener('click', () => setTheme(button.dataset.theme)));
+    $$('#coverTypeChoices [data-value]').forEach((button) => button.addEventListener('click', () => {
+      coverType = button.dataset.value;
+      toggleCoverFields();
+      emitChange();
+    }));
+    Object.keys(fieldMap).forEach(bindField);
+    syncColor('backgroundColor','backgroundColorText');
+    syncColor('cardColor','cardColorText');
+    syncColor('textColor','textColorText');
+    syncColor('mutedColor','mutedColorText');
+
+    $('resetAppearanceBtn')?.addEventListener('click', () => {
+      if (!confirm('Restaurar todas as configurações visuais para o padrão?')) return;
+      applyAppearance(APPEARANCE_DEFAULTS, 'image');
+      emitChange();
+    });
+
+    $$('[data-preview-device]').forEach((button) => button.addEventListener('click', () => {
+      $$('[data-preview-device]').forEach((item) => item.classList.toggle('active', item === button));
+      const preview = $('appearanceLivePreview');
+      const desktop = button.dataset.previewDevice === 'desktop';
+      preview.classList.toggle('desktop', desktop);
+      preview.classList.toggle('mobile', !desktop);
+    }));
+  }
+  updateAppearancePreview(previewContext);
+}
+
+window.StoreAppearance = {
+  initAppearance,
+  collectAppearance,
+  applyAppearance,
+  updateAppearancePreview,
+  defaults: APPEARANCE_DEFAULTS
+};
