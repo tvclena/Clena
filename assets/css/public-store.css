@@ -1146,3 +1146,10 @@ body[data-layout="list"] .product-grid {
   }
 }
 
+@media (max-width: 720px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}

@@ -1265,39 +1265,190 @@ function bindEvents() {
   $('galleryLightboxNext')?.addEventListener('click',()=>moveGalleryLightbox(1));
   addEventListener('keydown', (event) => { if (event.key === 'Escape') { closeProduct(); closeCart(); closeGalleryLightbox(); } if (!$('galleryLightbox')?.classList.contains('is-hidden') && event.key === 'ArrowLeft') moveGalleryLightbox(-1); if (!$('galleryLightbox')?.classList.contains('is-hidden') && event.key === 'ArrowRight') moveGalleryLightbox(1); });
 }
-
 async function load() {
   try {
     const slug = slugFromUrl();
-    if (!slug || slug === 'loja') return showFatal('Endereço incompleto', 'Informe o endereço público da loja.');
-    const { data: storeData, error: storeError } = await db.from('stores').select('*').eq('slug', slug).eq('is_published', true).maybeSingle();
-    if (storeError) throw storeError;
-    if (!storeData) return showFatal('Loja não encontrada', 'Esta loja não existe ou ainda não foi publicada.');
+
+    if (!slug || slug === 'loja') {
+      return showFatal(
+        'Endereço incompleto',
+        'Informe o endereço público da loja.'
+      );
+    }
+
+    const {
+      data: storeData,
+      error: storeError
+    } = await db
+      .from('stores')
+      .select('*')
+      .eq('slug', slug)
+      .eq('is_published', true)
+      .maybeSingle();
+
+    if (storeError) {
+      throw storeError;
+    }
+
+    if (!storeData) {
+      return showFatal(
+        'Loja não encontrada',
+        'Esta loja não existe ou ainda não foi publicada.'
+      );
+    }
+
     store = storeData;
+
     const [
-      { data: categoryData, error: categoryError },
-      { data: productData, error: productError },
-      { data: bannerData, error: bannerError },
-      { data: galleryData, error: galleryError }
+      {
+        data: categoryData,
+        error: categoryError
+      },
+      {
+        data: productData,
+        error: productError
+      },
+      {
+        data: bannerData,
+        error: bannerError
+      },
+      {
+        data: galleryData,
+        error: galleryError
+      }
     ] = await Promise.all([
-      db.from('store_categories').select('*').eq('store_id', store.id).order('position'),
-      db.from('store_products').select('*').eq('store_id', store.id).eq('active', true).order('position'),
-      db.from('store_banners').select('*').eq('store_id',store.id).eq('active',true).order('position'),
-      db.from('store_gallery_items').select('*').eq('store_id',store.id).eq('active',true).order('position')
+      db
+        .from('store_categories')
+        .select('*')
+        .eq('store_id', store.id)
+        .order('position'),
+
+      db
+        .from('store_products')
+        .select('*')
+        .eq('store_id', store.id)
+        .eq('active', true)
+        .order('position'),
+
+      db
+        .from('store_banners')
+        .select('*')
+        .eq('store_id', store.id)
+        .eq('active', true)
+        .order('position'),
+
+      db
+        .from('store_gallery_items')
+        .select('*')
+        .eq('store_id', store.id)
+        .eq('active', true)
+        .order('position')
     ]);
-    if (categoryError || productError || bannerError || galleryError) throw categoryError || productError || bannerError || galleryError;
-    categories = categoryData || []; products = productData || []; banners = (bannerData || []).filter(item=>{const now=Date.now();return (!item.starts_at||new Date(item.starts_at).getTime()<=now)&&(!item.ends_at||new Date(item.ends_at).getTime()>=now)}); gallery = galleryData || [];
-    const productIds = products.map((product) => product.id);
+
+    if (
+      categoryError ||
+      productError ||
+      bannerError ||
+      galleryError
+    ) {
+      throw (
+        categoryError ||
+        productError ||
+        bannerError ||
+        galleryError
+      );
+    }
+
+    categories = categoryData || [];
+    products = productData || [];
+
+    banners = (bannerData || []).filter((item) => {
+      const now = Date.now();
+
+      return (
+        (!item.starts_at ||
+          new Date(item.starts_at).getTime() <= now) &&
+        (!item.ends_at ||
+          new Date(item.ends_at).getTime() >= now)
+      );
+    });
+
+    gallery = galleryData || [];
+
+    const productIds = products.map(
+      (product) => product.id
+    );
+
     if (productIds.length) {
-      const { data: variationData, error: variationError } = await db.from('store_product_variations').select('*').in('product_id', productIds).order('position');
-      if (variationError) throw variationError;
+      const {
+        data: variationData,
+        error: variationError
+      } = await db
+        .from('store_product_variations')
+        .select('*')
+        .in('product_id', productIds)
+        .order('position');
+
+      if (variationError) {
+        throw variationError;
+      }
+
       variations = variationData || [];
     }
-    applyAppearance(); renderHero(); renderStoreInformation(); renderCategories(); renderFeatured(); renderProducts(); renderBanners(); renderGallery(); renderPaymentMethods(); renderCart(); bindEvents(); setLoadingState(true);
+
+    applyAppearance();
+    renderHero();
+    renderStoreInformation();
+    renderCategories();
+    renderFeatured();
+    renderProducts();
+    renderBanners();
+    renderGallery();
+    renderPaymentMethods();
+    renderCart();
+    bindEvents();
+    setLoadingState(true);
   } catch (error) {
     console.error(error);
-    showFatal('Não foi possível abrir a loja', error?.message || 'Tente novamente em alguns instantes.');
+
+    showFatal(
+      'Não foi possível abrir a loja',
+      error?.message ||
+        'Tente novamente em alguns instantes.'
+    );
   }
 }
+
+/* =========================================================
+   BLOQUEIO DE ZOOM PELO MOUSE E PELO TECLADO
+   ========================================================= */
+
+document.addEventListener(
+  'wheel',
+  (event) => {
+    if (event.ctrlKey) {
+      event.preventDefault();
+    }
+  },
+  {
+    passive: false
+  }
+);
+
+document.addEventListener('keydown', (event) => {
+  const zoomKeys = [
+    '+',
+    '-',
+    '=',
+    '0'
+  ];
+
+  if (
+    (event.ctrlKey || event.metaKey) &&
+    zoomKeys.includes(event.key)
+  ) {
+    event.preventDefault();
+  }
+});
 
 load();
