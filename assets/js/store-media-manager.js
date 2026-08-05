@@ -38,4 +38,45 @@ function bind(){
  $('bannerList').onclick=e=>{const up=e.target.closest('[data-banner-up]'),down=e.target.closest('[data-banner-down]'),edit=e.target.closest('[data-banner-edit]'),dup=e.target.closest('[data-banner-duplicate]'),d=e.target.closest('[data-banner-delete]');if(up)reorder('store_banners',banners,up.dataset.bannerUp,-1);if(down)reorder('store_banners',banners,down.dataset.bannerDown,1);if(edit)openBanner(edit.dataset.bannerEdit);if(dup)openBanner(dup.dataset.bannerDuplicate,true);if(d)del('store_banners',banners,d.dataset.bannerDelete)};
  $('galleryList').onclick=e=>{const up=e.target.closest('[data-gallery-up]'),down=e.target.closest('[data-gallery-down]'),edit=e.target.closest('[data-gallery-edit]'),d=e.target.closest('[data-gallery-delete]');if(up)reorder('store_gallery_items',gallery,up.dataset.galleryUp,-1);if(down)reorder('store_gallery_items',gallery,down.dataset.galleryDown,1);if(edit)openGallery(edit.dataset.galleryEdit);if(d)del('store_gallery_items',gallery,d.dataset.galleryDelete)};
 }
-export async function initStoreMediaManager(options){ctx={...ctx,...options};const v=$('verificationBadge');v.classList.toggle('is-verified',!!ctx.store.is_verified);v.innerHTML=ctx.store.is_verified?'<i class="ri-verified-badge-fill"></i><div><strong>Loja verificada</strong><small>Identidade confirmada pela administração.</small></div>':'<i class="ri-shield-check-line"></i><div><strong>Loja não verificada</strong><small>A verificação será controlada pelo painel administrativo.</small></div>';bind();await load();return {getBanners:()=>banners,getGallery:()=>gallery}}
+
+
+
+
+
+export async function initStoreMediaManager(options){
+  ctx = { ...ctx, ...options };
+
+  const verificationBadge = $('verificationBadge');
+
+  if (verificationBadge) {
+    const isVerified = ctx.store?.is_verified === true;
+
+    verificationBadge.classList.toggle('is-verified', isVerified);
+
+    verificationBadge.innerHTML = isVerified
+      ? `
+        <i class="ri-verified-badge-fill"></i>
+        <div>
+          <strong>Loja verificada</strong>
+          <small>Identidade confirmada pela administração.</small>
+        </div>
+      `
+      : `
+        <i class="ri-shield-check-line"></i>
+        <div>
+          <strong>Loja não verificada</strong>
+          <small>
+            A verificação será controlada pelo painel administrativo.
+          </small>
+        </div>
+      `;
+  }
+
+  bind();
+  await load();
+
+  return {
+    getBanners: () => [...banners],
+    getGallery: () => [...gallery]
+  };
+}
