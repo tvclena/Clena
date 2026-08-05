@@ -1,5 +1,6 @@
-import { supabase } from './supabase-client.js';
+import { getSupabase } from './supabase-client.js';
 
+const supabase = await getSupabase();
 const $ = (id) => document.getElementById(id);
 const qsa = (selector, root = document) => [...root.querySelectorAll(selector)];
 const money = (value) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(value || 0));
