@@ -232,3 +232,8 @@ body[data-layout="list"] .product-grid {
 .hero-title-row .verified-badge {
   display: none !important;
 }
+
+
+.hero-title-row .verified-badge{
+  display:none!important;
+}
