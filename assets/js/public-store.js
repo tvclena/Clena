@@ -607,11 +607,52 @@ function renderStoreInformation() {
 
 function renderSocialLinks() {
   const values = { ...appearance };
-  if (!values.social_instagram && store.instagram) values.social_instagram = store.instagram;
-  const links = SOCIALS.map(([key, icon, label, base]) => ({ icon, label, url: normalizeSocialUrl(values[key], base) })).filter((item) => item.url);
-  $('socialLinks').innerHTML = appearance.show_social_links ? links.map((item) => `<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener" aria-label="${item.label}" title="${item.label}"><i class="${item.icon}"></i></a>`).join('') : '';
+
+  if (!values.social_instagram && store.instagram) {
+    values.social_instagram = store.instagram;
+  }
+
+  const links = SOCIALS
+    .map(([key, icon, label, base]) => ({
+      icon,
+      label,
+      url: normalizeSocialUrl(values[key], base)
+    }))
+    .filter((item) => item.url);
+
+  const socialLinks = $('socialLinks');
+  const footerSocialColumn = $('footerSocialColumn');
+  const shouldShow =
+    Boolean(appearance.show_social_links) &&
+    links.length > 0;
+
+  if (socialLinks) {
+    socialLinks.innerHTML = shouldShow
+      ? links.map((item) => `
+          <a
+            href="${escapeHtml(item.url)}"
+            target="_blank"
+            rel="noopener"
+            aria-label="${escapeHtml(item.label)}"
+            title="${escapeHtml(item.label)}"
+          >
+            <i class="${escapeHtml(item.icon)}"></i>
+          </a>
+        `).join('')
+      : '';
+  }
+
   updateHeroSocialVisibility();
-  $('footerSocialColumn').classList.toggle('is-hidden', !appearance.show_social_links || !links.length);
+
+  /*
+   * O bloco antigo do rodapé foi removido porque as redes agora
+   * aparecem abaixo do banner. A verificação evita erro caso
+   * algum tema antigo ainda mantenha essa coluna.
+   */
+  footerSocialColumn?.classList.toggle(
+    'is-hidden',
+    !shouldShow
+  );
 }
 
 
