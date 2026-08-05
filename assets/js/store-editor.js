@@ -34,7 +34,53 @@ function fillUI(){const s=state.store;$('headerStoreName').textContent=s.name||'
  setImagePreview('logo',s.logo_url);setImagePreview('banner',s.banner_url);$$('#productLayoutChoices .choice').forEach(x=>x.classList.toggle('active',x.dataset.value===state.layout));renderAll();updateLivePreview()}
 function setImagePreview(kind,url){const target=$(kind==='logo'?'logoPreview':'bannerPreview');if(!url){if(kind==='logo')target.innerHTML='<i class="ri-image-add-line"></i>';else{target.style.backgroundImage='';target.classList.remove('has-image')}return}if(kind==='logo')target.innerHTML=`<img src="${escapeHtml(url)}" alt="Logo">`;else{target.style.backgroundImage=`url('${url}')`;target.classList.add('has-image')}}
 function renderAll(){renderProducts();renderCategories();updateStats();populateCategorySelects();updatePublicationStatus()}
-function updateStats(){const p=state.products.length,c=state.categories.length;$('statProducts').textContent=p;$('statCategories').textContent=c;$('navProductCount').textContent=p;$('statStatus').textContent=state.store.is_published?'Publicada':'Rascunho';const checks=[!!state.store.name,!!state.store.description,!!state.store.logo_url||!!state.pendingImages.logo,p>0,c>0,!!state.store.whatsapp,!!state.store.slug];const done=checks.filter(Boolean).length;const percent=Math.round(done/checks.length*100);$('setupPercent').textContent=`${percent}%`;$('progressRing').style.setProperty('--progress',`${percent*3.6}deg`);const items=[['Nome da loja','Identificação principal',checks[0]],['Descrição','Apresentação da marca',checks[1]],['Logo','Imagem da loja',checks[2]],['Produtos','Ao menos um produto',checks[3]],['WhatsApp','Canal de atendimento',checks[5]],['Endereço público','Link personalizado',checks[6]];$('setupChecklist').innerHTML=items.map(([a,b,d])=>`<div class="check-item ${d?'done':''}"><i class="${d?'ri-check-line':'ri-more-line'}"></i><div><strong>${a}</strong><small>${b}</small></div></div>`).join('')}
+function updateStats(){
+  const p=state.products.length;
+  const c=state.categories.length;
+
+  $('statProducts').textContent=p;
+  $('statCategories').textContent=c;
+  $('navProductCount').textContent=p;
+  $('statStatus').textContent=state.store.is_published?'Publicada':'Rascunho';
+
+  const checks=[
+    !!state.store.name,
+    !!state.store.description,
+    !!state.store.logo_url || !!state.pendingImages.logo,
+    p>0,
+    c>0,
+    !!state.store.whatsapp,
+    !!state.store.slug
+  ];
+
+  const done=checks.filter(Boolean).length;
+  const percent=Math.round(done/checks.length*100);
+
+  $('setupPercent').textContent=`${percent}%`;
+  $('progressRing').style.setProperty('--progress',`${percent*3.6}deg`);
+
+  const items=[
+    ['Nome da loja','Identificação principal',checks[0]],
+    ['Descrição','Apresentação da marca',checks[1]],
+    ['Logo','Imagem da loja',checks[2]],
+    ['Produtos','Ao menos um produto',checks[3]],
+    ['WhatsApp','Canal de atendimento',checks[5]],
+    ['Endereço público','Link personalizado',checks[6]]
+  ];
+
+  $('setupChecklist').innerHTML=items
+    .map(([a,b,d])=>`
+      <div class="check-item ${d?'done':''}">
+        <i class="${d?'ri-check-line':'ri-more-line'}"></i>
+        <div>
+          <strong>${a}</strong>
+          <small>${b}</small>
+        </div>
+      </div>
+    `)
+    .join('');
+}
+
 function populateCategorySelects(){const options=state.categories.map(c=>`<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('');const currentFilter=$('productCategoryFilter').value;$('productCategoryFilter').innerHTML=`<option value="">Todas as categorias</option>${options}`;$('productCategoryFilter').value=currentFilter;$('productCategory').innerHTML=`<option value="">Sem categoria</option>${options}`}
 function filteredProducts(){const term=$('productSearch').value.trim().toLowerCase(),cat=$('productCategoryFilter').value;return state.products.filter(p=>(!term||`${p.name} ${p.sku||''}`.toLowerCase().includes(term))&&(!cat||p.category_id===cat))}
 function renderProducts(){const list=filteredProducts(),body=$('productTableBody');body.innerHTML=list.map(p=>{const cat=state.categories.find(c=>c.id===p.category_id);const sale=p.sale_price&&Number(p.sale_price)<Number(p.price);return `<tr><td><input type="checkbox" data-select-product="${p.id}" ${state.selected.has(p.id)?'checked':''}></td><td><div class="product-cell"><span class="product-thumb">${p.image_url?`<img src="${escapeHtml(p.image_url)}">`:'<i class="ri-image-line"></i>'}</span><div><strong>${escapeHtml(p.name)}</strong><small>${escapeHtml(p.sku||'Sem SKU')}${p.featured?' • Destaque':''}</small></div></div></td><td>${escapeHtml(cat?.name||'Sem categoria')}</td><td><strong>${sale?money(p.sale_price):money(p.price)}</strong>${sale?`<small style="display:block;color:#94a3b8;text-decoration:line-through">${money(p.price)}</small>`:''}</td><td>${p.stock_mode==='unlimited'?'Ilimitado':p.stock_mode==='out'?'Esgotado':Number(p.stock||0)}</td><td><span class="status-pill ${p.active?'':'off'}">${p.active?'Ativo':'Inativo'}</span></td><td><div class="row-actions"><button title="Editar" data-edit-product="${p.id}"><i class="ri-pencil-line"></i></button><button title="Duplicar" data-duplicate-product="${p.id}"><i class="ri-file-copy-line"></i></button><button title="Excluir" data-delete-product="${p.id}"><i class="ri-delete-bin-line"></i></button></div></td></tr>`}).join('');$('productsEmpty').classList.toggle('is-hidden',state.products.length>0);$('selectAllProducts').checked=list.length>0&&list.every(p=>state.selected.has(p.id));updateBulkBar()}
