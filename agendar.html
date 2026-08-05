@@ -1,1 +1,97 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Agendamentos</title><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="./assets/css/public-base.css"></head><body><main class="shell"><section id="hero" class="hero"></section><h2 class="section-title">Escolha um serviço</h2><section id="services" class="grid"></section><section id="booking" class="card hidden" style="padding:20px;margin-top:22px"><div class="row"><h2>Agendar</h2><button id="cancel" class="btn secondary">Cancelar</button></div><div id="selected" class="summary"></div><label class="field">Profissional ou recurso<select id="resource"></select></label><h3>Escolha a data</h3><div id="days" class="calendar"></div><h3>Horários disponíveis</h3><div id="slots" class="slots"></div><label class="field">Nome<input id="name"></label><label class="field">WhatsApp<input id="phone"></label><label class="field">E-mail<input id="email"></label><label id="cpfWrap" class="field hidden">CPF<input id="cpf"></label><label class="field">Observações<textarea id="notes"></textarea></label><label id="termsWrap" class="field hidden"><span><input id="terms" type="checkbox"> Aceito os termos e política de cancelamento</span></label><div id="paymentInfo" class="summary"></div><button id="confirm" class="btn" style="width:100%;margin-top:14px">Confirmar agendamento</button></section></main><script type="module" src="./assets/js/public-scheduling.js"></script></body></html>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <title>Agendamentos</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="/assets/css/public-base.css">
+</head>
+
+<body>
+  <main class="shell">
+    <section id="hero" class="hero"></section>
+
+    <h2 class="section-title">Escolha um serviço</h2>
+
+    <section id="services" class="grid"></section>
+
+    <section
+      id="booking"
+      class="card hidden"
+      style="padding:20px;margin-top:22px"
+    >
+      <div class="row">
+        <h2>Agendar</h2>
+
+        <button id="cancel" class="btn secondary">
+          Cancelar
+        </button>
+      </div>
+
+      <div id="selected" class="summary"></div>
+
+      <label class="field">
+        Profissional ou recurso
+        <select id="resource"></select>
+      </label>
+
+      <h3>Escolha a data</h3>
+      <div id="days" class="calendar"></div>
+
+      <h3>Horários disponíveis</h3>
+      <div id="slots" class="slots"></div>
+
+      <label class="field">
+        Nome
+        <input id="name">
+      </label>
+
+      <label class="field">
+        WhatsApp
+        <input id="phone">
+      </label>
+
+      <label class="field">
+        E-mail
+        <input id="email">
+      </label>
+
+      <label id="cpfWrap" class="field hidden">
+        CPF
+        <input id="cpf">
+      </label>
+
+      <label class="field">
+        Observações
+        <textarea id="notes"></textarea>
+      </label>
+
+      <label id="termsWrap" class="field hidden">
+        <span>
+          <input id="terms" type="checkbox">
+          Aceito os termos e política de cancelamento
+        </span>
+      </label>
+
+      <div id="paymentInfo" class="summary"></div>
+
+      <button
+        id="confirm"
+        class="btn"
+        style="width:100%;margin-top:14px"
+      >
+        Confirmar agendamento
+      </button>
+    </section>
+  </main>
+
+  <script type="module" src="/assets/js/public-scheduling.js"></script>
+</body>
+</html>
