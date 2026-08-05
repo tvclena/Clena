@@ -34,6 +34,8 @@ let variations = [];
 let banners = [];
 let gallery = [];
 let bannerTimers = [];
+let galleryTimers = [];
+let galleryAutoplayStoppedByUser = false;
 let galleryLightboxIndex = 0;
 let cart = [];
 let currentCategory = 'all';
@@ -564,7 +566,557 @@ function bannerSlide(item, index) {
   </article>`;
 }
 
-function clearBannerTimers() { bannerTimers.forEach(clearInterval); bannerTimers = []; }
+function clearGalleryTimers() {
+  galleryTimers.forEach((timer) => {
+    clearInterval(timer);
+  });
+
+  galleryTimers = [];
+}
+
+function stopGalleryAutoplay(section = null) {
+  galleryAutoplayStoppedByUser = true;
+
+  clearGalleryTimers();
+
+  section?.classList.add(
+    'is-user-controlled'
+  );
+}
+
+function getGalleryItems(track) {
+  return $$('.gallery-item', track).filter(
+    (item) => {
+      return (
+        item.offsetWidth > 0 &&
+        item.offsetHeight > 0
+      );
+    }
+  );
+}
+
+function getNearestGalleryIndex(
+  track,
+  items
+) {
+  if (!items.length) {
+    return 0;
+  }
+
+  const trackCenter =
+    track.scrollLeft +
+    track.clientWidth / 2;
+
+  let nearestIndex = 0;
+  let nearestDistance = Infinity;
+
+  items.forEach((item, index) => {
+    const itemCenter =
+      item.offsetLeft +
+      item.offsetWidth / 2;
+
+    const distance = Math.abs(
+      itemCenter - trackCenter
+    );
+
+    if (distance < nearestDistance) {
+      nearestDistance = distance;
+      nearestIndex = index;
+    }
+  });
+
+  return nearestIndex;
+}
+
+function scrollGalleryToIndex(
+  track,
+  index,
+  behavior = 'smooth'
+) {
+  const items = getGalleryItems(track);
+
+  if (!items.length) {
+    return;
+  }
+
+  const safeIndex = Math.max(
+    0,
+    Math.min(
+      items.length - 1,
+      index
+    )
+  );
+
+  const item = items[safeIndex];
+
+  const left =
+    item.offsetLeft -
+    (
+      track.clientWidth -
+      item.offsetWidth
+    ) / 2;
+
+  track.scrollTo({
+    left: Math.max(0, left),
+    behavior
+  });
+}
+
+function moveGalleryCarousel(
+  section,
+  direction,
+  userInitiated = true
+) {
+  const track =
+    section?.querySelector(
+      '.gallery-track'
+    );
+
+  if (!track) {
+    return;
+  }
+
+  const items = getGalleryItems(track);
+
+  if (items.length < 2) {
+    return;
+  }
+
+  if (userInitiated) {
+    stopGalleryAutoplay(section);
+  }
+
+  const current =
+    getNearestGalleryIndex(
+      track,
+      items
+    );
+
+  let next = current + direction;
+
+  if (next >= items.length) {
+    next = appearance.gallery_loop
+      ? 0
+      : items.length - 1;
+  }
+
+  if (next < 0) {
+    next = appearance.gallery_loop
+      ? items.length - 1
+      : 0;
+  }
+
+  scrollGalleryToIndex(
+    track,
+    next
+  );
+}
+
+function initializeGalleryCarousel(
+  section
+) {
+  const track =
+    section?.querySelector(
+      '.gallery-track'
+    );
+
+  if (!track) {
+    return;
+  }
+
+  const items = getGalleryItems(track);
+
+  if (items.length < 2) {
+    return;
+  }
+
+  const stopByInteraction = () => {
+    stopGalleryAutoplay(section);
+  };
+
+  track.addEventListener(
+    'pointerdown',
+    stopByInteraction,
+    {
+      passive: true
+    }
+  );
+
+  track.addEventListener(
+    'touchstart',
+    stopByInteraction,
+    {
+      passive: true
+    }
+  );
+
+  track.addEventListener(
+    'wheel',
+    stopByInteraction,
+    {
+      passive: true
+    }
+  );
+
+  section
+    .querySelector(
+      '.gallery-scroll-prev'
+    )
+    ?.addEventListener(
+      'click',
+      () => {
+        moveGalleryCarousel(
+          section,
+          -1,
+          true
+        );
+      }
+    );
+
+  section
+    .querySelector(
+      '.gallery-scroll-next'
+    )
+    ?.addEventListener(
+      'click',
+      () => {
+        moveGalleryCarousel(
+          section,
+          1,
+          true
+        );
+      }
+    );
+
+  requestAnimationFrame(() => {
+    scrollGalleryToIndex(
+      track,
+      0,
+      'auto'
+    );
+  });
+
+  if (
+    appearance.gallery_autoplay &&
+    !galleryAutoplayStoppedByUser
+  ) {
+    const timer = setInterval(
+      () => {
+        if (
+          document.hidden ||
+          galleryAutoplayStoppedByUser
+        ) {
+          return;
+        }
+
+        moveGalleryCarousel(
+          section,
+          1,
+          false
+        );
+      },
+      5000
+    );
+
+    galleryTimers.push(timer);
+  }
+}
+
+function renderGallery() {
+  clearGalleryTimers();
+
+  $$('.gallery-section').forEach(
+    (element) => {
+      element.remove();
+    }
+  );
+
+  if (!gallery.length) {
+    return;
+  }
+
+  const placement =
+    appearance.gallery_position ||
+    'after_products';
+
+  const slot =
+    $(`slot-${placement}`) ||
+    $('slot-after_products');
+
+  if (!slot) {
+    return;
+  }
+
+  const section =
+    document.createElement(
+      'section'
+    );
+
+  const layout =
+    appearance.gallery_layout ||
+    'grid';
+
+  const supportsNavigation = [
+    'carousel',
+    'horizontal',
+    'stories'
+  ].includes(layout);
+
+  section.className =
+    `gallery-section ` +
+    `gallery-layout-${layout} ` +
+    `gallery-gap-${appearance.gallery_gap || 'medium'} ` +
+    `gallery-ratio-${appearance.gallery_ratio || 'square'}`;
+
+  section.style.setProperty(
+    '--gallery-columns',
+    String(
+      Math.max(
+        2,
+        Math.min(
+          5,
+          Number(
+            appearance.gallery_columns ||
+            3
+          )
+        )
+      )
+    )
+  );
+
+  section.innerHTML = `
+    <div class="gallery-heading">
+      ${
+        appearance.gallery_title
+          ? `<h2>${escapeHtml(
+              appearance.gallery_title
+            )}</h2>`
+          : ''
+      }
+
+      ${
+        appearance.gallery_subtitle
+          ? `<p>${escapeHtml(
+              appearance.gallery_subtitle
+            )}</p>`
+          : ''
+      }
+    </div>
+
+    <div
+      class="gallery-track"
+      ${
+        layout === 'carousel'
+          ? 'data-gallery-carousel="true"'
+          : ''
+      }
+    >
+      ${gallery
+        .map(galleryMedia)
+        .join('')}
+    </div>
+
+    ${
+      supportsNavigation &&
+      gallery.length > 1
+        ? `
+          <button
+            class="gallery-scroll gallery-scroll-prev"
+            type="button"
+            aria-label="Foto anterior"
+          >
+            <i class="ri-arrow-left-s-line"></i>
+          </button>
+
+          <button
+            class="gallery-scroll gallery-scroll-next"
+            type="button"
+            aria-label="Próxima foto"
+          >
+            <i class="ri-arrow-right-s-line"></i>
+          </button>
+        `
+        : ''
+    }
+  `;
+
+  slot.appendChild(section);
+  slot.classList.add('has-content');
+
+  const track =
+    section.querySelector(
+      '.gallery-track'
+    );
+
+  if (layout === 'carousel') {
+    initializeGalleryCarousel(
+      section
+    );
+  } else if (supportsNavigation) {
+    section
+      .querySelector(
+        '.gallery-scroll-prev'
+      )
+      ?.addEventListener(
+        'click',
+        () => {
+          stopGalleryAutoplay(
+            section
+          );
+
+          track.scrollBy({
+            left:
+              -track.clientWidth *
+              0.8,
+            behavior: 'smooth'
+          });
+        }
+      );
+
+    section
+      .querySelector(
+        '.gallery-scroll-next'
+      )
+      ?.addEventListener(
+        'click',
+        () => {
+          stopGalleryAutoplay(
+            section
+          );
+
+          track.scrollBy({
+            left:
+              track.clientWidth *
+              0.8,
+            behavior: 'smooth'
+          });
+        }
+      );
+  }
+
+  $$('.gallery-item', section).forEach(
+    (item) => {
+      const open = () => {
+        stopGalleryAutoplay(
+          section
+        );
+
+        const index = Number(
+          item.dataset.galleryIndex
+        );
+
+        if (
+          appearance.gallery_lightbox
+        ) {
+          openGalleryLightbox(
+            index
+          );
+        } else {
+          followContentLink(
+            gallery[index]
+          );
+        }
+      };
+
+      item.addEventListener(
+        'click',
+        open
+      );
+
+      item.addEventListener(
+        'keydown',
+        (event) => {
+          if (
+            event.key === 'Enter' ||
+            event.key === ' '
+          ) {
+            event.preventDefault();
+
+            open();
+          }
+        }
+      );
+    }
+  );
+
+  if (
+    appearance.gallery_autoplay &&
+    !galleryAutoplayStoppedByUser &&
+    [
+      'horizontal',
+      'stories'
+    ].includes(layout)
+  ) {
+    const timer = setInterval(
+      () => {
+        if (
+          document.hidden ||
+          galleryAutoplayStoppedByUser
+        ) {
+          return;
+        }
+
+        const reachedEnd =
+          track.scrollLeft +
+          track.clientWidth >=
+          track.scrollWidth - 10;
+
+        if (
+          reachedEnd &&
+          appearance.gallery_loop
+        ) {
+          track.scrollTo({
+            left: 0,
+            behavior: 'smooth'
+          });
+        } else if (!reachedEnd) {
+          track.scrollBy({
+            left:
+              track.clientWidth *
+              0.75,
+            behavior: 'smooth'
+          });
+        }
+      },
+      5000
+    );
+
+    galleryTimers.push(timer);
+
+    const stopByInteraction =
+      () => {
+        stopGalleryAutoplay(
+          section
+        );
+      };
+
+    track.addEventListener(
+      'pointerdown',
+      stopByInteraction,
+      {
+        passive: true
+      }
+    );
+
+    track.addEventListener(
+      'touchstart',
+      stopByInteraction,
+      {
+        passive: true
+      }
+    );
+
+    track.addEventListener(
+      'wheel',
+      stopByInteraction,
+      {
+        passive: true
+      }
+    );
+  }
+}
+
+
 
 function initializeBannerCarousel(root, items) {
   const slides = $$('.promo-banner', root);
@@ -657,7 +1209,33 @@ function renderGalleryLightbox() {
   copy.querySelector('.gallery-lightbox-action')?.remove();
   if(item.link_type && item.link_type!=='none'){const btn=document.createElement('button');btn.type='button';btn.className='primary-button gallery-lightbox-action';btn.innerHTML='Saiba mais <i class="ri-arrow-right-line"></i>';btn.addEventListener('click',()=>followContentLink(item));copy.appendChild(btn);}
 }
-function openGalleryLightbox(index) { galleryLightboxIndex=index; renderGalleryLightbox(); $('galleryLightbox').classList.remove('is-hidden'); document.body.classList.add('no-scroll'); }
+
+
+
+
+
+function openGalleryLightbox(index) {
+  galleryAutoplayStoppedByUser = true;
+
+  clearGalleryTimers();
+
+  galleryLightboxIndex = index;
+
+  renderGalleryLightbox();
+
+  $('galleryLightbox')
+    .classList
+    .remove('is-hidden');
+
+  document.body.classList.add(
+    'no-scroll'
+  );
+}
+
+
+
+
+
 function closeGalleryLightbox() { $('galleryLightbox').classList.add('is-hidden'); $('galleryLightboxMedia').innerHTML=''; document.body.classList.remove('no-scroll'); }
 function moveGalleryLightbox(direction) { galleryLightboxIndex=(galleryLightboxIndex+direction+gallery.length)%gallery.length; renderGalleryLightbox(); }
 
