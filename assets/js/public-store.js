@@ -568,28 +568,103 @@ function bannerSlide(item, index) {
 
 function clearBannerTimers() { bannerTimers.forEach(clearInterval); bannerTimers = []; }
 
-function initializeBannerCarousel(root, items) {
-  const slides = $$('.promo-banner', root);
-  if (slides.length < 2) return;
-  let current = 0;
+function initializeBannerCarousel(root) {
+  if (!root) return;
+
+  const track = root.querySelector('.banner-slides');
+  const slides = $$('.promo-banner', track || root);
   const dots = $$('.banner-dot', root);
-  const show = (next) => {
-    if (appearance.banner_loop) current = (next + slides.length) % slides.length;
-    else current = Math.max(0, Math.min(slides.length - 1, next));
-    slides.forEach((slide,i)=>slide.classList.toggle('is-active',i===current));
-    dots.forEach((dot,i)=>dot.classList.toggle('is-active',i===current));
-  };
-  root.querySelector('[data-banner-prev]')?.addEventListener('click',()=>show(current-1));
-  root.querySelector('[data-banner-next]')?.addEventListener('click',()=>show(current+1));
-  dots.forEach((dot,i)=>dot.addEventListener('click',()=>show(i)));
-  show(0);
-  if (appearance.banner_autoplay) {
-    const timer = setInterval(()=>show(current+1), Math.max(2000, Number(appearance.banner_autoplay_delay || 5000)));
-    bannerTimers.push(timer);
-    if (appearance.banner_pause_interaction) {
-      root.addEventListener('mouseenter',()=>clearInterval(timer),{once:true});
-      root.addEventListener('touchstart',()=>clearInterval(timer),{once:true,passive:true});
+
+  if (!track || slides.length < 2) return;
+
+  let current = 0;
+  let autoplayTimer = null;
+  let stoppedByUser = false;
+
+  const normalizeIndex = (index) => {
+    if (appearance.banner_loop) {
+      return (index + slides.length) % slides.length;
     }
+
+    return Math.max(0, Math.min(slides.length - 1, index));
+  };
+
+  const scrollToIndex = (index, behavior = 'smooth') => {
+    current = normalizeIndex(index);
+    const slide = slides[current];
+    if (!slide) return;
+
+    track.scrollTo({
+      left: Math.max(0, slide.offsetLeft - track.offsetLeft),
+      behavior
+    });
+
+    dots.forEach((dot, dotIndex) => {
+      dot.classList.toggle('is-active', dotIndex === current);
+    });
+  };
+
+  const stopAutoplay = () => {
+    stoppedByUser = true;
+    if (autoplayTimer) {
+      clearInterval(autoplayTimer);
+      autoplayTimer = null;
+    }
+  };
+
+  root.querySelector('[data-banner-prev]')?.addEventListener('click', () => {
+    stopAutoplay();
+    scrollToIndex(current - 1);
+  });
+
+  root.querySelector('[data-banner-next]')?.addEventListener('click', () => {
+    stopAutoplay();
+    scrollToIndex(current + 1);
+  });
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      stopAutoplay();
+      scrollToIndex(index);
+    });
+  });
+
+  if (appearance.banner_pause_interaction) {
+    ['pointerdown', 'touchstart', 'wheel'].forEach((eventName) => {
+      track.addEventListener(eventName, stopAutoplay, { passive: true });
+    });
+  }
+
+  track.addEventListener('scroll', () => {
+    window.requestAnimationFrame(() => {
+      const reference = track.scrollLeft + 8;
+      let nearestIndex = 0;
+      let nearestDistance = Infinity;
+
+      slides.forEach((slide, index) => {
+        const distance = Math.abs(slide.offsetLeft - reference);
+        if (distance < nearestDistance) {
+          nearestDistance = distance;
+          nearestIndex = index;
+        }
+      });
+
+      current = nearestIndex;
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('is-active', index === current);
+      });
+    });
+  }, { passive: true });
+
+  scrollToIndex(0, 'auto');
+
+  if (appearance.banner_autoplay) {
+    autoplayTimer = setInterval(() => {
+      if (document.hidden || stoppedByUser) return;
+      scrollToIndex(current + 1);
+    }, Math.max(2000, Number(appearance.banner_autoplay_delay || 5000)));
+
+    bannerTimers.push(autoplayTimer);
   }
 }
 
@@ -608,7 +683,7 @@ function renderBanners() {
       slot.innerHTML = `<section class="banner-section banner-single">${bannerSlide(items[0],0)}</section>`;
     } else {
       slot.innerHTML = `<section class="banner-section banner-carousel transition-${escapeHtml(appearance.banner_transition || 'slide')}"><div class="banner-slides">${content}</div>${appearance.banner_arrows && items.length>1 ? '<button class="banner-arrow banner-prev" data-banner-prev aria-label="Anterior"><i class="ri-arrow-left-s-line"></i></button><button class="banner-arrow banner-next" data-banner-next aria-label="Próximo"><i class="ri-arrow-right-s-line"></i></button>' : ''}${appearance.banner_dots && items.length>1 ? `<div class="banner-dots">${items.map((_,i)=>`<button class="banner-dot" aria-label="Banner ${i+1}"></button>`).join('')}</div>` : ''}</section>`;
-      initializeBannerCarousel(slot.querySelector('.banner-carousel'), items);
+      initializeBannerCarousel(slot.querySelector('.banner-carousel'));
     }
     slot.classList.add('has-content');
   });

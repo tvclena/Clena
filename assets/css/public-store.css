@@ -369,3 +369,166 @@ body[data-layout="list"] .product-grid {
   }
 }
 
+/* =========================================================
+   CLENA — CARROSSEL VISUAL EM CARDS
+   Corrige o modo Carrossel dos banners para o mesmo padrão
+   visual da galeria: vários cards lado a lado no computador
+   e um card com prévia do próximo no celular.
+   ========================================================= */
+.banner-carousel {
+  position: relative;
+  overflow: visible !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+.banner-carousel .banner-slides {
+  display: flex !important;
+  align-items: stretch;
+  gap: 16px;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 38px 16px 2px;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+}
+
+.banner-carousel .banner-slides::-webkit-scrollbar {
+  display: none;
+}
+
+.banner-carousel .promo-banner,
+.banner-carousel .promo-banner.is-active {
+  display: block !important;
+  flex: 0 0 clamp(250px, 27vw, 340px);
+  width: clamp(250px, 27vw, 340px);
+  min-height: 0 !important;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  border-radius: 22px;
+  overflow: hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  box-shadow: var(--shadow-soft);
+  background: var(--card);
+}
+
+.banner-carousel .promo-banner-media,
+.banner-carousel .promo-banner-overlay {
+  position: absolute;
+  inset: 0;
+}
+
+.banner-carousel .promo-banner-media img,
+.banner-carousel .promo-banner-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.banner-carousel .promo-banner-copy {
+  position: absolute;
+  inset: auto 0 0;
+  min-height: 0 !important;
+  padding: 54px 18px 18px;
+  display: block;
+  background: linear-gradient(to top, rgba(2, 6, 23, .88), rgba(2, 6, 23, 0));
+  text-align: left !important;
+}
+
+.banner-carousel .promo-banner-copy > div {
+  max-width: none;
+  margin: 0 !important;
+}
+
+.banner-carousel .promo-banner-copy h2 {
+  margin: 0;
+  font-size: clamp(1.1rem, 2vw, 1.55rem);
+  line-height: 1.12;
+  letter-spacing: -.025em;
+}
+
+.banner-carousel .promo-banner-copy p {
+  margin: 7px 0 0;
+  font-size: .82rem;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.banner-carousel .promo-banner-button {
+  min-height: 38px;
+  margin-top: 12px;
+  padding: 0 13px;
+  font-size: .76rem;
+}
+
+.banner-carousel .banner-arrow {
+  top: 50%;
+  width: 42px;
+  height: 42px;
+  transform: translateY(-50%);
+}
+
+.banner-carousel .banner-prev {
+  left: 8px;
+}
+
+.banner-carousel .banner-next {
+  right: 8px;
+}
+
+.banner-carousel .banner-dots {
+  position: static;
+  transform: none;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.banner-carousel .banner-dot {
+  background: color-mix(in srgb, var(--text) 26%, transparent);
+}
+
+.banner-carousel .banner-dot.is-active {
+  background: var(--primary);
+}
+
+@media (max-width: 720px) {
+  .banner-carousel .banner-slides {
+    gap: 10px;
+    padding: 3px 34px 12px 1px;
+  }
+
+  .banner-carousel .promo-banner,
+  .banner-carousel .promo-banner.is-active {
+    flex: 0 0 84%;
+    width: 84%;
+    aspect-ratio: 4 / 5;
+    border-radius: 20px;
+  }
+
+  .banner-carousel .banner-arrow {
+    display: none !important;
+  }
+
+  .banner-carousel .promo-banner-copy {
+    padding: 48px 15px 15px;
+  }
+}
+
+@media (max-width: 440px) {
+  .banner-carousel .promo-banner,
+  .banner-carousel .promo-banner.is-active {
+    flex-basis: 86%;
+    width: 86%;
+  }
+}
+
