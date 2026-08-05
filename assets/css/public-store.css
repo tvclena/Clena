@@ -2209,3 +2209,66 @@ body[data-header-style="floating"] .header-cart {
     grid-template-columns: 1fr !important;
   }
 }
+
+/* =========================================================
+   CLENA — CORREÇÃO REDES NO COMPUTADOR
+   Evita sobreposição com a faixa de informações da loja
+   ========================================================= */
+
+.hero-social-section {
+  margin-top: 18px !important;
+  margin-bottom: 18px !important;
+}
+
+.hero-social-section + .store-info {
+  margin-top: 0 !important;
+}
+
+.hero-social-card {
+  min-height: 76px !important;
+  padding: 14px 20px !important;
+}
+
+.hero-social-copy strong {
+  font-size: .94rem !important;
+}
+
+.hero-social-links {
+  gap: 8px !important;
+}
+
+.hero-social-links a {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 13px !important;
+}
+
+@media (min-width: 721px) {
+  .hero-social-section {
+    position: relative !important;
+    z-index: 5 !important;
+  }
+
+  .store-info {
+    position: relative !important;
+    z-index: 4 !important;
+  }
+
+  .hero-social-card {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero-social-section {
+    margin-top: 12px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .hero-social-section + .store-info {
+    margin-top: 0 !important;
+  }
+}
+
