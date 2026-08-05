@@ -2030,3 +2030,183 @@ body[data-header-style="floating"] .header-cart {
   }
 }
 
+/* =========================================================
+   CLENA — SACOLA DO TOPO SEMPRE VISÍVEL
+   ========================================================= */
+
+#headerCartButton {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  position: relative !important;
+  z-index: 20 !important;
+  flex: 0 0 auto !important;
+}
+
+#headerCartButton.is-hidden {
+  display: inline-flex !important;
+}
+
+.header-actions {
+  position: relative !important;
+  z-index: 21 !important;
+}
+
+#headerCartButton i {
+  display: inline-block !important;
+  font-size: 20px !important;
+}
+
+#headerCartCount {
+  display: grid !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+@media (max-width: 720px) {
+  #headerCartButton {
+    width: 44px !important;
+    min-width: 44px !important;
+    height: 44px !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  #headerCartButton span {
+    display: none !important;
+  }
+
+  #headerCartCount {
+    position: absolute !important;
+    top: -6px !important;
+    right: -6px !important;
+    min-width: 20px !important;
+    height: 20px !important;
+    padding: 0 5px !important;
+    transform: none !important;
+    font-size: .65rem !important;
+  }
+}
+
+/* =========================================================
+   CLENA — REDES SOCIAIS ABAIXO DO BANNER
+   ========================================================= */
+
+.hero-social-section {
+  position: relative;
+  z-index: 6;
+  margin-top: 18px;
+}
+
+.hero-social-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+
+  min-height: 88px;
+  padding: 18px 22px;
+
+  border: 1px solid var(--line);
+  border-radius: 20px;
+
+  background: color-mix(
+    in srgb,
+    var(--card) 94%,
+    transparent
+  );
+
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(16px);
+}
+
+.hero-social-copy {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.hero-social-copy strong {
+  font-size: .98rem;
+  color: var(--text);
+}
+
+.hero-social-links {
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hero-social-links a {
+  width: 44px;
+  height: 44px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid var(--line);
+  border-radius: 14px;
+
+  background: var(--card);
+  color: var(--primary);
+
+  font-size: 21px;
+  opacity: 1 !important;
+
+  transition:
+    transform var(--animation-speed),
+    border-color var(--animation-speed),
+    box-shadow var(--animation-speed);
+}
+
+.hero-social-links a:hover {
+  transform: translateY(-3px);
+  border-color: var(--primary);
+  box-shadow: 0 10px 24px color-mix(
+    in srgb,
+    var(--primary) 18%,
+    transparent
+  );
+}
+
+/* O rodapé deixa de reservar coluna para redes */
+.footer-inner {
+  grid-template-columns: 1.5fr 1fr !important;
+}
+
+@media (max-width: 720px) {
+  .hero-social-section {
+    margin-top: 12px;
+  }
+
+  .hero-social-card {
+    align-items: flex-start;
+    flex-direction: column;
+
+    min-height: 0;
+    padding: 15px;
+
+    border-radius: 16px;
+  }
+
+  .hero-social-links {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .hero-social-links a {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+  }
+
+  .footer-inner {
+    grid-template-columns: 1fr !important;
+  }
+}
+

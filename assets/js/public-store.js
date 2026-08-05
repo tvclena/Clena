@@ -426,10 +426,7 @@ function applyAppearance() {
       store.checkout_mode === 'catalog_only'
   );
 
-  $('headerCartButton')?.classList.toggle(
-    'is-hidden',
-    store.checkout_mode === 'catalog_only'
-  );
+  $('headerCartButton')?.classList.remove('is-hidden');
 
   $('backToTop')?.classList.toggle(
     'enabled',
@@ -613,6 +610,7 @@ function renderSocialLinks() {
   if (!values.social_instagram && store.instagram) values.social_instagram = store.instagram;
   const links = SOCIALS.map(([key, icon, label, base]) => ({ icon, label, url: normalizeSocialUrl(values[key], base) })).filter((item) => item.url);
   $('socialLinks').innerHTML = appearance.show_social_links ? links.map((item) => `<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener" aria-label="${item.label}" title="${item.label}"><i class="${item.icon}"></i></a>`).join('') : '';
+  updateHeroSocialVisibility();
   $('footerSocialColumn').classList.toggle('is-hidden', !appearance.show_social_links || !links.length);
 }
 
@@ -1687,6 +1685,21 @@ function checkout() {
   if (store.order_note) message.push('', store.order_note);
   window.open(`https://wa.me/${digits(store.whatsapp)}?text=${encodeURIComponent(message.join('\n'))}`, '_blank', 'noopener');
 }
+
+function updateHeroSocialVisibility() {
+  const socialContainer = $('socialLinks');
+  const socialSection = $('heroSocialSection');
+
+  if (!socialSection || !socialContainer) return;
+
+  const hasLinks = socialContainer.querySelector('a') !== null;
+
+  socialSection.classList.toggle(
+    'is-hidden',
+    !hasLinks
+  );
+}
+
 function bindEvents() {
   $('searchInput')?.addEventListener('input', () => {
     const clearSearch = $('clearSearch');
