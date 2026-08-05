@@ -716,12 +716,22 @@ function getGalleryItems(track) {
 function getNearestGalleryIndex(track, items) {
   if (!items.length) return 0;
 
-  const reference = track.scrollLeft + 8;
+  const trackCenter =
+    track.scrollLeft +
+    track.clientWidth / 2;
+
   let nearestIndex = 0;
   let nearestDistance = Infinity;
 
   items.forEach((item, index) => {
-    const distance = Math.abs(item.offsetLeft - reference);
+    const itemCenter =
+      item.offsetLeft +
+      item.offsetWidth / 2;
+
+    const distance = Math.abs(
+      itemCenter - trackCenter
+    );
+
     if (distance < nearestDistance) {
       nearestDistance = distance;
       nearestIndex = index;
@@ -731,16 +741,47 @@ function getNearestGalleryIndex(track, items) {
   return nearestIndex;
 }
 
-function scrollGalleryToIndex(track, index, behavior = 'smooth') {
+function scrollGalleryToIndex(
+  track,
+  index,
+  behavior = 'smooth'
+) {
   const items = getGalleryItems(track);
+
   if (!items.length) return;
 
-  const safeIndex = Math.max(0, Math.min(items.length - 1, index));
+  const safeIndex = Math.max(
+    0,
+    Math.min(items.length - 1, index)
+  );
+
   const target = items[safeIndex];
 
+  const left =
+    target.offsetLeft -
+    (track.clientWidth - target.offsetWidth) / 2;
+
   track.scrollTo({
-    left: Math.max(0, target.offsetLeft - 2),
+    left: Math.max(0, left),
     behavior
+  });
+}
+
+
+
+function updateGalleryCenterItem(track) {
+  const items = getGalleryItems(track);
+
+  if (!items.length) return;
+
+  const centerIndex =
+    getNearestGalleryIndex(track, items);
+
+  items.forEach((item, index) => {
+    item.classList.toggle(
+      'is-center',
+      index === centerIndex
+    );
   });
 }
 
@@ -770,6 +811,37 @@ function initializeGalleryCarousel(section) {
   if (!track) return;
 
   const items = getGalleryItems(track);
+
+
+  let galleryScrollFrame = null;
+
+const refreshCenterItem = () => {
+  if (galleryScrollFrame) {
+    cancelAnimationFrame(galleryScrollFrame);
+  }
+
+  galleryScrollFrame =
+    requestAnimationFrame(() => {
+      updateGalleryCenterItem(track);
+      galleryScrollFrame = null;
+    });
+};
+
+track.addEventListener(
+  'scroll',
+  refreshCenterItem,
+  {
+    passive: true
+  }
+);
+
+window.addEventListener(
+  'resize',
+  refreshCenterItem,
+  {
+    passive: true
+  }
+);
   if (items.length < 2) return;
 
   const stopByInteraction = () => stopGalleryAutoplay(section);
@@ -786,7 +858,17 @@ function initializeGalleryCarousel(section) {
     moveGalleryCarousel(section, 1, true);
   });
 
-  requestAnimationFrame(() => scrollGalleryToIndex(track, 0, 'auto'));
+requestAnimationFrame(() => {
+  scrollGalleryToIndex(
+    track,
+    items.length >= 2 ? 1 : 0,
+    'auto'
+  );
+
+  updateGalleryCenterItem(track);
+});
+
+
 
   if (appearance.gallery_autoplay && !galleryAutoplayStoppedByUser) {
     const timer = setInterval(() => {

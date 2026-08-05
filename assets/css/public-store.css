@@ -362,13 +362,150 @@ body[data-layout="list"] .product-grid {
   }
 }
 
-@media (max-width: 440px) {
+/* =========================================================
+   CARROSSEL — 3 CARDS, CENTRO EM DESTAQUE
+   ========================================================= */
+
+.gallery-layout-carousel {
+  position: relative;
+  overflow: hidden;
+}
+
+.gallery-layout-carousel .gallery-track {
+  display: flex !important;
+  grid-template-columns: none !important;
+  align-items: center;
+  gap: 12px !important;
+  width: 100%;
+
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+
+  padding: 18px 0 22px !important;
+
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+
+  /*
+   * IMPORTANTE:
+   * permite deslizar as fotos e também rolar a página para baixo
+   * quando o dedo ou o mouse estiver sobre o carrossel.
+   */
+  touch-action: auto;
+}
+
+.gallery-layout-carousel .gallery-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* Exatamente 3 itens visíveis no computador */
+.gallery-layout-carousel .gallery-item {
+  flex: 0 0 calc((100% - 24px) / 3) !important;
+  width: calc((100% - 24px) / 3) !important;
+  min-width: 0;
+
+  margin: 0;
+  overflow: hidden;
+
+  border-radius: 18px;
+  background: var(--card);
+  box-shadow: var(--shadow-soft);
+
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+
+  opacity: .68;
+  transform: scale(.88);
+
+  transition:
+    transform .35s ease,
+    opacity .35s ease,
+    box-shadow .35s ease;
+}
+
+/* Card que estiver no meio */
+.gallery-layout-carousel .gallery-item.is-center {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 2;
+  box-shadow: 0 16px 38px rgba(15, 23, 42, .18);
+}
+
+.gallery-layout-carousel .gallery-media {
+  width: 100%;
+  aspect-ratio: 4 / 3 !important;
+  min-height: 0 !important;
+  overflow: hidden;
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--text) 5%, var(--card));
+}
+
+.gallery-layout-carousel .gallery-media img,
+.gallery-layout-carousel .gallery-media video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.gallery-layout-carousel .gallery-item-copy {
+  display: none !important;
+}
+
+.gallery-layout-carousel .gallery-scroll {
+  top: 50%;
+  width: 38px;
+  height: 38px;
+  transform: translateY(-50%);
+  border: 1px solid rgba(255, 255, 255, .75);
+  background: rgba(15, 23, 42, .72);
+  color: #fff;
+}
+
+.gallery-layout-carousel .gallery-scroll-prev {
+  left: 8px;
+}
+
+.gallery-layout-carousel .gallery-scroll-next {
+  right: 8px;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
   .gallery-layout-carousel .gallery-item {
-    flex-basis: calc(86% - 4px) !important;
-    width: calc(86% - 4px) !important;
+    flex-basis: calc((100% - 20px) / 3) !important;
+    width: calc((100% - 20px) / 3) !important;
+  }
+
+  .gallery-layout-carousel .gallery-track {
+    gap: 10px !important;
   }
 }
 
+/* Celular: um central e partes dos laterais */
+@media (max-width: 720px) {
+  .gallery-layout-carousel .gallery-track {
+    gap: 10px !important;
+    padding: 14px 12% 18px !important;
+  }
+
+  .gallery-layout-carousel .gallery-item {
+    flex: 0 0 76% !important;
+    width: 76% !important;
+    transform: scale(.9);
+  }
+
+  .gallery-layout-carousel .gallery-item.is-center {
+    transform: scale(1);
+  }
+
+  .gallery-layout-carousel .gallery-scroll {
+    display: none !important;
+  }
+}
 /* =========================================================
    CLENA — CARROSSEL VISUAL EM CARDS
    Corrige o modo Carrossel dos banners para o mesmo padrão
