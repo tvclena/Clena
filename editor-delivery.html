@@ -317,6 +317,76 @@ body{background:linear-gradient(180deg,#f8fafc 0,#f1f5f9 100%);min-height:100vh}
 }
 </style>
 
+
+<style id="clenaTechnicalSheetsPhotoStatusStyles">
+.technical-linked-item-preview{
+  margin-top:14px;
+  padding:12px;
+  border:1px solid #e2e8f0;
+  border-radius:15px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:linear-gradient(180deg,#fff,#f8fafc);
+}
+.technical-linked-item-image{
+  width:66px;
+  height:66px;
+  flex:0 0 66px;
+  border-radius:15px;
+  background:#f1f5f9;
+  color:#94a3b8;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  font-size:24px;
+  box-shadow:inset 0 0 0 1px #e2e8f0;
+}
+.technical-linked-item-image img{width:100%;height:100%;object-fit:cover}
+.technical-linked-item-preview small,
+.technical-linked-item-preview strong,
+.technical-linked-item-preview span{display:block}
+.technical-linked-item-preview small{font-size:8px;color:#94a3b8;letter-spacing:.12em;font-weight:800}
+.technical-linked-item-preview strong{font-size:13px;margin-top:3px}
+.technical-linked-item-preview span{font-size:10px;color:#ea580c;margin-top:3px;font-weight:800}
+
+.technical-sheet-main-photo{
+  width:52px;
+  height:52px;
+  flex:0 0 52px;
+  border-radius:14px;
+  overflow:hidden;
+  background:#fff7ed;
+  color:#ea580c;
+  display:grid;
+  place-items:center;
+  box-shadow:inset 0 0 0 1px #fed7aa;
+}
+.technical-sheet-main-photo img{width:100%;height:100%;object-fit:cover}
+.technical-sheet-status.inactive{
+  background:#e2e8f0;
+  color:#475569;
+}
+.technical-sheet-card.is-inactive{
+  opacity:.72;
+  background:#f8fafc;
+}
+.technical-status-row{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-top:4px;
+}
+.technical-status-dot{
+  width:7px;height:7px;border-radius:50%;background:#10b981;display:inline-block
+}
+.technical-status-dot.inactive{background:#94a3b8}
+</style>
+
+<style>
+.technical-cloud-badge{display:inline-flex;align-items:center;gap:5px;margin-top:5px;padding:5px 8px;border-radius:999px;background:#ecfdf5;color:#047857;font-size:8px;font-weight:800}
+.ri-spin{display:inline-block;animation:clenaSpin .8s linear infinite}@keyframes clenaSpin{to{transform:rotate(360deg)}}
+</style>
 </head>
 <body>
   <div id="pageLoader" class="page-loader">
@@ -533,14 +603,20 @@ body{background:linear-gradient(180deg,#f8fafc 0,#f1f5f9 100%);min-height:100vh}
           <section class="technical-layout">
             <article class="panel-card technical-list-card">
               <div class="card-head technical-list-head">
-                <div><small>CONTROLE DE CUSTOS</small><h3>Fichas cadastradas</h3></div>
+                <div><small>CONTROLE DE CUSTOS</small><h3>Fichas cadastradas</h3><span class="technical-cloud-badge"><i class="ri-cloud-line"></i>Salvas no Supabase</span></div>
                 <div class="technical-list-tools">
                   <label class="search-field technical-search"><i class="ri-search-line"></i><input id="technicalSearch" type="search" placeholder="Buscar ficha ou produto..." /></label>
                   <select id="technicalStatusFilter">
-                    <option value="">Todas</option>
-                    <option value="healthy">Rentáveis</option>
-                    <option value="attention">Atenção</option>
-                    <option value="critical">Críticas</option>
+                    <option value="">Todas as fichas</option>
+                    <optgroup label="Status">
+                      <option value="active">Ativas</option>
+                      <option value="inactive">Inativas</option>
+                    </optgroup>
+                    <optgroup label="Rentabilidade">
+                      <option value="healthy">Rentáveis</option>
+                      <option value="attention">Atenção</option>
+                      <option value="critical">Críticas</option>
+                    </optgroup>
                   </select>
                 </div>
               </div>
@@ -874,6 +950,22 @@ body{background:linear-gradient(180deg,#f8fafc 0,#f1f5f9 100%);min-height:100vh}
                   <span>Preço de venda</span>
                   <div class="input-prefix"><b>R$</b><input id="technicalSalePrice" inputmode="decimal" placeholder="0,00" /></div>
                 </label>
+                <label class="field">
+                  <span>Status da ficha</span>
+                  <select id="technicalActive">
+                    <option value="true">Ativa</option>
+                    <option value="false">Inativa</option>
+                  </select>
+                </label>
+              </div>
+
+              <div id="technicalLinkedItemPreview" class="technical-linked-item-preview is-hidden">
+                <div id="technicalLinkedItemImage" class="technical-linked-item-image"><i class="ri-image-line"></i></div>
+                <div>
+                  <small>PRODUTO VINCULADO</small>
+                  <strong id="technicalLinkedItemName">—</strong>
+                  <span id="technicalLinkedItemPrice">—</span>
+                </div>
               </div>
             </article>
 
@@ -1118,6 +1210,31 @@ function currentLayout(){
 function stateData(){
   return window.__CLENA_DELIVERY_STATE__ || {};
 }
+
+function technicalSheetStorageKey(){
+  const st=window.__CLENA_DELIVERY_STATE__||{};
+  return `clena_delivery_technical_sheets_${st.delivery?.id||st.user?.id||'default'}`;
+}
+function activeTechnicalSheets(){
+  const globalSheets=window.__CLENA_TECHNICAL_SHEETS__;
+  if(Array.isArray(globalSheets))return globalSheets.filter(x=>x.active!==false);
+  try{
+    const sheets=JSON.parse(localStorage.getItem(technicalSheetStorageKey())||'[]');
+    return Array.isArray(sheets)?sheets.filter(x=>x.active!==false):[];
+  }catch{return[]}
+}
+function technicalSheetForItem(itemId){
+  if(!itemId)return null;
+  return activeTechnicalSheets()
+    .filter(x=>x.itemId===itemId)
+    .sort((a,b)=>new Date(b.updatedAt||0)-new Date(a.updatedAt||0))[0]||null;
+}
+function itemDisplayPrice(item){
+  const sheet=technicalSheetForItem(item?.id);
+  if(sheet&&Number(sheet.salePrice)>0)return Number(sheet.salePrice);
+  return Number(item?.sale_price??item?.price??0);
+}
+
 function sampleItems(){
   const state=stateData();
   const items=(state.items||[]).filter(x=>x.active!==false).slice(0,8);
@@ -1185,7 +1302,7 @@ function renderPhonePreview(){
   grid.classList.toggle('compact',layout==='compact');
   grid.innerHTML=items.map((item,i)=>{
     const img=item.image_url||item.image||'';
-    const price=item.sale_price??item.price??0;
+    const price=itemDisplayPrice(item);
     return `<article class="preview-product ${layout==='compact'?'compact':''}">
       <div class="preview-product-image" style="${img?`background-image:url('${escapeP(img)}')`:''}"></div>
       <div class="preview-product-copy"><b>${escapeP(item.name||'Produto')}</b><small>${escapeP(item.description||'Preparado especialmente para você.')}</small><strong>${moneyP(price)}</strong></div>
@@ -1229,7 +1346,7 @@ function renderFullPreview(){
       <section class="fdp-products ${layout==='compact'?'compact':''}">
         ${items.map(item=>{
           const img=item.image_url||item.image||'';
-          const price=item.sale_price??item.price??0;
+          const price=itemDisplayPrice(item);
           return `<article class="fdp-card"><div class="fdp-card-image" style="${img?`background-image:url('${escapeP(img)}')`:''}"></div><div class="fdp-card-copy"><h3>${escapeP(item.name||'Produto')}</h3><p>${escapeP(item.description||'Preparado especialmente para você.')}</p><div class="fdp-price"><strong>${moneyP(price)}</strong><button type="button"><i class="ri-add-line"></i></button></div></div></article>`;
         }).join('')}
       </section>
@@ -1371,17 +1488,46 @@ function tPercent(v){
 function tEscape(v){
   return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
 }
-function deliveryKey(){
+function deliveryId(){
+  const st=window.__CLENA_DELIVERY_STATE__||{};
+  return st.delivery?.id||null;
+}
+function deliveryOwnerId(){
+  const st=window.__CLENA_DELIVERY_STATE__||{};
+  return st.user?.id||null;
+}
+function technicalSupabase(){
+  const st=window.__CLENA_DELIVERY_STATE__||{};
+  return st.sb||null;
+}
+function legacyStorageKey(){
   const st=window.__CLENA_DELIVERY_STATE__||{};
   return `clena_delivery_technical_sheets_${st.delivery?.id||st.user?.id||'default'}`;
 }
-function goalKey(){
+function goalStorageKey(){
   const st=window.__CLENA_DELIVERY_STATE__||{};
   return `clena_delivery_technical_goal_${st.delivery?.id||st.user?.id||'default'}`;
 }
-function persistTechnical(){
-  localStorage.setItem(deliveryKey(),JSON.stringify(technicalState.sheets));
-  localStorage.setItem(goalKey(),String(technicalState.goal));
+function setTechnicalBusy(busy,label='Salvando...'){
+  const button=$t('saveTechnicalSheetBtn');
+  if(button){
+    button.disabled=busy;
+    button.innerHTML=busy
+      ? `<i class="ri-loader-4-line ri-spin"></i>${label}`
+      : '<i class="ri-save-line"></i>Salvar ficha técnica';
+  }
+}
+function technicalToast(message,type='success'){
+  const host=$t('toastHost');
+  if(!host){alert(message);return}
+  const el=document.createElement('div');
+  el.className=`toast ${type}`;
+  el.textContent=message;
+  host.appendChild(el);
+  setTimeout(()=>el.remove(),3800);
+}
+async function persistGoal(){
+  localStorage.setItem(goalStorageKey(),String(technicalState.goal));
 }
 function normalizeIngredient(row={}){
   const purchaseUnit=['kg','g','l','ml','un'].includes(row.purchaseUnit)?row.purchaseUnit:'kg';
@@ -1397,18 +1543,141 @@ function normalizeIngredient(row={}){
     lossRate:Number(row.lossRate||0)
   };
 }
-function loadTechnical(){
-  try{
-    technicalState.sheets=JSON.parse(localStorage.getItem(deliveryKey())||'[]');
-    if(!Array.isArray(technicalState.sheets)) technicalState.sheets=[];
-    technicalState.sheets=technicalState.sheets.map(sheet=>({
-      ...sheet,
-      ingredients:(sheet.ingredients||[]).map(normalizeIngredient)
-    }));
-  }catch{technicalState.sheets=[]}
-  technicalState.goal=Number(localStorage.getItem(goalKey())||35);
+async function loadTechnical(){
+  const sb=technicalSupabase();
+  const delivery_id=deliveryId();
+
+  technicalState.goal=Number(localStorage.getItem(goalStorageKey())||35);
   if($t('technicalCmvGoal'))$t('technicalCmvGoal').value=technicalState.goal;
+
+  if(!sb||!delivery_id){
+    technicalState.sheets=[];
+    technicalToast('Não foi possível identificar o delivery para carregar as fichas.','error');
+    return;
+  }
+
+  const {data,error}=await sb
+    .from('delivery_technical_sheets')
+    .select(`
+      *,
+      ingredients:delivery_technical_sheet_ingredients(*)
+    `)
+    .eq('delivery_id',delivery_id)
+    .order('updated_at',{ascending:false})
+    .order('position',{foreignTable:'delivery_technical_sheet_ingredients',ascending:true});
+
+  if(error)throw error;
+
+  technicalState.sheets=(data||[]).map(sheet=>({
+    id:sheet.id,
+    itemId:sheet.item_id||'',
+    name:sheet.name||'',
+    category:sheet.category||'',
+    saleUnit:sheet.sale_unit||'un',
+    yield:Number(sheet.yield_quantity||1),
+    salePrice:Number(sheet.sale_price||0),
+    packagingCost:Number(sheet.packaging_cost||0),
+    laborCost:Number(sheet.labor_cost||0),
+    energyCost:Number(sheet.energy_cost||0),
+    otherCost:Number(sheet.other_cost||0),
+    operationalLoss:Number(sheet.operational_loss_percent||0),
+    fixedAllocation:Number(sheet.fixed_allocation||0),
+    taxRate:Number(sheet.tax_rate||0),
+    cardRate:Number(sheet.card_rate||0),
+    platformRate:Number(sheet.platform_rate||0),
+    commissionRate:Number(sheet.commission_rate||0),
+    desiredMargin:Number(sheet.desired_margin||0),
+    note:sheet.note||'',
+    active:sheet.active!==false,
+    updatedAt:sheet.updated_at||sheet.created_at||new Date().toISOString(),
+    ingredients:(sheet.ingredients||[]).map(row=>normalizeIngredient({
+      id:row.id,
+      name:row.name,
+      purchaseQty:row.purchase_quantity,
+      purchaseUnit:row.purchase_unit,
+      purchaseCost:row.purchase_cost,
+      usedQty:row.used_quantity,
+      usedUnit:row.used_unit,
+      lossRate:row.loss_rate
+    }))
+  }));
+
+  window.__CLENA_TECHNICAL_SHEETS__=technicalState.sheets;
+  await migrateLegacyTechnicalSheets();
 }
+
+async function migrateLegacyTechnicalSheets(){
+  const key=legacyStorageKey();
+  const marker=`${key}_migrated_to_supabase`;
+  if(localStorage.getItem(marker)==='1')return;
+
+  let legacy=[];
+  try{
+    legacy=JSON.parse(localStorage.getItem(key)||'[]');
+    if(!Array.isArray(legacy))legacy=[];
+  }catch{legacy=[]}
+
+  if(!legacy.length){
+    localStorage.setItem(marker,'1');
+    return;
+  }
+
+  if(technicalState.sheets.length){
+    localStorage.setItem(marker,'1');
+    return;
+  }
+
+  let imported=0;
+  for(const sheet of legacy){
+    try{
+      await saveTechnicalSheetToSupabase({
+        ...sheet,
+        id:null,
+        active:sheet.active!==false,
+        ingredients:(sheet.ingredients||[]).map(normalizeIngredient)
+      },false);
+      imported+=1;
+    }catch(error){
+      console.error('[CLENA] Falha ao migrar ficha local:',error);
+    }
+  }
+
+  if(imported){
+    await loadTechnicalWithoutMigration();
+    technicalToast(`${imported} ficha(s) antiga(s) migrada(s) para o Supabase.`,'success');
+  }
+
+  localStorage.setItem(marker,'1');
+}
+async function loadTechnicalWithoutMigration(){
+  const sb=technicalSupabase();
+  const delivery_id=deliveryId();
+  const {data,error}=await sb
+    .from('delivery_technical_sheets')
+    .select(`*,ingredients:delivery_technical_sheet_ingredients(*)`)
+    .eq('delivery_id',delivery_id)
+    .order('updated_at',{ascending:false});
+  if(error)throw error;
+
+  technicalState.sheets=(data||[]).map(sheet=>({
+    id:sheet.id,itemId:sheet.item_id||'',name:sheet.name||'',category:sheet.category||'',
+    saleUnit:sheet.sale_unit||'un',yield:Number(sheet.yield_quantity||1),
+    salePrice:Number(sheet.sale_price||0),packagingCost:Number(sheet.packaging_cost||0),
+    laborCost:Number(sheet.labor_cost||0),energyCost:Number(sheet.energy_cost||0),
+    otherCost:Number(sheet.other_cost||0),operationalLoss:Number(sheet.operational_loss_percent||0),
+    fixedAllocation:Number(sheet.fixed_allocation||0),taxRate:Number(sheet.tax_rate||0),
+    cardRate:Number(sheet.card_rate||0),platformRate:Number(sheet.platform_rate||0),
+    commissionRate:Number(sheet.commission_rate||0),desiredMargin:Number(sheet.desired_margin||0),
+    note:sheet.note||'',active:sheet.active!==false,
+    updatedAt:sheet.updated_at||sheet.created_at||new Date().toISOString(),
+    ingredients:(sheet.ingredients||[]).map(row=>normalizeIngredient({
+      id:row.id,name:row.name,purchaseQty:row.purchase_quantity,purchaseUnit:row.purchase_unit,
+      purchaseCost:row.purchase_cost,usedQty:row.used_quantity,usedUnit:row.used_unit,lossRate:row.loss_rate
+    }))
+  }));
+  window.__CLENA_TECHNICAL_SHEETS__=technicalState.sheets;
+}
+
 function itemOptions(){
   const st=window.__CLENA_DELIVERY_STATE__||{};
   return(st.items||[]).map(item=>`<option value="${tEscape(item.id)}">${tEscape(item.name)}</option>`).join('');
@@ -1511,6 +1780,7 @@ function currentTechnicalData(){
     commissionRate:tNumber($t('technicalCommissionRate')?.value),
     desiredMargin:tNumber($t('technicalDesiredMargin')?.value),
     note:$t('technicalNote')?.value.trim()||'',
+    active:$t('technicalActive')?.value!=='false',
     ingredients:technicalState.ingredients.map(normalizeIngredient),
     updatedAt:new Date().toISOString()
   };
@@ -1614,43 +1884,203 @@ function resetTechnicalForm(){
   if($t('technicalSaleUnit'))$t('technicalSaleUnit').value='un';
   if($t('technicalYield'))$t('technicalYield').value='1';
   if($t('technicalDesiredMargin'))$t('technicalDesiredMargin').value='20,00';
+  if($t('technicalActive'))$t('technicalActive').value='true';
   if($t('technicalModalTitle'))$t('technicalModalTitle').textContent='Nova ficha técnica';
   $t('duplicateTechnicalSheetBtn')?.classList.add('is-hidden');
   renderIngredientRows();renderTechnicalCalculation();
 }
+
+function linkedItemById(itemId){
+  const st=window.__CLENA_DELIVERY_STATE__||{};
+  return(st.items||[]).find(x=>x.id===itemId)||null;
+}
+function linkedItemImage(item){
+  return item?.image_url||item?.image||item?.photo_url||'';
+}
+function renderLinkedItemPreview(){
+  const item=linkedItemById($t('technicalItemId')?.value||'');
+  const wrap=$t('technicalLinkedItemPreview');
+  if(!wrap)return;
+  wrap.classList.toggle('is-hidden',!item);
+  if(!item)return;
+  const image=linkedItemImage(item);
+  const imageEl=$t('technicalLinkedItemImage');
+  if(imageEl)imageEl.innerHTML=image?`<img src="${tEscape(image)}" alt="">`:'<i class="ri-image-line"></i>';
+  if($t('technicalLinkedItemName'))$t('technicalLinkedItemName').textContent=item.name||'Produto';
+  if($t('technicalLinkedItemPrice'))$t('technicalLinkedItemPrice').textContent=`Preço do cardápio: ${tMoney(item.sale_price??item.price??0)}`;
+}
+
 function openTechnicalModal(sheet=null){
   syncTechnicalItemOptions();resetTechnicalForm();
   if(sheet){
     technicalState.editingId=sheet.id;
     technicalState.ingredients=(sheet.ingredients||[]).map(normalizeIngredient);
-    const map={technicalSheetId:'id',technicalItemId:'itemId',technicalName:'name',technicalCategory:'category',technicalSaleUnit:'saleUnit',technicalYield:'yield',technicalSalePrice:'salePrice',technicalPackagingCost:'packagingCost',technicalLaborCost:'laborCost',technicalEnergyCost:'energyCost',technicalOtherCost:'otherCost',technicalOperationalLoss:'operationalLoss',technicalFixedAllocation:'fixedAllocation',technicalTaxRate:'taxRate',technicalCardRate:'cardRate',technicalPlatformRate:'platformRate',technicalCommissionRate:'commissionRate',technicalDesiredMargin:'desiredMargin',technicalNote:'note'};
+    const map={technicalSheetId:'id',technicalItemId:'itemId',technicalName:'name',technicalCategory:'category',technicalSaleUnit:'saleUnit',technicalYield:'yield',technicalSalePrice:'salePrice',technicalPackagingCost:'packagingCost',technicalLaborCost:'laborCost',technicalEnergyCost:'energyCost',technicalOtherCost:'otherCost',technicalOperationalLoss:'operationalLoss',technicalFixedAllocation:'fixedAllocation',technicalTaxRate:'taxRate',technicalCardRate:'cardRate',technicalPlatformRate:'platformRate',technicalCommissionRate:'commissionRate',technicalDesiredMargin:'desiredMargin',technicalNote:'note',technicalActive:'active'};
     Object.entries(map).forEach(([id,key])=>{if($t(id))$t(id).value=sheet[key]??''});
     $t('technicalModalTitle').textContent=`Editar ficha • ${sheet.name}`;
     $t('duplicateTechnicalSheetBtn')?.classList.remove('is-hidden');
     renderIngredientRows();renderTechnicalCalculation();
   }
+  renderLinkedItemPreview();
   const modal=$t('technicalSheetModal');
   modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
 }
 function closeTechnicalModal(){
   const modal=$t('technicalSheetModal');modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';
 }
-function saveTechnicalSheet(){
+
+async function saveTechnicalSheetToSupabase(data,refresh=true){
+  const sb=technicalSupabase();
+  const delivery_id=deliveryId();
+  const owner_id=deliveryOwnerId();
+  if(!sb||!delivery_id||!owner_id)throw new Error('Sessão ou delivery indisponível.');
+
+  const calc=calculateSheetFromValues(data);
+  const payload={
+    delivery_id,
+    owner_id,
+    item_id:data.itemId||null,
+    name:data.name,
+    category:data.category||null,
+    sale_unit:data.saleUnit||'un',
+    yield_quantity:Number(data.yield||1),
+    sale_price:Number(data.salePrice||0),
+    packaging_cost:Number(data.packagingCost||0),
+    labor_cost:Number(data.laborCost||0),
+    energy_cost:Number(data.energyCost||0),
+    other_cost:Number(data.otherCost||0),
+    operational_loss_percent:Number(data.operationalLoss||0),
+    fixed_allocation:Number(data.fixedAllocation||0),
+    tax_rate:Number(data.taxRate||0),
+    card_rate:Number(data.cardRate||0),
+    platform_rate:Number(data.platformRate||0),
+    commission_rate:Number(data.commissionRate||0),
+    desired_margin:Number(data.desiredMargin||0),
+    note:data.note||null,
+    active:data.active!==false,
+    ingredients_cost:Number(calc.ingredientsUnit||0),
+    operational_cost:Number(calc.operational||0),
+    total_cost:Number(calc.totalCost||0),
+    fees_amount:Number(calc.fees||0),
+    cmv_percent:Number(calc.cmv||0),
+    contribution_margin_percent:Number(calc.contribution||0),
+    net_margin_percent:Number(calc.netMargin||0),
+    net_profit:Number(calc.netProfit||0),
+    suggested_price:Number(calc.suggestedPrice||0),
+    markup:Number(calc.markup||0),
+    break_even_units:Number(calc.breakEven||0),
+    updated_at:new Date().toISOString()
+  };
+
+  let sheetId=data.id||null;
+  let sheetResult;
+
+  if(sheetId){
+    sheetResult=await sb
+      .from('delivery_technical_sheets')
+      .update(payload)
+      .eq('id',sheetId)
+      .eq('delivery_id',delivery_id)
+      .select('id')
+      .single();
+  }else{
+    sheetResult=await sb
+      .from('delivery_technical_sheets')
+      .insert(payload)
+      .select('id')
+      .single();
+  }
+
+  if(sheetResult.error)throw sheetResult.error;
+  sheetId=sheetResult.data.id;
+
+  const {error:deleteError}=await sb
+    .from('delivery_technical_sheet_ingredients')
+    .delete()
+    .eq('technical_sheet_id',sheetId);
+  if(deleteError)throw deleteError;
+
+  const ingredientRows=(data.ingredients||[]).map((row,index)=>{
+    const normalized=normalizeIngredient(row);
+    return{
+      technical_sheet_id:sheetId,
+      delivery_id,
+      owner_id,
+      name:normalized.name||`Insumo ${index+1}`,
+      purchase_quantity:Number(normalized.purchaseQty||0),
+      purchase_unit:normalized.purchaseUnit,
+      purchase_cost:Number(normalized.purchaseCost||0),
+      used_quantity:Number(normalized.usedQty||0),
+      used_unit:normalized.usedUnit,
+      loss_rate:Number(normalized.lossRate||0),
+      calculated_cost:Number(calculateIngredient(normalized)||0),
+      position:index
+    };
+  });
+
+  if(ingredientRows.length){
+    const {error:ingredientsError}=await sb
+      .from('delivery_technical_sheet_ingredients')
+      .insert(ingredientRows);
+    if(ingredientsError)throw ingredientsError;
+  }
+
+  if(refresh){
+    await loadTechnicalWithoutMigration();
+    renderTechnicalDashboard();
+  }
+
+  return sheetId;
+}
+async function deleteTechnicalSheetFromSupabase(id){
+  const sb=technicalSupabase();
+  const delivery_id=deliveryId();
+  const {error}=await sb
+    .from('delivery_technical_sheets')
+    .delete()
+    .eq('id',id)
+    .eq('delivery_id',delivery_id);
+  if(error)throw error;
+}
+
+async function saveTechnicalSheet(){
   const data=currentTechnicalData();
-  if(!data.name){alert('Informe o nome da ficha técnica.');return}
-  if(data.salePrice<=0){alert('Informe o preço de venda.');return}
+  if(!data.name){technicalToast('Informe o nome da ficha técnica.','error');return}
+  if(data.salePrice<=0){technicalToast('Informe o preço de venda.','error');return}
   const invalid=data.ingredients.find(row=>{
     const r=normalizeIngredient(row);
     return r.purchaseQty<=0||r.purchaseCost<0||r.usedQty<0||!allowedUseUnits(r.purchaseUnit).includes(r.usedUnit);
   });
-  if(invalid){alert('Revise as quantidades e unidades dos ingredientes.');return}
-  const index=technicalState.sheets.findIndex(x=>x.id===data.id);
-  if(index>=0)technicalState.sheets[index]=data;else technicalState.sheets.unshift(data);
-  persistTechnical();renderTechnicalDashboard();closeTechnicalModal();
+  if(invalid){technicalToast('Revise as quantidades e unidades dos ingredientes.','error');return}
+
+  try{
+    setTechnicalBusy(true);
+    await saveTechnicalSheetToSupabase(data,true);
+    technicalToast('Ficha técnica salva na tabela da loja.','success');
+    closeTechnicalModal();
+  }catch(error){
+    console.error('[CLENA] Erro ao salvar ficha técnica:',error);
+    technicalToast(error.message||'Não foi possível salvar a ficha técnica.','error');
+  }finally{
+    setTechnicalBusy(false);
+  }
 }
-function duplicateTechnical(){
-  const data=currentTechnicalData();data.id=crypto.randomUUID();data.name=`${data.name} — Cópia`;data.updatedAt=new Date().toISOString();
-  technicalState.sheets.unshift(data);persistTechnical();renderTechnicalDashboard();closeTechnicalModal();
+async function duplicateTechnical(){
+  const data=currentTechnicalData();
+  data.id=null;
+  data.name=`${data.name} — Cópia`;
+  data.updatedAt=new Date().toISOString();
+  try{
+    setTechnicalBusy(true,'Duplicando...');
+    await saveTechnicalSheetToSupabase(data,true);
+    technicalToast('Ficha duplicada com sucesso.','success');
+    closeTechnicalModal();
+  }catch(error){
+    console.error(error);
+    technicalToast(error.message||'Não foi possível duplicar a ficha.','error');
+  }finally{
+    setTechnicalBusy(false);
+  }
 }
 function filteredTechnicalRows(){
   const search=($t('technicalSearch')?.value||'').toLowerCase();
@@ -1658,7 +2088,12 @@ function filteredTechnicalRows(){
   return technicalState.sheets.map(sheet=>({sheet,calc:calculateSheetFromValues(sheet)})).filter(({sheet,calc})=>{
     const status=technicalStatus(calc);
     const hit=!search||`${sheet.name} ${sheet.category} ${sheet.note}`.toLowerCase().includes(search);
-    return hit&&(!filter||filter===status);
+    const activeMatch=!filter||(
+      filter==='active'?sheet.active!==false:
+      filter==='inactive'?sheet.active===false:
+      filter===status
+    );
+    return hit&&activeMatch;
   });
 }
 function renderTechnicalDashboard(){
@@ -1668,13 +2103,15 @@ function renderTechnicalDashboard(){
   const host=$t('technicalSheetList');
   if(host)host.innerHTML=visible.map(({sheet,calc})=>{
     const status=technicalStatus(calc);
-    return`<article class="technical-sheet-card selected-by-filter">
-      <div class="technical-sheet-main"><span class="technical-sheet-icon"><i class="ri-calculator-line"></i></span><div><b>${tEscape(sheet.name)}</b><small>${tEscape(sheet.category||'Sem categoria')} • ${tEscape(sheet.saleUnit||'un')} • Atualizada ${new Date(sheet.updatedAt||Date.now()).toLocaleDateString('pt-BR')}</small></div></div>
+    const linkedItem=linkedItemById(sheet.itemId);
+    const image=linkedItemImage(linkedItem);
+    return`<article class="technical-sheet-card selected-by-filter ${sheet.active===false?'is-inactive':''}">
+      <div class="technical-sheet-main"><span class="technical-sheet-main-photo">${image?`<img src="${tEscape(image)}" alt="">`:'<i class="ri-calculator-line"></i>'}</span><div><b>${tEscape(sheet.name)}</b><small>${tEscape(sheet.category||'Sem categoria')} • ${tEscape(sheet.saleUnit||'un')} • Atualizada ${new Date(sheet.updatedAt||Date.now()).toLocaleDateString('pt-BR')}</small><span class="technical-status-row"><i class="technical-status-dot ${sheet.active===false?'inactive':''}"></i>${sheet.active===false?'Ficha inativa':'Ficha ativa'}</span></div></div>
       <div class="technical-sheet-metric"><span>Venda</span><strong>${tMoney(calc.salePrice)}</strong></div>
       <div class="technical-sheet-metric"><span>Custo total</span><strong>${tMoney(calc.totalCost)}</strong></div>
       <div class="technical-sheet-metric"><span>CMV</span><strong>${tPercent(calc.cmv)}</strong></div>
       <div class="technical-sheet-metric"><span>Lucro</span><strong>${tMoney(calc.netProfit)}</strong></div>
-      <span class="technical-sheet-status ${status}">${technicalStatusLabel(status)}</span>
+      <span class="technical-sheet-status ${sheet.active===false?'inactive':status}">${sheet.active===false?'Inativa':technicalStatusLabel(status)}</span>
       <div class="technical-sheet-actions"><button type="button" data-edit-technical="${sheet.id}" title="Editar"><i class="ri-pencil-line"></i></button><button type="button" data-delete-technical="${sheet.id}" title="Excluir"><i class="ri-delete-bin-line"></i></button></div>
     </article>`;
   }).join('');
@@ -1684,7 +2121,18 @@ function renderTechnicalDashboard(){
   host?.classList.toggle('is-hidden',noAny);
   if(noFiltered&&host)host.innerHTML='<div class="technical-empty"><span><i class="ri-filter-off-line"></i></span><h3>Nenhuma ficha encontrada</h3><p>Não existem fichas correspondentes à pesquisa e ao filtro atual.</p></div>';
   $$t('[data-edit-technical]',host).forEach(btn=>btn.addEventListener('click',()=>openTechnicalModal(technicalState.sheets.find(x=>x.id===btn.dataset.editTechnical))));
-  $$t('[data-delete-technical]',host).forEach(btn=>btn.addEventListener('click',()=>{if(confirm('Excluir esta ficha técnica?')){technicalState.sheets=technicalState.sheets.filter(x=>x.id!==btn.dataset.deleteTechnical);persistTechnical();renderTechnicalDashboard()}}));
+  $$t('[data-delete-technical]',host).forEach(btn=>btn.addEventListener('click',async()=>{
+    if(!confirm('Excluir esta ficha técnica?'))return;
+    try{
+      await deleteTechnicalSheetFromSupabase(btn.dataset.deleteTechnical);
+      await loadTechnicalWithoutMigration();
+      renderTechnicalDashboard();
+      technicalToast('Ficha técnica excluída.','success');
+    }catch(error){
+      console.error(error);
+      technicalToast(error.message||'Não foi possível excluir a ficha.','error');
+    }
+  }));
   const count=visible.length;
   const avg=key=>count?visible.reduce((s,x)=>s+x.calc[key],0)/count:0;
   $t('technicalAverageCost').textContent=tMoney(avg('totalCost'));
@@ -1794,8 +2242,15 @@ function exportTechnical(){
   const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
   a.href=url;a.download=`fichas-tecnicas-filtradas-${new Date().toISOString().slice(0,10)}.csv`;a.click();URL.revokeObjectURL(url);
 }
-function bindTechnical(){
-  loadTechnical();renderTechnicalDashboard();syncTechnicalItemOptions();
+async function bindTechnical(){
+  try{
+    await loadTechnical();
+    renderTechnicalDashboard();
+    syncTechnicalItemOptions();
+  }catch(error){
+    console.error('[CLENA] Erro ao carregar fichas técnicas:',error);
+    technicalToast(error.message||'Não foi possível carregar as fichas técnicas.','error');
+  }
   $t('newTechnicalSheetBtn')?.addEventListener('click',()=>openTechnicalModal());
   $$t('[data-new-technical]').forEach(x=>x.addEventListener('click',()=>openTechnicalModal()));
   $$t('[data-close-technical]').forEach(x=>x.addEventListener('click',closeTechnicalModal));
@@ -1809,22 +2264,24 @@ function bindTechnical(){
   $t('technicalSearch')?.addEventListener('input',renderTechnicalDashboard);
   $t('technicalStatusFilter')?.addEventListener('change',renderTechnicalDashboard);
   $t('technicalExportBtn')?.addEventListener('click',exportTechnical);
-  $t('technicalCmvGoal')?.addEventListener('input',e=>{technicalState.goal=Number(e.target.value);persistTechnical();renderTechnicalDashboard();renderTechnicalCalculation()});
-  ['technicalYield','technicalSalePrice','technicalPackagingCost','technicalLaborCost','technicalEnergyCost','technicalOtherCost','technicalOperationalLoss','technicalFixedAllocation','technicalTaxRate','technicalCardRate','technicalPlatformRate','technicalCommissionRate','technicalDesiredMargin'].forEach(id=>$t(id)?.addEventListener('input',renderTechnicalCalculation));
+  $t('technicalCmvGoal')?.addEventListener('input',e=>{technicalState.goal=Number(e.target.value);persistGoal();renderTechnicalDashboard();renderTechnicalCalculation()});
+  ['technicalActive','technicalYield','technicalSalePrice','technicalPackagingCost','technicalLaborCost','technicalEnergyCost','technicalOtherCost','technicalOperationalLoss','technicalFixedAllocation','technicalTaxRate','technicalCardRate','technicalPlatformRate','technicalCommissionRate','technicalDesiredMargin'].forEach(id=>$t(id)?.addEventListener('input',renderTechnicalCalculation));
   $t('technicalItemId')?.addEventListener('change',()=>{
+    renderLinkedItemPreview();
     const st=window.__CLENA_DELIVERY_STATE__||{},item=(st.items||[]).find(x=>x.id===$t('technicalItemId').value);
     if(item){
       if(!$t('technicalName').value)$t('technicalName').value=item.name||'';
       const price=item.sale_price??item.price??0;$t('technicalSalePrice').value=Number(price).toFixed(2).replace('.',',');
       const cat=(st.categories||[]).find(x=>x.id===item.category_id);if(cat)$t('technicalCategory').value=cat.name||'';
       renderTechnicalCalculation();
+      renderLinkedItemPreview();
     }
   });
   window.addEventListener('resize',()=>renderAllCharts(technicalState.filteredRows));
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$t('technicalSheetModal')?.classList.contains('open'))closeTechnicalModal()});
 }
 function waitTechnical(){
-  if($t('app')&&!$t('app').classList.contains('is-hidden'))bindTechnical();else setTimeout(waitTechnical,200);
+  if($t('app')&&!$t('app').classList.contains('is-hidden'))void bindTechnical();else setTimeout(waitTechnical,200);
 }
 waitTechnical();
 </script>
