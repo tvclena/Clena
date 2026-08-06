@@ -1,3 +1,4 @@
+
 <!-- CLENA: HTML COMPLETO COM CSS E JAVASCRIPT INCORPORADOS -->
 <!doctype html>
 <html lang="pt-BR">
@@ -135,6 +136,45 @@ body{background:linear-gradient(180deg,#f8fafc 0,#f1f5f9 100%);min-height:100vh}
 @media(max-width:700px){.theme-preset-grid{grid-template-columns:1fr 1fr}.appearance-switches{grid-template-columns:1fr}.preview-modal-card{width:100vw;height:100dvh;border-radius:0}.preview-modal-card>header{padding:12px}.preview-modal-card header p,.preview-modal-card header small,#openPublicDeliveryBtn,.previewDesktopBtn,.previewTabletBtn{display:none}.preview-stage{padding:10px}.fdp-products,.fdp-products.compact{grid-template-columns:1fr}.fdp-info{grid-template-columns:1fr 1fr}.fdp-hero-content{padding:20px}.fdp-title h1{font-size:24px}.fdp-logo{width:65px;height:65px}.premium-phone-preview{width:280px}}
 </style>
 
+
+<style id="clenaTechnicalSheetsStyles">
+.technical-toolbar-actions,.technical-list-tools{display:flex;align-items:center;gap:10px}
+.technical-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.technical-summary-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow)}
+.technical-summary-icon{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;font-size:22px}
+.technical-summary-icon.cost{background:#eff6ff;color:#2563eb}.technical-summary-icon.cmv{background:#fff7ed;color:#ea580c}.technical-summary-icon.margin{background:#f5f3ff;color:#7c3aed}.technical-summary-icon.profit{background:#ecfdf5;color:#059669}
+.technical-summary-card small,.technical-summary-card strong,.technical-summary-card em{display:block}.technical-summary-card small{color:var(--muted);font-size:10px}.technical-summary-card strong{font-size:20px;margin-top:2px}.technical-summary-card em{font-style:normal;color:#94a3b8;font-size:9px;margin-top:2px}
+.technical-layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;align-items:start}
+.technical-list-card{min-height:520px}.technical-list-head{gap:16px}.technical-search{width:250px;flex:none}.technical-list-tools select{height:42px;border:1px solid var(--line);border-radius:12px;padding:0 10px;background:#fff}
+.technical-sheet-list{display:grid;gap:10px}
+.technical-sheet-card{border:1px solid var(--line);border-radius:16px;padding:14px;display:grid;grid-template-columns:minmax(220px,1.5fr) repeat(4,minmax(95px,.6fr)) auto;gap:12px;align-items:center;background:#fff;transition:.18s}
+.technical-sheet-card:hover{transform:translateY(-1px);border-color:#fdba74;box-shadow:0 12px 28px rgba(15,23,42,.07)}
+.technical-sheet-main{display:flex;gap:11px;align-items:center;min-width:0}.technical-sheet-icon{width:44px;height:44px;border-radius:13px;background:#fff7ed;color:#ea580c;display:grid;place-items:center;font-size:20px;flex:0 0 44px}
+.technical-sheet-main b,.technical-sheet-main small{display:block}.technical-sheet-main b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.technical-sheet-main small{color:var(--muted);font-size:10px;margin-top:3px}
+.technical-sheet-metric span,.technical-sheet-metric strong{display:block}.technical-sheet-metric span{font-size:9px;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em}.technical-sheet-metric strong{font-size:12px;margin-top:3px}
+.technical-sheet-status{padding:6px 9px;border-radius:999px;font-size:9px;font-weight:800;text-align:center}.technical-sheet-status.healthy{background:#dcfce7;color:#15803d}.technical-sheet-status.attention{background:#fef3c7;color:#b45309}.technical-sheet-status.critical{background:#fee2e2;color:#b91c1c}
+.technical-sheet-actions{display:flex;gap:5px}.technical-sheet-actions button{width:34px;height:34px;border:1px solid var(--line);background:#fff;border-radius:10px}.technical-sheet-actions button:hover{background:#fff7ed;color:#ea580c}
+.technical-empty{text-align:center;padding:62px 20px}.technical-empty>span{width:72px;height:72px;border-radius:22px;background:#fff7ed;color:#ea580c;display:grid;place-items:center;font-size:32px;margin:auto}.technical-empty h3{margin:12px 0 5px}.technical-empty p{max-width:480px;margin:0 auto 16px;color:var(--muted)}
+.technical-insights-card{position:sticky;top:102px}.technical-health-badge{padding:6px 9px;border-radius:999px;font-size:9px;font-weight:800}.technical-health-badge.neutral{background:#f1f5f9;color:#64748b}.technical-health-badge.healthy{background:#dcfce7;color:#15803d}.technical-health-badge.attention{background:#fef3c7;color:#b45309}.technical-health-badge.critical{background:#fee2e2;color:#b91c1c}
+.technical-goal-block{background:#f8fafc;border-radius:14px;padding:14px}.technical-goal-head{display:flex;justify-content:space-between;font-size:11px}.technical-goal-block input{width:100%;accent-color:var(--primary)}.technical-goal-scale{display:flex;justify-content:space-between;color:#94a3b8;font-size:8px}
+.technical-insight-list{display:grid;gap:9px;margin:15px 0}.technical-insight-list>div{display:flex;gap:10px;align-items:center;padding:10px;border:1px solid #eef2f7;border-radius:12px}.technical-insight-list>div>span{width:34px;height:34px;border-radius:10px;background:#ecfdf5;color:#059669;display:grid;place-items:center}.technical-insight-list>div>span.warning{background:#fff7ed;color:#ea580c}.technical-insight-list>div>span.danger{background:#fef2f2;color:#dc2626}.technical-insight-list b,.technical-insight-list small{display:block}.technical-insight-list b{font-size:11px}.technical-insight-list small{font-size:9px;color:var(--muted)}
+.technical-formulas{border-top:1px solid var(--line);padding-top:14px}.technical-formulas h4{margin:0 0 9px}.technical-formulas p{font-size:10px;color:#64748b;line-height:1.45;margin:6px 0}
+.technical-modal-card{width:min(97vw,1520px);height:min(95vh,980px)}.technical-modal-card header p{margin:3px 0 0;color:var(--muted);font-size:10px}.technical-modal-body{padding:0;overflow:auto;background:#f8fafc}
+.technical-main-grid{display:grid;grid-template-columns:minmax(0,1fr) 390px;align-items:start}.technical-form-column{padding:20px;display:grid;gap:14px}.technical-calculation-column{padding:20px 20px 20px 0}
+.technical-block{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px}.technical-block-head{display:flex;align-items:center;gap:11px;margin-bottom:15px}.technical-block-head>span{width:42px;height:42px;border-radius:13px;background:#fff7ed;color:#ea580c;display:grid;place-items:center;font-size:19px}.technical-block-head b,.technical-block-head small{display:block}.technical-block-head small{color:var(--muted);font-size:9px;margin-top:2px}.technical-block-head-action>div{flex:1}
+.technical-ingredient-table{overflow:auto;border:1px solid #eef2f7;border-radius:13px}.technical-ingredient-header,.technical-ingredient-row{display:grid;grid-template-columns:minmax(150px,1.4fr) 120px 120px 90px 95px 36px;gap:8px;align-items:center;min-width:750px}.technical-ingredient-header{padding:9px 10px;background:#f8fafc;color:#64748b;font-size:9px;font-weight:800;text-transform:uppercase}.technical-ingredient-row{padding:8px 10px;border-top:1px solid #eef2f7}.technical-ingredient-row input,.technical-ingredient-row select{width:100%;height:38px;border:1px solid var(--line);border-radius:9px;padding:0 8px;font-size:10px}.technical-ingredient-row .ingredient-money{font-size:11px;font-weight:800;text-align:right}.technical-ingredient-row button{width:32px;height:32px;border:0;background:#fef2f2;color:#dc2626;border-radius:9px}
+.technical-ingredient-footer{display:flex;justify-content:space-between;padding-top:11px;font-size:11px}.technical-ingredient-footer strong{color:#ea580c;font-size:14px}
+.technical-calculator-sticky{position:sticky;top:0;background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 18px 45px rgba(15,23,42,.1)}.technical-calculator-head{display:flex;justify-content:space-between;gap:10px}.technical-calculator-head small{font-size:9px;color:#94a3b8;letter-spacing:.13em;font-weight:800}.technical-calculator-head h3{margin:3px 0 0}.technical-result-badge{padding:6px 9px;border-radius:999px;font-size:8px;font-weight:800;height:max-content}.technical-result-badge.neutral{background:#f1f5f9;color:#64748b}.technical-result-badge.healthy{background:#dcfce7;color:#15803d}.technical-result-badge.attention{background:#fef3c7;color:#b45309}.technical-result-badge.critical{background:#fee2e2;color:#b91c1c}
+.technical-result-price{margin:15px 0;padding:16px;border-radius:15px;background:linear-gradient(135deg,#fff7ed,#ffedd5);display:flex;justify-content:space-between;align-items:center}.technical-result-price span{font-size:11px;color:#9a3412}.technical-result-price strong{font-size:24px;color:#c2410c}
+.technical-result-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.technical-result-grid>div{padding:11px;border:1px solid #eef2f7;border-radius:12px}.technical-result-grid span,.technical-result-grid strong{display:block}.technical-result-grid span{font-size:8px;color:#94a3b8;text-transform:uppercase}.technical-result-grid strong{font-size:12px;margin-top:3px}
+.technical-kpi-list{margin-top:16px}.technical-kpi-row{display:flex;justify-content:space-between;font-size:10px;margin:9px 0 5px}.technical-progress{height:7px;background:#eef2f7;border-radius:999px;overflow:hidden}.technical-progress span{display:block;height:100%;width:0;background:#f97316;transition:.2s}.technical-progress.contribution span{background:#7c3aed}.technical-progress.net span{background:#10b981}
+.technical-profit-highlight{margin:16px 0;padding:16px;text-align:center;border-radius:16px;background:#ecfdf5;border:1px solid #bbf7d0}.technical-profit-highlight span,.technical-profit-highlight strong,.technical-profit-highlight small{display:block}.technical-profit-highlight span{font-size:10px;color:#166534}.technical-profit-highlight strong{font-size:27px;color:#15803d;margin:3px 0}.technical-profit-highlight small{font-size:8px;color:#4d7c0f}
+.technical-suggested-price{padding:14px;border:1px solid #ddd6fe;background:#f5f3ff;border-radius:15px;text-align:center}.technical-suggested-price span,.technical-suggested-price strong{display:block}.technical-suggested-price span{font-size:9px;color:#6d28d9}.technical-suggested-price strong{font-size:22px;color:#7c3aed;margin:4px 0 10px}.outline-btn.full{width:100%}
+.technical-break-even{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}.technical-break-even span,.technical-break-even strong{display:block}.technical-break-even span{font-size:9px;color:#64748b}.technical-break-even strong{font-size:13px}.technical-break-even small{font-size:8px;color:#94a3b8;text-align:right}
+@media(max-width:1250px){.technical-summary-grid{grid-template-columns:1fr 1fr}.technical-layout{grid-template-columns:1fr}.technical-insights-card{position:static}.technical-main-grid{grid-template-columns:1fr}.technical-calculation-column{padding:0 20px 20px}.technical-calculator-sticky{position:static}.technical-sheet-card{grid-template-columns:minmax(220px,1.4fr) repeat(2,minmax(100px,.6fr)) auto}.technical-sheet-card .technical-sheet-metric:nth-of-type(3),.technical-sheet-card .technical-sheet-metric:nth-of-type(4){display:none}}
+@media(max-width:760px){.technical-summary-grid{grid-template-columns:1fr}.technical-toolbar-actions{width:100%}.section-toolbar:has(.technical-toolbar-actions){display:grid}.technical-toolbar-actions button{flex:1}.technical-list-head{display:grid}.technical-list-tools{display:grid}.technical-search{width:100%}.technical-sheet-card{grid-template-columns:1fr auto}.technical-sheet-metric,.technical-sheet-status{display:none}.technical-main-grid{display:block}.technical-form-column{padding:12px}.technical-calculation-column{padding:0 12px 12px}.technical-result-grid{grid-template-columns:1fr}.technical-modal-card{width:100vw;height:100dvh;border-radius:0}.technical-ingredient-header,.technical-ingredient-row{grid-template-columns:150px 110px 110px 80px 90px 34px}}
+</style>
+
 </head>
 <body>
   <div id="pageLoader" class="page-loader">
@@ -160,6 +200,7 @@ body{background:linear-gradient(180deg,#f8fafc 0,#f1f5f9 100%);min-height:100vh}
         <button class="nav-item" type="button" data-section="menu"><i class="ri-restaurant-2-line"></i><span>Cardápio</span><b id="navItemCount">0</b></button>
         <button class="nav-item" type="button" data-section="categories"><i class="ri-layout-grid-line"></i><span>Categorias</span></button>
         <button class="nav-item" type="button" data-section="addons"><i class="ri-add-box-line"></i><span>Complementos</span></button>
+        <button class="nav-item" type="button" data-section="technical"><i class="ri-calculator-line"></i><span>Fichas técnicas</span><b id="navTechnicalCount">0</b></button>
         <p class="nav-label spaced">OPERAÇÃO</p>
         <button class="nav-item" type="button" data-section="delivery"><i class="ri-map-pin-2-line"></i><span>Entrega e retirada</span></button>
         <button class="nav-item" type="button" data-section="hours"><i class="ri-time-line"></i><span>Horários</span></button>
@@ -257,6 +298,104 @@ body{background:linear-gradient(180deg,#f8fafc 0,#f1f5f9 100%);min-height:100vh}
         <section id="section-addons" class="editor-section">
           <div class="section-toolbar"><div><h2>Complementos</h2><p>Crie grupos de adicionais para vincular aos itens.</p></div><button id="newAddonGroupBtn" class="primary-btn" type="button"><i class="ri-add-line"></i>Novo grupo</button></div>
           <article class="panel-card"><div id="addonGroupList" class="addon-groups"></div></article>
+        </section>
+
+        
+        <section id="section-technical" class="editor-section">
+          <div class="section-toolbar">
+            <div>
+              <h2>Fichas técnicas e rentabilidade</h2>
+              <p>Calcule custo real, CMV, impostos, lucro e preço sugerido de cada item.</p>
+            </div>
+            <div class="technical-toolbar-actions">
+              <button id="technicalExportBtn" class="outline-btn" type="button"><i class="ri-file-download-line"></i>Exportar</button>
+              <button id="newTechnicalSheetBtn" class="primary-btn" type="button"><i class="ri-add-line"></i>Nova ficha</button>
+            </div>
+          </div>
+
+          <section class="technical-summary-grid">
+            <article class="technical-summary-card">
+              <span class="technical-summary-icon cost"><i class="ri-coins-line"></i></span>
+              <div><small>Custo médio</small><strong id="technicalAverageCost">R$ 0,00</strong><em id="technicalAverageCostHint">0 fichas calculadas</em></div>
+            </article>
+            <article class="technical-summary-card">
+              <span class="technical-summary-icon cmv"><i class="ri-percent-line"></i></span>
+              <div><small>CMV médio</small><strong id="technicalAverageCmv">0,00%</strong><em id="technicalAverageCmvHint">Meta recomendada configurável</em></div>
+            </article>
+            <article class="technical-summary-card">
+              <span class="technical-summary-icon margin"><i class="ri-line-chart-line"></i></span>
+              <div><small>Margem líquida média</small><strong id="technicalAverageMargin">0,00%</strong><em id="technicalAverageMarginHint">Após taxas e impostos</em></div>
+            </article>
+            <article class="technical-summary-card">
+              <span class="technical-summary-icon profit"><i class="ri-money-dollar-circle-line"></i></span>
+              <div><small>Lucro unitário médio</small><strong id="technicalAverageProfit">R$ 0,00</strong><em id="technicalAverageProfitHint">Por unidade vendida</em></div>
+            </article>
+          </section>
+
+          <section class="technical-layout">
+            <article class="panel-card technical-list-card">
+              <div class="card-head technical-list-head">
+                <div><small>CONTROLE DE CUSTOS</small><h3>Fichas cadastradas</h3></div>
+                <div class="technical-list-tools">
+                  <label class="search-field technical-search"><i class="ri-search-line"></i><input id="technicalSearch" type="search" placeholder="Buscar ficha ou produto..." /></label>
+                  <select id="technicalStatusFilter">
+                    <option value="">Todas</option>
+                    <option value="healthy">Rentáveis</option>
+                    <option value="attention">Atenção</option>
+                    <option value="critical">Críticas</option>
+                  </select>
+                </div>
+              </div>
+
+              <div id="technicalSheetList" class="technical-sheet-list"></div>
+
+              <div id="technicalEmpty" class="technical-empty">
+                <span><i class="ri-calculator-line"></i></span>
+                <h3>Nenhuma ficha técnica cadastrada</h3>
+                <p>Cadastre ingredientes, embalagens, perdas, impostos e custos operacionais para descobrir o lucro real.</p>
+                <button type="button" class="primary-btn" data-new-technical><i class="ri-add-line"></i>Criar primeira ficha</button>
+              </div>
+            </article>
+
+            <aside class="panel-card technical-insights-card">
+              <div class="card-head">
+                <div><small>INDICADORES</small><h3>Saúde do cardápio</h3></div>
+                <span id="technicalHealthBadge" class="technical-health-badge neutral">Sem dados</span>
+              </div>
+
+              <div class="technical-goal-block">
+                <div class="technical-goal-head">
+                  <span>Meta de CMV</span>
+                  <strong id="technicalCmvGoalLabel">35%</strong>
+                </div>
+                <input id="technicalCmvGoal" type="range" min="10" max="80" step="1" value="35" />
+                <div class="technical-goal-scale"><span>10%</span><span>80%</span></div>
+              </div>
+
+              <div class="technical-insight-list">
+                <div>
+                  <span><i class="ri-checkbox-circle-line"></i></span>
+                  <div><b id="technicalHealthyCount">0 itens saudáveis</b><small>CMV dentro da meta e margem positiva</small></div>
+                </div>
+                <div>
+                  <span class="warning"><i class="ri-error-warning-line"></i></span>
+                  <div><b id="technicalAttentionCount">0 itens em atenção</b><small>Margem apertada ou CMV acima da meta</small></div>
+                </div>
+                <div>
+                  <span class="danger"><i class="ri-alarm-warning-line"></i></span>
+                  <div><b id="technicalCriticalCount">0 itens críticos</b><small>Preço abaixo do custo total ou prejuízo</small></div>
+                </div>
+              </div>
+
+              <div class="technical-formulas">
+                <h4>Como o cálculo funciona</h4>
+                <p><b>Custo total:</b> ingredientes + embalagem + mão de obra + despesas + perdas.</p>
+                <p><b>CMV:</b> custo dos insumos ÷ preço de venda.</p>
+                <p><b>Lucro líquido:</b> preço − custo total − impostos − taxas.</p>
+                <p><b>Preço sugerido:</b> considera a margem líquida desejada.</p>
+              </div>
+            </aside>
+          </section>
         </section>
 
         <section id="section-delivery" class="editor-section">
@@ -485,6 +624,177 @@ body{background:linear-gradient(180deg,#f8fafc 0,#f1f5f9 100%);min-height:100vh}
     <div class="modal-backdrop" data-close-zone></div><section class="modal-card small"><header><div><small>REGIÃO DE ENTREGA</small><h2 id="zoneModalTitle">Nova região</h2></div><button type="button" data-close-zone><i class="ri-close-line"></i></button></header><div class="modal-body"><input id="zoneId" type="hidden" /><label class="field"><span>Nome da região *</span><input id="zoneName" maxlength="120" placeholder="Ex.: Centro" /></label><div class="form-grid two"><label class="field"><span>Taxa</span><div class="input-prefix"><b>R$</b><input id="zoneFee" inputmode="decimal" /></div></label><label class="field"><span>Pedido mínimo</span><div class="input-prefix"><b>R$</b><input id="zoneMinimum" inputmode="decimal" /></div></label></div><label class="field"><span>Bairros/CEP atendidos</span><textarea id="zoneAreas" rows="4" maxlength="500" placeholder="Separe por vírgulas"></textarea></label><label class="toggle-row"><span><i class="ri-checkbox-circle-line"></i><b>Região ativa</b><small>Disponível para novos pedidos</small></span><input id="zoneActive" type="checkbox" /><i></i></label></div><footer><button type="button" class="outline-btn" data-close-zone>Cancelar</button><button id="saveZoneBtn" class="primary-btn" type="button">Salvar região</button></footer></section>
   </div>
 
+
+  
+  <div id="technicalSheetModal" class="modal-shell technical-modal-shell" aria-hidden="true">
+    <div class="modal-backdrop" data-close-technical></div>
+    <section class="modal-card technical-modal-card">
+      <header>
+        <div><small>FICHA TÉCNICA</small><h2 id="technicalModalTitle">Nova ficha técnica</h2><p>Custos, rendimento, impostos e rentabilidade do produto.</p></div>
+        <button type="button" data-close-technical><i class="ri-close-line"></i></button>
+      </header>
+
+      <div class="modal-body technical-modal-body">
+        <input id="technicalSheetId" type="hidden" />
+
+        <div class="technical-main-grid">
+          <section class="technical-form-column">
+            <article class="technical-block">
+              <div class="technical-block-head">
+                <span><i class="ri-restaurant-line"></i></span>
+                <div><b>Identificação e rendimento</b><small>Vincule a ficha a um item do cardápio.</small></div>
+              </div>
+
+              <div class="form-grid two">
+                <label class="field">
+                  <span>Produto do cardápio</span>
+                  <select id="technicalItemId"><option value="">Ficha independente</option></select>
+                </label>
+                <label class="field">
+                  <span>Nome da ficha *</span>
+                  <input id="technicalName" maxlength="140" placeholder="Ex.: Hambúrguer artesanal" />
+                </label>
+                <label class="field">
+                  <span>Categoria</span>
+                  <input id="technicalCategory" maxlength="100" placeholder="Ex.: Hambúrgueres" />
+                </label>
+                <label class="field">
+                  <span>Unidade de venda</span>
+                  <select id="technicalSaleUnit">
+                    <option value="un">Unidade</option>
+                    <option value="porcao">Porção</option>
+                    <option value="kg">Quilograma</option>
+                    <option value="l">Litro</option>
+                    <option value="combo">Combo</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Rendimento da receita</span>
+                  <input id="technicalYield" type="number" min="0.001" step="0.001" value="1" />
+                </label>
+                <label class="field">
+                  <span>Preço de venda</span>
+                  <div class="input-prefix"><b>R$</b><input id="technicalSalePrice" inputmode="decimal" placeholder="0,00" /></div>
+                </label>
+              </div>
+            </article>
+
+            <article class="technical-block">
+              <div class="technical-block-head technical-block-head-action">
+                <span><i class="ri-bowl-line"></i></span>
+                <div><b>Ingredientes e insumos</b><small>Informe compra, quantidade utilizada e perdas.</small></div>
+                <button id="addTechnicalIngredientBtn" class="small-btn" type="button"><i class="ri-add-line"></i>Adicionar</button>
+              </div>
+              <div class="technical-ingredient-table">
+                <div class="technical-ingredient-header">
+                  <span>Insumo</span><span>Compra</span><span>Uso</span><span>Perda</span><span>Custo</span><span></span>
+                </div>
+                <div id="technicalIngredientList"></div>
+              </div>
+              <div class="technical-ingredient-footer">
+                <span>Custo dos ingredientes da receita</span>
+                <strong id="technicalIngredientsTotal">R$ 0,00</strong>
+              </div>
+            </article>
+
+            <article class="technical-block">
+              <div class="technical-block-head">
+                <span><i class="ri-archive-line"></i></span>
+                <div><b>Custos adicionais</b><small>Embalagem, mão de obra e despesas operacionais.</small></div>
+              </div>
+              <div class="form-grid three">
+                <label class="field"><span>Embalagem</span><div class="input-prefix"><b>R$</b><input id="technicalPackagingCost" inputmode="decimal" placeholder="0,00" /></div></label>
+                <label class="field"><span>Mão de obra direta</span><div class="input-prefix"><b>R$</b><input id="technicalLaborCost" inputmode="decimal" placeholder="0,00" /></div></label>
+                <label class="field"><span>Gás/energia</span><div class="input-prefix"><b>R$</b><input id="technicalEnergyCost" inputmode="decimal" placeholder="0,00" /></div></label>
+                <label class="field"><span>Outros custos</span><div class="input-prefix"><b>R$</b><input id="technicalOtherCost" inputmode="decimal" placeholder="0,00" /></div></label>
+                <label class="field"><span>Perda operacional</span><div class="input-prefix"><b>%</b><input id="technicalOperationalLoss" inputmode="decimal" placeholder="0,00" /></div></label>
+                <label class="field"><span>Rateio fixo</span><div class="input-prefix"><b>R$</b><input id="technicalFixedAllocation" inputmode="decimal" placeholder="0,00" /></div></label>
+              </div>
+            </article>
+
+            <article class="technical-block">
+              <div class="technical-block-head">
+                <span><i class="ri-government-line"></i></span>
+                <div><b>Impostos, taxas e margem</b><small>Percentuais aplicados sobre o preço de venda.</small></div>
+              </div>
+              <div class="form-grid three">
+                <label class="field"><span>Impostos</span><div class="input-prefix"><b>%</b><input id="technicalTaxRate" inputmode="decimal" placeholder="0,00" /></div></label>
+                <label class="field"><span>Taxa de cartão</span><div class="input-prefix"><b>%</b><input id="technicalCardRate" inputmode="decimal" placeholder="0,00" /></div></label>
+                <label class="field"><span>Taxa plataforma</span><div class="input-prefix"><b>%</b><input id="technicalPlatformRate" inputmode="decimal" placeholder="0,00" /></div></label>
+                <label class="field"><span>Comissão</span><div class="input-prefix"><b>%</b><input id="technicalCommissionRate" inputmode="decimal" placeholder="0,00" /></div></label>
+                <label class="field"><span>Margem líquida desejada</span><div class="input-prefix"><b>%</b><input id="technicalDesiredMargin" inputmode="decimal" value="20,00" /></div></label>
+                <label class="field"><span>Observação</span><input id="technicalNote" maxlength="240" placeholder="Ex.: receita revisada em agosto" /></label>
+              </div>
+            </article>
+          </section>
+
+          <aside class="technical-calculation-column">
+            <div class="technical-calculator-sticky">
+              <div class="technical-calculator-head">
+                <div><small>RESULTADO EM TEMPO REAL</small><h3>Rentabilidade unitária</h3></div>
+                <span id="technicalResultBadge" class="technical-result-badge neutral">Preencha os dados</span>
+              </div>
+
+              <div class="technical-result-price">
+                <span>Preço de venda</span>
+                <strong id="technicalResultSalePrice">R$ 0,00</strong>
+              </div>
+
+              <div class="technical-result-grid">
+                <div><span>Custo dos insumos</span><strong id="technicalResultIngredients">R$ 0,00</strong></div>
+                <div><span>Custo operacional</span><strong id="technicalResultOperational">R$ 0,00</strong></div>
+                <div><span>Custo total unitário</span><strong id="technicalResultTotalCost">R$ 0,00</strong></div>
+                <div><span>Impostos e taxas</span><strong id="technicalResultFees">R$ 0,00</strong></div>
+              </div>
+
+              <div class="technical-kpi-list">
+                <div class="technical-kpi-row">
+                  <span>CMV dos insumos</span>
+                  <strong id="technicalResultCmv">0,00%</strong>
+                </div>
+                <div class="technical-progress"><span id="technicalCmvBar"></span></div>
+
+                <div class="technical-kpi-row">
+                  <span>Margem de contribuição</span>
+                  <strong id="technicalResultContributionMargin">0,00%</strong>
+                </div>
+                <div class="technical-progress contribution"><span id="technicalContributionBar"></span></div>
+
+                <div class="technical-kpi-row">
+                  <span>Margem líquida</span>
+                  <strong id="technicalResultNetMargin">0,00%</strong>
+                </div>
+                <div class="technical-progress net"><span id="technicalNetBar"></span></div>
+              </div>
+
+              <div class="technical-profit-highlight">
+                <span>Lucro líquido por unidade</span>
+                <strong id="technicalResultProfit">R$ 0,00</strong>
+                <small id="technicalResultProfitHint">Após custos, impostos e taxas</small>
+              </div>
+
+              <div class="technical-suggested-price">
+                <span>Preço sugerido para a margem desejada</span>
+                <strong id="technicalSuggestedPrice">R$ 0,00</strong>
+                <button id="applyTechnicalSuggestedPriceBtn" class="outline-btn full" type="button"><i class="ri-price-tag-3-line"></i>Usar preço sugerido</button>
+              </div>
+
+              <div class="technical-break-even">
+                <div><span>Ponto de equilíbrio</span><strong id="technicalBreakEvenUnits">0 un.</strong></div>
+                <small id="technicalBreakEvenHint">Informe o rateio fixo para calcular.</small>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <footer>
+        <button type="button" class="outline-btn" data-close-technical>Cancelar</button>
+        <button id="duplicateTechnicalSheetBtn" class="outline-btn is-hidden" type="button"><i class="ri-file-copy-line"></i>Duplicar</button>
+        <button id="saveTechnicalSheetBtn" class="primary-btn" type="button"><i class="ri-save-line"></i>Salvar ficha técnica</button>
+      </footer>
+    </section>
+  </div>
 
   <div id="deliveryPreviewModal" class="preview-modal-shell" aria-hidden="true">
     <div class="preview-modal-backdrop" data-close-delivery-preview></div>
@@ -785,6 +1095,314 @@ function waitForEditor(){
   else setTimeout(waitForEditor,180);
 }
 waitForEditor();
+</script>
+
+
+<script type="module" id="clenaTechnicalSheetsScript">
+const $t = id => document.getElementById(id);
+const $$t = (selector, root=document) => [...root.querySelectorAll(selector)];
+
+const technicalState = {
+  sheets: [],
+  editingId: null,
+  ingredients: [],
+  goal: 35
+};
+
+function tMoney(v){
+  return new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number(v||0));
+}
+function tNumber(v){
+  return Number(String(v??'').replace(/\./g,'').replace(',','.').replace(/[^\d.-]/g,''))||0;
+}
+function tPercent(v){
+  return `${Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}%`;
+}
+function tEscape(v){
+  return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
+}
+function deliveryKey(){
+  const st = window.__CLENA_DELIVERY_STATE__ || {};
+  const id = st.delivery?.id || st.user?.id || 'default';
+  return `clena_delivery_technical_sheets_${id}`;
+}
+function goalKey(){
+  const st = window.__CLENA_DELIVERY_STATE__ || {};
+  const id = st.delivery?.id || st.user?.id || 'default';
+  return `clena_delivery_technical_goal_${id}`;
+}
+function persistTechnical(){
+  localStorage.setItem(deliveryKey(), JSON.stringify(technicalState.sheets));
+  localStorage.setItem(goalKey(), String(technicalState.goal));
+}
+function loadTechnical(){
+  try{
+    technicalState.sheets = JSON.parse(localStorage.getItem(deliveryKey()) || '[]');
+    if(!Array.isArray(technicalState.sheets)) technicalState.sheets=[];
+  }catch{ technicalState.sheets=[]; }
+  technicalState.goal = Number(localStorage.getItem(goalKey()) || 35);
+  if($t('technicalCmvGoal')) $t('technicalCmvGoal').value=technicalState.goal;
+}
+function itemOptions(){
+  const st=window.__CLENA_DELIVERY_STATE__||{};
+  return (st.items||[]).map(item=>`<option value="${tEscape(item.id)}">${tEscape(item.name)}</option>`).join('');
+}
+function syncTechnicalItemOptions(){
+  const select=$t('technicalItemId');
+  if(!select) return;
+  const current=select.value;
+  select.innerHTML='<option value="">Ficha independente</option>'+itemOptions();
+  if([...select.options].some(x=>x.value===current)) select.value=current;
+}
+function technicalStatus(calc){
+  if(calc.salePrice<=0 || calc.netProfit<0 || calc.totalCost>calc.salePrice) return 'critical';
+  if(calc.cmv>technicalState.goal || calc.netMargin<10) return 'attention';
+  return 'healthy';
+}
+function technicalStatusLabel(status){
+  return status==='healthy'?'Rentável':status==='attention'?'Atenção':'Crítica';
+}
+function calculateIngredient(row){
+  const purchaseQty=Math.max(0.000001,Number(row.purchaseQty||0));
+  const purchaseCost=Math.max(0,Number(row.purchaseCost||0));
+  const usedQty=Math.max(0,Number(row.usedQty||0));
+  const lossRate=Math.max(0,Number(row.lossRate||0))/100;
+  const unitCost=purchaseCost/purchaseQty;
+  return unitCost*usedQty*(1+lossRate);
+}
+function calculateSheetFromValues(data){
+  const yieldQty=Math.max(0.000001,Number(data.yield||1));
+  const recipeIngredients=(data.ingredients||[]).reduce((s,row)=>s+calculateIngredient(row),0);
+  const ingredientsUnit=recipeIngredients/yieldQty;
+  const packaging=Number(data.packagingCost||0);
+  const labor=Number(data.laborCost||0);
+  const energy=Number(data.energyCost||0);
+  const other=Number(data.otherCost||0);
+  const fixed=Number(data.fixedAllocation||0);
+  const operationalBase=packaging+labor+energy+other+fixed;
+  const opLossRate=Math.max(0,Number(data.operationalLoss||0))/100;
+  const operational=operationalBase*(1+opLossRate);
+  const totalCost=ingredientsUnit+operational;
+  const salePrice=Number(data.salePrice||0);
+  const feesRate=(Number(data.taxRate||0)+Number(data.cardRate||0)+Number(data.platformRate||0)+Number(data.commissionRate||0))/100;
+  const fees=salePrice*feesRate;
+  const netProfit=salePrice-totalCost-fees;
+  const cmv=salePrice>0?(ingredientsUnit/salePrice)*100:0;
+  const contribution=salePrice>0?((salePrice-ingredientsUnit-fees)/salePrice)*100:0;
+  const netMargin=salePrice>0?(netProfit/salePrice)*100:0;
+  const desired=Number(data.desiredMargin||0)/100;
+  const denominator=1-feesRate-desired;
+  const suggestedPrice=denominator>0?totalCost/denominator:0;
+  const contributionUnit=salePrice-ingredientsUnit-fees-packaging-labor-energy-other;
+  const breakEven=fixed>0&&contributionUnit>0?Math.ceil(fixed/contributionUnit):0;
+  return {recipeIngredients,ingredientsUnit,operational,totalCost,salePrice,fees,netProfit,cmv,contribution,netMargin,suggestedPrice,breakEven};
+}
+function currentTechnicalData(){
+  return {
+    id:$t('technicalSheetId')?.value||crypto.randomUUID(),
+    itemId:$t('technicalItemId')?.value||'',
+    name:$t('technicalName')?.value.trim()||'',
+    category:$t('technicalCategory')?.value.trim()||'',
+    saleUnit:$t('technicalSaleUnit')?.value||'un',
+    yield:Math.max(.001,Number($t('technicalYield')?.value||1)),
+    salePrice:tNumber($t('technicalSalePrice')?.value),
+    packagingCost:tNumber($t('technicalPackagingCost')?.value),
+    laborCost:tNumber($t('technicalLaborCost')?.value),
+    energyCost:tNumber($t('technicalEnergyCost')?.value),
+    otherCost:tNumber($t('technicalOtherCost')?.value),
+    operationalLoss:tNumber($t('technicalOperationalLoss')?.value),
+    fixedAllocation:tNumber($t('technicalFixedAllocation')?.value),
+    taxRate:tNumber($t('technicalTaxRate')?.value),
+    cardRate:tNumber($t('technicalCardRate')?.value),
+    platformRate:tNumber($t('technicalPlatformRate')?.value),
+    commissionRate:tNumber($t('technicalCommissionRate')?.value),
+    desiredMargin:tNumber($t('technicalDesiredMargin')?.value),
+    note:$t('technicalNote')?.value.trim()||'',
+    ingredients:technicalState.ingredients.map(x=>({...x})),
+    updatedAt:new Date().toISOString()
+  };
+}
+function renderIngredientRows(){
+  const host=$t('technicalIngredientList');
+  if(!host) return;
+  if(!technicalState.ingredients.length){
+    host.innerHTML='<div class="technical-empty-row">Nenhum insumo adicionado.</div>';
+  }else{
+    host.innerHTML=technicalState.ingredients.map((row,index)=>{
+      const cost=calculateIngredient(row);
+      return `<div class="technical-ingredient-row" data-ingredient-index="${index}">
+        <input data-field="name" value="${tEscape(row.name||'')}" placeholder="Nome do insumo">
+        <div class="ingredient-pair"><input data-field="purchaseQty" inputmode="decimal" value="${row.purchaseQty||''}" placeholder="Qtd"><select data-field="purchaseUnit"><option value="kg" ${row.purchaseUnit==='kg'?'selected':''}>kg</option><option value="g" ${row.purchaseUnit==='g'?'selected':''}>g</option><option value="l" ${row.purchaseUnit==='l'?'selected':''}>L</option><option value="ml" ${row.purchaseUnit==='ml'?'selected':''}>ml</option><option value="un" ${row.purchaseUnit==='un'?'selected':''}>un</option></select><input data-field="purchaseCost" inputmode="decimal" value="${row.purchaseCost||''}" placeholder="R$"></div>
+        <div class="ingredient-pair"><input data-field="usedQty" inputmode="decimal" value="${row.usedQty||''}" placeholder="Qtd"><select data-field="usedUnit"><option value="kg" ${row.usedUnit==='kg'?'selected':''}>kg</option><option value="g" ${row.usedUnit==='g'?'selected':''}>g</option><option value="l" ${row.usedUnit==='l'?'selected':''}>L</option><option value="ml" ${row.usedUnit==='ml'?'selected':''}>ml</option><option value="un" ${row.usedUnit==='un'?'selected':''}>un</option></select></div>
+        <input data-field="lossRate" inputmode="decimal" value="${row.lossRate||''}" placeholder="%">
+        <strong class="ingredient-money">${tMoney(cost)}</strong>
+        <button type="button" data-remove-ingredient="${index}"><i class="ri-delete-bin-line"></i></button>
+      </div>`;
+    }).join('');
+  }
+  $t('technicalIngredientsTotal').textContent=tMoney(technicalState.ingredients.reduce((s,row)=>s+calculateIngredient(row),0));
+  $$t('[data-ingredient-index]',host).forEach(rowEl=>{
+    const index=Number(rowEl.dataset.ingredientIndex);
+    $$t('input,select',rowEl).forEach(input=>{
+      input.addEventListener('input',()=>{
+        const key=input.dataset.field;
+        technicalState.ingredients[index][key]=['name','purchaseUnit','usedUnit'].includes(key)?input.value:tNumber(input.value);
+        renderTechnicalCalculation();
+        const money=rowEl.querySelector('.ingredient-money');
+        if(money) money.textContent=tMoney(calculateIngredient(technicalState.ingredients[index]));
+        $t('technicalIngredientsTotal').textContent=tMoney(technicalState.ingredients.reduce((s,row)=>s+calculateIngredient(row),0));
+      });
+    });
+  });
+  $$t('[data-remove-ingredient]',host).forEach(btn=>btn.addEventListener('click',()=>{
+    technicalState.ingredients.splice(Number(btn.dataset.removeIngredient),1);
+    renderIngredientRows();renderTechnicalCalculation();
+  }));
+}
+function renderTechnicalCalculation(){
+  if(!$t('technicalSheetModal')) return;
+  const data=currentTechnicalData();
+  const calc=calculateSheetFromValues(data);
+  const status=technicalStatus(calc);
+  $t('technicalResultSalePrice').textContent=tMoney(calc.salePrice);
+  $t('technicalResultIngredients').textContent=tMoney(calc.ingredientsUnit);
+  $t('technicalResultOperational').textContent=tMoney(calc.operational);
+  $t('technicalResultTotalCost').textContent=tMoney(calc.totalCost);
+  $t('technicalResultFees').textContent=tMoney(calc.fees);
+  $t('technicalResultCmv').textContent=tPercent(calc.cmv);
+  $t('technicalResultContributionMargin').textContent=tPercent(calc.contribution);
+  $t('technicalResultNetMargin').textContent=tPercent(calc.netMargin);
+  $t('technicalResultProfit').textContent=tMoney(calc.netProfit);
+  $t('technicalSuggestedPrice').textContent=tMoney(calc.suggestedPrice);
+  $t('technicalBreakEvenUnits').textContent=calc.breakEven?`${calc.breakEven} un.`:'0 un.';
+  $t('technicalCmvBar').style.width=`${Math.min(100,Math.max(0,calc.cmv))}%`;
+  $t('technicalContributionBar').style.width=`${Math.min(100,Math.max(0,calc.contribution))}%`;
+  $t('technicalNetBar').style.width=`${Math.min(100,Math.max(0,calc.netMargin))}%`;
+  const badge=$t('technicalResultBadge');
+  badge.className=`technical-result-badge ${status}`;
+  badge.textContent=technicalStatusLabel(status);
+  $t('technicalResultProfitHint').textContent=calc.netProfit<0?'O produto está gerando prejuízo.':'Após custos, impostos e taxas';
+  $t('technicalBreakEvenHint').textContent=calc.breakEven?'Quantidade estimada para cobrir o rateio fixo.':'Informe o rateio fixo para calcular.';
+}
+function resetTechnicalForm(){
+  technicalState.editingId=null;
+  technicalState.ingredients=[];
+  const ids=['technicalSheetId','technicalName','technicalCategory','technicalSalePrice','technicalPackagingCost','technicalLaborCost','technicalEnergyCost','technicalOtherCost','technicalOperationalLoss','technicalFixedAllocation','technicalTaxRate','technicalCardRate','technicalPlatformRate','technicalCommissionRate','technicalNote'];
+  ids.forEach(id=>{if($t(id))$t(id).value=''});
+  if($t('technicalItemId'))$t('technicalItemId').value='';
+  if($t('technicalSaleUnit'))$t('technicalSaleUnit').value='un';
+  if($t('technicalYield'))$t('technicalYield').value='1';
+  if($t('technicalDesiredMargin'))$t('technicalDesiredMargin').value='20,00';
+  $t('technicalModalTitle').textContent='Nova ficha técnica';
+  $t('duplicateTechnicalSheetBtn').classList.add('is-hidden');
+  renderIngredientRows();renderTechnicalCalculation();
+}
+function openTechnicalModal(sheet=null){
+  syncTechnicalItemOptions();
+  resetTechnicalForm();
+  if(sheet){
+    technicalState.editingId=sheet.id;
+    technicalState.ingredients=(sheet.ingredients||[]).map(x=>({...x}));
+    const map={technicalSheetId:'id',technicalItemId:'itemId',technicalName:'name',technicalCategory:'category',technicalSaleUnit:'saleUnit',technicalYield:'yield',technicalSalePrice:'salePrice',technicalPackagingCost:'packagingCost',technicalLaborCost:'laborCost',technicalEnergyCost:'energyCost',technicalOtherCost:'otherCost',technicalOperationalLoss:'operationalLoss',technicalFixedAllocation:'fixedAllocation',technicalTaxRate:'taxRate',technicalCardRate:'cardRate',technicalPlatformRate:'platformRate',technicalCommissionRate:'commissionRate',technicalDesiredMargin:'desiredMargin',technicalNote:'note'};
+    Object.entries(map).forEach(([id,key])=>{if($t(id))$t(id).value=sheet[key]??''});
+    $t('technicalModalTitle').textContent=`Editar ficha • ${sheet.name}`;
+    $t('duplicateTechnicalSheetBtn').classList.remove('is-hidden');
+    renderIngredientRows();renderTechnicalCalculation();
+  }
+  const modal=$t('technicalSheetModal');
+  modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
+}
+function closeTechnicalModal(){
+  const modal=$t('technicalSheetModal');modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';
+}
+function saveTechnicalSheet(){
+  const data=currentTechnicalData();
+  if(!data.name){alert('Informe o nome da ficha técnica.');return}
+  if(data.salePrice<=0){alert('Informe o preço de venda.');return}
+  const index=technicalState.sheets.findIndex(x=>x.id===data.id);
+  if(index>=0) technicalState.sheets[index]=data; else technicalState.sheets.unshift(data);
+  persistTechnical();renderTechnicalDashboard();closeTechnicalModal();
+}
+function duplicateTechnical(){
+  const data=currentTechnicalData();
+  data.id=crypto.randomUUID();data.name=`${data.name} — Cópia`;data.updatedAt=new Date().toISOString();
+  technicalState.sheets.unshift(data);persistTechnical();renderTechnicalDashboard();closeTechnicalModal();
+}
+function renderTechnicalDashboard(){
+  const search=($t('technicalSearch')?.value||'').toLowerCase();
+  const filter=$t('technicalStatusFilter')?.value||'';
+  const rows=technicalState.sheets.map(sheet=>({sheet,calc:calculateSheetFromValues(sheet)}));
+  const visible=rows.filter(({sheet,calc})=>{
+    const status=technicalStatus(calc);
+    const hit=!search||`${sheet.name} ${sheet.category} ${sheet.note}`.toLowerCase().includes(search);
+    return hit&&(!filter||filter===status);
+  });
+  const host=$t('technicalSheetList');
+  if(host) host.innerHTML=visible.map(({sheet,calc})=>{
+    const status=technicalStatus(calc);
+    return `<article class="technical-sheet-card">
+      <div class="technical-sheet-main"><span class="technical-sheet-icon"><i class="ri-calculator-line"></i></span><div><b>${tEscape(sheet.name)}</b><small>${tEscape(sheet.category||'Sem categoria')} • ${tEscape(sheet.saleUnit||'un')} • Atualizada ${new Date(sheet.updatedAt||Date.now()).toLocaleDateString('pt-BR')}</small></div></div>
+      <div class="technical-sheet-metric"><span>Venda</span><strong>${tMoney(calc.salePrice)}</strong></div>
+      <div class="technical-sheet-metric"><span>Custo total</span><strong>${tMoney(calc.totalCost)}</strong></div>
+      <div class="technical-sheet-metric"><span>CMV</span><strong>${tPercent(calc.cmv)}</strong></div>
+      <div class="technical-sheet-metric"><span>Lucro</span><strong>${tMoney(calc.netProfit)}</strong></div>
+      <span class="technical-sheet-status ${status}">${technicalStatusLabel(status)}</span>
+      <div class="technical-sheet-actions"><button type="button" data-edit-technical="${sheet.id}" title="Editar"><i class="ri-pencil-line"></i></button><button type="button" data-delete-technical="${sheet.id}" title="Excluir"><i class="ri-delete-bin-line"></i></button></div>
+    </article>`;
+  }).join('');
+  $t('technicalEmpty')?.classList.toggle('is-hidden',technicalState.sheets.length>0);
+  host?.classList.toggle('is-hidden',technicalState.sheets.length===0);
+  $$t('[data-edit-technical]',host).forEach(btn=>btn.addEventListener('click',()=>openTechnicalModal(technicalState.sheets.find(x=>x.id===btn.dataset.editTechnical))));
+  $$t('[data-delete-technical]',host).forEach(btn=>btn.addEventListener('click',()=>{if(confirm('Excluir esta ficha técnica?')){technicalState.sheets=technicalState.sheets.filter(x=>x.id!==btn.dataset.deleteTechnical);persistTechnical();renderTechnicalDashboard()}}));
+  const count=rows.length;
+  const avg=key=>count?rows.reduce((s,x)=>s+x.calc[key],0)/count:0;
+  $t('technicalAverageCost').textContent=tMoney(avg('totalCost'));
+  $t('technicalAverageCostHint').textContent=`${count} ficha${count===1?'':'s'} calculada${count===1?'':'s'}`;
+  $t('technicalAverageCmv').textContent=tPercent(avg('cmv'));
+  $t('technicalAverageMargin').textContent=tPercent(avg('netMargin'));
+  $t('technicalAverageProfit').textContent=tMoney(avg('netProfit'));
+  const counts={healthy:0,attention:0,critical:0};rows.forEach(x=>counts[technicalStatus(x.calc)]++);
+  $t('technicalHealthyCount').textContent=`${counts.healthy} ${counts.healthy===1?'item saudável':'itens saudáveis'}`;
+  $t('technicalAttentionCount').textContent=`${counts.attention} ${counts.attention===1?'item em atenção':'itens em atenção'}`;
+  $t('technicalCriticalCount').textContent=`${counts.critical} ${counts.critical===1?'item crítico':'itens críticos'}`;
+  $t('navTechnicalCount').textContent=count;
+  $t('technicalCmvGoalLabel').textContent=`${technicalState.goal}%`;
+  const health=$t('technicalHealthBadge');
+  let status='neutral',label='Sem dados';
+  if(count){status=counts.critical?'critical':counts.attention?'attention':'healthy';label=status==='healthy'?'Saudável':status==='attention'?'Atenção':'Crítico'}
+  health.className=`technical-health-badge ${status}`;health.textContent=label;
+}
+function exportTechnical(){
+  const rows=technicalState.sheets.map(sheet=>{const c=calculateSheetFromValues(sheet);return {Produto:sheet.name,Categoria:sheet.category,Preco_Venda:c.salePrice,Custo_Insumos:c.ingredientsUnit,Custo_Total:c.totalCost,Impostos_Taxas:c.fees,CMV_Percentual:c.cmv,Lucro_Unitario:c.netProfit,Margem_Liquida_Percentual:c.netMargin,Preco_Sugerido:c.suggestedPrice}});
+  if(!rows.length){alert('Não existem fichas para exportar.');return}
+  const headers=Object.keys(rows[0]);const csv=[headers.join(';'),...rows.map(r=>headers.map(h=>String(r[h]).replace('.',',')).join(';'))].join('\n');
+  const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`fichas-tecnicas-${new Date().toISOString().slice(0,10)}.csv`;a.click();URL.revokeObjectURL(url);
+}
+function bindTechnical(){
+  loadTechnical();renderTechnicalDashboard();syncTechnicalItemOptions();
+  $t('newTechnicalSheetBtn')?.addEventListener('click',()=>openTechnicalModal());
+  $$t('[data-new-technical]').forEach(x=>x.addEventListener('click',()=>openTechnicalModal()));
+  $$t('[data-close-technical]').forEach(x=>x.addEventListener('click',closeTechnicalModal));
+  $t('addTechnicalIngredientBtn')?.addEventListener('click',()=>{technicalState.ingredients.push({name:'',purchaseQty:1,purchaseUnit:'kg',purchaseCost:0,usedQty:0,usedUnit:'kg',lossRate:0});renderIngredientRows();renderTechnicalCalculation()});
+  $t('saveTechnicalSheetBtn')?.addEventListener('click',saveTechnicalSheet);
+  $t('duplicateTechnicalSheetBtn')?.addEventListener('click',duplicateTechnical);
+  $t('applyTechnicalSuggestedPriceBtn')?.addEventListener('click',()=>{const calc=calculateSheetFromValues(currentTechnicalData());$t('technicalSalePrice').value=calc.suggestedPrice.toFixed(2).replace('.',',');renderTechnicalCalculation()});
+  $t('technicalSearch')?.addEventListener('input',renderTechnicalDashboard);
+  $t('technicalStatusFilter')?.addEventListener('change',renderTechnicalDashboard);
+  $t('technicalExportBtn')?.addEventListener('click',exportTechnical);
+  $t('technicalCmvGoal')?.addEventListener('input',e=>{technicalState.goal=Number(e.target.value);persistTechnical();renderTechnicalDashboard();renderTechnicalCalculation()});
+  const calcIds=['technicalYield','technicalSalePrice','technicalPackagingCost','technicalLaborCost','technicalEnergyCost','technicalOtherCost','technicalOperationalLoss','technicalFixedAllocation','technicalTaxRate','technicalCardRate','technicalPlatformRate','technicalCommissionRate','technicalDesiredMargin'];
+  calcIds.forEach(id=>$t(id)?.addEventListener('input',renderTechnicalCalculation));
+  $t('technicalItemId')?.addEventListener('change',()=>{
+    const st=window.__CLENA_DELIVERY_STATE__||{};const item=(st.items||[]).find(x=>x.id===$t('technicalItemId').value);
+    if(item){if(!$t('technicalName').value)$t('technicalName').value=item.name||'';const price=item.sale_price??item.price??0;$t('technicalSalePrice').value=Number(price).toFixed(2).replace('.',',');const cat=(st.categories||[]).find(x=>x.id===item.category_id);if(cat)$t('technicalCategory').value=cat.name||'';renderTechnicalCalculation()}
+  });
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$t('technicalSheetModal')?.classList.contains('open'))closeTechnicalModal()});
+}
+function waitTechnical(){
+  if($t('app')&&!$t('app').classList.contains('is-hidden')) bindTechnical(); else setTimeout(waitTechnical,200);
+}
+waitTechnical();
 </script>
 
 </body>
