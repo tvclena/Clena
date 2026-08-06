@@ -998,3 +998,275 @@
 .clena-editor-v2 .alp-footer .alp-socials {
   display: none !important;
 }
+
+
+/* =========================================================
+   CLENA — PRÉVIA COMPACTA E FIEL À LOJA PÚBLICA
+   ========================================================= */
+
+.clena-editor-v2 .appearance-workspace {
+  grid-template-columns: minmax(0, 1fr) 340px !important;
+}
+
+.clena-editor-v2 .appearance-preview-column {
+  width: 340px;
+  max-width: 100%;
+}
+
+.clena-editor-v2 .preview-sticky {
+  width: 100%;
+}
+
+.clena-editor-v2 .store-live-preview.mobile {
+  width: 292px !important;
+  max-width: 292px !important;
+  max-height: 540px !important;
+  margin-inline: auto;
+  border-radius: 20px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  box-shadow: 0 18px 45px rgba(15,23,42,.14);
+}
+
+.clena-editor-v2 .store-live-preview.desktop {
+  width: 760px !important;
+  max-width: none !important;
+  max-height: none !important;
+  transform: scale(.42) !important;
+  transform-origin: top left !important;
+  margin-bottom: -430px !important;
+}
+
+.clena-editor-v2 .alp-browser-bar {
+  height: 22px;
+  padding-inline: 8px;
+}
+
+.clena-editor-v2 .alp-browser-bar small {
+  font-size: 6px;
+}
+
+.clena-editor-v2 .alp-header {
+  height: 48px;
+  padding: 7px 9px;
+}
+
+.clena-editor-v2 .alp-logo {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+}
+
+.clena-editor-v2 .alp-brand strong {
+  max-width: 125px;
+  font-size: 8px;
+}
+
+.clena-editor-v2 .alp-brand small {
+  font-size: 6px;
+}
+
+.clena-editor-v2 .alp-header-actions button {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.clena-editor-v2 .alp-cart-button b {
+  width: 13px;
+  height: 13px;
+  font-size: 6px;
+}
+
+.clena-editor-v2 .alp-cover {
+  height: 112px !important;
+  min-height: 112px !important;
+  max-height: 112px !important;
+}
+
+/* A loja pública atual exibe o banner limpo */
+.clena-editor-v2 .alp-copy,
+.clena-editor-v2 .alp-cover-actions,
+.clena-editor-v2 .alp-kicker {
+  display: none !important;
+}
+
+.clena-editor-v2 .alp-social-section {
+  margin: 7px 8px;
+  padding: 8px 9px;
+  border-radius: 10px;
+}
+
+.clena-editor-v2 .alp-social-section > div small {
+  font-size: 5px;
+}
+
+.clena-editor-v2 .alp-social-section > div strong {
+  font-size: 6.5px;
+}
+
+.clena-editor-v2 .alp-socials a {
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  font-size: 10px;
+}
+
+.clena-editor-v2 .alp-store-info {
+  margin: 0 8px 8px;
+  padding: 7px;
+  border-radius: 10px;
+}
+
+.clena-editor-v2 .alp-store-info > div {
+  gap: 4px;
+  padding-inline: 4px;
+}
+
+.clena-editor-v2 .alp-store-info i {
+  font-size: 10px;
+}
+
+.clena-editor-v2 .alp-store-info small {
+  font-size: 4.5px;
+}
+
+.clena-editor-v2 .alp-store-info strong {
+  font-size: 5.5px;
+}
+
+.clena-editor-v2 .alp-section-title,
+.clena-editor-v2 .alp-results {
+  padding-inline: 9px;
+}
+
+.clena-editor-v2 .alp-section-title strong {
+  font-size: 10px;
+}
+
+.clena-editor-v2 .alp-featured-products,
+.clena-editor-v2 .alp-products {
+  padding-inline: 9px;
+  gap: 7px;
+}
+
+.clena-editor-v2 .alp-products article {
+  padding: 6px;
+}
+
+.clena-editor-v2 .alp-image {
+  height: 78px;
+  border-radius: 8px;
+}
+
+.clena-editor-v2 .store-live-preview[data-ratio="portrait"] .alp-image {
+  height: 96px;
+}
+
+.clena-editor-v2 .store-live-preview[data-ratio="landscape"] .alp-image {
+  height: 58px;
+}
+
+.clena-editor-v2 .alp-products h4 {
+  margin-top: 6px;
+  font-size: 8px;
+}
+
+.clena-editor-v2 .alp-products p {
+  font-size: 6px;
+  line-height: 1.35;
+}
+
+.clena-editor-v2 .alp-products strong {
+  font-size: 8px;
+}
+
+.clena-editor-v2 .alp-products button {
+  width: 22px;
+  height: 22px;
+}
+
+.clena-editor-v2 .alp-sale {
+  top: 9px;
+  left: 9px;
+  padding: 2px 4px;
+  font-size: 5px;
+}
+
+.clena-editor-v2 .alp-catalog-tools {
+  grid-template-columns: 1fr 31px;
+  padding: 2px 9px 8px;
+}
+
+.clena-editor-v2 .alp-search {
+  height: 31px;
+  margin: 0;
+  padding: 7px 9px;
+  border-radius: 9px;
+  font-size: 7px;
+}
+
+.clena-editor-v2 .alp-categories {
+  gap: 5px;
+  padding: 0 9px 8px;
+}
+
+.clena-editor-v2 .alp-categories span {
+  padding: 5px 7px;
+  font-size: 6px;
+}
+
+.clena-editor-v2 .alp-results strong {
+  font-size: 8px;
+}
+
+.clena-editor-v2 .alp-results small {
+  font-size: 6px;
+}
+
+.clena-editor-v2 .alp-footer {
+  min-height: 48px;
+  padding: 10px 11px;
+  font-size: 6px;
+}
+
+.clena-editor-v2 .alp-floating-whatsapp {
+  width: 31px;
+  height: 31px;
+  margin: -40px auto 9px 9px;
+}
+
+@media (max-width: 1280px) {
+  .clena-editor-v2 .appearance-workspace {
+    grid-template-columns: minmax(0, 1fr) 320px !important;
+  }
+
+  .clena-editor-v2 .appearance-preview-column {
+    width: 320px;
+  }
+
+  .clena-editor-v2 .store-live-preview.mobile {
+    width: 276px !important;
+    max-width: 276px !important;
+  }
+}
+
+@media (max-width: 1100px) {
+  .clena-editor-v2 .appearance-preview-column {
+    width: 100%;
+  }
+
+  .clena-editor-v2 .store-live-preview.mobile {
+    width: 292px !important;
+    max-width: 292px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .clena-editor-v2 .store-live-preview.mobile {
+    width: 260px !important;
+    max-width: 260px !important;
+    max-height: 500px !important;
+  }
+}

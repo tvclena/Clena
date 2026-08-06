@@ -392,34 +392,12 @@ export function updateAppearancePreview(context = {}) {
     heightMap[appearance.cover_height] || heightMap.medium
   );
 
-  const title =
-    appearance.hero_title ||
-    previewContext.storeName ||
-    'Minha loja';
-
-  const subtitle =
-    appearance.hero_subtitle ||
-    previewContext.description ||
-    'Sua descrição aparecerá aqui';
-
   const previewStoreName = previewContext.storeName || 'Minha loja';
 
   const headerName = preview.querySelector('.alp-brand strong');
   if (headerName) headerName.textContent = previewStoreName;
 
-  const titleElement = preview.querySelector('.alp-copy h3');
-  if (titleElement) titleElement.textContent = title;
-
-  const subtitleElement = preview.querySelector('.alp-copy p');
-  if (subtitleElement) subtitleElement.textContent = subtitle;
-
-  const heroButton = preview.querySelector('.alp-cover-actions > button:first-child');
-  if (heroButton) {
-    heroButton.textContent = appearance.hero_button_text || 'Ver produtos';
-    heroButton.hidden = appearance.hero_button_target === 'none';
-  }
-
-  const searchBox = preview.querySelector('.alp-search');
+const searchBox = preview.querySelector('.alp-search');
   if (searchBox) searchBox.hidden = !appearance.show_search;
 
   const categoriesElement = preview.querySelector('.alp-categories');
