@@ -1706,3 +1706,30 @@
     max-height:520px !important;
   }
 }
+
+
+/* =========================================================
+   CORREÇÃO — OCULTAR BARRA DE ROLAGEM DENTRO DA PRÉVIA
+   A rolagem continua funcionando normalmente.
+   ========================================================= */
+
+.clena-editor-v2 .store-live-preview.mobile,
+.clena-editor-v2 .store-live-preview.desktop {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.clena-editor-v2 .store-live-preview.mobile::-webkit-scrollbar,
+.clena-editor-v2 .store-live-preview.desktop::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+}
+
+.clena-editor-v2 .store-live-preview.mobile::-webkit-scrollbar-track,
+.clena-editor-v2 .store-live-preview.mobile::-webkit-scrollbar-thumb,
+.clena-editor-v2 .store-live-preview.desktop::-webkit-scrollbar-track,
+.clena-editor-v2 .store-live-preview.desktop::-webkit-scrollbar-thumb {
+  display: none !important;
+  background: transparent !important;
+}
