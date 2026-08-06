@@ -597,9 +597,31 @@ function renderStoreInformation() {
   $('floatingWhatsapp').onclick = () => { if (whatsappUrl) window.open(whatsappUrl, '_blank', 'noopener'); };
 
   const instagramValue = appearance.social_instagram || store.instagram || '';
-  const instagramUrl = normalizeSocialUrl(instagramValue, 'https://instagram.com/');
-  for (const id of ['headerInstagram','footerInstagram']) {
-    const link = $(id); link.classList.toggle('is-hidden', !instagramUrl); if (instagramUrl) link.href = instagramUrl;
+  const instagramUrl = normalizeSocialUrl(
+    instagramValue,
+    'https://instagram.com/'
+  );
+
+  /*
+   * O Instagram do cabeçalho foi removido.
+   * Alguns temas ainda possuem o Instagram no rodapé.
+   * Por isso, cada elemento precisa ser verificado antes do uso.
+   */
+  for (const id of ['headerInstagram', 'footerInstagram']) {
+    const link = $(id);
+
+    if (!link) continue;
+
+    link.classList.toggle(
+      'is-hidden',
+      !instagramUrl
+    );
+
+    if (instagramUrl) {
+      link.href = instagramUrl;
+    } else {
+      link.removeAttribute('href');
+    }
   }
 
   renderSocialLinks();
