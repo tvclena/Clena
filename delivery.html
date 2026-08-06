@@ -2,10 +2,10 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover">
   <meta name="theme-color" content="#f97316">
-  <meta name="description" content="Cardápio e pedidos online">
-  <title>Delivery</title>
+  <meta name="description" content="Cardápio digital completo para restaurantes, delivery, retirada, pagamentos e pedidos online">
+  <title>Restaurante • Cardápio e Pedidos</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -889,6 +889,246 @@
 
 
 
+  
+    /* =========================================================
+       RESTAURANTE • REFINAMENTO VISUAL E BLOQUEIO DE ZOOM
+    ========================================================= */
+    html{
+      width:100%;
+      min-height:100%;
+      -webkit-text-size-adjust:100%;
+      text-size-adjust:100%;
+      touch-action:pan-x pan-y;
+      overscroll-behavior:none;
+    }
+
+    body{
+      width:100%;
+      overflow-x:hidden;
+      -webkit-tap-highlight-color:transparent;
+      overscroll-behavior-y:none;
+    }
+
+    img,
+    button,
+    .chip,
+    .product-card,
+    .info-card{
+      -webkit-user-drag:none;
+    }
+
+    input,
+    select,
+    textarea{
+      font-size:16px;
+    }
+
+    .restaurant-topline{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin:12px 0 2px;
+      color:var(--muted);
+      font-size:10px;
+      font-weight:700;
+    }
+
+    .restaurant-topline span{
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .restaurant-topline i{
+      color:var(--primary);
+    }
+
+    .toolbar-btn{
+      white-space:nowrap;
+    }
+
+    .info-modal-card{
+      width:min(940px,calc(100% - 28px));
+      max-height:min(90vh,850px);
+      background:var(--card);
+      border:1px solid rgba(255,255,255,.75);
+      border-radius:28px;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      box-shadow:0 40px 130px rgba(2,6,23,.42);
+    }
+
+    .info-modal-header{
+      position:relative;
+      min-height:145px;
+      padding:24px;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:18px;
+      color:#fff;
+      background:
+        radial-gradient(circle at 85% 15%,rgba(255,255,255,.22),transparent 34%),
+        linear-gradient(135deg,var(--accent),var(--primary));
+    }
+
+    .info-modal-header::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(90deg,rgba(2,6,23,.30),transparent);
+      pointer-events:none;
+    }
+
+    .info-modal-title,
+    .info-modal-header .icon-btn{
+      position:relative;
+      z-index:1;
+    }
+
+    .info-modal-title small{
+      display:block;
+      font-size:9px;
+      font-weight:900;
+      letter-spacing:.17em;
+      opacity:.8;
+    }
+
+    .info-modal-title h2{
+      margin:5px 0 0;
+      font-size:28px;
+      letter-spacing:-.035em;
+    }
+
+    .info-modal-title p{
+      margin:5px 0 0;
+      max-width:640px;
+      color:rgba(255,255,255,.82);
+      font-size:11px;
+    }
+
+    .info-modal-header .icon-btn{
+      border-color:rgba(255,255,255,.35);
+      background:rgba(255,255,255,.16);
+      color:#fff;
+      backdrop-filter:blur(8px);
+    }
+
+    .info-modal-body{
+      overflow:auto;
+      padding:20px;
+      background:#f8fafc;
+    }
+
+    .info-modal-body .information-grid{
+      grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    .info-modal-body .information-block{
+      background:#fff;
+      box-shadow:0 10px 30px rgba(15,23,42,.055);
+    }
+
+    .info-modal-footer{
+      padding:13px 20px;
+      border-top:1px solid var(--line);
+      background:#fff;
+      display:flex;
+      justify-content:flex-end;
+    }
+
+    .info-close-action{
+      width:auto;
+      min-width:150px;
+      padding:0 20px;
+    }
+
+    .store-info-grid .info-card{
+      cursor:pointer;
+      transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+    }
+
+    .store-info-grid .info-card:hover{
+      transform:translateY(-2px);
+      border-color:color-mix(in srgb,var(--primary) 35%,var(--line));
+      box-shadow:0 16px 36px rgba(15,23,42,.08);
+    }
+
+    .restaurant-footer-note{
+      padding:24px 10px 10px;
+      text-align:center;
+      color:var(--muted);
+      font-size:9px;
+    }
+
+    @media(max-width:650px){
+      input,
+      select,
+      textarea{
+        font-size:16px!important;
+      }
+
+      .toolbar{
+        grid-template-columns:minmax(0,1fr) auto;
+        gap:6px;
+      }
+
+      .toolbar-btn{
+        display:flex;
+        min-height:42px;
+        padding:0 11px;
+        border-radius:11px;
+        font-size:0;
+      }
+
+      .toolbar-btn i{
+        font-size:19px;
+      }
+
+      .restaurant-topline{
+        font-size:8px;
+        margin-top:8px;
+      }
+
+      .info-modal-card{
+        width:100%;
+        max-height:96dvh;
+        border-radius:24px 24px 0 0;
+      }
+
+      .info-modal-header{
+        min-height:115px;
+        padding:18px 15px;
+      }
+
+      .info-modal-title h2{
+        font-size:21px;
+      }
+
+      .info-modal-title p{
+        font-size:9px;
+      }
+
+      .info-modal-body{
+        padding:11px;
+      }
+
+      .info-modal-body .information-grid{
+        grid-template-columns:1fr;
+        gap:9px;
+      }
+
+      .info-modal-footer{
+        padding:10px;
+      }
+
+      .info-close-action{
+        width:100%;
+      }
+    }
+
   </style>
 </head>
 
@@ -902,6 +1142,10 @@
   <main id="app" class="shell hidden">
     <section id="hero" class="hero"></section>
     <section id="storeInfo" class="store-info-grid"></section>
+    <div class="restaurant-topline">
+      <span><i class="ri-shield-check-line"></i> Pedido seguro e conferido antes do envio</span>
+      <span><i class="ri-restaurant-line"></i> Cardápio atualizado pela loja</span>
+    </div>
     <div id="closedNotice"></div>
 
     <div class="sticky-tools">
@@ -929,15 +1173,10 @@
       <div id="productsGrid" class="products-grid"></div>
     </section>
 
-    <section id="informationSection" class="info-section">
-      <div class="section-head">
-        <div>
-          <h2>Informações da loja</h2>
-          <p>Entrega, retirada, pagamentos e horários</p>
-        </div>
-      </div>
-      <div id="informationGrid" class="information-grid"></div>
-    </section>
+    <div class="restaurant-footer-note">
+      <i class="ri-lock-2-line"></i>
+      Os valores, horários, pagamentos e disponibilidade são definidos pelo restaurante.
+    </div>
   </main>
 
   <button id="cartButton" class="floating-cart hidden" type="button">
@@ -1020,6 +1259,33 @@
         </button>
       </footer>
     </aside>
+  </div>
+
+
+  <div id="informationModal" class="modal-overlay hidden" aria-hidden="true">
+    <section class="info-modal-card" role="dialog" aria-modal="true" aria-labelledby="informationModalTitle">
+      <header class="info-modal-header">
+        <div class="info-modal-title">
+          <small>INFORMAÇÕES DO RESTAURANTE</small>
+          <h2 id="informationModalTitle">Tudo sobre a loja</h2>
+          <p>Consulte entrega, retirada, pedido mínimo, pagamentos, endereço e horários de funcionamento.</p>
+        </div>
+        <button id="closeInformationModalBtn" class="icon-btn" type="button" aria-label="Fechar informações">
+          <i class="ri-close-line"></i>
+        </button>
+      </header>
+
+      <div class="info-modal-body">
+        <div id="informationGrid" class="information-grid"></div>
+      </div>
+
+      <footer class="info-modal-footer">
+        <button id="closeInformationActionBtn" class="primary-btn info-close-action" type="button">
+          <i class="ri-check-line"></i>
+          Entendi
+        </button>
+      </footer>
+    </section>
   </div>
 
   <div id="productModal" class="modal-overlay hidden" aria-hidden="true">
@@ -1367,19 +1633,19 @@
       const estimate = d.estimated_time || "Consulte a loja";
 
       $("storeInfo").innerHTML = `
-        <article class="info-card">
+        <article class="info-card" data-open-information="true">
           <i class="ri-time-line"></i>
           <div><b>Tempo estimado</b><small>${esc(estimate)}</small></div>
         </article>
-        <article class="info-card">
+        <article class="info-card" data-open-information="true">
           <i class="ri-bike-line"></i>
           <div><b>Entrega</b><small>${esc(deliveryText)}</small></div>
         </article>
-        <article class="info-card">
+        <article class="info-card" data-open-information="true">
           <i class="ri-shopping-bag-line"></i>
           <div><b>Retirada</b><small>${esc(pickupText)}</small></div>
         </article>
-        <article class="info-card">
+        <article class="info-card" data-open-information="true">
           <i class="ri-money-dollar-circle-line"></i>
           <div><b>Pedido mínimo</b><small>${esc(minimum)}</small></div>
         </article>
@@ -1562,6 +1828,21 @@
 
     function optionsForGroup(groupId){
       return state.addonOptions.filter(option => option.group_id === groupId && option.active !== false);
+    }
+
+
+    function openInformationModal(){
+      renderInformation();
+      $("informationModal").classList.remove("hidden");
+      $("informationModal").setAttribute("aria-hidden","false");
+      document.body.classList.add("no-scroll");
+      setTimeout(() => $("closeInformationModalBtn")?.focus(), 0);
+    }
+
+    function closeInformationModal(){
+      $("informationModal").classList.add("hidden");
+      $("informationModal").setAttribute("aria-hidden","true");
+      document.body.classList.remove("no-scroll");
     }
 
     function openProductModal(itemId){
@@ -2109,14 +2390,50 @@
       }
     }
 
+
+    function installZoomBlock(){
+      let lastTouchEnd = 0;
+
+      document.addEventListener("gesturestart",event => event.preventDefault(),{passive:false});
+      document.addEventListener("gesturechange",event => event.preventDefault(),{passive:false});
+      document.addEventListener("gestureend",event => event.preventDefault(),{passive:false});
+
+      document.addEventListener("touchend",event => {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 300) event.preventDefault();
+        lastTouchEnd = now;
+      },{passive:false});
+
+      document.addEventListener("dblclick",event => event.preventDefault(),{passive:false});
+
+      document.addEventListener("wheel",event => {
+        if (event.ctrlKey || event.metaKey) event.preventDefault();
+      },{passive:false});
+
+      document.addEventListener("keydown",event => {
+        const zoomKey = ["+","-","=","0"].includes(event.key);
+        if ((event.ctrlKey || event.metaKey) && zoomKey){
+          event.preventDefault();
+        }
+      });
+    }
+
     function bindEvents(){
       $("searchInput").addEventListener("input", event => {
         state.search = event.target.value;
         renderProducts();
       });
 
-      $("infoJumpBtn").addEventListener("click", () => {
-        $("informationSection").scrollIntoView({behavior:"smooth",block:"start"});
+      $("infoJumpBtn").addEventListener("click",openInformationModal);
+
+      $("storeInfo").addEventListener("click",event => {
+        if (event.target.closest("[data-open-information]")) openInformationModal();
+      });
+
+      $("closeInformationModalBtn").addEventListener("click",closeInformationModal);
+      $("closeInformationActionBtn").addEventListener("click",closeInformationModal);
+      $("informationModal").addEventListener("click",event => {
+        if (event.target === $("informationModal")) closeInformationModal();
       });
 
       $("cartButton").addEventListener("click",openCart);
@@ -2147,11 +2464,13 @@
 
       document.addEventListener("keydown",event => {
         if (event.key !== "Escape") return;
-        if (!$("productModal").classList.contains("hidden")) closeProductModal();
+        if (!$("informationModal").classList.contains("hidden")) closeInformationModal();
+        else if (!$("productModal").classList.contains("hidden")) closeProductModal();
         else if (!$("cartOverlay").classList.contains("hidden")) closeCart();
       });
     }
 
+    installZoomBlock();
     init();
   </script>
 </body>
