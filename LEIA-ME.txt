@@ -1,0 +1,22 @@
+CLENA — EDITOR COMPLETO COM TEMAS PROFISSIONAIS
+
+Arquivos:
+- editor-loja.html
+- assets/css/store-editor.css
+- assets/js/store-appearance.js
+- assets/js/store-editor.js
+
+Substitua os arquivos mantendo exatamente essa estrutura.
+Depois abra o editor e use Ctrl + Shift + R.
+
+Temas:
+- Minimal: editorial limpo e sem sombras
+- Boutique: luxo clássico, serifas e fotos verticais
+- Vibrante: pop, colorido e com alto impacto
+- Noturno: premium, escuro e tecnológico
+- Orgânico: natural, artesanal e acolhedor
+- Poster: brutalista, gráfico e publicitário
+
+Cada tema agora altera cores principais, cor de destaque, fontes, cards,
+proporção das imagens, categorias, botões, cabeçalho, rodapé, alinhamento,
+sombras, animações e estrutura visual da prévia.

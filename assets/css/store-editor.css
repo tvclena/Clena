@@ -1733,3 +1733,419 @@
   display: none !important;
   background: transparent !important;
 }
+
+
+/* =========================================================
+   CLENA — TEMAS PROFISSIONAIS REALMENTE DIFERENTES
+   ========================================================= */
+
+.clena-editor-v2 .theme-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+}
+
+.clena-editor-v2 .theme-card{
+  position:relative;
+  min-height:166px;
+  padding:9px;
+  overflow:hidden;
+  border:1px solid #dce3ed;
+  border-radius:18px;
+  background:#fff;
+  box-shadow:0 5px 15px rgba(15,23,42,.035);
+}
+
+.clena-editor-v2 .theme-card:hover{
+  transform:translateY(-3px);
+  border-color:#b9c9e2;
+  box-shadow:0 16px 35px rgba(15,23,42,.10);
+}
+
+.clena-editor-v2 .theme-card.active{
+  border-color:#2563eb;
+  box-shadow:0 0 0 3px rgba(37,99,235,.13),0 16px 36px rgba(15,23,42,.10);
+}
+
+.clena-editor-v2 .theme-card strong{
+  margin-top:9px;
+  font-size:13px;
+}
+
+.clena-editor-v2 .theme-card small{
+  margin-top:4px;
+  min-height:34px;
+  line-height:1.45;
+  font-size:10px;
+}
+
+.clena-editor-v2 .theme-swatch{
+  position:relative;
+  height:88px;
+  overflow:hidden;
+  border:0;
+  border-radius:12px;
+  box-shadow:inset 0 0 0 1px rgba(15,23,42,.09);
+}
+
+.clena-editor-v2 .theme-swatch::before{
+  content:"";
+  position:absolute;
+  z-index:2;
+}
+
+.clena-editor-v2 .theme-swatch::after{
+  content:attr(data-label);
+  position:absolute;
+  z-index:3;
+}
+
+/* Minimal — catálogo editorial branco */
+.clena-editor-v2 .theme-swatch.minimal{
+  background:#f8fafc;
+}
+.clena-editor-v2 .theme-swatch.minimal::before{
+  inset:13px 12px;
+  border:1px solid #dbe3ef;
+  background:
+    linear-gradient(#2563eb,#2563eb) 8px 8px/44px 5px no-repeat,
+    linear-gradient(#e5e7eb,#e5e7eb) 8px 20px/68px 3px no-repeat,
+    linear-gradient(90deg,#fff 0 31%,transparent 31% 34%,#fff 34% 65%,transparent 65% 68%,#fff 68%) 0 36px/100% 34px no-repeat;
+  box-shadow:0 4px 12px rgba(15,23,42,.06);
+}
+.clena-editor-v2 .theme-swatch.minimal::after{
+  right:17px;
+  top:17px;
+  color:#2563eb;
+  font:800 8px Inter,sans-serif;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+/* Boutique — capa editorial com serifas */
+.clena-editor-v2 .theme-swatch.boutique{
+  background:#f5e9e1;
+}
+.clena-editor-v2 .theme-swatch.boutique::before{
+  inset:0;
+  background:
+    linear-gradient(90deg,rgba(47,33,28,.82) 0 43%,transparent 43%),
+    radial-gradient(circle at 75% 42%,#d6a98d 0 18%,transparent 19%),
+    linear-gradient(145deg,#f8eee8,#c9997e);
+}
+.clena-editor-v2 .theme-swatch.boutique::after{
+  left:18px;
+  top:31px;
+  width:84px;
+  color:#fff8f2;
+  font:700 15px "Playfair Display",serif;
+  line-height:.95;
+}
+
+/* Vibrante — pop comercial */
+.clena-editor-v2 .theme-swatch.vibrant{
+  background:linear-gradient(135deg,#ffdb4d 0 32%,#ff3d8d 32% 66%,#6543ff 66%);
+}
+.clena-editor-v2 .theme-swatch.vibrant::before{
+  width:54px;
+  height:54px;
+  right:18px;
+  top:17px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:-75px 24px 0 -12px rgba(255,255,255,.9);
+}
+.clena-editor-v2 .theme-swatch.vibrant::after{
+  left:19px;
+  top:21px;
+  transform:rotate(-7deg);
+  color:#24123b;
+  font:900 18px Poppins,sans-serif;
+}
+
+/* Noturno — painel premium */
+.clena-editor-v2 .theme-swatch.dark{
+  background:radial-gradient(circle at 76% 22%,rgba(139,92,246,.55),transparent 30%),#080d18;
+}
+.clena-editor-v2 .theme-swatch.dark::before{
+  inset:15px;
+  border:1px solid rgba(167,139,250,.3);
+  border-radius:10px;
+  background:
+    linear-gradient(90deg,#8b5cf6,#5b21b6) 10px 10px/58px 6px no-repeat,
+    linear-gradient(#1f2937,#1f2937) 10px 28px/calc(100% - 20px) 9px no-repeat,
+    linear-gradient(90deg,#111827 0 31%,transparent 31% 34%,#111827 34% 65%,transparent 65% 68%,#111827 68%) 10px 45px/calc(100% - 20px) 23px no-repeat;
+}
+.clena-editor-v2 .theme-swatch.dark::after{
+  right:20px;
+  top:18px;
+  color:#c4b5fd;
+  font:800 8px Montserrat,sans-serif;
+  letter-spacing:.12em;
+}
+
+/* Orgânico — artesanal natural */
+.clena-editor-v2 .theme-swatch.organic{
+  background:#e8efdc;
+}
+.clena-editor-v2 .theme-swatch.organic::before{
+  width:105px;
+  height:105px;
+  right:-18px;
+  top:-18px;
+  border-radius:60% 40% 66% 34%;
+  transform:rotate(25deg);
+  background:#47724f;
+  box-shadow:-95px 72px 0 -35px #9eb18b;
+}
+.clena-editor-v2 .theme-swatch.organic::after{
+  left:18px;
+  top:31px;
+  color:#22382a;
+  font:700 15px Fraunces,serif;
+}
+
+/* Poster — brutalista */
+.clena-editor-v2 .theme-swatch.poster{
+  background:#f2f0e9;
+}
+.clena-editor-v2 .theme-swatch.poster::before{
+  inset:0;
+  background:
+    linear-gradient(90deg,#050505 0 34%,transparent 34%),
+    linear-gradient(135deg,transparent 0 56%,#ff352f 56%);
+}
+.clena-editor-v2 .theme-swatch.poster::after{
+  left:14px;
+  bottom:8px;
+  padding:3px 6px;
+  background:#ff352f;
+  color:#fff;
+  font:400 20px Anton,sans-serif;
+  letter-spacing:.04em;
+}
+
+/* ---------------------------------------------------------
+   PREVIEW: cada tema muda estrutura, ritmo e personalidade
+   --------------------------------------------------------- */
+
+/* Minimal */
+.clena-editor-v2 .store-live-preview[data-theme="minimal"]{
+  --theme-border:#dbe3ef;
+}
+.clena-editor-v2 .store-live-preview[data-theme="minimal"] .alp-header{
+  background:var(--ap-card)!important;
+  border-bottom:1px solid var(--theme-border);
+}
+.clena-editor-v2 .store-live-preview[data-theme="minimal"] .alp-cover{
+  margin:9px;
+  border-radius:11px;
+}
+.clena-editor-v2 .store-live-preview[data-theme="minimal"] .alp-social-section,
+.clena-editor-v2 .store-live-preview[data-theme="minimal"] .alp-store-info,
+.clena-editor-v2 .store-live-preview[data-theme="minimal"] .alp-products article{
+  border-radius:7px!important;
+  box-shadow:none!important;
+  border:1px solid var(--theme-border)!important;
+}
+.clena-editor-v2 .store-live-preview[data-theme="minimal"] .alp-categories span{
+  border-radius:0!important;
+  border-bottom:2px solid transparent;
+  background:transparent!important;
+}
+.clena-editor-v2 .store-live-preview[data-theme="minimal"] .alp-categories span.active{
+  color:var(--ap-primary)!important;
+  border-bottom-color:var(--ap-primary);
+}
+
+/* Boutique */
+.clena-editor-v2 .store-live-preview[data-theme="boutique"]{
+  letter-spacing:.01em;
+}
+.clena-editor-v2 .store-live-preview[data-theme="boutique"] .alp-header{
+  background:#fffaf6!important;
+}
+.clena-editor-v2 .store-live-preview[data-theme="boutique"] .alp-cover{
+  margin:0 12px;
+  border-radius:0 0 40% 40% / 0 0 12% 12%;
+}
+.clena-editor-v2 .store-live-preview[data-theme="boutique"] .alp-social-section{
+  border:0;
+  border-radius:0;
+  background:transparent;
+  border-top:1px solid rgba(139,94,74,.25);
+  border-bottom:1px solid rgba(139,94,74,.25);
+}
+.clena-editor-v2 .store-live-preview[data-theme="boutique"] .alp-store-info{
+  display:none;
+}
+.clena-editor-v2 .store-live-preview[data-theme="boutique"] .alp-section-title,
+.clena-editor-v2 .store-live-preview[data-theme="boutique"] .alp-results{
+  justify-content:center;
+  text-align:center;
+}
+.clena-editor-v2 .store-live-preview[data-theme="boutique"] .alp-products article{
+  border-radius:0!important;
+  border:0!important;
+  box-shadow:none!important;
+  text-align:center!important;
+  background:transparent!important;
+}
+.clena-editor-v2 .store-live-preview[data-theme="boutique"] .alp-image{
+  border-radius:0!important;
+}
+.clena-editor-v2 .store-live-preview[data-theme="boutique"] .alp-product-bottom{
+  justify-content:center;
+}
+.clena-editor-v2 .store-live-preview[data-theme="boutique"] .alp-products button{
+  display:none;
+}
+
+/* Vibrante */
+.clena-editor-v2 .store-live-preview[data-theme="vibrant"]{
+  background:
+    radial-gradient(circle at 0 15%,rgba(255,61,141,.16),transparent 28%),
+    radial-gradient(circle at 100% 42%,rgba(101,67,255,.16),transparent 30%),
+    var(--ap-bg)!important;
+}
+.clena-editor-v2 .store-live-preview[data-theme="vibrant"] .alp-header{
+  margin:7px;
+  border:0;
+  border-radius:16px;
+  box-shadow:0 8px 20px rgba(91,53,245,.18);
+}
+.clena-editor-v2 .store-live-preview[data-theme="vibrant"] .alp-cover{
+  margin:0 7px;
+  border-radius:20px;
+  transform:rotate(-1deg);
+}
+.clena-editor-v2 .store-live-preview[data-theme="vibrant"] .alp-social-section,
+.clena-editor-v2 .store-live-preview[data-theme="vibrant"] .alp-store-info{
+  border:0;
+  box-shadow:0 8px 20px rgba(91,53,245,.10);
+}
+.clena-editor-v2 .store-live-preview[data-theme="vibrant"] .alp-products article{
+  border:2px solid #fff!important;
+  border-radius:18px!important;
+  box-shadow:0 12px 26px rgba(91,53,245,.18)!important;
+}
+.clena-editor-v2 .store-live-preview[data-theme="vibrant"] .alp-sale{
+  transform:rotate(-6deg);
+}
+.clena-editor-v2 .store-live-preview[data-theme="vibrant"] .alp-products button{
+  border-radius:50%!important;
+}
+
+/* Dark */
+.clena-editor-v2 .store-live-preview[data-theme="dark"] .alp-header{
+  background:rgba(8,13,24,.92)!important;
+  border-bottom:1px solid rgba(139,92,246,.22);
+}
+.clena-editor-v2 .store-live-preview[data-theme="dark"] .alp-social-section,
+.clena-editor-v2 .store-live-preview[data-theme="dark"] .alp-store-info,
+.clena-editor-v2 .store-live-preview[data-theme="dark"] .alp-products article,
+.clena-editor-v2 .store-live-preview[data-theme="dark"] .alp-search{
+  border-color:rgba(139,92,246,.20)!important;
+  box-shadow:0 12px 30px rgba(0,0,0,.22)!important;
+}
+.clena-editor-v2 .store-live-preview[data-theme="dark"] .alp-section-title small{
+  color:#a78bfa;
+}
+
+/* Organic */
+.clena-editor-v2 .store-live-preview[data-theme="organic"]{
+  background:
+    radial-gradient(circle at 100% 0%,rgba(71,114,79,.16),transparent 28%),
+    var(--ap-bg)!important;
+}
+.clena-editor-v2 .store-live-preview[data-theme="organic"] .alp-header{
+  background:rgba(255,253,246,.92)!important;
+}
+.clena-editor-v2 .store-live-preview[data-theme="organic"] .alp-cover{
+  margin:8px;
+  border-radius:28px 8px 28px 8px;
+}
+.clena-editor-v2 .store-live-preview[data-theme="organic"] .alp-social-section,
+.clena-editor-v2 .store-live-preview[data-theme="organic"] .alp-store-info{
+  border:0;
+  border-radius:20px 8px 20px 8px;
+}
+.clena-editor-v2 .store-live-preview[data-theme="organic"] .alp-products article{
+  border:0!important;
+  border-radius:24px 8px 24px 8px!important;
+  box-shadow:0 10px 24px rgba(34,56,42,.10)!important;
+}
+.clena-editor-v2 .store-live-preview[data-theme="organic"] .alp-image{
+  border-radius:20px 6px 20px 6px!important;
+}
+.clena-editor-v2 .store-live-preview[data-theme="organic"] .alp-products button{
+  border-radius:50% 50% 50% 8px!important;
+}
+
+/* Poster */
+.clena-editor-v2 .store-live-preview[data-theme="poster"]{
+  background:#f2f0e9!important;
+}
+.clena-editor-v2 .store-live-preview[data-theme="poster"] .alp-header{
+  background:#050505!important;
+  color:#fff!important;
+  border:0;
+}
+.clena-editor-v2 .store-live-preview[data-theme="poster"] .alp-header-actions button{
+  color:#fff!important;
+  background:#050505!important;
+  border-color:#fff!important;
+  border-radius:0!important;
+}
+.clena-editor-v2 .store-live-preview[data-theme="poster"] .alp-cover{
+  border-radius:0!important;
+  border-bottom:8px solid #ff352f;
+}
+.clena-editor-v2 .store-live-preview[data-theme="poster"] .alp-social-section{
+  margin:0!important;
+  border:0;
+  border-radius:0;
+  background:#ff352f!important;
+  color:#fff;
+}
+.clena-editor-v2 .store-live-preview[data-theme="poster"] .alp-socials a{
+  border-radius:0!important;
+  background:#050505!important;
+  color:#fff!important;
+}
+.clena-editor-v2 .store-live-preview[data-theme="poster"] .alp-store-info{
+  margin:0!important;
+  border:0;
+  border-radius:0;
+  background:#fff!important;
+  border-bottom:3px solid #050505;
+}
+.clena-editor-v2 .store-live-preview[data-theme="poster"] .alp-section-title strong,
+.clena-editor-v2 .store-live-preview[data-theme="poster"] .alp-results strong{
+  text-transform:uppercase;
+  letter-spacing:.03em;
+}
+.clena-editor-v2 .store-live-preview[data-theme="poster"] .alp-products{
+  gap:3px!important;
+}
+.clena-editor-v2 .store-live-preview[data-theme="poster"] .alp-products article{
+  border:2px solid #050505!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+.clena-editor-v2 .store-live-preview[data-theme="poster"] .alp-image,
+.clena-editor-v2 .store-live-preview[data-theme="poster"] .alp-search,
+.clena-editor-v2 .store-live-preview[data-theme="poster"] .alp-catalog-tools>button,
+.clena-editor-v2 .store-live-preview[data-theme="poster"] .alp-products button{
+  border-radius:0!important;
+}
+.clena-editor-v2 .store-live-preview[data-theme="poster"] .alp-sale{
+  border-radius:0!important;
+  background:#ff352f!important;
+  transform:rotate(-4deg);
+}
+
+@media(max-width:760px){
+  .clena-editor-v2 .theme-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}

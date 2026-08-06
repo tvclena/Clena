@@ -116,12 +116,191 @@ const fieldMap = {
 };
 
 const themePresets = {
-  minimal: { body_font:'Manrope', heading_font:'Manrope', heading_weight:'800', background_color:'#f6f8fc', card_color:'#ffffff', text_color:'#0f172a', muted_color:'#64748b', card_radius:'large', card_shadow:'soft', button_style:'rounded', hero_alignment:'left' },
-  boutique: { body_font:'Manrope', heading_font:'Playfair Display', heading_weight:'700', background_color:'#fbf7f3', card_color:'#ffffff', text_color:'#2a201c', muted_color:'#7c6f67', card_radius:'small', card_shadow:'soft', button_style:'square', hero_alignment:'center' },
-  vibrant: { body_font:'Poppins', heading_font:'Poppins', heading_weight:'800', background_color:'#fff8ed', card_color:'#ffffff', text_color:'#251537', muted_color:'#765f82', card_radius:'large', card_shadow:'medium', button_style:'pill', hero_alignment:'center' },
-  dark: { body_font:'Inter', heading_font:'Montserrat', heading_weight:'800', background_color:'#0b1120', card_color:'#111827', text_color:'#f8fafc', muted_color:'#94a3b8', card_radius:'medium', card_shadow:'strong', button_style:'rounded', hero_alignment:'left' },
-  organic: { body_font:'Nunito', heading_font:'Fraunces', heading_weight:'700', background_color:'#f1f5ed', card_color:'#fffdf8', text_color:'#1f3024', muted_color:'#647467', card_radius:'large', card_shadow:'soft', button_style:'pill', hero_alignment:'left' },
-  poster: { body_font:'Inter', heading_font:'Anton', heading_weight:'900', background_color:'#ffffff', card_color:'#ffffff', text_color:'#101010', muted_color:'#575757', card_radius:'none', card_shadow:'none', button_style:'square', hero_alignment:'left' }
+  minimal: {
+    primary_color:'#2563eb',
+    accent_color:'#0f172a',
+    body_font:'Inter',
+    heading_font:'Inter',
+    heading_weight:'700',
+    background_color:'#f8fafc',
+    card_color:'#ffffff',
+    text_color:'#111827',
+    muted_color:'#64748b',
+    font_scale:'normal',
+    desktop_columns:3,
+    product_image_ratio:'square',
+    card_radius:'small',
+    card_shadow:'none',
+    product_text_alignment:'left',
+    category_style:'underline',
+    button_style:'outline',
+    button_hover:'lift',
+    page_animation:'fade',
+    card_animation:'border',
+    header_style:'solid',
+    header_position:'sticky',
+    footer_style:'simple',
+    footer_background:'light',
+    hero_alignment:'left',
+    cover_overlay:12,
+    show_featured:true,
+    show_product_description:true
+  },
+
+  boutique: {
+    primary_color:'#8b5e4a',
+    accent_color:'#2f211c',
+    body_font:'Manrope',
+    heading_font:'Playfair Display',
+    heading_weight:'700',
+    background_color:'#f7efe9',
+    card_color:'#fffaf6',
+    text_color:'#34241f',
+    muted_color:'#8b756b',
+    font_scale:'large',
+    desktop_columns:3,
+    product_image_ratio:'portrait',
+    card_radius:'none',
+    card_shadow:'soft',
+    product_text_alignment:'center',
+    category_style:'text',
+    button_style:'square',
+    button_hover:'scale',
+    page_animation:'fade',
+    card_animation:'zoom',
+    header_style:'minimal',
+    header_position:'static',
+    footer_style:'centered',
+    footer_background:'accent',
+    hero_alignment:'center',
+    cover_overlay:28,
+    show_featured:true,
+    show_product_description:false
+  },
+
+  vibrant: {
+    primary_color:'#ff3d8d',
+    accent_color:'#5b35f5',
+    body_font:'Poppins',
+    heading_font:'Poppins',
+    heading_weight:'900',
+    background_color:'#fff6d8',
+    card_color:'#ffffff',
+    text_color:'#24123b',
+    muted_color:'#765f82',
+    font_scale:'normal',
+    desktop_columns:4,
+    product_image_ratio:'portrait',
+    card_radius:'large',
+    card_shadow:'strong',
+    product_text_alignment:'center',
+    category_style:'pills',
+    button_style:'pill',
+    button_hover:'glow',
+    page_animation:'cascade',
+    card_animation:'lift',
+    header_style:'floating',
+    header_position:'sticky',
+    footer_style:'columns',
+    footer_background:'primary',
+    hero_alignment:'center',
+    cover_overlay:18,
+    show_featured:true,
+    show_product_description:true
+  },
+
+  dark: {
+    primary_color:'#8b5cf6',
+    accent_color:'#070b14',
+    body_font:'Inter',
+    heading_font:'Montserrat',
+    heading_weight:'800',
+    background_color:'#080d18',
+    card_color:'#111827',
+    text_color:'#f8fafc',
+    muted_color:'#94a3b8',
+    font_scale:'normal',
+    desktop_columns:3,
+    product_image_ratio:'square',
+    card_radius:'medium',
+    card_shadow:'strong',
+    product_text_alignment:'left',
+    category_style:'cards',
+    button_style:'rounded',
+    button_hover:'glow',
+    page_animation:'slide-up',
+    card_animation:'lift',
+    header_style:'floating',
+    header_position:'sticky',
+    footer_style:'columns',
+    footer_background:'dark',
+    hero_alignment:'left',
+    cover_overlay:52,
+    show_featured:true,
+    show_product_description:true
+  },
+
+  organic: {
+    primary_color:'#47724f',
+    accent_color:'#22382a',
+    body_font:'Nunito',
+    heading_font:'Fraunces',
+    heading_weight:'700',
+    background_color:'#edf3e6',
+    card_color:'#fffdf6',
+    text_color:'#203126',
+    muted_color:'#697a6d',
+    font_scale:'large',
+    desktop_columns:3,
+    product_image_ratio:'auto',
+    card_radius:'large',
+    card_shadow:'soft',
+    product_text_alignment:'left',
+    category_style:'cards',
+    button_style:'pill',
+    button_hover:'lift',
+    page_animation:'fade',
+    card_animation:'zoom',
+    header_style:'solid',
+    header_position:'static',
+    footer_style:'centered',
+    footer_background:'accent',
+    hero_alignment:'left',
+    cover_overlay:22,
+    show_featured:true,
+    show_product_description:true
+  },
+
+  poster: {
+    primary_color:'#ff352f',
+    accent_color:'#050505',
+    body_font:'Inter',
+    heading_font:'Anton',
+    heading_weight:'900',
+    background_color:'#f2f0e9',
+    card_color:'#ffffff',
+    text_color:'#050505',
+    muted_color:'#515151',
+    font_scale:'large',
+    desktop_columns:4,
+    product_image_ratio:'landscape',
+    card_radius:'none',
+    card_shadow:'none',
+    product_text_alignment:'left',
+    category_style:'underline',
+    button_style:'square',
+    button_hover:'slide',
+    page_animation:'zoom',
+    card_animation:'border',
+    header_style:'solid',
+    header_position:'sticky',
+    footer_style:'columns',
+    footer_background:'dark',
+    hero_alignment:'left',
+    cover_overlay:8,
+    show_featured:true,
+    show_product_description:false
+  }
 };
 
 const socialMeta = [
@@ -162,8 +341,27 @@ function setChoice(group, value) {
 }
 
 function setTheme(theme) {
+  const preset = themePresets[theme];
+  if (!preset) return;
+
   current.theme = theme;
-  Object.assign(current, themePresets[theme] || {});
+  Object.assign(current, preset);
+
+  const primary = preset.primary_color;
+  const accent = preset.accent_color;
+
+  if (primary) {
+    if ($('primaryColorText')) $('primaryColorText').value = primary;
+    if ($('primaryColor')) $('primaryColor').value = primary;
+    previewContext.primaryColor = primary;
+  }
+
+  if (accent) {
+    if ($('accentColorText')) $('accentColorText').value = accent;
+    if ($('accentColor')) $('accentColor').value = accent;
+    previewContext.accentColor = accent;
+  }
+
   applyAppearance(current, coverType, false);
   emitChange();
 }
