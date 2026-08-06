@@ -2280,3 +2280,572 @@ body[data-header-style="floating"] .header-cart {
 .site-header .header-actions .social-links {
   display: none !important;
 }
+
+
+/* =========================================================
+   CLENA — TEMAS PROFISSIONAIS DA LOJA PÚBLICA
+   Cada tema altera estrutura, tipografia, cartões, cabeçalho,
+   categorias, destaques, botões e rodapé.
+   ========================================================= */
+
+/* ---------- BASE DE TRANSIÇÃO ENTRE TEMAS ---------- */
+body,
+.site-header,
+.store-info-card,
+.product-card,
+.featured-grid,
+.search-box,
+.sort-box,
+.category-button,
+.site-footer {
+  transition:
+    background-color .28s ease,
+    color .28s ease,
+    border-color .28s ease,
+    box-shadow .28s ease,
+    border-radius .28s ease;
+}
+
+/* =========================================================
+   MINIMAL — editorial limpo e comercial
+   ========================================================= */
+body[data-theme="minimal"] {
+  background:
+    linear-gradient(180deg, #ffffff 0, var(--background) 360px);
+}
+
+body[data-theme="minimal"] .site-header {
+  background: rgba(255,255,255,.94);
+  color: var(--text);
+  border-bottom: 1px solid var(--line);
+}
+
+body[data-theme="minimal"] .header-icon,
+body[data-theme="minimal"] .header-cart {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--line);
+  border-radius: 8px;
+  backdrop-filter: none;
+}
+
+body[data-theme="minimal"] .store-hero {
+  border-bottom: 1px solid var(--line);
+}
+
+body[data-theme="minimal"] .store-info-card,
+body[data-theme="minimal"] .product-card,
+body[data-theme="minimal"] .featured-grid,
+body[data-theme="minimal"] .search-box,
+body[data-theme="minimal"] .sort-box {
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+body[data-theme="minimal"] .featured-grid {
+  background: transparent;
+  padding: 0;
+  border: 0;
+}
+
+body[data-theme="minimal"] .product-card {
+  border-width: 1px;
+}
+
+body[data-theme="minimal"] .product-content {
+  padding: 16px 2px 8px;
+}
+
+body[data-theme="minimal"] .product-image {
+  border-radius: 8px;
+}
+
+body[data-theme="minimal"] .product-action {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+body[data-theme="minimal"] .category-button {
+  border-radius: 0;
+  padding-inline: 3px;
+}
+
+body[data-theme="minimal"] .site-footer {
+  background: #ffffff;
+  color: var(--text);
+  border-top: 1px solid var(--line);
+}
+
+/* =========================================================
+   BOUTIQUE — luxo clássico e editorial
+   ========================================================= */
+body[data-theme="boutique"] {
+  background:
+    radial-gradient(circle at 12% 8%, rgba(139,94,74,.09), transparent 24rem),
+    var(--background);
+}
+
+body[data-theme="boutique"] .site-header {
+  color: #fffaf6;
+  background: linear-gradient(90deg, rgba(47,33,28,.94), rgba(74,48,38,.88));
+}
+
+body[data-theme="boutique"] .header-inner {
+  height: 98px;
+}
+
+body[data-theme="boutique"] .header-logo {
+  border-radius: 50%;
+}
+
+body[data-theme="boutique"] .header-icon,
+body[data-theme="boutique"] .header-cart {
+  border-radius: 0;
+  border-color: rgba(255,255,255,.35);
+  background: transparent;
+}
+
+body[data-theme="boutique"] .catalog-heading,
+body[data-theme="boutique"] .subsection-heading {
+  text-align: center;
+  justify-content: center;
+}
+
+body[data-theme="boutique"] .catalog-heading p {
+  display: none;
+}
+
+body[data-theme="boutique"] .catalog-heading h2,
+body[data-theme="boutique"] .subsection-heading h3 {
+  font-size: clamp(2.4rem,5vw,4.8rem);
+  font-weight: 700;
+}
+
+body[data-theme="boutique"] .store-info-card {
+  border-radius: 0;
+  border-color: rgba(139,94,74,.22);
+  box-shadow: 0 18px 50px rgba(66,43,35,.09);
+}
+
+body[data-theme="boutique"] .featured-grid {
+  padding: 38px;
+  border-radius: 0;
+  background: #efe1d7;
+  border: 0;
+}
+
+body[data-theme="boutique"] .product-card {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none !important;
+}
+
+body[data-theme="boutique"] .product-image {
+  border-radius: 0;
+}
+
+body[data-theme="boutique"] .product-content {
+  padding: 20px 8px 8px;
+  text-align: center;
+}
+
+body[data-theme="boutique"] .product-category {
+  letter-spacing: .2em;
+}
+
+body[data-theme="boutique"] .product-bottom {
+  align-items: center;
+  flex-direction: column;
+}
+
+body[data-theme="boutique"] .product-action {
+  width: 100%;
+  border-radius: 0;
+  background: var(--accent);
+}
+
+body[data-theme="boutique"] .category-bar {
+  justify-content: center;
+}
+
+body[data-theme="boutique"] .category-button {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-family: var(--heading-font);
+  font-size: 1rem;
+}
+
+body[data-theme="boutique"] .category-button.active {
+  color: var(--primary);
+  background: transparent;
+  border-bottom: 1px solid var(--primary);
+}
+
+body[data-theme="boutique"] .site-footer {
+  text-align: center;
+  background: var(--accent);
+}
+
+body[data-theme="boutique"] .footer-inner {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* =========================================================
+   VIBRANTE — pop, colorido e energético
+   ========================================================= */
+body[data-theme="vibrant"] {
+  background:
+    radial-gradient(circle at 8% 2%, rgba(255,61,141,.24), transparent 22rem),
+    radial-gradient(circle at 92% 14%, rgba(91,53,245,.22), transparent 24rem),
+    linear-gradient(180deg, #fff6d8, #ffeef6 48%, #f3edff);
+}
+
+body[data-theme="vibrant"] .site-header .header-inner {
+  margin-top: 14px;
+  padding-inline: 18px;
+  border: 3px solid #24123b;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #24123b;
+  box-shadow: 7px 7px 0 #24123b;
+}
+
+body[data-theme="vibrant"] .header-icon,
+body[data-theme="vibrant"] .header-cart {
+  border: 2px solid #24123b;
+  background: #ffffff;
+  color: #24123b;
+  border-radius: 999px;
+}
+
+body[data-theme="vibrant"] .header-cart b {
+  background: var(--primary);
+  color: #fff;
+}
+
+body[data-theme="vibrant"] .store-hero {
+  border-bottom: 8px solid var(--accent);
+}
+
+body[data-theme="vibrant"] .store-info-card {
+  border: 3px solid #24123b;
+  border-radius: 28px;
+  box-shadow: 8px 8px 0 rgba(36,18,59,.95);
+}
+
+body[data-theme="vibrant"] .featured-grid {
+  border: 3px solid #24123b;
+  border-radius: 36px;
+  background:
+    linear-gradient(135deg, rgba(255,61,141,.16), rgba(91,53,245,.14)),
+    #ffffff;
+  box-shadow: 10px 10px 0 #24123b;
+}
+
+body[data-theme="vibrant"] .product-grid {
+  gap: 28px;
+}
+
+body[data-theme="vibrant"] .product-card {
+  border: 3px solid #24123b;
+  border-radius: 30px;
+  box-shadow: 8px 8px 0 rgba(36,18,59,.95) !important;
+}
+
+body[data-theme="vibrant"] .product-card:nth-child(3n+2) {
+  transform: rotate(.6deg);
+}
+
+body[data-theme="vibrant"] .product-card:nth-child(3n) {
+  transform: rotate(-.6deg);
+}
+
+body[data-theme="vibrant"] .product-action {
+  border: 2px solid #24123b;
+  box-shadow: 3px 3px 0 #24123b;
+}
+
+body[data-theme="vibrant"] .category-button {
+  border: 2px solid #24123b;
+  box-shadow: 3px 3px 0 #24123b;
+}
+
+body[data-theme="vibrant"] .category-button.active {
+  background: var(--accent);
+}
+
+body[data-theme="vibrant"] .search-box,
+body[data-theme="vibrant"] .sort-box {
+  border: 2px solid #24123b;
+  border-radius: 999px;
+}
+
+body[data-theme="vibrant"] .site-footer {
+  background:
+    linear-gradient(135deg, var(--primary), var(--accent));
+}
+
+/* =========================================================
+   NOTURNO — escuro, premium e tecnológico
+   ========================================================= */
+body[data-theme="dark"] {
+  background:
+    radial-gradient(circle at 85% 0%, rgba(139,92,246,.14), transparent 34rem),
+    radial-gradient(circle at 0% 40%, rgba(37,99,235,.08), transparent 30rem),
+    #080d18;
+}
+
+body[data-theme="dark"] .site-header {
+  color: #f8fafc;
+}
+
+body[data-theme="dark"] .site-header .header-inner {
+  margin-top: 14px;
+  border: 1px solid rgba(139,92,246,.28);
+  background: rgba(7,11,20,.78);
+  box-shadow: 0 18px 60px rgba(0,0,0,.44);
+}
+
+body[data-theme="dark"] .header-icon,
+body[data-theme="dark"] .header-cart {
+  color: #f8fafc;
+  border-color: rgba(139,92,246,.35);
+  background: rgba(17,24,39,.86);
+}
+
+body[data-theme="dark"] .store-info-card,
+body[data-theme="dark"] .featured-grid,
+body[data-theme="dark"] .product-card,
+body[data-theme="dark"] .search-box,
+body[data-theme="dark"] .sort-box,
+body[data-theme="dark"] .category-button {
+  border-color: rgba(139,92,246,.2);
+}
+
+body[data-theme="dark"] .store-info-card {
+  background: rgba(17,24,39,.93);
+  box-shadow: 0 28px 75px rgba(0,0,0,.4);
+}
+
+body[data-theme="dark"] .featured-grid {
+  background:
+    linear-gradient(135deg, rgba(139,92,246,.13), rgba(17,24,39,.94));
+  box-shadow: inset 0 0 0 1px rgba(139,92,246,.14);
+}
+
+body[data-theme="dark"] .product-card {
+  background:
+    linear-gradient(180deg, #141c2c, #0f1724);
+  box-shadow: 0 22px 55px rgba(0,0,0,.34) !important;
+}
+
+body[data-theme="dark"] .product-action {
+  background: linear-gradient(135deg, #8b5cf6, #5b35f5);
+  box-shadow: 0 10px 24px rgba(139,92,246,.25);
+}
+
+body[data-theme="dark"] .category-button.active {
+  box-shadow: 0 0 0 4px rgba(139,92,246,.14);
+}
+
+body[data-theme="dark"] .site-footer {
+  background: #050810;
+  border-top: 1px solid rgba(139,92,246,.2);
+}
+
+/* =========================================================
+   ORGÂNICO — natural, artesanal e acolhedor
+   ========================================================= */
+body[data-theme="organic"] {
+  background:
+    radial-gradient(circle at 12% 8%, rgba(71,114,79,.12), transparent 27rem),
+    radial-gradient(circle at 92% 35%, rgba(191,152,95,.1), transparent 24rem),
+    var(--background);
+}
+
+body[data-theme="organic"] .site-header {
+  background: rgba(255,253,246,.92);
+  color: var(--text);
+  border-bottom: 1px solid rgba(71,114,79,.18);
+}
+
+body[data-theme="organic"] .header-icon,
+body[data-theme="organic"] .header-cart {
+  color: var(--text);
+  background: #fffdf6;
+  border-color: rgba(71,114,79,.2);
+  border-radius: 20px 8px 20px 8px;
+}
+
+body[data-theme="organic"] .header-logo {
+  border-radius: 50% 35% 50% 40%;
+}
+
+body[data-theme="organic"] .store-info-card {
+  border-radius: 36px 12px 36px 12px;
+  border-color: rgba(71,114,79,.18);
+  background: rgba(255,253,246,.94);
+}
+
+body[data-theme="organic"] .featured-grid {
+  border: 0;
+  border-radius: 46px 16px 46px 16px;
+  background:
+    linear-gradient(145deg, rgba(71,114,79,.09), rgba(255,253,246,.96));
+}
+
+body[data-theme="organic"] .product-card {
+  border-color: rgba(71,114,79,.14);
+  border-radius: 34px 12px 34px 12px;
+  background: #fffdf6;
+}
+
+body[data-theme="organic"] .product-image {
+  border-radius: 28px 8px 28px 8px;
+}
+
+body[data-theme="organic"] .product-action {
+  border-radius: 999px 999px 999px 12px;
+}
+
+body[data-theme="organic"] .category-button {
+  border-radius: 22px 8px 22px 8px;
+  background: #fffdf6;
+}
+
+body[data-theme="organic"] .search-box,
+body[data-theme="organic"] .sort-box {
+  border-radius: 24px 8px 24px 8px;
+  background: #fffdf6;
+}
+
+body[data-theme="organic"] .site-footer {
+  background:
+    linear-gradient(160deg, #22382a, #365741);
+}
+
+/* =========================================================
+   POSTER — brutalista, reto e publicitário
+   ========================================================= */
+body[data-theme="poster"] {
+  background:
+    linear-gradient(90deg, transparent 49.7%, rgba(5,5,5,.04) 50%),
+    linear-gradient(rgba(5,5,5,.04) 1px, transparent 1px),
+    #f2f0e9;
+  background-size: 120px 100%, 100% 40px;
+}
+
+body[data-theme="poster"] .site-header {
+  background: #f2f0e9;
+  color: #050505;
+  border-bottom: 4px solid #050505;
+}
+
+body[data-theme="poster"] .header-inner {
+  height: 94px;
+}
+
+body[data-theme="poster"] .header-logo,
+body[data-theme="poster"] .header-icon,
+body[data-theme="poster"] .header-cart {
+  border: 3px solid #050505;
+  border-radius: 0;
+  background: #ffffff;
+  color: #050505;
+  box-shadow: 5px 5px 0 #050505;
+}
+
+body[data-theme="poster"] .header-cart b {
+  background: var(--primary);
+  color: #fff;
+  border-radius: 0;
+}
+
+body[data-theme="poster"] .store-hero {
+  border-bottom: 6px solid #050505;
+}
+
+body[data-theme="poster"] .catalog-heading h2,
+body[data-theme="poster"] .subsection-heading h3,
+body[data-theme="poster"] .results-heading p {
+  text-transform: uppercase;
+  letter-spacing: .015em;
+}
+
+body[data-theme="poster"] .store-info-card,
+body[data-theme="poster"] .featured-grid,
+body[data-theme="poster"] .product-card,
+body[data-theme="poster"] .search-box,
+body[data-theme="poster"] .sort-box,
+body[data-theme="poster"] .category-button {
+  border: 3px solid #050505;
+  border-radius: 0;
+  box-shadow: 7px 7px 0 #050505 !important;
+}
+
+body[data-theme="poster"] .featured-grid {
+  background: #ff352f;
+}
+
+body[data-theme="poster"] .product-card {
+  background: #ffffff;
+}
+
+body[data-theme="poster"] .product-content h3,
+body[data-theme="poster"] .product-price strong {
+  text-transform: uppercase;
+}
+
+body[data-theme="poster"] .product-action {
+  border: 3px solid #050505;
+  border-radius: 0;
+  background: var(--primary);
+  box-shadow: 4px 4px 0 #050505;
+}
+
+body[data-theme="poster"] .category-button.active {
+  background: #050505;
+  color: #fff;
+}
+
+body[data-theme="poster"] .sale-badge {
+  border: 2px solid #050505;
+  border-radius: 0;
+  background: var(--primary);
+}
+
+body[data-theme="poster"] .site-footer {
+  background: #050505;
+  color: #ffffff;
+  border-top: 8px solid var(--primary);
+}
+
+/* Ajustes de celular sem apagar a identidade do tema */
+@media (max-width:720px) {
+  body[data-theme="vibrant"] .site-header .header-inner,
+  body[data-theme="dark"] .site-header .header-inner {
+    margin-top: 8px;
+  }
+
+  body[data-theme="vibrant"] .product-card:nth-child(n) {
+    transform: none;
+  }
+
+  body[data-theme="poster"] .store-info-card,
+  body[data-theme="poster"] .featured-grid,
+  body[data-theme="poster"] .product-card,
+  body[data-theme="poster"] .search-box,
+  body[data-theme="poster"] .sort-box,
+  body[data-theme="poster"] .category-button {
+    box-shadow: 4px 4px 0 #050505 !important;
+  }
+
+  body[data-theme="boutique"] .featured-grid {
+    padding: 18px;
+  }
+}
