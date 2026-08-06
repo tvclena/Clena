@@ -1,5 +1,4 @@
 
-
 <!-- CLENA: HTML COMPLETO COM CSS E JAVASCRIPT INCORPORADOS -->
 <!doctype html>
 <html lang="pt-BR">
@@ -2370,24 +2369,141 @@ waitTechnical();
 </script>
 
 
-<script id="clenaVisualStudioV3Script">
+
+<style id="clenaVisualStudioV4Fixes">
+/* Controlador visual unificado: todos os seletores abaixo respondem aos controles do editor. */
+#fullDeliveryPreview{font-family:var(--vs-font,Manrope,sans-serif);background:var(--preview-bg,#fffaf5);overflow:hidden}
+#fullDeliveryPreview h1,#fullDeliveryPreview h2,#fullDeliveryPreview h3{font-family:var(--vs-heading,var(--vs-font,Manrope,sans-serif))}
+#fullDeliveryPreview .fdp-hero{height:var(--vs-hero-height,220px)!important;transition:height .25s ease,clip-path .25s ease,border-radius .25s ease}
+#fullDeliveryPreview .fdp-card{border-radius:var(--vs-radius,16px);box-shadow:0 12px 32px rgba(15,23,42,calc(var(--vs-shadow,.45)*.18));transition:transform .2s ease,box-shadow .2s ease}
+#fullDeliveryPreview .fdp-card-image{transition:border-radius .2s ease}
+#fullDeliveryPreview[data-ratio="square"] .fdp-card-image{height:auto;aspect-ratio:1}
+#fullDeliveryPreview[data-ratio="portrait"] .fdp-card-image{height:auto;aspect-ratio:4/5}
+#fullDeliveryPreview[data-ratio="wide"] .fdp-card-image{height:auto;aspect-ratio:16/7}
+#fullDeliveryPreview[data-ratio="landscape"] .fdp-card-image{height:auto;aspect-ratio:16/10}
+#fullDeliveryPreview[data-density="compact"] .fdp-main{padding-top:18px}#fullDeliveryPreview[data-density="compact"] .fdp-products{gap:9px}#fullDeliveryPreview[data-density="compact"] .fdp-card-copy{padding:9px}
+#fullDeliveryPreview[data-density="airy"] .fdp-main{padding-top:36px}#fullDeliveryPreview[data-density="airy"] .fdp-products{gap:24px}#fullDeliveryPreview[data-density="airy"] .fdp-card-copy{padding:18px}
+#fullDeliveryPreview[data-align="center"] .fdp-hero-content{text-align:center;justify-content:center}#fullDeliveryPreview[data-align="center"] .fdp-title{flex:0 1 700px}
+#fullDeliveryPreview[data-align="offset"] .fdp-logo{transform:translateY(28px)}#fullDeliveryPreview[data-align="offset"] .fdp-title{transform:translateY(-10px)}
+#fullDeliveryPreview[data-logo="circle"] .fdp-logo{border-radius:50%}#fullDeliveryPreview[data-logo="square"] .fdp-logo{border-radius:8px}#fullDeliveryPreview[data-logo="rounded"] .fdp-logo{border-radius:24px}#fullDeliveryPreview[data-logo="stamp"] .fdp-logo{border-radius:3px;transform:rotate(-3deg);box-shadow:7px 7px 0 rgba(0,0,0,.35)}
+#fullDeliveryPreview[data-overlay="none"] .fdp-hero:after{display:none}#fullDeliveryPreview[data-overlay="soft"] .fdp-hero:after{background:rgba(15,23,42,.28)}#fullDeliveryPreview[data-overlay="color"] .fdp-hero:after{background:color-mix(in srgb,var(--preview-primary) 72%,rgba(2,6,23,.35))}#fullDeliveryPreview[data-overlay="gradient"] .fdp-hero:after{background:linear-gradient(90deg,rgba(2,6,23,.72),rgba(2,6,23,.08))}
+#fullDeliveryPreview[data-buttons="pill"] .fdp-price button,#fullDeliveryPreview[data-buttons="pill"] .fdp-cats span{border-radius:999px}#fullDeliveryPreview[data-buttons="square"] .fdp-price button,#fullDeliveryPreview[data-buttons="square"] .fdp-cats span{border-radius:4px}#fullDeliveryPreview[data-buttons="cut"] .fdp-price button,#fullDeliveryPreview[data-buttons="cut"] .fdp-cats span{border-radius:0;clip-path:polygon(10% 0,100% 0,100% 78%,88% 100%,0 100%,0 20%)}
+#fullDeliveryPreview[data-categories="underline"] .fdp-cats span{border:0;border-radius:0;background:transparent;padding-inline:4px;border-bottom:2px solid transparent}#fullDeliveryPreview[data-categories="underline"] .fdp-cats span.active{color:var(--preview-primary);border-bottom-color:var(--preview-primary)}
+#fullDeliveryPreview[data-categories="blocks"] .fdp-cats span{border-radius:3px;border:2px solid var(--preview-text);box-shadow:3px 3px 0 var(--preview-text)}
+#fullDeliveryPreview[data-categories="rail"] .fdp-main{display:grid;grid-template-columns:190px 1fr;column-gap:22px}#fullDeliveryPreview[data-categories="rail"] .fdp-toolbar{grid-column:1/-1}#fullDeliveryPreview[data-categories="rail"] .fdp-cats{grid-row:2/5;display:grid;align-content:start;overflow:visible}#fullDeliveryPreview[data-categories="rail"] .fdp-cats span{border-radius:10px}#fullDeliveryPreview[data-categories="rail"] .fdp-heading,#fullDeliveryPreview[data-categories="rail"] .fdp-products{grid-column:2}
+#fullDeliveryPreview[data-hide-search="1"] .fdp-toolbar{display:none}#fullDeliveryPreview[data-hide-info="1"] .fdp-info{display:none}
+#fullDeliveryPreview .vs-cart{position:sticky;left:20px;right:20px;bottom:16px;margin:20px auto 0;max-width:760px;padding:13px 16px;border-radius:14px;background:var(--preview-primary);color:#fff;display:flex;align-items:center;justify-content:space-between;box-shadow:0 15px 35px color-mix(in srgb,var(--preview-primary) 30%,transparent);z-index:5}
+#fullDeliveryPreview[data-hide-cart="1"] .vs-cart{display:none}
+#fullDeliveryPreview .vs-badge{position:absolute;top:10px;left:10px;z-index:3;background:var(--preview-primary);color:#fff;padding:6px 9px;border-radius:999px;font-size:9px;font-weight:800}#fullDeliveryPreview .fdp-card{position:relative}
+#phonePreview{font-family:var(--vs-font,Manrope,sans-serif)}#phonePreview .phone-cover{height:calc(var(--vs-hero-height,220px)*.48);max-height:170px;min-height:82px}#phonePreview[data-hide-search="1"] .preview-search{display:none}#phonePreview[data-hide-cart="1"] .preview-cartbar{display:none}#phonePreview[data-logo="circle"] #previewLogo{border-radius:50%}#phonePreview[data-logo="square"] #previewLogo{border-radius:6px}#phonePreview[data-logo="stamp"] #previewLogo{border-radius:3px;transform:rotate(-4deg)}
+@media(max-width:700px){#fullDeliveryPreview[data-categories="rail"] .fdp-main{display:block}}
+</style>
+<script id="clenaVisualStudioV4Script">
 (() => {
-  const $=id=>document.getElementById(id);
-  const KEY='clena_delivery_visual_studio_v3';
-  const defaults={theme:'atelier',hero:'cinematic',font:'theme',cards:'theme',ratio:'landscape',categories:'pills',buttons:'rounded',density:'comfortable',motion:'soft',texture:'none',alignment:'left',logo:'rounded',overlay:'gradient',radius:18,shadow:55,heroHeight:220,showSearch:true,showInfo:true,showCart:true,showBadges:true};
-  const presets={atelier:{...defaults,theme:'atelier',hero:'cinematic',font:'editorial',cards:'floating',ratio:'landscape',categories:'underline',buttons:'rounded',density:'airy',motion:'reveal',texture:'grain',alignment:'left',logo:'square',overlay:'gradient',radius:8,shadow:45,heroHeight:310},botanica:{...defaults,theme:'botanica',hero:'split',font:'rounded',cards:'floating',ratio:'square',categories:'pills',buttons:'pill',density:'comfortable',motion:'float',texture:'waves',alignment:'offset',logo:'circle',overlay:'soft',radius:24,shadow:38,heroHeight:260},pulse:{...defaults,theme:'pulse',hero:'poster',font:'condensed',cards:'poster',ratio:'wide',categories:'blocks',buttons:'cut',density:'compact',motion:'energetic',texture:'grid',alignment:'left',logo:'stamp',overlay:'color',radius:4,shadow:70,heroHeight:290}};
-  let cfg={...defaults};
-  try{cfg={...cfg,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{}
-  const ids={hero:'visualHero',font:'visualFont',cards:'visualCards',ratio:'visualRatio',categories:'visualCategories',buttons:'visualButtons',density:'visualDensity',motion:'visualMotion',texture:'visualTexture',alignment:'visualAlignment',logo:'visualLogo',overlay:'visualOverlay',radius:'visualRadius',shadow:'visualShadow',heroHeight:'visualHeroHeight',showSearch:'visualShowSearch',showInfo:'visualShowInfo',showCart:'visualShowCart',showBadges:'visualShowBadges'};
-  function fontPair(v){return v==='editorial'?['DM Sans','Fraunces']:v==='rounded'?['Quicksand','Quicksand']:v==='condensed'?['DM Sans','Oswald']:v==='modern'?['DM Sans','DM Sans']:null}
-  function writeControls(){Object.entries(ids).forEach(([k,id])=>{const el=$(id);if(!el)return;if(el.type==='checkbox')el.checked=!!cfg[k];else el.value=cfg[k]});$('visualRadiusValue')&&($('visualRadiusValue').textContent=`${cfg.radius}px`);$('visualShadowValue')&&($('visualShadowValue').textContent=`${cfg.shadow}%`);$('visualHeroHeightValue')&&($('visualHeroHeightValue').textContent=`${cfg.heroHeight}px`)}
-  function apply(){document.documentElement.dataset.storeTheme=cfg.theme;const full=$('fullDeliveryPreview'),phone=$('phonePreview');[full,phone].forEach(el=>{if(!el)return;el.dataset.logo=cfg.logo;el.dataset.hideSearch=cfg.showSearch?'0':'1';el.dataset.hideCart=cfg.showCart?'0':'1';el.style.setProperty('--vs-radius',`${cfg.radius}px`);el.style.setProperty('--vs-shadow',String(cfg.shadow/100));el.style.setProperty('--vs-hero-height',`${cfg.heroHeight}px`)});if(full){Object.entries({hero:cfg.hero,cards:cfg.cards,ratio:cfg.ratio,categories:cfg.categories,buttons:cfg.buttons,density:cfg.density,motion:cfg.motion,texture:cfg.texture,align:cfg.alignment,logo:cfg.logo,overlay:cfg.overlay}).forEach(([k,v])=>full.dataset[k]=v);full.dataset.hideInfo=cfg.showInfo?'0':'1';const pair=fontPair(cfg.font);if(pair){full.style.setProperty('--vs-font',`'${pair[0]}',sans-serif`);full.style.setProperty('--vs-heading',`'${pair[1]}',serif`)}else{full.style.removeProperty('--vs-font');full.style.removeProperty('--vs-heading')}decorate(full)}localStorage.setItem(KEY,JSON.stringify(cfg));writeControls()}
-  function decorate(full){if(cfg.showBadges){[...full.querySelectorAll('.fdp-card')].forEach((card,i)=>{if(i<2&&!card.querySelector('.vs-badge'))card.insertAdjacentHTML('afterbegin',`<span class="vs-badge">${i===0?'Mais pedido':'Novidade'}</span>`)})}else full.querySelectorAll('.vs-badge').forEach(x=>x.remove())}
-  function setTheme(theme){cfg={...(presets[theme]||presets.atelier)};document.documentElement.dataset.storeTheme=theme;writeControls();apply();const label={atelier:'Atelier',botanica:'Botânica',pulse:'Pulse'}[theme];if($('activeThemeName'))$('activeThemeName').textContent=label}
-  function bind(){document.querySelectorAll('.theme-preset').forEach(btn=>btn.addEventListener('click',()=>setTimeout(()=>setTheme(btn.dataset.theme),0)));Object.entries(ids).forEach(([k,id])=>{$(id)?.addEventListener('input',e=>{cfg[k]=e.target.type==='checkbox'?e.target.checked:(['radius','shadow','heroHeight'].includes(k)?Number(e.target.value):e.target.value);apply()});$(id)?.addEventListener('change',e=>{cfg[k]=e.target.type==='checkbox'?e.target.checked:e.target.value;apply()})});$('resetVisualStudio')?.addEventListener('click',()=>setTheme(cfg.theme));const observer=new MutationObserver(()=>apply());['fullDeliveryPreview','phonePreview'].forEach(id=>{const el=$(id);if(el)observer.observe(el,{childList:true,subtree:true})});$('paymentOnline')?.addEventListener('change',syncPayment);$('saveMercadoPagoToken')?.addEventListener('click',saveToken);$('replaceMercadoPagoToken')?.addEventListener('click',()=>{localStorage.removeItem('clena_mp_token_configured');syncPayment(true)});setTheme(cfg.theme||'atelier');syncPayment()}
-  function syncPayment(forceEntry=false){const box=$('mercadoPagoTokenBox');if(!box)return;const online=$('paymentOnline')?.checked;box.classList.toggle('is-hidden',!online);const configured=localStorage.getItem('clena_mp_token_configured')==='1'&&!forceEntry;$('mpTokenEntry')?.classList.toggle('is-hidden',configured);$('mpTokenConfigured')?.classList.toggle('is-hidden',!configured);if($('mpTokenStatus'))$('mpTokenStatus').textContent=configured?'Configurado':'Não configurado'}
-  function saveToken(){const token=$('mercadoPagoToken')?.value.trim();if(!token||token.length<20){alert('Informe um Access Token válido do Mercado Pago.');return}localStorage.setItem('clena_mp_token_configured','1');$('mercadoPagoToken').value='';syncPayment()}
-  const wait=()=>{if($('app')&&!$('app').classList.contains('is-hidden'))bind();else setTimeout(wait,180)};wait();
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const $$ = (selector, root=document) => [...root.querySelectorAll(selector)];
+  const KEY = 'clena_delivery_visual_studio_v4';
+  const defaults = {theme:'atelier',hero:'cinematic',font:'editorial',cards:'floating',ratio:'landscape',categories:'underline',buttons:'rounded',density:'comfortable',motion:'soft',texture:'none',alignment:'left',logo:'rounded',overlay:'gradient',radius:16,shadow:45,heroHeight:260,showSearch:true,showInfo:true,showCart:true,showBadges:true};
+  const presets = {
+    atelier:{...defaults,theme:'atelier',hero:'cinematic',font:'editorial',cards:'floating',ratio:'landscape',categories:'underline',buttons:'rounded',density:'airy',motion:'reveal',texture:'grain',alignment:'left',logo:'square',overlay:'gradient',radius:10,shadow:42,heroHeight:300},
+    botanica:{...defaults,theme:'botanica',hero:'split',font:'rounded',cards:'flat',ratio:'square',categories:'pills',buttons:'pill',density:'comfortable',motion:'soft',texture:'none',alignment:'offset',logo:'circle',overlay:'soft',radius:24,shadow:28,heroHeight:255},
+    pulse:{...defaults,theme:'pulse',hero:'poster',font:'condensed',cards:'poster',ratio:'wide',categories:'blocks',buttons:'cut',density:'compact',motion:'energetic',texture:'grid',alignment:'left',logo:'stamp',overlay:'color',radius:4,shadow:65,heroHeight:285}
+  };
+  const controls = {hero:'visualHero',font:'visualFont',cards:'visualCards',ratio:'visualRatio',categories:'visualCategories',buttons:'visualButtons',density:'visualDensity',motion:'visualMotion',texture:'visualTexture',alignment:'visualAlignment',logo:'visualLogo',overlay:'visualOverlay',radius:'visualRadius',shadow:'visualShadow',heroHeight:'visualHeroHeight',showSearch:'visualShowSearch',showInfo:'visualShowInfo',showCart:'visualShowCart',showBadges:'visualShowBadges'};
+  let cfg = {...defaults};
+  let applying = false;
+  let renderTimer = 0;
+  try { cfg = {...cfg, ...JSON.parse(localStorage.getItem(KEY) || '{}')}; } catch (_) {}
+
+  function numberOr(value, fallback){ const n=Number(value); return Number.isFinite(n)?n:fallback; }
+  function fontPair(value){
+    return value==='editorial'?['DM Sans','Fraunces']:value==='rounded'?['Quicksand','Quicksand']:value==='condensed'?['DM Sans','Oswald']:value==='modern'?['DM Sans','DM Sans']:null;
+  }
+  function save(){ try{localStorage.setItem(KEY,JSON.stringify(cfg));}catch(_){} }
+  function syncControls(){
+    Object.entries(controls).forEach(([key,id])=>{const el=$(id);if(!el)return; if(el.type==='checkbox')el.checked=Boolean(cfg[key]); else el.value=String(cfg[key]);});
+    if($('visualRadiusValue')) $('visualRadiusValue').textContent=`${cfg.radius}px`;
+    if($('visualShadowValue')) $('visualShadowValue').textContent=`${cfg.shadow}%`;
+    if($('visualHeroHeightValue')) $('visualHeroHeightValue').textContent=`${cfg.heroHeight}px`;
+    const labels={atelier:'Atelier',botanica:'Botânica',pulse:'Pulse'};
+    if($('activeThemeName')) $('activeThemeName').textContent=labels[cfg.theme]||'Atelier';
+    $$('.theme-preset').forEach(btn=>btn.classList.toggle('active',btn.dataset.theme===cfg.theme));
+  }
+  function styleTarget(el){
+    if(!el)return;
+    el.dataset.hero=cfg.hero; el.dataset.cards=cfg.cards; el.dataset.ratio=cfg.ratio; el.dataset.categories=cfg.categories; el.dataset.buttons=cfg.buttons; el.dataset.density=cfg.density; el.dataset.motion=cfg.motion; el.dataset.texture=cfg.texture; el.dataset.align=cfg.alignment; el.dataset.logo=cfg.logo; el.dataset.overlay=cfg.overlay;
+    el.dataset.hideSearch=cfg.showSearch?'0':'1'; el.dataset.hideInfo=cfg.showInfo?'0':'1'; el.dataset.hideCart=cfg.showCart?'0':'1';
+    el.style.setProperty('--vs-radius',`${numberOr(cfg.radius,16)}px`);
+    el.style.setProperty('--vs-shadow',String(numberOr(cfg.shadow,45)/100));
+    el.style.setProperty('--vs-hero-height',`${numberOr(cfg.heroHeight,260)}px`);
+    const pair=fontPair(cfg.font);
+    if(pair){el.style.setProperty('--vs-font',`'${pair[0]}',sans-serif`);el.style.setProperty('--vs-heading',`'${pair[1]}',serif`)}else{el.style.removeProperty('--vs-font');el.style.removeProperty('--vs-heading')}
+  }
+  function decorateFull(){
+    const full=$('fullDeliveryPreview'); if(!full)return;
+    $$('.vs-badge',full).forEach(x=>x.remove());
+    if(cfg.showBadges){$$('.fdp-card',full).slice(0,2).forEach((card,index)=>card.insertAdjacentHTML('afterbegin',`<span class="vs-badge">${index===0?'Mais pedido':'Novidade'}</span>`));}
+    let cart=$('.vs-cart',full);
+    if(!cart){cart=document.createElement('div');cart.className='vs-cart';cart.innerHTML='<span><i class="ri-shopping-bag-3-line"></i> Seu pedido</span><strong>Ver carrinho</strong>';full.appendChild(cart);}
+  }
+  function applyVisuals(){
+    if(applying)return; applying=true;
+    document.documentElement.dataset.storeTheme=cfg.theme;
+    styleTarget($('fullDeliveryPreview')); styleTarget($('phonePreview'));
+    decorateFull(); syncControls(); save();
+    requestAnimationFrame(()=>{applying=false});
+  }
+  function requestPreviewRender(){
+    clearTimeout(renderTimer);
+    renderTimer=setTimeout(()=>{
+      try{ if(typeof window.renderPhonePreview==='function') window.renderPhonePreview(); }catch(e){console.warn('[CLENA] Prévia móvel:',e)}
+      try{ if(typeof window.renderFullPreview==='function' && $('deliveryPreviewModal')?.classList.contains('open')) window.renderFullPreview(); }catch(e){console.warn('[CLENA] Prévia completa:',e)}
+      setTimeout(applyVisuals,0);
+    },40);
+  }
+  function chooseTheme(theme){
+    cfg={...(presets[theme]||presets.atelier)};
+    const btn=$(`.theme-preset[data-theme="${theme}"]`);
+    if(btn){
+      const p=btn.dataset.primary,a=btn.dataset.accent;
+      [['primaryColor',p],['primaryColorText',p],['accentColor',a],['accentColorText',a]].forEach(([id,v])=>{const el=$(id);if(el&&v){el.value=v;el.dispatchEvent(new Event('input',{bubbles:true}))}});
+    }
+    syncControls(); requestPreviewRender(); applyVisuals();
+  }
+  function updateFromControl(key,target){
+    cfg[key]=target.type==='checkbox'?target.checked:(['radius','shadow','heroHeight'].includes(key)?numberOr(target.value,defaults[key]):target.value);
+    applyVisuals();
+  }
+  function bindControls(){
+    $$('.theme-preset').forEach(btn=>btn.addEventListener('click',event=>{event.preventDefault();event.stopImmediatePropagation();chooseTheme(btn.dataset.theme)},true));
+    Object.entries(controls).forEach(([key,id])=>{const el=$(id);if(!el)return; el.addEventListener('input',()=>updateFromControl(key,el));el.addEventListener('change',()=>updateFromControl(key,el));});
+    $('resetVisualStudio')?.addEventListener('click',()=>chooseTheme(cfg.theme));
+    const liveIds=['deliveryName','deliveryDescription','businessType','estimatedTime','minimumOrder','defaultDeliveryFee','primaryColor','primaryColorText','accentColor','accentColorText','showCover','showFeatured'];
+    liveIds.forEach(id=>{const el=$(id);if(!el)return;el.addEventListener('input',requestPreviewRender);el.addEventListener('change',requestPreviewRender)});
+    $('itemLayoutChoices')?.addEventListener('click',requestPreviewRender);
+    $('expandPreviewBtn')?.addEventListener('click',()=>setTimeout(applyVisuals,60));
+    $('previewBtn')?.addEventListener('click',()=>setTimeout(applyVisuals,60));
+    window.addEventListener('clena:open-delivery-preview',()=>setTimeout(applyVisuals,60));
+    const observer=new MutationObserver(mutations=>{if(applying)return;const relevant=mutations.some(m=>m.target.closest?.('#fullDeliveryPreview,#phonePreview'));if(relevant)setTimeout(applyVisuals,0)});
+    ['fullDeliveryPreview','phonePreview'].forEach(id=>{const el=$(id);if(el)observer.observe(el,{childList:true,subtree:true})});
+  }
+  function syncPayment(forceEntry=false){
+    const box=$('mercadoPagoTokenBox');if(!box)return;
+    const online=$('paymentOnline')?.checked;box.classList.toggle('is-hidden',!online);
+    const configured=localStorage.getItem('clena_mp_token_configured')==='1'&&!forceEntry;
+    $('mpTokenEntry')?.classList.toggle('is-hidden',configured);$('mpTokenConfigured')?.classList.toggle('is-hidden',!configured);
+    if($('mpTokenStatus'))$('mpTokenStatus').textContent=configured?'Configurado':'Não configurado';
+  }
+  function bindPayment(){
+    $('paymentOnline')?.addEventListener('change',()=>syncPayment());
+    $('saveMercadoPagoToken')?.addEventListener('click',()=>{const field=$('mercadoPagoToken'),token=field?.value.trim()||'';if(token.length<20){alert('Informe um Access Token válido do Mercado Pago.');return}localStorage.setItem('clena_mp_token_configured','1');if(field)field.value='';syncPayment()});
+    $('replaceMercadoPagoToken')?.addEventListener('click',()=>{localStorage.removeItem('clena_mp_token_configured');syncPayment(true)});
+    syncPayment();
+  }
+  function start(){bindControls();bindPayment();syncControls();requestPreviewRender();applyVisuals();}
+  function wait(){if($('app')&&!$('app').classList.contains('is-hidden'))start();else setTimeout(wait,150)}
+  wait();
 })();
 </script>
 </body>
