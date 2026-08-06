@@ -412,14 +412,328 @@
 
 <section class="editor-section" data-editor-section="checkout">
           <div class="section-page-head">
-            <div><span class="eyebrow">FINALIZAÇÃO</span><h2>Pedidos e pagamento</h2><p>Defina como o cliente monta e envia o pedido.</p></div>
+            <div>
+              <span class="eyebrow">FINALIZAÇÃO</span>
+              <h2>Pedidos, pagamento e entrega</h2>
+              <p>Defina como o cliente monta o pedido, escolhe o pagamento e seleciona a região de entrega.</p>
+            </div>
           </div>
-          <div class="two-col"><article class="panel"><div class="panel-head"><div><span class="eyebrow">PEDIDOS</span><h3>Como receber pedidos</h3></div></div><div class="form-grid">
-            <label class="field full"><span>Modo de finalização</span><select id="checkoutMode"><option value="whatsapp">Enviar pedido pelo WhatsApp</option><option value="catalog_only">Somente catálogo, sem pedido</option></select></label>
-            <label class="field"><span>Pedido mínimo (R$)</span><input id="minimumOrder" inputmode="decimal" placeholder="0,00"></label>
-            <label class="field"><span>Prazo médio</span><input id="estimatedTime" maxlength="60" placeholder="Ex.: 30 a 50 minutos"></label>
-            <label class="field full"><span>Observação no pedido</span><textarea id="orderNote" rows="3" maxlength="300" placeholder="Ex.: Confirme o pedido pelo WhatsApp"></textarea></label>
-          </div></article><article class="panel"><div class="panel-head"><div><span class="eyebrow">PAGAMENTOS</span><h3>Formas aceitas</h3></div></div><div class="toggle-list"><label><span><i class="ri-qr-code-line"></i><b>PIX</b></span><input type="checkbox" id="paymentPix"><i></i></label><label><span><i class="ri-bank-card-line"></i><b>Cartão</b></span><input type="checkbox" id="paymentCard"><i></i></label><label><span><i class="ri-cash-line"></i><b>Dinheiro</b></span><input type="checkbox" id="paymentCash"><i></i></label></div><div class="form-grid compact"><label class="field full"><span>Chave PIX</span><input id="pixKey" placeholder="CPF, CNPJ, telefone, e-mail ou chave aleatória"></label><label class="field full"><span>Nome do recebedor</span><input id="pixReceiver" placeholder="Nome da empresa ou titular"></label></div></article></div>
+
+          <div class="two-col">
+            <article class="panel">
+              <div class="panel-head">
+                <div>
+                  <span class="eyebrow">PEDIDOS</span>
+                  <h3>Como receber pedidos</h3>
+                </div>
+              </div>
+
+              <div class="form-grid">
+                <label class="field full">
+                  <span>Modo de finalização</span>
+                  <select id="checkoutMode">
+                    <option value="whatsapp">Enviar pedido pelo WhatsApp</option>
+                    <option value="catalog_only">Somente catálogo, sem pedido</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span>Pedido mínimo geral (R$)</span>
+                  <input id="minimumOrder" inputmode="decimal" placeholder="0,00">
+                  <small>Valor mínimo geral da loja. Cada região também poderá ter um mínimo próprio.</small>
+                </label>
+
+                <label class="field">
+                  <span>Prazo médio geral</span>
+                  <input id="estimatedTime" maxlength="60" placeholder="Ex.: 30 a 50 minutos">
+                  <small>Prazo padrão quando a região não possuir um prazo específico.</small>
+                </label>
+
+                <label class="field full">
+                  <span>Observação no pedido</span>
+                  <textarea id="orderNote" rows="3" maxlength="300" placeholder="Ex.: Confirme o pedido pelo WhatsApp"></textarea>
+                </label>
+              </div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-head">
+                <div>
+                  <span class="eyebrow">PAGAMENTOS</span>
+                  <h3>Formas aceitas</h3>
+                </div>
+              </div>
+
+              <div class="toggle-list">
+                <label>
+                  <span><i class="ri-qr-code-line"></i><b>PIX</b></span>
+                  <input type="checkbox" id="paymentPix">
+                  <i></i>
+                </label>
+
+                <label>
+                  <span><i class="ri-bank-card-line"></i><b>Cartão</b></span>
+                  <input type="checkbox" id="paymentCard">
+                  <i></i>
+                </label>
+
+                <label>
+                  <span><i class="ri-cash-line"></i><b>Dinheiro</b></span>
+                  <input type="checkbox" id="paymentCash">
+                  <i></i>
+                </label>
+              </div>
+
+              <div class="form-grid compact">
+                <label class="field full">
+                  <span>Chave PIX</span>
+                  <input id="pixKey" placeholder="CPF, CNPJ, telefone, e-mail ou chave aleatória">
+                </label>
+
+                <label class="field full">
+                  <span>Nome do recebedor</span>
+                  <input id="pixReceiver" placeholder="Nome da empresa ou titular">
+                </label>
+              </div>
+            </article>
+          </div>
+
+          <article class="panel delivery-fees-panel">
+            <div class="panel-head">
+              <div>
+                <span class="eyebrow">ENTREGA</span>
+                <h3>Taxas de entrega</h3>
+                <p>Cadastre bairros, regiões, retirada na loja, valores, pedidos mínimos e prazos específicos.</p>
+              </div>
+
+              <button class="primary-btn" id="newDeliveryFeeBtn" type="button">
+                <i class="ri-add-line"></i>
+                Nova taxa
+              </button>
+            </div>
+
+            <div class="delivery-fee-summary" aria-live="polite">
+              <article>
+                <span><i class="ri-map-pin-range-line"></i></span>
+                <div>
+                  <small>Regiões cadastradas</small>
+                  <strong id="deliveryFeeCount">0</strong>
+                </div>
+              </article>
+
+              <article>
+                <span><i class="ri-truck-line"></i></span>
+                <div>
+                  <small>Regiões ativas</small>
+                  <strong id="activeDeliveryFeeCount">0</strong>
+                </div>
+              </article>
+
+              <article>
+                <span><i class="ri-gift-line"></i></span>
+                <div>
+                  <small>Opções gratuitas</small>
+                  <strong id="freeDeliveryFeeCount">0</strong>
+                </div>
+              </article>
+            </div>
+
+            <div id="deliveryFeeList" class="delivery-fee-list"></div>
+
+            <div id="deliveryFeesEmpty" class="empty-state">
+              <span><i class="ri-e-bike-2-line"></i></span>
+              <h3>Nenhuma taxa de entrega cadastrada</h3>
+              <p>Cadastre bairros, regiões ou uma opção de retirada na loja.</p>
+              <button class="primary-btn" type="button" data-new-delivery-fee>
+                <i class="ri-add-line"></i>
+                Cadastrar primeira taxa
+              </button>
+            </div>
+
+            <div class="info-card delivery-fee-info">
+              <span><i class="ri-information-line"></i></span>
+              <div>
+                <h3>Como será usado no carrinho</h3>
+                <p>O cliente escolherá uma região de entrega. A taxa selecionada será somada ao subtotal e exibida no total enviado pelo WhatsApp.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel mercado-pago-panel" id="mercadoPagoPanel">
+            <div class="panel-head mercado-pago-panel-head">
+              <div>
+                <span class="eyebrow">PAGAMENTO ONLINE</span>
+                <h3>Integração com Mercado Pago</h3>
+                <p>Conecte a conta da loja para validar credenciais e preparar cobranças pela API do Mercado Pago.</p>
+              </div>
+
+              <span class="mercado-pago-connection-status is-disconnected" id="mercadoPagoConnectionStatus">
+                <i class="ri-link-unlink-m"></i>
+                <b>Não conectado</b>
+              </span>
+            </div>
+
+            <div class="mercado-pago-security-note">
+              <i class="ri-shield-keyhole-line"></i>
+              <div>
+                <strong>Access Token protegido</strong>
+                <p>O token é enviado para uma Supabase Edge Function, criptografado antes de ser salvo e nunca retorna ao navegador. Não coloque o Access Token diretamente no JavaScript, HTML ou repositório.</p>
+              </div>
+            </div>
+
+            <div class="mercado-pago-grid">
+              <div class="mercado-pago-form-column">
+                <div class="toggle-list full mercado-pago-enable-toggle">
+                  <label>
+                    <span>
+                      <i class="ri-secure-payment-line"></i>
+                      <span class="toggle-copy">
+                        <b>Ativar Mercado Pago</b>
+                        <small>Disponibiliza a integração depois que as credenciais forem validadas.</small>
+                      </span>
+                    </span>
+                    <input type="checkbox" id="mercadoPagoEnabled">
+                    <i></i>
+                  </label>
+                </div>
+
+                <div class="form-grid mercado-pago-fields">
+                  <label class="field">
+                    <span>Ambiente</span>
+                    <select id="mercadoPagoEnvironment">
+                      <option value="test">Teste</option>
+                      <option value="production">Produção</option>
+                    </select>
+                    <small>Use teste durante toda a implementação.</small>
+                  </label>
+
+                  <label class="field">
+                    <span>Modelo de checkout</span>
+                    <select id="mercadoPagoCheckoutMode">
+                      <option value="checkout_pro">Checkout Pro</option>
+                      <option value="orders">Checkout Transparente via Orders</option>
+                    </select>
+                    <small>Checkout Pro redireciona o cliente; Orders exige integração completa dos meios de pagamento.</small>
+                  </label>
+
+                  <label class="field full">
+                    <span>Public Key</span>
+                    <input id="mercadoPagoPublicKey" maxlength="250" autocomplete="off" spellcheck="false" placeholder="APP_USR-... ou TEST-...">
+                    <small>A Public Key pode ser utilizada no frontend quando o checkout escolhido exigir tokenização.</small>
+                  </label>
+
+                  <label class="field full mercado-pago-secret-field">
+                    <span>Access Token</span>
+                    <div class="secret-input-wrap">
+                      <input id="mercadoPagoAccessToken" type="password" maxlength="500" autocomplete="new-password" spellcheck="false" placeholder="Cole um novo token para conectar ou substituir">
+                      <button type="button" id="toggleMercadoPagoTokenBtn" aria-label="Mostrar ou esconder Access Token" title="Mostrar ou esconder token">
+                        <i class="ri-eye-line"></i>
+                      </button>
+                    </div>
+                    <small id="mercadoPagoTokenHelp">O token privado será enviado somente à Edge Function.</small>
+                  </label>
+
+                  <label class="field full mercado-pago-secret-field">
+                    <span>Chave secreta do webhook <em>opcional</em></span>
+                    <div class="secret-input-wrap">
+                      <input id="mercadoPagoWebhookSecret" type="password" maxlength="500" autocomplete="new-password" spellcheck="false" placeholder="Cole somente ao configurar notificações">
+                      <button type="button" id="toggleMercadoPagoWebhookBtn" aria-label="Mostrar ou esconder segredo do webhook" title="Mostrar ou esconder segredo">
+                        <i class="ri-eye-line"></i>
+                      </button>
+                    </div>
+                    <small id="mercadoPagoWebhookHelp">Também é criptografada e nunca retorna ao navegador.</small>
+                  </label>
+
+                  <label class="field">
+                    <span>Descrição na fatura</span>
+                    <input id="mercadoPagoStatementDescriptor" maxlength="22" placeholder="MINHA LOJA">
+                    <small>Use nome curto, sem informações sensíveis.</small>
+                  </label>
+
+                  <label class="field">
+                    <span>Máximo de parcelas</span>
+                    <select id="mercadoPagoMaxInstallments">
+                      <option value="1">1 parcela</option>
+                      <option value="2">Até 2 parcelas</option>
+                      <option value="3">Até 3 parcelas</option>
+                      <option value="4">Até 4 parcelas</option>
+                      <option value="5">Até 5 parcelas</option>
+                      <option value="6">Até 6 parcelas</option>
+                      <option value="10">Até 10 parcelas</option>
+                      <option value="12">Até 12 parcelas</option>
+                    </select>
+                  </label>
+
+                  <label class="field full">
+                    <span>URL de notificação</span>
+                    <input id="mercadoPagoNotificationUrl" type="url" maxlength="500" placeholder="https://seu-projeto.supabase.co/functions/v1/mercado-pago-webhook">
+                    <small>Endereço HTTPS que receberá as notificações do Mercado Pago.</small>
+                  </label>
+
+                  <label class="field full">
+                    <span>Retorno quando aprovado</span>
+                    <input id="mercadoPagoSuccessUrl" type="url" maxlength="500" placeholder="https://sualoja.com/pagamento/aprovado">
+                  </label>
+
+                  <label class="field full">
+                    <span>Retorno quando pendente</span>
+                    <input id="mercadoPagoPendingUrl" type="url" maxlength="500" placeholder="https://sualoja.com/pagamento/pendente">
+                  </label>
+
+                  <label class="field full">
+                    <span>Retorno quando falhar</span>
+                    <input id="mercadoPagoFailureUrl" type="url" maxlength="500" placeholder="https://sualoja.com/pagamento/falhou">
+                  </label>
+
+                  <div class="toggle-list full mercado-pago-options">
+                    <label>
+                      <span><i class="ri-checkbox-circle-line"></i><b>Retorno automático após aprovação</b></span>
+                      <input type="checkbox" id="mercadoPagoAutoReturn" checked>
+                      <i></i>
+                    </label>
+
+                    <label>
+                      <span><i class="ri-filter-off-line"></i><b>Modo binário</b><small>A resposta será apenas aprovada ou recusada.</small></span>
+                      <input type="checkbox" id="mercadoPagoBinaryMode">
+                      <i></i>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <aside class="mercado-pago-status-card">
+                <span class="mercado-pago-logo"><i class="ri-hand-coin-line"></i></span>
+                <span class="eyebrow">STATUS DA CONEXÃO</span>
+                <h3 id="mercadoPagoStatusTitle">Aguardando configuração</h3>
+                <p id="mercadoPagoStatusMessage">Informe as credenciais de teste e use “Testar conexão”.</p>
+
+                <dl class="mercado-pago-status-details">
+                  <div><dt>Ambiente</dt><dd id="mercadoPagoStatusEnvironment">Teste</dd></div>
+                  <div><dt>Token salvo</dt><dd id="mercadoPagoStatusToken">Não</dd></div>
+                  <div><dt>Último teste</dt><dd id="mercadoPagoStatusLastTest">Nunca</dd></div>
+                  <div><dt>Resultado</dt><dd id="mercadoPagoStatusResult">Não testado</dd></div>
+                </dl>
+
+                <div class="mercado-pago-actions">
+                  <button class="secondary-btn" id="testMercadoPagoBtn" type="button">
+                    <i class="ri-plug-line"></i>
+                    Testar conexão
+                  </button>
+
+                  <button class="primary-btn" id="saveMercadoPagoBtn" type="button">
+                    <i class="ri-shield-check-line"></i>
+                    Salvar integração
+                  </button>
+
+                  <button class="text-btn danger-text is-hidden" id="disconnectMercadoPagoBtn" type="button">
+                    <i class="ri-link-unlink-m"></i>
+                    Desconectar Mercado Pago
+                  </button>
+                </div>
+              </aside>
+            </div>
+          </article>
+
         </section>
 
         <section class="editor-section" data-editor-section="publish">
@@ -483,6 +797,122 @@
         </div></div><div class="variation-section"><div class="subsection-head"><div><h3>Variações</h3><p>Tamanhos, cores ou sabores com preço adicional.</p></div><button type="button" class="secondary-btn" id="addVariationBtn"><i class="ri-add-line"></i>Adicionar</button></div><div id="variationList" class="variation-list"></div></div></form><div class="modal-foot"><button class="secondary-btn" data-close-modal>Cancelar</button><button class="primary-btn" id="saveProductBtn"><i class="ri-save-line"></i>Salvar produto</button></div></div></div>
 
   <div class="modal" id="categoryModal" aria-hidden="true"><div class="modal-backdrop" data-close-category></div><div class="modal-card modal-small"><div class="modal-head"><div><span class="eyebrow">CATEGORIA</span><h2 id="categoryModalTitle">Nova categoria</h2></div><button class="icon-btn" data-close-category><i class="ri-close-line"></i></button></div><form id="categoryForm" class="modal-body"><input type="hidden" id="categoryId"><label class="field"><span>Nome *</span><input id="categoryName" maxlength="70" required placeholder="Ex.: Novidades"></label><label class="field"><span>Descrição</span><textarea id="categoryDescription" maxlength="180" rows="3"></textarea></label><label class="field"><span>Ícone</span><select id="categoryIcon"><option value="ri-price-tag-3-line">Etiqueta</option><option value="ri-shirt-line">Moda</option><option value="ri-restaurant-line">Alimentos</option><option value="ri-cake-3-line">Doces</option><option value="ri-gift-line">Presentes</option><option value="ri-smartphone-line">Eletrônicos</option><option value="ri-home-4-line">Casa</option><option value="ri-sparkling-line">Beleza</option></select></label></form><div class="modal-foot"><button class="secondary-btn" data-close-category>Cancelar</button><button class="primary-btn" id="saveCategoryBtn">Salvar categoria</button></div></div></div>
+
+
+  <div class="modal" id="deliveryFeeModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-delivery-fee></div>
+
+    <div class="modal-card modal-small">
+      <div class="modal-head">
+        <div>
+          <span class="eyebrow">ENTREGA</span>
+          <h2 id="deliveryFeeModalTitle">Nova taxa de entrega</h2>
+        </div>
+
+        <button class="icon-btn" type="button" data-close-delivery-fee aria-label="Fechar">
+          <i class="ri-close-line"></i>
+        </button>
+      </div>
+
+      <form id="deliveryFeeForm" class="modal-body">
+        <input type="hidden" id="deliveryFeeId">
+
+        <div class="form-grid">
+          <label class="field full">
+            <span>Bairro, região ou modalidade *</span>
+            <input
+              id="deliveryFeeName"
+              maxlength="100"
+              required
+              placeholder="Ex.: Centro, Vila Rica ou Retirada na loja"
+            >
+            <small>Este nome será exibido para o cliente no carrinho.</small>
+          </label>
+
+          <label class="field">
+            <span>Taxa de entrega (R$)</span>
+            <input
+              id="deliveryFeeValue"
+              inputmode="decimal"
+              placeholder="0,00"
+            >
+            <small>Use 0,00 para entrega grátis ou retirada.</small>
+          </label>
+
+          <label class="field">
+            <span>Pedido mínimo da região (R$)</span>
+            <input
+              id="deliveryFeeMinimumOrder"
+              inputmode="decimal"
+              placeholder="0,00"
+            >
+            <small>Deixe zerado para usar somente o mínimo geral da loja.</small>
+          </label>
+
+          <label class="field full">
+            <span>Prazo estimado</span>
+            <input
+              id="deliveryFeeEstimatedTime"
+              maxlength="80"
+              placeholder="Ex.: 40 a 60 minutos"
+            >
+            <small>Deixe vazio para utilizar o prazo médio geral da loja.</small>
+          </label>
+
+          <label class="field full">
+            <span>Observação opcional</span>
+            <textarea
+              id="deliveryFeeDescription"
+              rows="3"
+              maxlength="220"
+              placeholder="Ex.: Entrega disponível somente de segunda a sábado"
+            ></textarea>
+          </label>
+
+          <label class="field">
+            <span>Tipo de atendimento</span>
+            <select id="deliveryFeeType">
+              <option value="delivery">Entrega</option>
+              <option value="pickup">Retirada na loja</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Ordem de exibição</span>
+            <input
+              id="deliveryFeePosition"
+              type="number"
+              min="0"
+              step="1"
+              value="0"
+            >
+          </label>
+
+          <div class="toggle-list full">
+            <label>
+              <span>
+                <i class="ri-eye-line"></i>
+                <b>Opção ativa</b>
+              </span>
+              <input type="checkbox" id="deliveryFeeActive" checked>
+              <i></i>
+            </label>
+          </div>
+        </div>
+      </form>
+
+      <div class="modal-foot">
+        <button class="secondary-btn" type="button" data-close-delivery-fee>
+          Cancelar
+        </button>
+
+        <button class="primary-btn" id="saveDeliveryFeeBtn" type="button">
+          <i class="ri-save-line"></i>
+          Salvar taxa
+        </button>
+      </div>
+    </div>
+  </div>
 
   <script type="module" src="./assets/js/store-appearance.js"></script>
   <script type="module" src="./assets/js/store-editor.js"></script>
