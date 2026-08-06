@@ -1,7 +1,8 @@
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
- <meta charset="utf-8">
+  <meta charset="utf-8">
 <meta
   name="viewport"
   content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
@@ -9,6 +10,7 @@
   <meta name="theme-color" content="#f6f8fc" id="themeColorMeta">
   <meta name="description" content="Loja virtual">
   <title>Loja</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800;900&family=Nunito:wght@400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -31,7 +33,6 @@
         </a>
         <nav class="header-actions" aria-label="Ações da loja">
           <button id="headerSearchButton" class="header-icon" type="button" aria-label="Pesquisar"><i class="ri-search-line"></i></button>
-          <a id="headerInstagram" class="header-icon is-hidden" target="_blank" rel="noopener" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
           <button id="headerCartButton" class="header-cart" type="button"><i class="ri-shopping-bag-3-line"></i><span>Carrinho</span><b id="headerCartCount">0</b></button>
         </nav>
       </div>
@@ -225,6 +226,7 @@
             aria-label="Outras fotos do produto"
           ></div>
         </div>
+
         <div class="product-modal-content">
           <span id="productModalCategory" class="product-category-label"></span>
           <h2 id="productModalName"></h2>
@@ -277,14 +279,93 @@
       <section id="checkoutFormArea" class="checkout-form-area is-hidden">
         <h3>Dados para finalizar</h3>
         <div class="checkout-grid">
-          <label class="checkout-field full"><span>Nome *</span><input id="customerName" maxlength="100" autocomplete="name" placeholder="Seu nome"></label>
-          <label class="checkout-field full"><span>WhatsApp *</span><input id="customerPhone" inputmode="tel" maxlength="20" autocomplete="tel" placeholder="(00) 00000-0000"></label>
-          <label id="paymentField" class="checkout-field full"><span>Forma de pagamento</span><select id="paymentMethod"></select></label>
-          <label id="changeField" class="checkout-field full is-hidden"><span>Troco para quanto?</span><input id="cashChange" inputmode="decimal" placeholder="Ex.: 100,00"></label>
-          <label class="checkout-field full"><span>Observações gerais</span><textarea id="orderNotes" rows="3" maxlength="400" placeholder="Informações adicionais do pedido"></textarea></label>
+          <label class="checkout-field full">
+            <span>Nome *</span>
+            <input id="customerName" maxlength="100" autocomplete="name" placeholder="Seu nome">
+          </label>
+
+          <label class="checkout-field">
+            <span>WhatsApp *</span>
+            <input id="customerPhone" inputmode="tel" maxlength="20" autocomplete="tel" placeholder="(00) 00000-0000">
+          </label>
+
+          <label class="checkout-field">
+            <span>E-mail *</span>
+            <input id="customerEmail" type="email" maxlength="160" autocomplete="email" placeholder="voce@email.com">
+          </label>
+
+          <label class="checkout-field">
+            <span>CPF *</span>
+            <input id="customerCpf" inputmode="numeric" maxlength="14" autocomplete="off" placeholder="000.000.000-00">
+          </label>
+
+          <label id="deliveryFeeField" class="checkout-field">
+            <span>Entrega ou retirada *</span>
+            <select id="deliveryFeeSelect">
+              <option value="">Selecione</option>
+            </select>
+          </label>
+
+          <div id="deliveryAddressFields" class="checkout-address-fields full">
+            <label class="checkout-field">
+              <span>CEP *</span>
+              <input id="customerZipCode" inputmode="numeric" maxlength="9" autocomplete="postal-code" placeholder="00000-000">
+            </label>
+
+            <label class="checkout-field">
+              <span>Número *</span>
+              <input id="customerStreetNumber" maxlength="20" autocomplete="address-line2" placeholder="123">
+            </label>
+
+            <label class="checkout-field full">
+              <span>Rua/Avenida *</span>
+              <input id="customerStreetName" maxlength="160" autocomplete="address-line1" placeholder="Nome da rua">
+            </label>
+
+            <label class="checkout-field">
+              <span>Bairro *</span>
+              <input id="customerNeighborhood" maxlength="100" placeholder="Bairro">
+            </label>
+
+            <label class="checkout-field">
+              <span>Complemento</span>
+              <input id="customerComplement" maxlength="120" placeholder="Apartamento, referência...">
+            </label>
+
+            <label class="checkout-field">
+              <span>Cidade *</span>
+              <input id="customerCity" maxlength="100" autocomplete="address-level2" placeholder="Cidade">
+            </label>
+
+            <label class="checkout-field">
+              <span>UF *</span>
+              <input id="customerState" maxlength="2" autocomplete="address-level1" placeholder="BA">
+            </label>
+          </div>
+
+          <label id="paymentField" class="checkout-field full">
+            <span>Forma de pagamento *</span>
+            <select id="paymentMethod"></select>
+            <small id="paymentMethodHelp">Escolha como deseja pagar.</small>
+          </label>
+
+          <label id="changeField" class="checkout-field full is-hidden">
+            <span>Troco para quanto?</span>
+            <input id="cashChange" inputmode="decimal" placeholder="Ex.: 100,00">
+          </label>
+
+          <label class="checkout-field full">
+            <span>Observações gerais</span>
+            <textarea id="orderNotes" rows="3" maxlength="400" placeholder="Informações adicionais do pedido"></textarea>
+          </label>
         </div>
       </section>
-      <footer id="cartFooter" class="cart-footer is-hidden"><div class="cart-summary"><div><span>Subtotal</span><strong id="cartSubtotal">R$ 0,00</strong></div><div id="minimumOrderRow" class="minimum-row is-hidden"><span>Pedido mínimo</span><strong id="minimumOrderValue"></strong></div><div class="cart-total"><span>Total</span><strong id="cartTotal">R$ 0,00</strong></div></div><p id="minimumWarning" class="minimum-warning is-hidden"></p><button id="checkoutButton" class="primary-button checkout-button" type="button"><i class="ri-whatsapp-line"></i><span>Finalizar pedido</span></button><small id="checkoutHint"></small></footer>
+      <footer id="cartFooter" class="cart-footer is-hidden"><div class="cart-summary">
+        <div><span>Subtotal</span><strong id="cartSubtotal">R$ 0,00</strong></div>
+        <div id="deliveryFeeRow" class="is-hidden"><span>Entrega</span><strong id="deliveryFeeValue">R$ 0,00</strong></div>
+        <div id="minimumOrderRow" class="minimum-row is-hidden"><span>Pedido mínimo</span><strong id="minimumOrderValue"></strong></div>
+        <div class="cart-total"><span>Total</span><strong id="cartTotal">R$ 0,00</strong></div>
+      </div><p id="minimumWarning" class="minimum-warning is-hidden"></p><button id="checkoutButton" class="primary-button checkout-button" type="button"><i class="ri-whatsapp-line"></i><span>Finalizar pedido</span></button><small id="checkoutHint"></small></footer>
     </aside>
   </div>
 
@@ -354,6 +435,91 @@
 
   <div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
   <style id="customStoreCss"></style>
+  
+  <div id="onlinePaymentModal" class="payment-modal is-hidden" role="dialog" aria-modal="true" aria-labelledby="onlinePaymentTitle">
+    <div class="payment-modal-backdrop" data-close-online-payment></div>
+
+    <section class="payment-modal-card">
+      <header class="payment-modal-header">
+        <div>
+          <span class="section-kicker">PAGAMENTO SEGURO</span>
+          <h2 id="onlinePaymentTitle">Finalizar pagamento</h2>
+          <p id="onlinePaymentSubtitle">Aguarde enquanto preparamos sua cobrança.</p>
+        </div>
+
+        <button type="button" data-close-online-payment aria-label="Fechar">
+          <i class="ri-close-line"></i>
+        </button>
+      </header>
+
+      <div id="onlinePaymentLoading" class="payment-loading">
+        <span><i class="ri-loader-4-line ri-spin"></i></span>
+        <strong>Gerando pagamento...</strong>
+        <small>Não feche esta janela.</small>
+      </div>
+
+      <div id="pixPaymentContent" class="pix-payment-content is-hidden">
+        <div class="pix-status-card">
+          <span id="pixStatusIcon"><i class="ri-time-line"></i></span>
+          <div>
+            <small>Status</small>
+            <strong id="pixStatusText">Aguardando pagamento</strong>
+            <p id="pixStatusDetail">Leia o QR Code ou use o Pix Copia e Cola.</p>
+          </div>
+        </div>
+
+        <div class="pix-layout">
+          <div class="pix-qr-card">
+            <img id="pixQrCodeImage" alt="QR Code Pix">
+            <small>Escaneie pelo aplicativo do seu banco</small>
+          </div>
+
+          <div class="pix-copy-card">
+            <span class="section-kicker">PIX COPIA E COLA</span>
+            <textarea id="pixCopyCode" readonly rows="6"></textarea>
+
+            <button id="copyPixCodeButton" class="primary-button" type="button">
+              <i class="ri-file-copy-line"></i>
+              <span>Copiar código Pix</span>
+            </button>
+
+            <a id="openPixTicketButton" class="secondary-button is-hidden" target="_blank" rel="noopener">
+              <i class="ri-external-link-line"></i>
+              Abrir página do pagamento
+            </a>
+          </div>
+        </div>
+
+        <div class="pix-payment-information">
+          <div><span>Pedido</span><strong id="pixExternalReference">—</strong></div>
+          <div><span>Total</span><strong id="pixPaymentAmount">R$ 0,00</strong></div>
+          <div><span>Validade</span><strong id="pixExpirationText">Consulte o aplicativo</strong></div>
+        </div>
+
+        <div id="pixApprovedActions" class="payment-approved-actions is-hidden">
+          <span><i class="ri-checkbox-circle-fill"></i></span>
+          <div>
+            <strong>Pagamento aprovado!</strong>
+            <p>Seu pedido foi confirmado e a loja será avisada.</p>
+          </div>
+          <button id="finishApprovedPaymentButton" class="primary-button" type="button">Concluir</button>
+        </div>
+      </div>
+
+      <div id="onlinePaymentError" class="payment-error is-hidden">
+        <span><i class="ri-error-warning-line"></i></span>
+        <h3>Não foi possível criar o pagamento</h3>
+        <p id="onlinePaymentErrorMessage"></p>
+        <button id="retryOnlinePaymentButton" class="primary-button" type="button">Tentar novamente</button>
+      </div>
+
+      <footer class="payment-modal-footer">
+        <i class="ri-shield-check-line"></i>
+        <span>Pagamento processado com segurança pelo Mercado Pago.</span>
+      </footer>
+    </section>
+  </div>
+
   <script type="module" src="/assets/js/public-store.js"></script>
 </body>
 </html>
