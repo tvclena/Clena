@@ -1270,3 +1270,70 @@
     max-height: 500px !important;
   }
 }
+
+
+/* =========================================================
+   CORREÇÃO — CARDS DA PRÉVIA COM ALTURA PADRONIZADA
+   ========================================================= */
+
+.clena-editor-v2 .alp-products {
+  align-items: stretch;
+}
+
+.clena-editor-v2 .alp-products article {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  min-height: 0 !important;
+}
+
+.clena-editor-v2 .alp-products article .alp-image {
+  flex: 0 0 auto;
+}
+
+.clena-editor-v2 .alp-products h4 {
+  display: -webkit-box !important;
+  overflow: hidden !important;
+  min-height: 20px;
+  max-height: 20px;
+  line-height: 10px !important;
+  white-space: normal !important;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.clena-editor-v2 .alp-products p {
+  display: -webkit-box !important;
+  overflow: hidden !important;
+  min-height: 16px;
+  max-height: 16px;
+  line-height: 8px !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+}
+
+.clena-editor-v2 .alp-product-bottom {
+  margin-top: auto !important;
+  padding-top: 7px;
+}
+
+.clena-editor-v2 .alp-featured-products article,
+.clena-editor-v2 .alp-products:not(.alp-featured-products) article {
+  min-height: 154px;
+}
+
+/* Em foto retrato, mantém todos os cartões alinhados */
+.clena-editor-v2 .store-live-preview[data-ratio="portrait"] .alp-products article {
+  min-height: 172px;
+}
+
+/* Em foto paisagem, reduz a altura total mantendo alinhamento */
+.clena-editor-v2 .store-live-preview[data-ratio="landscape"] .alp-products article {
+  min-height: 134px;
+}
+
+/* Impede que textos longos aumentem apenas um card */
+.clena-editor-v2 .alp-products article * {
+  min-width: 0;
+}
