@@ -22,7 +22,7 @@ const SOCIALS = [
   ['social_tiktok','ri-tiktok-line','TikTok','https://tiktok.com/@'], ['social_youtube','ri-youtube-line','YouTube','https://youtube.com/@'],
   ['social_x','ri-twitter-x-line','X','https://x.com/'], ['social_pinterest','ri-pinterest-line','Pinterest','https://pinterest.com/']
 ];
-
+     
 let store = null;
 let appearance = { ...APPEARANCE_DEFAULTS };
 let categories = [];
@@ -131,7 +131,7 @@ function restoreCart() {
       .filter(Boolean);
 
     /*
-     * Regrava o carrinho depois da validação.
+     * Regrava o carrinhoT depois da validação.
      * Assim produtos removidos desta loja não permanecem salvos.
      */
     saveCart();
