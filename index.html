@@ -1,3 +1,4 @@
+<!-- CLENA: HTML COMPLETO COM CSS E JAVASCRIPT INCORPORADOS -->
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -12,10 +13,353 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet" />
 
-  <link rel="stylesheet" href="./assets/css/base.css" />
-  <link rel="stylesheet" href="./assets/css/auth.css" />
-  <link rel="stylesheet" href="./assets/css/dashboard.css" />
-  <link rel="stylesheet" href="./assets/css/responsive.css" />
+  <style data-original-href="./assets/css/base.css">
+:root {
+  --bg: #f4f8fc;
+  --surface: #ffffff;
+  --surface-soft: #f8fbfe;
+  --text: #132238;
+  --muted: #6d7d91;
+  --line: #e3ebf3;
+  --primary: #2386e8;
+  --primary-dark: #126ccc;
+  --primary-soft: #eaf5ff;
+  --navy: #10273f;
+  --success: #18a66b;
+  --success-soft: #e7f8f1;
+  --danger: #dc3d55;
+  --danger-soft: #fff0f2;
+  --warning: #ef9b25;
+  --violet: #7b65e9;
+  --shadow-sm: 0 8px 24px rgba(22, 52, 83, 0.07);
+  --shadow-md: 0 22px 60px rgba(18, 55, 90, 0.13);
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 26px;
+}
+
+* { box-sizing: border-box; }
+html { min-width: 320px; background: var(--bg); }
+body {
+  min-height: 100vh;
+  margin: 0;
+  color: var(--text);
+  background: var(--bg);
+  font-family: "Manrope", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+button, input { font: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+img { display: block; max-width: 100%; }
+.is-hidden { display: none !important; }
+
+.brand { display: inline-flex; align-items: center; gap: 11px; }
+.brand-mark {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  color: #fff;
+  background: linear-gradient(145deg, #2f98f4, #176fc8);
+  box-shadow: 0 10px 24px rgba(35, 134, 232, 0.28);
+  font-size: 20px;
+  font-weight: 800;
+}
+.brand-name { letter-spacing: 0.16em; font-size: 17px; font-weight: 800; }
+.brand-light .brand-name { color: #fff; }
+.brand-light .brand-mark { color: var(--primary); background: #fff; box-shadow: 0 12px 30px rgba(0, 0, 0, .18); }
+
+.app-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 14px;
+  background: #f5f9fd;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+.loader-mark {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border-radius: 19px;
+  color: #fff;
+  background: linear-gradient(145deg, #2f98f4, #176fc8);
+  box-shadow: 0 18px 36px rgba(35, 134, 232, .25);
+  font-size: 27px;
+  font-weight: 800;
+  animation: loaderPulse 1.1s ease-in-out infinite alternate;
+}
+@keyframes loaderPulse { to { transform: translateY(-5px) scale(1.03); } }
+
+.field { display: grid; gap: 8px; }
+.field > span { color: #42536a; font-size: 12px; font-weight: 750; }
+.input-wrap {
+  min-height: 49px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+}
+.input-wrap:focus-within { border-color: rgba(35, 134, 232, .6); box-shadow: 0 0 0 4px rgba(35, 134, 232, .1); }
+.input-wrap > i { flex: 0 0 auto; color: #8ba0b6; font-size: 18px; }
+.input-wrap input { width: 100%; min-width: 0; border: 0; outline: 0; color: var(--text); background: transparent; font-size: 13px; font-weight: 600; }
+.input-wrap input::placeholder { color: #a6b3c2; font-weight: 500; }
+.input-wrap.is-readonly { background: #f5f8fb; }
+.input-action { width: 32px; height: 32px; display: grid; place-items: center; flex: 0 0 auto; border: 0; border-radius: 9px; color: #718398; background: transparent; }
+.input-action:hover { background: #f0f5f9; }
+
+.primary-button, .secondary-button, .ghost-button, .small-button, .upload-button {
+  border: 0;
+  border-radius: 13px;
+  font-weight: 800;
+  transition: transform .18s, box-shadow .18s, background .18s;
+}
+.primary-button {
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 0 18px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  box-shadow: 0 13px 25px rgba(35, 134, 232, .23);
+}
+.primary-button:hover { transform: translateY(-1px); box-shadow: 0 17px 30px rgba(35, 134, 232, .28); }
+.primary-button:disabled { opacity: .65; transform: none; box-shadow: none; }
+.secondary-button { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; color: #176fc8; background: #fff; box-shadow: var(--shadow-sm); }
+.ghost-button { min-height: 44px; padding: 0 17px; color: #53657a; background: #f1f5f9; }
+.small-button { min-height: 35px; padding: 0 14px; color: #176fc8; background: var(--primary-soft); }
+
+.icon-button {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  color: #566980;
+  background: #fff;
+  font-size: 19px;
+}
+.icon-button:hover { color: var(--primary); border-color: #c6e0f8; background: #fafdff; }
+
+.avatar { position: relative; overflow: hidden; display: grid; place-items: center; flex: 0 0 auto; border-radius: 50%; color: #fff; background: linear-gradient(145deg, #2f98f4, #176fc8); font-weight: 800; box-shadow: inset 0 0 0 2px rgba(255,255,255,.45); }
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.avatar-small { width: 40px; height: 40px; font-size: 12px; }
+.avatar-large { width: 70px; height: 70px; font-size: 18px; }
+
+.toast-region { position: fixed; right: 18px; bottom: 18px; z-index: 10000; display: grid; gap: 10px; width: min(360px, calc(100vw - 28px)); }
+.toast { display: flex; align-items: flex-start; gap: 10px; padding: 14px 15px; border: 1px solid var(--line); border-radius: 15px; background: rgba(255,255,255,.98); box-shadow: var(--shadow-md); animation: toastIn .22s ease-out; }
+.toast > i { margin-top: 1px; color: var(--primary); font-size: 20px; }
+.toast strong { display: block; margin-bottom: 3px; font-size: 13px; }
+.toast p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
+.toast.is-error > i { color: var(--danger); }
+.toast.is-success > i { color: var(--success); }
+@keyframes toastIn { from { opacity: 0; transform: translateY(10px); } }
+
+</style>
+  <style data-original-href="./assets/css/auth.css">
+.auth-view { min-height: 100vh; display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(430px, .92fr); background: #fff; }
+.auth-showcase { position: relative; min-height: 100vh; overflow: hidden; display: flex; flex-direction: column; padding: 44px clamp(36px, 5vw, 82px) 30px; color: #fff; background: linear-gradient(145deg, #11304e 0%, #155a91 52%, #2386e8 100%); }
+.auth-showcase::before, .auth-showcase::after { content: ""; position: absolute; border-radius: 50%; pointer-events: none; }
+.auth-showcase::before { width: 520px; height: 520px; right: -250px; top: -220px; border: 1px solid rgba(255,255,255,.13); box-shadow: 0 0 0 72px rgba(255,255,255,.025), 0 0 0 145px rgba(255,255,255,.018); }
+.auth-showcase::after { width: 380px; height: 380px; left: -230px; bottom: -220px; background: rgba(255,255,255,.04); }
+.showcase-copy { position: relative; z-index: 1; max-width: 700px; margin-top: clamp(70px, 10vh, 130px); }
+.eyebrow { display: inline-flex; align-items: center; min-height: 27px; padding: 0 11px; border: 1px solid rgba(255,255,255,.22); border-radius: 999px; color: rgba(255,255,255,.82); background: rgba(255,255,255,.08); letter-spacing: .12em; font-size: 10px; font-weight: 800; }
+.showcase-copy h1 { max-width: 690px; margin: 20px 0 18px; letter-spacing: -.04em; font-size: clamp(36px, 4.4vw, 66px); line-height: 1.02; }
+.showcase-copy p { max-width: 620px; margin: 0; color: rgba(255,255,255,.74); font-size: clamp(14px, 1.3vw, 17px); line-height: 1.75; }
+.showcase-preview { position: relative; z-index: 1; width: min(680px, 90%); margin: auto auto 22px; transform: perspective(900px) rotateX(5deg) rotateY(-5deg); }
+.preview-window { overflow: hidden; border: 1px solid rgba(255,255,255,.28); border-radius: 20px; background: rgba(255,255,255,.94); box-shadow: 0 35px 80px rgba(4,20,35,.34); }
+.preview-topbar { height: 32px; display: flex; align-items: center; gap: 6px; padding: 0 12px; background: #eaf1f7; }
+.preview-topbar span { width: 7px; height: 7px; border-radius: 50%; background: #a9bacb; }
+.preview-layout { height: 235px; display: grid; grid-template-columns: 22% 1fr; }
+.preview-sidebar { background: #122b43; }
+.preview-main { padding: 23px; background: #f5f8fb; }
+.preview-heading { width: 40%; height: 13px; margin-bottom: 20px; border-radius: 999px; background: #c9d7e4; }
+.preview-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.preview-cards span { height: 66px; border-radius: 10px; background: #fff; box-shadow: 0 4px 14px rgba(31,63,94,.08); }
+.preview-panel { height: 82px; margin-top: 12px; border-radius: 10px; background: linear-gradient(100deg, #dff0ff, #fff); }
+.showcase-footer { position: relative; z-index: 1; margin: 0; color: rgba(255,255,255,.55); letter-spacing: .05em; font-size: 10px; font-weight: 700; }
+.auth-panel { min-height: 100vh; display: grid; place-items: center; padding: 34px; background: #f8fbfe; }
+.auth-card { width: min(440px, 100%); }
+.mobile-brand { display: none; margin-bottom: 36px; }
+.auth-heading { margin-bottom: 24px; }
+.auth-kicker { color: var(--primary); letter-spacing: .14em; font-size: 10px; font-weight: 800; }
+.auth-heading h2 { margin: 8px 0 7px; letter-spacing: -.035em; font-size: 31px; }
+.auth-heading p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+.auth-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 22px; padding: 5px; border-radius: 14px; background: #eaf0f5; }
+.auth-tab { min-height: 39px; border: 0; border-radius: 10px; color: #718196; background: transparent; font-size: 12px; font-weight: 800; }
+.auth-tab.is-active { color: #166fc8; background: #fff; box-shadow: 0 5px 14px rgba(31,63,94,.08); }
+#authForm { display: grid; gap: 16px; }
+.register-fields { display: grid; gap: 16px; }
+.text-button { display: block; margin: 17px auto 0; border: 0; color: var(--primary); background: transparent; font-size: 12px; font-weight: 800; }
+.auth-terms { margin: 28px auto 0; max-width: 350px; color: #9aa8b8; text-align: center; font-size: 9px; line-height: 1.55; }
+
+</style>
+  <style data-original-href="./assets/css/dashboard.css">
+.dashboard-shell { min-height: 100vh; display: grid; grid-template-columns: 252px minmax(0,1fr); }
+.sidebar { position: sticky; top: 0; z-index: 30; height: 100vh; display: flex; flex-direction: column; padding: 24px 17px 18px; color: #fff; background: linear-gradient(180deg, #112a43, #0d2238); }
+.sidebar-brand { padding: 0 10px 28px; }
+.sidebar-nav { display: grid; gap: 6px; }
+.nav-label { margin: 12px 12px 5px; color: #72889d; letter-spacing: .13em; font-size: 9px; font-weight: 800; }
+.nav-label-spaced { margin-top: 24px; }
+.nav-item { width: 100%; min-height: 47px; display: grid; grid-template-columns: 22px minmax(0,1fr) auto; align-items: center; gap: 9px; padding: 0 13px; border: 0; border-radius: 12px; color: #9fb0c0; background: transparent; text-align: left; font-size: 12px; font-weight: 750; }
+.nav-item i { font-size: 19px; }
+.nav-item small { padding: 3px 6px; border-radius: 999px; color: #7290aa; background: rgba(255,255,255,.05); font-size: 7px; }
+.nav-item.is-active { color: #fff; background: linear-gradient(90deg, rgba(35,134,232,.95), rgba(35,134,232,.68)); box-shadow: 0 10px 26px rgba(0,0,0,.17); }
+.nav-item.is-disabled { opacity: .56; }
+.sidebar-bottom { margin-top: auto; }
+.security-card { display: flex; gap: 10px; padding: 14px; border: 1px solid rgba(255,255,255,.07); border-radius: 15px; background: rgba(255,255,255,.035); }
+.security-icon { width: 34px; height: 34px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 10px; color: #76d8b0; background: rgba(38,188,126,.12); font-size: 18px; }
+.security-card strong { font-size: 10px; }
+.security-card p { margin: 4px 0 0; color: #72879a; font-size: 8px; line-height: 1.45; }
+.sidebar-backdrop { display: none; }
+.dashboard-content { min-width: 0; }
+.topbar { position: sticky; top: 0; z-index: 20; min-height: 78px; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 0 clamp(18px, 3vw, 42px); border-bottom: 1px solid var(--line); background: rgba(255,255,255,.91); backdrop-filter: blur(15px); }
+.topbar-left, .topbar-actions { display: flex; align-items: center; gap: 13px; }
+.topbar-context { margin: 0 0 2px; color: #9aa8b7; letter-spacing: .13em; font-size: 8px; font-weight: 800; }
+.topbar h2 { margin: 0; letter-spacing: -.02em; font-size: 20px; }
+.menu-button { display: none; }
+.notification-button { position: relative; }
+.notification-button span { position: absolute; top: 9px; right: 9px; width: 7px; height: 7px; border: 2px solid #fff; border-radius: 50%; background: #ee5270; }
+.profile-menu-wrap { position: relative; }
+.profile-button { min-width: 230px; min-height: 54px; display: grid; grid-template-columns: 40px minmax(0,1fr) 18px; align-items: center; gap: 10px; padding: 6px 10px 6px 7px; border: 1px solid var(--line); border-radius: 16px; color: var(--text); background: #fff; text-align: left; }
+.profile-button-copy { min-width: 0; }
+.profile-button-copy strong, .profile-button-copy small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.profile-button-copy strong { font-size: 11px; }
+.profile-button-copy small { margin-top: 2px; color: var(--muted); font-size: 8px; }
+.profile-button > i { color: #8495a8; }
+.profile-dropdown { position: absolute; top: calc(100% + 9px); right: 0; width: 230px; overflow: hidden; padding: 7px; border: 1px solid var(--line); border-radius: 15px; background: #fff; box-shadow: var(--shadow-md); }
+.profile-dropdown button { width: 100%; min-height: 43px; display: flex; align-items: center; gap: 9px; padding: 0 11px; border: 0; border-radius: 10px; color: #4f6278; background: transparent; text-align: left; font-size: 11px; font-weight: 750; }
+.profile-dropdown button:hover { background: #f4f8fb; }
+.profile-dropdown .danger-item { color: var(--danger); }
+.main-area { max-width: 1500px; margin: 0 auto; padding: clamp(20px, 3vw, 38px); }
+.welcome-panel { position: relative; overflow: hidden; min-height: 235px; display: grid; grid-template-columns: minmax(0,1.45fr) minmax(240px,.55fr); align-items: center; gap: 30px; padding: clamp(28px,4vw,48px); border-radius: var(--radius-lg); color: #fff; background: linear-gradient(115deg, #176fc8 0%, #248be8 56%, #55acf3 100%); box-shadow: 0 24px 55px rgba(35,134,232,.22); }
+.welcome-panel::before { content: ""; position: absolute; width: 500px; height: 500px; top: -330px; right: -160px; border: 1px solid rgba(255,255,255,.18); border-radius: 50%; box-shadow: 0 0 0 70px rgba(255,255,255,.035), 0 0 0 140px rgba(255,255,255,.025); }
+.welcome-panel > div { position: relative; z-index: 1; }
+.eyebrow-blue { border-color: rgba(255,255,255,.23); }
+.welcome-panel h1 { max-width: 780px; margin: 14px 0 10px; letter-spacing: -.04em; font-size: clamp(27px,3vw,42px); line-height: 1.08; }
+.welcome-panel p { max-width: 740px; margin: 0 0 22px; color: rgba(255,255,255,.76); font-size: 12px; line-height: 1.7; }
+.welcome-visual { min-height: 180px; display: grid; place-items: center; }
+.visual-center { width: 92px; height: 92px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.35); border-radius: 29px; color: #2386e8; background: rgba(255,255,255,.94); box-shadow: 0 25px 50px rgba(12,67,119,.24); transform: rotate(-8deg); font-size: 44px; }
+.visual-orbit { position: absolute; border: 1px solid rgba(255,255,255,.22); border-radius: 50%; }
+.orbit-one { width: 168px; height: 168px; }
+.orbit-two { width: 225px; height: 225px; }
+.status-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 16px; margin-top: 20px; }
+.status-card, .content-card { border: 1px solid var(--line); border-radius: var(--radius-md); background: #fff; box-shadow: var(--shadow-sm); }
+.status-card { min-height: 183px; padding: 20px; }
+.status-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 23px; }
+.status-icon { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 13px; font-size: 20px; }
+.status-icon-green { color: var(--success); background: var(--success-soft); }
+.status-icon-blue { color: var(--primary); background: var(--primary-soft); }
+.status-icon-violet { color: var(--violet); background: #f0edff; }
+.status-icon-orange { color: var(--warning); background: #fff4e4; }
+.status-pill { padding: 4px 7px; border-radius: 999px; color: #8c9aaa; background: #f2f5f8; letter-spacing: .07em; font-size: 7px; font-weight: 800; }
+.status-pill-green { color: var(--success); background: var(--success-soft); }
+.status-card > p { margin: 0 0 5px; color: var(--muted); font-size: 9px; font-weight: 700; }
+.status-card > strong { display: block; margin-bottom: 8px; font-size: 15px; }
+.status-card > small { display: block; color: #8998a9; font-size: 9px; line-height: 1.55; }
+.dashboard-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 20px; margin-top: 20px; }
+.content-card { padding: 23px; }
+.card-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.card-kicker { color: #8b9aac; letter-spacing: .12em; font-size: 8px; font-weight: 800; }
+.card-heading h3 { margin: 5px 0 0; font-size: 17px; }
+.profile-summary { display: flex; align-items: center; gap: 15px; margin: 24px 0; padding: 18px; border-radius: 16px; background: var(--surface-soft); }
+.profile-summary h4 { margin: 0 0 5px; font-size: 16px; }
+.profile-summary p { margin: 0; color: var(--muted); font-size: 10px; }
+.info-list { display: grid; gap: 1px; overflow: hidden; border: 1px solid var(--line); border-radius: 14px; background: var(--line); }
+.info-list > div { display: grid; grid-template-columns: 140px minmax(0,1fr); align-items: center; gap: 12px; min-height: 48px; padding: 0 14px; background: #fff; }
+.info-list span { color: var(--muted); font-size: 9px; }
+.info-list span i { margin-right: 5px; color: #8ea2b7; font-size: 14px; vertical-align: -2px; }
+.info-list strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; text-align: right; }
+.progress-percent { color: var(--primary); font-size: 18px; font-weight: 800; }
+.progress-track { height: 8px; overflow: hidden; margin: 28px 0 24px; border-radius: 999px; background: #eaf0f5; }
+.progress-track span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #2386e8, #50a9f2); transition: width .3s ease; }
+.check-list { display: grid; gap: 15px; }
+.check-list > div { display: flex; align-items: center; gap: 10px; color: #7b8b9d; font-size: 10px; font-weight: 650; }
+.check-list i { color: #b3bfcb; font-size: 18px; }
+.check-list .is-complete { color: #3e5268; }
+.check-list .is-complete i { color: var(--success); }
+.modal { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 18px; }
+.modal-backdrop { position: absolute; inset: 0; background: rgba(10,28,47,.52); backdrop-filter: blur(5px); }
+.modal-card { position: relative; z-index: 1; width: min(680px,100%); max-height: calc(100vh - 36px); overflow: auto; border-radius: 23px; background: #fff; box-shadow: 0 36px 90px rgba(7,29,51,.3); }
+.modal-header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 22px 24px; border-bottom: 1px solid var(--line); }
+.modal-header h2 { margin: 5px 0 0; font-size: 20px; }
+.profile-form { padding: 24px; }
+.avatar-editor { display: flex; align-items: center; gap: 18px; margin-bottom: 24px; padding: 18px; border-radius: 17px; background: var(--surface-soft); }
+.avatar-editor-preview { width: 86px; height: 86px; font-size: 22px; }
+.avatar-editor strong { font-size: 13px; }
+.avatar-editor p { margin: 4px 0 11px; color: var(--muted); font-size: 9px; }
+.upload-button { min-height: 35px; display: inline-flex; align-items: center; gap: 7px; padding: 0 12px; color: #176fc8; background: var(--primary-soft); font-size: 9px; cursor: pointer; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 17px; }
+.modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--line); }
+.primary-button-inline { min-height: 44px; }
+
+</style>
+  <style data-original-href="./assets/css/responsive.css">
+@media (max-width: 1180px) {
+  .status-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .welcome-panel { grid-template-columns: minmax(0,1fr) 220px; }
+}
+
+@media (max-width: 960px) {
+  .auth-view { grid-template-columns: 1fr; }
+  .auth-showcase { display: none; }
+  .auth-panel { padding: 24px; }
+  .mobile-brand { display: inline-flex; }
+
+  .dashboard-shell { display: block; }
+  .sidebar { position: fixed; left: 0; top: 0; width: 252px; transform: translateX(-105%); transition: transform .24s ease; box-shadow: 20px 0 55px rgba(8,27,45,.25); }
+  .sidebar.is-open { transform: translateX(0); }
+  .sidebar-backdrop { position: fixed; inset: 0; z-index: 25; display: block; visibility: hidden; opacity: 0; background: rgba(10,28,47,.45); transition: .24s; }
+  .sidebar-backdrop.is-visible { visibility: visible; opacity: 1; }
+  .menu-button { display: grid; }
+}
+
+@media (max-width: 760px) {
+  .topbar { min-height: 68px; padding: 0 13px; }
+  .topbar-context, .notification-button, .profile-button-copy, .profile-button > i { display: none; }
+  .profile-button { min-width: 0; min-height: 44px; grid-template-columns: 40px; padding: 1px; border: 0; background: transparent; }
+  .profile-dropdown { position: fixed; top: 66px; right: 12px; }
+  .main-area { padding: 14px; }
+  .welcome-panel { min-height: 0; grid-template-columns: 1fr; padding: 26px 22px; }
+  .welcome-visual { display: none; }
+  .status-grid, .dashboard-grid { grid-template-columns: 1fr; gap: 12px; margin-top: 12px; }
+  .status-card { min-height: 154px; }
+  .form-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 520px) {
+  .auth-panel { align-items: start; padding: 24px 18px; }
+  .auth-card { padding-top: 10px; }
+  .mobile-brand { margin-bottom: 42px; }
+  .auth-heading h2 { font-size: 27px; }
+  .welcome-panel h1 { font-size: 27px; }
+  .content-card { padding: 18px; }
+  .info-list > div { grid-template-columns: 1fr; gap: 4px; padding: 10px 13px; }
+  .info-list strong { text-align: left; }
+  .modal { padding: 0; align-items: end; }
+  .modal-card { width: 100%; max-height: 94vh; border-radius: 23px 23px 0 0; }
+  .profile-form, .modal-header { padding-left: 18px; padding-right: 18px; }
+  .avatar-editor { align-items: flex-start; }
+  .avatar-editor-preview { width: 70px; height: 70px; }
+  .modal-footer { display: grid; grid-template-columns: 1fr 1.4fr; }
+}
+
+</style>
 </head>
 <body>
   <div id="appLoader" class="app-loader" aria-live="polite">
@@ -425,6 +769,52 @@
 
   <div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
 
-  <script type="module" src="./assets/js/app.js"></script>
+  
+<script type="module">
+const __clenaSources = {"assets/js/config.js": "let cachedConfig = null;\n\nexport async function getPublicConfig() {\n  if (cachedConfig) return cachedConfig;\n\n  const response = await fetch(\"/api/public-config\", {\n    method: \"GET\",\n    headers: { \"Accept\": \"application/json\" },\n    cache: \"no-store\"\n  });\n\n  if (!response.ok) {\n    throw new Error(\"Não foi possível carregar as configurações públicas da Vercel.\");\n  }\n\n  const config = await response.json();\n\n  if (!config.supabaseUrl || !config.supabaseAnonKey) {\n    throw new Error(\"SUPABASE_URL ou SUPABASE_ANON_KEY não foram configuradas na Vercel.\");\n  }\n\n  cachedConfig = Object.freeze(config);\n  return cachedConfig;\n}\n", "assets/js/supabase-client.js": "import { createClient } from \"https://esm.sh/@supabase/supabase-js@2\";\nimport { getPublicConfig } from \"./config.js\";\n\nlet client = null;\n\nexport async function getSupabase() {\n  if (client) return client;\n\n  const config = await getPublicConfig();\n\n  client = createClient(config.supabaseUrl, config.supabaseAnonKey, {\n    auth: {\n      persistSession: true,\n      autoRefreshToken: true,\n      detectSessionInUrl: true\n    }\n  });\n\n  return client;\n}\n", "assets/js/ui.js": "const byId = (id) => document.getElementById(id);\n\nexport function setLoading(button, loading, label = \"Aguarde...\") {\n  if (!button) return;\n\n  if (loading) {\n    button.dataset.originalHtml = button.innerHTML;\n    button.disabled = true;\n    button.innerHTML = `<i class=\"ri-loader-4-line ri-spin\"></i><span>${label}</span>`;\n    return;\n  }\n\n  button.disabled = false;\n  if (button.dataset.originalHtml) {\n    button.innerHTML = button.dataset.originalHtml;\n    delete button.dataset.originalHtml;\n  }\n}\n\nexport function showToast(message, type = \"info\", title = \"Aviso\") {\n  const region = byId(\"toastRegion\");\n  const toast = document.createElement(\"div\");\n  const icon = type === \"success\" ? \"ri-checkbox-circle-line\" : type === \"error\" ? \"ri-error-warning-line\" : \"ri-information-line\";\n\n  toast.className = `toast is-${type}`;\n  toast.innerHTML = `\n    <i class=\"${icon}\" aria-hidden=\"true\"></i>\n    <div><strong>${escapeHtml(title)}</strong><p>${escapeHtml(message)}</p></div>\n  `;\n\n  region.appendChild(toast);\n  window.setTimeout(() => toast.remove(), 4200);\n}\n\nexport function initials(value = \"Loja\") {\n  const parts = String(value).trim().split(/\\s+/).filter(Boolean).slice(0, 2);\n  return (parts.map((part) => part[0]).join(\"\") || \"LO\").toUpperCase();\n}\n\nexport function renderAvatar(element, imageUrl, name) {\n  if (!element) return;\n  element.innerHTML = imageUrl\n    ? `<img src=\"${escapeAttribute(imageUrl)}\" alt=\"Foto de ${escapeAttribute(name || \"loja\")}\" />`\n    : `<span>${escapeHtml(initials(name))}</span>`;\n}\n\nexport function normalizeWhatsapp(value = \"\") {\n  return String(value).replace(/\\D/g, \"\").slice(0, 13);\n}\n\nexport function formatWhatsapp(value = \"\") {\n  const digits = normalizeWhatsapp(value);\n  if (!digits) return \"\";\n\n  const local = digits.startsWith(\"55\") ? digits.slice(2) : digits;\n  if (local.length <= 2) return `(${local}`;\n  if (local.length <= 7) return `(${local.slice(0, 2)}) ${local.slice(2)}`;\n  if (local.length <= 10) return `(${local.slice(0, 2)}) ${local.slice(2, 6)}-${local.slice(6)}`;\n  return `(${local.slice(0, 2)}) ${local.slice(2, 7)}-${local.slice(7, 11)}`;\n}\n\nfunction escapeHtml(value) {\n  return String(value ?? \"\")\n    .replaceAll(\"&\", \"&amp;\")\n    .replaceAll(\"<\", \"&lt;\")\n    .replaceAll(\">\", \"&gt;\")\n    .replaceAll('\"', \"&quot;\")\n    .replaceAll(\"'\", \"&#039;\");\n}\n\nfunction escapeAttribute(value) {\n  return escapeHtml(value);\n}\n", "assets/js/auth.js": "import { getSupabase } from \"./supabase-client.js\";\nimport { setLoading, showToast } from \"./ui.js\";\n\nlet mode = \"login\";\n\nconst el = {};\n\nexport function initializeAuthUI() {\n  Object.assign(el, {\n    form: document.getElementById(\"authForm\"),\n    loginTab: document.getElementById(\"loginTab\"),\n    registerTab: document.getElementById(\"registerTab\"),\n    registerFields: document.getElementById(\"registerFields\"),\n    storeName: document.getElementById(\"storeNameInput\"),\n    responsible: document.getElementById(\"responsibleInput\"),\n    email: document.getElementById(\"emailInput\"),\n    password: document.getElementById(\"passwordInput\"),\n    submit: document.getElementById(\"authSubmit\"),\n    title: document.getElementById(\"authTitle\"),\n    subtitle: document.getElementById(\"authSubtitle\"),\n    togglePassword: document.getElementById(\"togglePassword\"),\n    forgotPassword: document.getElementById(\"forgotPasswordButton\")\n  });\n\n  el.loginTab.addEventListener(\"click\", () => setMode(\"login\"));\n  el.registerTab.addEventListener(\"click\", () => setMode(\"register\"));\n  el.togglePassword.addEventListener(\"click\", togglePasswordVisibility);\n  el.forgotPassword.addEventListener(\"click\", resetPassword);\n  el.form.addEventListener(\"submit\", submitAuth);\n}\n\nfunction setMode(nextMode) {\n  mode = nextMode;\n  const registering = mode === \"register\";\n\n  el.loginTab.classList.toggle(\"is-active\", !registering);\n  el.registerTab.classList.toggle(\"is-active\", registering);\n  el.loginTab.setAttribute(\"aria-selected\", String(!registering));\n  el.registerTab.setAttribute(\"aria-selected\", String(registering));\n  el.registerFields.classList.toggle(\"is-hidden\", !registering);\n\n  el.storeName.required = registering;\n  el.responsible.required = registering;\n  el.password.autocomplete = registering ? \"new-password\" : \"current-password\";\n\n  el.title.textContent = registering ? \"Crie sua conta\" : \"Entre na sua conta\";\n  el.subtitle.textContent = registering\n    ? \"Cadastre a loja e o responsável para iniciar a estrutura.\"\n    : \"Acesse a dashboard para gerenciar os dados da sua loja.\";\n  el.submit.querySelector(\"span\").textContent = registering ? \"Criar conta\" : \"Entrar\";\n  el.forgotPassword.classList.toggle(\"is-hidden\", registering);\n}\n\nasync function submitAuth(event) {\n  event.preventDefault();\n\n  const email = el.email.value.trim().toLowerCase();\n  const password = el.password.value;\n  const storeName = el.storeName.value.trim();\n  const responsible = el.responsible.value.trim();\n\n  if (!email || !password) {\n    showToast(\"Preencha o e-mail e a senha.\", \"error\", \"Campos obrigatórios\");\n    return;\n  }\n\n  if (password.length < 6) {\n    showToast(\"A senha deve ter pelo menos 6 caracteres.\", \"error\", \"Senha inválida\");\n    return;\n  }\n\n  if (mode === \"register\" && (!storeName || !responsible)) {\n    showToast(\"Informe o nome da loja e o responsável.\", \"error\", \"Cadastro incompleto\");\n    return;\n  }\n\n  setLoading(el.submit, true, mode === \"register\" ? \"Criando conta...\" : \"Entrando...\");\n\n  try {\n    const supabase = await getSupabase();\n\n    if (mode === \"login\") {\n      const { error } = await supabase.auth.signInWithPassword({ email, password });\n      if (error) throw error;\n      showToast(\"Login realizado com sucesso.\", \"success\", \"Bem-vindo\");\n      return;\n    }\n\n    const redirectTo = `${window.location.origin}/`;\n    const { data, error } = await supabase.auth.signUp({\n      email,\n      password,\n      options: {\n        emailRedirectTo: redirectTo,\n        data: {\n          store_name: storeName,\n          responsible_name: responsible\n        }\n      }\n    });\n\n    if (error) throw error;\n\n    if (!data.session) {\n      el.form.reset();\n      setMode(\"login\");\n      showToast(\"Confira seu e-mail para confirmar a conta antes de entrar.\", \"success\", \"Conta criada\");\n    } else {\n      showToast(\"Conta criada e conectada.\", \"success\", \"Tudo certo\");\n    }\n  } catch (error) {\n    showToast(authErrorMessage(error), \"error\", \"Não foi possível continuar\");\n  } finally {\n    setLoading(el.submit, false);\n  }\n}\n\nasync function resetPassword() {\n  const email = el.email.value.trim().toLowerCase();\n  if (!email) {\n    showToast(\"Digite seu e-mail antes de solicitar a recuperação.\", \"error\", \"Informe o e-mail\");\n    el.email.focus();\n    return;\n  }\n\n  try {\n    const supabase = await getSupabase();\n    const { error } = await supabase.auth.resetPasswordForEmail(email, {\n      redirectTo: `${window.location.origin}/`\n    });\n    if (error) throw error;\n    showToast(\"Enviamos o link de recuperação para seu e-mail.\", \"success\", \"E-mail enviado\");\n  } catch (error) {\n    showToast(authErrorMessage(error), \"error\", \"Falha na recuperação\");\n  }\n}\n\nfunction togglePasswordVisibility() {\n  const visible = el.password.type === \"text\";\n  el.password.type = visible ? \"password\" : \"text\";\n  el.togglePassword.setAttribute(\"aria-label\", visible ? \"Mostrar senha\" : \"Ocultar senha\");\n  el.togglePassword.innerHTML = `<i class=\"${visible ? \"ri-eye-line\" : \"ri-eye-off-line\"}\" aria-hidden=\"true\"></i>`;\n}\n\nfunction authErrorMessage(error) {\n  const message = String(error?.message || \"\").toLowerCase();\n  if (message.includes(\"invalid login credentials\")) return \"E-mail ou senha incorretos.\";\n  if (message.includes(\"email not confirmed\")) return \"Confirme seu e-mail antes de entrar.\";\n  if (message.includes(\"user already registered\")) return \"Este e-mail já possui cadastro.\";\n  if (message.includes(\"password should be\")) return \"Use uma senha com pelo menos 6 caracteres.\";\n  if (message.includes(\"rate limit\")) return \"Muitas tentativas. Tente novamente mais tarde.\";\n  return error?.message || \"Ocorreu um erro inesperado.\";\n}\n", "assets/js/dashboard.js": "import { getSupabase } from \"./supabase-client.js\";\nimport { showToast } from \"./ui.js\";\n\nexport function initializeDashboardUI() {\n  const sidebar = document.getElementById(\"sidebar\");\n  const backdrop = document.getElementById(\"sidebarBackdrop\");\n  const menuButton = document.getElementById(\"menuButton\");\n  const profileButton = document.getElementById(\"profileMenuButton\");\n  const dropdown = document.getElementById(\"profileDropdown\");\n  const logoutButton = document.getElementById(\"logoutButton\");\n\n  const closeSidebar = () => {\n    sidebar.classList.remove(\"is-open\");\n    backdrop.classList.remove(\"is-visible\");\n  };\n\n  menuButton.addEventListener(\"click\", () => {\n    sidebar.classList.toggle(\"is-open\");\n    backdrop.classList.toggle(\"is-visible\");\n  });\n\n  backdrop.addEventListener(\"click\", closeSidebar);\n\n  profileButton.addEventListener(\"click\", (event) => {\n    event.stopPropagation();\n    const opening = dropdown.classList.contains(\"is-hidden\");\n    dropdown.classList.toggle(\"is-hidden\", !opening);\n    profileButton.setAttribute(\"aria-expanded\", String(opening));\n  });\n\n  document.addEventListener(\"click\", (event) => {\n    if (!event.target.closest(\".profile-menu-wrap\")) {\n      dropdown.classList.add(\"is-hidden\");\n      profileButton.setAttribute(\"aria-expanded\", \"false\");\n    }\n  });\n\n  logoutButton.addEventListener(\"click\", async () => {\n    try {\n      const supabase = await getSupabase();\n      const { error } = await supabase.auth.signOut();\n      if (error) throw error;\n      dropdown.classList.add(\"is-hidden\");\n    } catch (error) {\n      showToast(error?.message || \"Não foi possível sair da conta.\", \"error\", \"Erro ao sair\");\n    }\n  });\n}\n", "assets/js/profile.js": "import { getSupabase } from \"./supabase-client.js\";\nimport { formatWhatsapp, normalizeWhatsapp, renderAvatar, setLoading, showToast } from \"./ui.js\";\n\nlet currentUser = null;\nlet currentProfile = null;\nlet selectedAvatarFile = null;\n\nconst els = {};\n\nexport function initializeProfileUI() {\n  Object.assign(els, {\n    modal: document.getElementById(\"profileModal\"),\n    form: document.getElementById(\"profileForm\"),\n    storeName: document.getElementById(\"profileStoreName\"),\n    responsible: document.getElementById(\"profileResponsible\"),\n    whatsapp: document.getElementById(\"profileWhatsapp\"),\n    email: document.getElementById(\"profileEmail\"),\n    avatarInput: document.getElementById(\"avatarInput\"),\n    modalAvatar: document.getElementById(\"modalAvatar\"),\n    saveButton: document.getElementById(\"saveProfileButton\")\n  });\n\n  document.querySelectorAll(\"[data-close-modal]\").forEach((element) => {\n    element.addEventListener(\"click\", closeProfileModal);\n  });\n\n  [\"openProfileButton\", \"welcomeProfileButton\", \"summaryEditButton\"].forEach((id) => {\n    document.getElementById(id)?.addEventListener(\"click\", openProfileModal);\n  });\n\n  els.avatarInput.addEventListener(\"change\", previewAvatar);\n  els.whatsapp.addEventListener(\"input\", () => {\n    els.whatsapp.value = formatWhatsapp(els.whatsapp.value);\n  });\n  els.form.addEventListener(\"submit\", saveProfile);\n}\n\nexport async function loadProfile(user) {\n  currentUser = user;\n  const supabase = await getSupabase();\n\n  const { data, error } = await supabase\n    .from(\"profiles\")\n    .select(\"id, store_name, responsible_name, whatsapp, avatar_url, created_at, updated_at\")\n    .eq(\"id\", user.id)\n    .maybeSingle();\n\n  if (error) throw error;\n\n  if (!data) {\n    const fallbackProfile = {\n      id: user.id,\n      store_name: user.user_metadata?.store_name || \"Minha loja\",\n      responsible_name: user.user_metadata?.responsible_name || \"\",\n      whatsapp: \"\",\n      avatar_url: \"\"\n    };\n\n    const { data: created, error: createError } = await supabase\n      .from(\"profiles\")\n      .insert(fallbackProfile)\n      .select(\"id, store_name, responsible_name, whatsapp, avatar_url, created_at, updated_at\")\n      .single();\n\n    if (createError) throw createError;\n    currentProfile = created;\n  } else {\n    currentProfile = data;\n  }\n\n  renderProfile();\n  return currentProfile;\n}\n\nexport function openProfileModal() {\n  if (!currentUser || !currentProfile) return;\n\n  selectedAvatarFile = null;\n  els.avatarInput.value = \"\";\n  els.storeName.value = currentProfile.store_name || \"\";\n  els.responsible.value = currentProfile.responsible_name || \"\";\n  els.whatsapp.value = formatWhatsapp(currentProfile.whatsapp || \"\");\n  els.email.value = currentUser.email || \"\";\n  renderAvatar(els.modalAvatar, currentProfile.avatar_url, currentProfile.store_name);\n\n  els.modal.classList.remove(\"is-hidden\");\n  document.body.style.overflow = \"hidden\";\n  window.setTimeout(() => els.storeName.focus(), 50);\n}\n\nfunction closeProfileModal() {\n  els.modal.classList.add(\"is-hidden\");\n  document.body.style.overflow = \"\";\n  selectedAvatarFile = null;\n}\n\nfunction previewAvatar(event) {\n  const [file] = event.target.files || [];\n  if (!file) return;\n\n  if (!file.type.match(/^image\\/(png|jpeg|webp)$/)) {\n    showToast(\"Escolha uma imagem PNG, JPG ou WEBP.\", \"error\", \"Formato inválido\");\n    event.target.value = \"\";\n    return;\n  }\n\n  if (file.size > 5 * 1024 * 1024) {\n    showToast(\"A imagem deve ter no máximo 5 MB.\", \"error\", \"Arquivo muito grande\");\n    event.target.value = \"\";\n    return;\n  }\n\n  selectedAvatarFile = file;\n  const temporaryUrl = URL.createObjectURL(file);\n  renderAvatar(els.modalAvatar, temporaryUrl, els.storeName.value || currentProfile.store_name);\n  window.setTimeout(() => URL.revokeObjectURL(temporaryUrl), 1000);\n}\n\nasync function saveProfile(event) {\n  event.preventDefault();\n\n  const storeName = els.storeName.value.trim();\n  const responsibleName = els.responsible.value.trim();\n  const whatsapp = normalizeWhatsapp(els.whatsapp.value);\n\n  if (!storeName) {\n    showToast(\"Informe o nome da loja.\", \"error\", \"Campo obrigatório\");\n    return;\n  }\n\n  setLoading(els.saveButton, true, \"Salvando...\");\n\n  try {\n    const supabase = await getSupabase();\n    let avatarUrl = currentProfile.avatar_url || \"\";\n\n    if (selectedAvatarFile) {\n      avatarUrl = await uploadAvatar(supabase, selectedAvatarFile);\n    }\n\n    const payload = {\n      store_name: storeName,\n      responsible_name: responsibleName || null,\n      whatsapp: whatsapp || null,\n      avatar_url: avatarUrl || null\n    };\n\n    const { data, error } = await supabase\n      .from(\"profiles\")\n      .update(payload)\n      .eq(\"id\", currentUser.id)\n      .select(\"id, store_name, responsible_name, whatsapp, avatar_url, created_at, updated_at\")\n      .single();\n\n    if (error) throw error;\n\n    currentProfile = data;\n    renderProfile();\n    closeProfileModal();\n    showToast(\"Os dados da loja foram atualizados.\", \"success\", \"Perfil salvo\");\n  } catch (error) {\n    showToast(error?.message || \"Não foi possível salvar o perfil.\", \"error\", \"Erro ao salvar\");\n  } finally {\n    setLoading(els.saveButton, false);\n  }\n}\n\nasync function uploadAvatar(supabase, file) {\n  const extension = file.name.split(\".\").pop()?.toLowerCase() || \"jpg\";\n  const filePath = `${currentUser.id}/avatar-${Date.now()}.${extension}`;\n\n  const { error: uploadError } = await supabase.storage\n    .from(\"store-avatars\")\n    .upload(filePath, file, {\n      cacheControl: \"3600\",\n      upsert: false,\n      contentType: file.type\n    });\n\n  if (uploadError) throw uploadError;\n\n  const { data } = supabase.storage.from(\"store-avatars\").getPublicUrl(filePath);\n  return data.publicUrl;\n}\n\nfunction renderProfile() {\n  const name = currentProfile.store_name || \"Minha loja\";\n  const responsible = currentProfile.responsible_name || \"Responsável não informado\";\n  const whatsappText = currentProfile.whatsapp ? formatWhatsapp(currentProfile.whatsapp) : \"Não informado\";\n  const email = currentUser.email || \"—\";\n  const avatarUrl = currentProfile.avatar_url || \"\";\n\n  document.getElementById(\"headerStoreName\").textContent = name;\n  document.getElementById(\"headerEmail\").textContent = email;\n  document.getElementById(\"summaryStoreName\").textContent = name;\n  document.getElementById(\"summaryResponsible\").textContent = responsible;\n  document.getElementById(\"summaryEmail\").textContent = email;\n  document.getElementById(\"summaryWhatsapp\").textContent = whatsappText;\n  document.getElementById(\"welcomeTitle\").textContent = `Olá! A dashboard da ${name} está pronta.`;\n\n  [\"headerAvatar\", \"summaryAvatar\", \"modalAvatar\"].forEach((id) => {\n    renderAvatar(document.getElementById(id), avatarUrl, name);\n  });\n\n  const hasAvatar = Boolean(avatarUrl);\n  const hasWhatsapp = Boolean(currentProfile.whatsapp);\n  const percent = 50 + (hasAvatar ? 25 : 0) + (hasWhatsapp ? 25 : 0);\n\n  updateCheck(\"avatarCheck\", hasAvatar, \"Adicionar foto da loja\");\n  updateCheck(\"whatsappCheck\", hasWhatsapp, \"Adicionar WhatsApp\");\n  document.getElementById(\"profilePercent\").textContent = `${percent}%`;\n  document.getElementById(\"profileProgressBar\").style.width = `${percent}%`;\n}\n\nfunction updateCheck(id, complete, text) {\n  const row = document.getElementById(id);\n  row.classList.toggle(\"is-complete\", complete);\n  row.innerHTML = `<i class=\"${complete ? \"ri-checkbox-circle-fill\" : \"ri-checkbox-blank-circle-line\"}\"></i><span>${complete ? text.replace(\"Adicionar\", \"Adicionado:\") : text}</span>`;\n}\n", "assets/js/app.js": "import { initializeAuthUI } from \"./auth.js\";\nimport { initializeDashboardUI } from \"./dashboard.js\";\nimport { initializeProfileUI, loadProfile } from \"./profile.js\";\nimport { getSupabase } from \"./supabase-client.js\";\nimport { showToast } from \"./ui.js\";\n\nconst loader = document.getElementById(\"appLoader\");\nconst authView = document.getElementById(\"authView\");\nconst dashboardView = document.getElementById(\"dashboardView\");\n\nlet renderedUserId = null;\n\ninitializeAuthUI();\ninitializeDashboardUI();\ninitializeProfileUI();\nstart();\n\nasync function start() {\n  try {\n    const supabase = await getSupabase();\n    const { data, error } = await supabase.auth.getSession();\n    if (error) throw error;\n\n    await applySession(data.session);\n\n    supabase.auth.onAuthStateChange((_event, session) => {\n      window.setTimeout(() => applySession(session), 0);\n    });\n  } catch (error) {\n    showAuth();\n    showToast(error?.message || \"Não foi possível iniciar o sistema.\", \"error\", \"Erro de configuração\");\n  } finally {\n    loader.classList.add(\"is-hidden\");\n  }\n}\n\nasync function applySession(session) {\n  if (!session?.user) {\n    renderedUserId = null;\n    showAuth();\n    return;\n  }\n\n  showDashboard();\n\n  if (renderedUserId === session.user.id) return;\n\n  try {\n    await loadProfile(session.user);\n    renderedUserId = session.user.id;\n  } catch (error) {\n    showToast(\n      `${error?.message || \"Não foi possível carregar o perfil.\"} Execute o arquivo supabase/schema.sql no projeto Supabase.`,\n      \"error\",\n      \"Perfil indisponível\"\n    );\n  }\n}\n\nfunction showAuth() {\n  authView.classList.remove(\"is-hidden\");\n  dashboardView.classList.add(\"is-hidden\");\n}\n\nfunction showDashboard() {\n  authView.classList.add(\"is-hidden\");\n  dashboardView.classList.remove(\"is-hidden\");\n}\n"};
+const __clenaUrls = new Map();
+const __clenaCreating = new Set();
+
+function __clenaResolve(fromPath, specifier) {
+  if (specifier.startsWith('/')) return specifier.slice(1);
+  const base = fromPath.split('/').slice(0, -1);
+  for (const part of specifier.split('/')) {
+    if (!part || part === '.') continue;
+    if (part === '..') base.pop();
+    else base.push(part);
+  }
+  return base.join('/');
+}
+
+async function __clenaModuleUrl(path) {
+  if (__clenaUrls.has(path)) return __clenaUrls.get(path);
+  if (__clenaCreating.has(path)) throw new Error('Dependência circular em ' + path);
+  __clenaCreating.add(path);
+
+  let source = __clenaSources[path];
+  if (typeof source !== 'string') throw new Error('Módulo não incorporado: ' + path);
+
+  const importPattern = /(^\s*import\s+(?:[\s\S]*?\s+from\s+)?["'])([^"']+)(["'];?\s*$)/gm;
+  const matches = [...source.matchAll(importPattern)];
+
+  for (const match of matches) {
+    const spec = match[2];
+    if (spec.startsWith('http://') || spec.startsWith('https://') || spec.startsWith('data:') || spec.startsWith('blob:')) continue;
+    const depPath = __clenaResolve(path, spec);
+    const depUrl = await __clenaModuleUrl(depPath);
+    source = source.replace(match[0], match[1] + depUrl + match[3]);
+  }
+
+  const url = URL.createObjectURL(new Blob([source], { type: 'text/javascript' }));
+  __clenaUrls.set(path, url);
+  __clenaCreating.delete(path);
+  return url;
+}
+
+for (const entry of ["assets/js/app.js"]) {
+  const url = await __clenaModuleUrl(entry);
+  await import(url);
+}
+</script>
 </body>
 </html>

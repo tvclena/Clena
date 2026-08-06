@@ -1,3 +1,4 @@
+<!-- CLENA: HTML COMPLETO COM CSS E JAVASCRIPT INCORPORADOS -->
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -11,7 +12,10 @@
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="/assets/css/public-base.css">
+  <style data-original-href="/assets/css/public-base.css">
+:root{--primary:#2563eb;--accent:#0f172a;--bg:#f6f8fc;--card:#fff;--muted:#64748b;--line:#e2e8f0}*{box-sizing:border-box}body{margin:0;font-family:Manrope,Arial,sans-serif;background:var(--bg);color:var(--accent)}button,input,select,textarea{font:inherit}button{cursor:pointer}.hidden{display:none!important}.shell{max-width:1180px;margin:auto;padding:18px}.hero{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;border-radius:24px;overflow:hidden;position:relative}.hero-cover{width:100%;height:230px;object-fit:cover;display:block;opacity:.72}.hero-body{padding:24px;display:flex;gap:18px;align-items:center}.logo{width:88px;height:88px;border-radius:22px;object-fit:cover;background:#fff;border:4px solid #fff}.hero h1{margin:0 0 8px}.hero p{margin:0;opacity:.9}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}.toolbar input,.toolbar select,.field input,.field select,.field textarea{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}.toolbar input{flex:1;min-width:220px}.chips{display:flex;gap:8px;overflow:auto;padding-bottom:6px}.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 14px;white-space:nowrap}.chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 8px 24px rgba(15,23,42,.05)}.card img{width:100%;height:190px;object-fit:cover;background:#eef2f7}.card-body{padding:16px}.card h3{margin:0 0 6px}.muted{color:var(--muted)}.price{font-weight:800;font-size:1.16rem}.old{text-decoration:line-through;color:var(--muted);font-size:.9rem}.btn{border:0;border-radius:12px;padding:11px 15px;background:var(--primary);color:#fff;font-weight:700}.btn.secondary{background:#fff;color:var(--accent);border:1px solid var(--line)}.floating{position:fixed;right:22px;bottom:22px;z-index:10}.badge{background:#ef4444;color:#fff;border-radius:999px;padding:2px 7px;margin-left:6px}.drawer,.modal{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:20;display:flex;justify-content:flex-end}.panel{width:min(480px,100%);height:100%;overflow:auto;background:#fff;padding:22px}.modal{justify-content:center;align-items:center;padding:18px}.modal .panel{height:auto;max-height:92vh;border-radius:20px}.row{display:flex;gap:10px;align-items:center;justify-content:space-between}.field{display:grid;gap:6px;margin:12px 0}.qty{display:flex;gap:8px;align-items:center}.qty button{width:34px;height:34px;border:1px solid var(--line);background:#fff;border-radius:9px}.empty{text-align:center;padding:50px;color:var(--muted)}.section-title{margin:26px 0 12px}.status{display:inline-flex;padding:6px 10px;border-radius:999px;background:#dcfce7;color:#166534;font-weight:700}.status.closed{background:#fee2e2;color:#991b1b}.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}.day{padding:12px;border:1px solid var(--line);background:#fff;border-radius:12px}.day.active{background:var(--primary);color:#fff}.slots{display:flex;flex-wrap:wrap;gap:8px}.slot{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px}.slot.active{background:var(--primary);color:#fff}.summary{background:#f8fafc;border-radius:14px;padding:14px}.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#111827;color:#fff;padding:12px 16px;border-radius:12px;z-index:40}@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){.shell{padding:10px}.grid{grid-template-columns:1fr}.hero-body{align-items:flex-start}.logo{width:72px;height:72px}.hero-cover{height:160px}.calendar{grid-template-columns:repeat(4,1fr)}}
+
+</style>
 </head>
 
 <body>
@@ -92,6 +96,52 @@
     </section>
   </main>
 
-  <script type="module" src="/assets/js/public-scheduling.js"></script>
+  
+<script type="module">
+const __clenaSources = {"assets/js/public-scheduling.js": "import{db,$,money,esc,slugFromUrl,theme,toast,wa}from'./public-common.js';let B,S=[],R=[],SR=[],WH=[],BL=[],A=[],service,date,slot;const {data:b}=await db.from('scheduling_businesses').select('*').eq('slug',slugFromUrl()).eq('is_published',true).maybeSingle();if(!b){$('services').innerHTML='<div class=\"empty\">Agenda não encontrada ou não publicada.</div>';throw 0}B=b;theme(B.primary_color,'#0f172a');document.title=B.name;const q=await Promise.all([db.from('scheduling_services').select('*').eq('user_id',B.user_id).eq('is_active',true).order('sort_order'),db.from('scheduling_resources').select('*').eq('user_id',B.user_id).eq('is_active',true),db.from('scheduling_service_resources').select('*').eq('user_id',B.user_id),db.from('scheduling_weekly_hours').select('*').eq('user_id',B.user_id),db.from('scheduling_blocks').select('*').eq('user_id',B.user_id),db.from('scheduling_appointments').select('resource_id,starts_at,ends_at,status').eq('user_id',B.user_id).neq('status','cancelled').gte('starts_at',new Date().toISOString())]);S=q[0].data||[];R=q[1].data||[];SR=q[2].data||[];WH=q[3].data||[];BL=q[4].data||[];A=q[5].data||[];$('hero').innerHTML=`${B.cover_url?`<img class=\"hero-cover\" src=\"${esc(B.cover_url)}\">`:''}<div class=\"hero-body\">${B.logo_url?`<img class=\"logo\" src=\"${esc(B.logo_url)}\">`:''}<div><h1>${esc(B.name)}</h1><p>${esc(B.description||'')}</p><p>${esc(B.address||'')}</p></div></div>`;$('services').innerHTML=S.map(s=>`<article class=\"card\">${s.image_url?`<img src=\"${esc(s.image_url)}\">`:''}<div class=\"card-body\"><h3>${esc(s.name)}</h3><p class=\"muted\">${esc(s.description)}</p><p>${s.duration_minutes} min ${B.show_prices?'• '+money(s.price):''}</p><button class=\"btn choose\" data-id=\"${s.id}\">Agendar</button></div></article>`).join('')||'<div class=\"empty\">Nenhum serviço disponível.</div>';document.querySelectorAll('.choose').forEach(x=>x.onclick=()=>choose(x.dataset.id));function choose(id){service=S.find(x=>x.id===id);$('booking').classList.remove('hidden');$('selected').innerHTML=`<b>${esc(service.name)}</b><br>${service.duration_minutes} minutos ${B.show_prices?'• '+money(service.price):''}`;const allowed=R.filter(r=>SR.some(x=>x.service_id===id&&x.resource_id===r.id));$('resource').innerHTML=(B.allow_any_resource?'<option value=\"\">Qualquer disponível</option>':'')+(allowed.length?allowed:R).map(r=>`<option value=\"${r.id}\">${esc(r.name)}${r.title?' — '+esc(r.title):''}</option>`).join('');renderDays();$('cpfWrap').classList.toggle('hidden',!B.require_cpf);$('termsWrap').classList.toggle('hidden',!B.require_terms);const dep=deposit();$('paymentInfo').innerHTML=dep>0?`Pagamento antecipado: <b>${money(dep)}</b><br>${B.pay_pix&&B.pix_key?`PIX: ${esc(B.pix_key)} — ${esc(B.pix_receiver)}`:''}`:'Nenhum pagamento antecipado obrigatório.';$('booking').scrollIntoView({behavior:'smooth'})}function deposit(){const mode=service.payment_mode==='inherit'?B.payment_mode:service.payment_mode;if(mode==='full')return Number(service.price);if(mode==='percentage')return Number(service.price)*(Number(B.deposit_percentage)/100);if(mode==='fixed')return Number(service.deposit_value||B.deposit_fixed);return 0}function renderDays(){const arr=[];for(let i=0;i<Math.min(B.max_advance_days,30);i++){const d=new Date();d.setDate(d.getDate()+i);arr.push(d)}$('days').innerHTML=arr.map(d=>`<button class=\"day\" data-date=\"${d.toISOString().slice(0,10)}\">${d.toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'2-digit'})}</button>`).join('');document.querySelectorAll('.day').forEach(b=>b.onclick=()=>{date=b.dataset.date;document.querySelectorAll('.day').forEach(x=>x.classList.toggle('active',x===b));renderSlots()})}function intervals(start,end,step){const out=[];let [h,m]=start.split(':').map(Number),[eh,em]=end.split(':').map(Number),a=h*60+m,z=eh*60+em;for(;a+service.duration_minutes<=z;a+=step)out.push(`${String(Math.floor(a/60)).padStart(2,'0')}:${String(a%60).padStart(2,'0')}`);return out}function renderSlots(){slot=null;const wd=['sunday','monday','tuesday','wednesday','thursday','friday','saturday'][new Date(date+'T12:00:00').getDay()],rid=$('resource').value;let hs=WH.filter(x=>x.weekday===wd&&x.is_open&&(!x.resource_id||x.resource_id===rid));if(!hs.length){$('slots').innerHTML='<span class=\"muted\">Sem horários.</span>';return}let times=[];hs.forEach(h=>times.push(...intervals(h.start_time.slice(0,5),h.end_time.slice(0,5),B.slot_interval)));times=[...new Set(times)].filter(t=>{const st=new Date(`${date}T${t}:00`),en=new Date(st.getTime()+service.duration_minutes*60000);if(st.getTime()<Date.now()+B.min_notice_minutes*60000)return false;const conflicts=[...A,...BL].some(x=>(!rid||!x.resource_id||x.resource_id===rid)&&st<new Date(x.ends_at)&&en>new Date(x.starts_at));return !conflicts});$('slots').innerHTML=times.map(t=>`<button class=\"slot\" data-time=\"${t}\">${t}</button>`).join('')||'<span class=\"muted\">Sem horários disponíveis.</span>';document.querySelectorAll('.slot').forEach(b=>b.onclick=()=>{slot=b.dataset.time;document.querySelectorAll('.slot').forEach(x=>x.classList.toggle('active',x===b))})}$('resource').onchange=()=>date&&renderSlots();$('cancel').onclick=()=>$('booking').classList.add('hidden');$('confirm').onclick=async()=>{if(!date||!slot||!$('name').value||!$('phone').value)return toast('Preencha data, horário e seus dados');if(B.require_terms&&!$('terms').checked)return toast('Aceite os termos');const starts=new Date(`${date}T${slot}:00`),ends=new Date(starts.getTime()+service.duration_minutes*60000),dep=deposit(),status=B.auto_confirm&&!B.manual_approval?'confirmed':'pending';const {data:c,error:ce}=await db.from('scheduling_customers').insert({user_id:B.user_id,name:$('name').value,phone:$('phone').value,email:$('email').value,cpf:$('cpf').value}).select().single();if(ce)return toast(ce.message);const {data:a,error}=await db.from('scheduling_appointments').insert({user_id:B.user_id,customer_id:c.id,customer_name:c.name,customer_phone:c.phone,customer_email:c.email,service_id:service.id,resource_id:$('resource').value||null,starts_at:starts.toISOString(),ends_at:ends.toISOString(),status,payment_status:dep?'pending':'not_required',total_amount:service.price,deposit_amount:dep,notes:$('notes').value,source:'public'}).select().single();if(error)return toast(error.message);toast('Agendamento registrado');const msg=`Olá! Agendamento em ${B.name}:\\nServiço: ${service.name}\\nData: ${starts.toLocaleString('pt-BR')}\\nCliente: ${c.name}\\nStatus: ${status}\\nSinal: ${money(dep)}`;if(B.whatsapp)setTimeout(()=>location.href=wa(B.whatsapp,msg),800)};\n"};
+const __clenaUrls = new Map();
+const __clenaCreating = new Set();
+
+function __clenaResolve(fromPath, specifier) {
+  if (specifier.startsWith('/')) return specifier.slice(1);
+  const base = fromPath.split('/').slice(0, -1);
+  for (const part of specifier.split('/')) {
+    if (!part || part === '.') continue;
+    if (part === '..') base.pop();
+    else base.push(part);
+  }
+  return base.join('/');
+}
+
+async function __clenaModuleUrl(path) {
+  if (__clenaUrls.has(path)) return __clenaUrls.get(path);
+  if (__clenaCreating.has(path)) throw new Error('Dependência circular em ' + path);
+  __clenaCreating.add(path);
+
+  let source = __clenaSources[path];
+  if (typeof source !== 'string') throw new Error('Módulo não incorporado: ' + path);
+
+  const importPattern = /(^\s*import\s+(?:[\s\S]*?\s+from\s+)?["'])([^"']+)(["'];?\s*$)/gm;
+  const matches = [...source.matchAll(importPattern)];
+
+  for (const match of matches) {
+    const spec = match[2];
+    if (spec.startsWith('http://') || spec.startsWith('https://') || spec.startsWith('data:') || spec.startsWith('blob:')) continue;
+    const depPath = __clenaResolve(path, spec);
+    const depUrl = await __clenaModuleUrl(depPath);
+    source = source.replace(match[0], match[1] + depUrl + match[3]);
+  }
+
+  const url = URL.createObjectURL(new Blob([source], { type: 'text/javascript' }));
+  __clenaUrls.set(path, url);
+  __clenaCreating.delete(path);
+  return url;
+}
+
+for (const entry of ["assets/js/public-scheduling.js"]) {
+  const url = await __clenaModuleUrl(entry);
+  await import(url);
+}
+</script>
 </body>
 </html>
