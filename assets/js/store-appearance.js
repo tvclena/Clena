@@ -55,7 +55,7 @@ export const APPEARANCE_DEFAULTS = {
   social_x: '',
   social_pinterest: '',
   floating_whatsapp: true,
-  floating_cart: true,
+  floating_cart: false,
   custom_css: ''
 };
 
@@ -224,22 +224,71 @@ export function applyAppearance(settings = {}, type = 'image', update = true) {
 }
 
 function renderPreviewProducts(container, products = []) {
+  if (!container) return;
+
   const fallback = [
-    { name:'Produto exemplo', description:'Descrição curta do produto', price:29.9, sale_price:24.9, image_url:'', featured:true },
-    { name:'Outro produto', description:'Outra descrição do catálogo', price:49.9, sale_price:null, image_url:'', featured:false }
+    {
+      name: 'Produto exemplo',
+      description: 'Descrição curta do produto',
+      price: 29.9,
+      sale_price: 24.9,
+      image_url: '',
+      featured: true
+    },
+    {
+      name: 'Outro produto',
+      description: 'Outra descrição do catálogo',
+      price: 49.9,
+      sale_price: null,
+      image_url: '',
+      featured: false
+    }
   ];
-  const list = (products.length ? products : fallback).filter((product) => product.active !== false).slice(0, 4);
+
+  const list = (products.length ? products : fallback)
+    .filter((product) => product.active !== false)
+    .slice(0, 6);
+
   container.innerHTML = list.map((product) => {
-    const hasSale = Number(product.sale_price || 0) > 0 && Number(product.sale_price) < Number(product.price || 0);
-    const price = hasSale ? product.sale_price : product.price;
-    return `<article>
-      <div class="alp-image" ${product.image_url ? `style="background-image:url('${escapeHtml(product.image_url)}')"` : ''}></div>
-      ${hasSale ? '<span class="alp-sale">OFERTA</span>' : ''}
-      <h4>${escapeHtml(product.name || 'Produto')}</h4>
-      <p>${escapeHtml(product.description || 'Descrição do produto')}</p>
-      <strong>${new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number(price || 0))}</strong>
-      <button type="button"><i class="ri-add-line"></i></button>
-    </article>`;
+    const hasSale =
+      Number(product.sale_price || 0) > 0 &&
+      Number(product.sale_price) < Number(product.price || 0);
+
+    const price = hasSale
+      ? product.sale_price
+      : product.price;
+
+    const image =
+      product.image_url ||
+      product.image ||
+      '';
+
+    return `
+      <article>
+        <div
+          class="alp-image"
+          ${image ? `style="background-image:url('${escapeHtml(image)}')"` : ''}
+        ></div>
+
+        ${hasSale ? '<span class="alp-sale">OFERTA</span>' : ''}
+
+        <h4>${escapeHtml(product.name || 'Produto')}</h4>
+        <p>${escapeHtml(product.description || 'Descrição do produto')}</p>
+
+        <div class="alp-product-bottom">
+          <strong>
+            ${new Intl.NumberFormat('pt-BR', {
+              style: 'currency',
+              currency: 'BRL'
+            }).format(Number(price || 0))}
+          </strong>
+
+          <button type="button" aria-label="Adicionar produto">
+            <i class="ri-add-line"></i>
+          </button>
+        </div>
+      </article>
+    `;
   }).join('');
 }
 
@@ -292,8 +341,10 @@ function setPreviewMedia(media, appearance, context) {
 
 export function updateAppearancePreview(context = {}) {
   previewContext = { ...previewContext, ...context };
+
   const preview = $('appearanceLivePreview');
   if (!preview) return;
+
   const appearance = collectAppearance();
 
   preview.dataset.theme = appearance.theme;
@@ -316,54 +367,193 @@ export function updateAppearancePreview(context = {}) {
 
   preview.style.setProperty('--ap-primary', previewContext.primaryColor || '#2563eb');
   preview.style.setProperty('--ap-accent', previewContext.accentColor || '#0f172a');
-  preview.style.setProperty('--ap-bg', appearance.background_color);
-  preview.style.setProperty('--ap-card', appearance.card_color);
-  preview.style.setProperty('--ap-text', appearance.text_color);
-  preview.style.setProperty('--ap-muted', appearance.muted_color);
-  preview.style.setProperty('--ap-body-font', `"${appearance.body_font}",sans-serif`);
-  preview.style.setProperty('--ap-heading-font', `"${appearance.heading_font}",sans-serif`);
-  preview.style.setProperty('--ap-heading-weight', appearance.heading_weight);
+  preview.style.setProperty('--ap-bg', appearance.background_color || '#f6f8fc');
+  preview.style.setProperty('--ap-card', appearance.card_color || '#ffffff');
+  preview.style.setProperty('--ap-text', appearance.text_color || '#0f172a');
+  preview.style.setProperty('--ap-muted', appearance.muted_color || '#64748b');
+  preview.style.setProperty('--ap-body-font', `"${appearance.body_font || 'Manrope'}",sans-serif`);
+  preview.style.setProperty('--ap-heading-font', `"${appearance.heading_font || 'Manrope'}",sans-serif`);
+  preview.style.setProperty('--ap-heading-weight', appearance.heading_weight || '800');
   preview.style.setProperty('--ap-overlay', Number(appearance.cover_overlay || 0) / 100);
-  preview.style.setProperty('--ap-columns', Math.max(2, Math.min(5, Number(appearance.desktop_columns || 3))));
+  preview.style.setProperty(
+    '--ap-columns',
+    Math.max(2, Math.min(5, Number(appearance.desktop_columns || 3)))
+  );
 
-  const heightMap = { compact:'145px', medium:'210px', large:'285px', fullscreen:'390px' };
-  preview.style.setProperty('--ap-cover-height', heightMap[appearance.cover_height] || heightMap.medium);
+  const heightMap = {
+    compact: '145px',
+    medium: '210px',
+    large: '285px',
+    fullscreen: '390px'
+  };
 
-  const title = appearance.hero_title || previewContext.storeName || 'Minha loja';
-  const subtitle = appearance.hero_subtitle || previewContext.description || 'Sua descrição aparecerá aqui';
-  preview.querySelector('.alp-copy h3').textContent = title;
-  preview.querySelector('.alp-copy p').textContent = subtitle;
-  const heroButton = preview.querySelector('.alp-copy button');
-  heroButton.textContent = appearance.hero_button_text || 'Ver produtos';
-  heroButton.hidden = appearance.hero_button_target === 'none';
+  preview.style.setProperty(
+    '--ap-cover-height',
+    heightMap[appearance.cover_height] || heightMap.medium
+  );
 
-  preview.querySelector('.alp-search').hidden = !appearance.show_search;
+  const title =
+    appearance.hero_title ||
+    previewContext.storeName ||
+    'Minha loja';
+
+  const subtitle =
+    appearance.hero_subtitle ||
+    previewContext.description ||
+    'Sua descrição aparecerá aqui';
+
+  const previewStoreName = previewContext.storeName || 'Minha loja';
+
+  const headerName = preview.querySelector('.alp-brand strong');
+  if (headerName) headerName.textContent = previewStoreName;
+
+  const titleElement = preview.querySelector('.alp-copy h3');
+  if (titleElement) titleElement.textContent = title;
+
+  const subtitleElement = preview.querySelector('.alp-copy p');
+  if (subtitleElement) subtitleElement.textContent = subtitle;
+
+  const heroButton = preview.querySelector('.alp-cover-actions > button:first-child');
+  if (heroButton) {
+    heroButton.textContent = appearance.hero_button_text || 'Ver produtos';
+    heroButton.hidden = appearance.hero_button_target === 'none';
+  }
+
+  const searchBox = preview.querySelector('.alp-search');
+  if (searchBox) searchBox.hidden = !appearance.show_search;
+
   const categoriesElement = preview.querySelector('.alp-categories');
-  categoriesElement.hidden = false;
-  categoriesElement.classList.toggle('sticky-demo', Boolean(appearance.sticky_categories));
-  renderPreviewCategories(categoriesElement, previewContext.categories || []);
+  if (categoriesElement) {
+    categoriesElement.hidden = false;
+    categoriesElement.classList.toggle(
+      'sticky-demo',
+      Boolean(appearance.sticky_categories)
+    );
 
-  renderPreviewProducts(preview.querySelector('.alp-products'), previewContext.products || []);
-  preview.querySelectorAll('.alp-products article p').forEach((element) => { element.hidden = !appearance.show_product_description; });
-  preview.querySelectorAll('.alp-sale').forEach((element) => { element.hidden = !appearance.show_sale_badge; });
+    renderPreviewCategories(
+      categoriesElement,
+      previewContext.categories || []
+    );
+  }
+
+  const allProducts = (previewContext.products || [])
+    .filter((product) => product.active !== false);
+
+  const featuredProducts = allProducts
+    .filter((product) => product.featured)
+    .slice(0, 4);
+
+  const mainProductsContainer = preview.querySelector(
+    '.alp-products:not(.alp-featured-products)'
+  );
+
+  const featuredProductsContainer = preview.querySelector(
+    '.alp-featured-products'
+  );
+
+  const featuredSection = preview.querySelector('.alp-featured');
+
+  if (mainProductsContainer) {
+    renderPreviewProducts(
+      mainProductsContainer,
+      allProducts
+    );
+  }
+
+  if (featuredProductsContainer) {
+    renderPreviewProducts(
+      featuredProductsContainer,
+      featuredProducts.length ? featuredProducts : allProducts.slice(0, 2)
+    );
+  }
+
+  if (featuredSection) {
+    featuredSection.hidden = !appearance.show_featured;
+  }
+
+  preview
+    .querySelectorAll('.alp-products article p')
+    .forEach((element) => {
+      element.hidden = !appearance.show_product_description;
+    });
+
+  preview
+    .querySelectorAll('.alp-sale')
+    .forEach((element) => {
+      element.hidden = !appearance.show_sale_badge;
+    });
+
+  const resultCount = preview.querySelector('.alp-results small');
+  if (resultCount) {
+    const count = allProducts.length || 2;
+    resultCount.textContent = `${count} ${count === 1 ? 'produto' : 'produtos'}`;
+  }
 
   const footer = preview.querySelector('.alp-footer');
-  footer.hidden = appearance.footer_style === 'hidden';
-  footer.dataset.background = appearance.footer_background;
-  footer.querySelector('.alp-footer-text').textContent = appearance.footer_text || `${previewContext.storeName || 'Minha loja'} © ${new Date().getFullYear()}`;
-  renderSocials(footer.querySelector('.alp-socials'), appearance, previewContext);
+
+  if (footer) {
+    footer.hidden = appearance.footer_style === 'hidden';
+    footer.dataset.background = appearance.footer_background;
+
+    const footerText = footer.querySelector('.alp-footer-text');
+
+    if (footerText) {
+      footerText.textContent =
+        appearance.footer_text ||
+        `${previewStoreName} © ${new Date().getFullYear()}`;
+    }
+  }
+
+  /*
+   * As redes sociais da loja pública aparecem somente
+   * abaixo do banner, nunca ao lado da sacola.
+   */
+  const socialSection = preview.querySelector('.alp-social-section');
+  const socialContainer = socialSection?.querySelector('.alp-socials');
+
+  if (socialContainer) {
+    renderSocials(
+      socialContainer,
+      appearance,
+      previewContext
+    );
+
+    socialSection.hidden =
+      socialContainer.hidden ||
+      !appearance.show_social_links;
+  }
 
   const whatsapp = preview.querySelector('.alp-floating-whatsapp');
-  whatsapp.hidden = !appearance.floating_whatsapp || !previewContext.whatsapp;
-  whatsapp.href = previewContext.whatsapp ? `https://wa.me/${String(previewContext.whatsapp).replace(/\D/g,'')}` : '#';
-  const cart = preview.querySelector('.alp-floating-cart');
-  cart.hidden = !appearance.floating_cart;
 
-  setPreviewMedia(preview.querySelector('.alp-media'), appearance, previewContext);
+  if (whatsapp) {
+    const whatsappNumber = String(
+      previewContext.whatsapp || ''
+    ).replace(/\D/g, '');
+
+    whatsapp.hidden =
+      !appearance.floating_whatsapp ||
+      !whatsappNumber;
+
+    whatsapp.href = whatsappNumber
+      ? `https://wa.me/${whatsappNumber}`
+      : '#';
+  }
+
+  setPreviewMedia(
+    preview.querySelector('.alp-media'),
+    appearance,
+    previewContext
+  );
 
   const logo = preview.querySelector('.alp-logo');
-  logo.dataset.shape = appearance.logo_shape;
-  logo.innerHTML = previewContext.logoPreviewUrl ? `<img src="${escapeHtml(previewContext.logoPreviewUrl)}" alt="Logo">` : '<i class="ri-store-line"></i>';
+
+  if (logo) {
+    logo.dataset.shape = appearance.logo_shape;
+
+    logo.innerHTML = previewContext.logoPreviewUrl
+      ? `<img src="${escapeHtml(previewContext.logoPreviewUrl)}" alt="Logo">`
+      : '<i class="ri-store-2-line"></i>';
+  }
 }
 
 function bindField(id) {
