@@ -1,8 +1,0 @@
-1. Execute fichas-tecnicas-preco-efetivo-completo.sql no Supabase.
-2. Substitua editor-delivery.html.
-3. Substitua delivery.html.
-4. Faça novo deploy na Vercel.
-
-O erro acontecia porque a ficha era salva, mas o editor e a página pública
-continuavam lendo delivery_items.price/sale_price diretamente.
-Agora ambos consultam get_public_delivery_effective_prices().
