@@ -323,8 +323,19 @@
 
     <aside class="appearance-preview-column">
       <div class="preview-sticky">
-        <div class="preview-toolbar"><div><strong>Prévia ao vivo</strong><small>Visual aproximado da página pública</small></div><div class="device-switch"><button type="button" class="active" data-preview-device="mobile"><i class="ri-smartphone-line"></i></button><button type="button" data-preview-device="desktop"><i class="ri-computer-line"></i></button></div></div>
-        <div class="store-live-preview mobile" id="appearanceLivePreview">
+        <div class="preview-toolbar"><div><strong>Prévia ao vivo</strong><small>Prévia em aparelho real</small></div><div class="device-switch"><button type="button" class="active" data-preview-device="mobile"><i class="ri-smartphone-line"></i></button><button type="button" data-preview-device="desktop"><i class="ri-computer-line"></i></button></div></div>
+        <div class="phone-preview-device" id="phonePreviewDevice">
+          <span class="phone-side-button phone-side-button-volume-up"></span>
+          <span class="phone-side-button phone-side-button-volume-down"></span>
+          <span class="phone-side-button phone-side-button-power"></span>
+
+          <div class="phone-device-frame">
+            <div class="phone-device-notch">
+              <span class="phone-speaker"></span>
+              <span class="phone-camera"></span>
+            </div>
+
+            <div class="store-live-preview mobile" id="appearanceLivePreview">
           <div class="alp-browser-bar">
             <span></span><span></span><span></span>
             <small>Visualização compacta da loja</small>
@@ -388,6 +399,10 @@
           </div>
 
           <a class="alp-floating-whatsapp" href="#" aria-label="WhatsApp"><i class="ri-whatsapp-line"></i></a>
+            </div>
+
+            <div class="phone-home-indicator"></div>
+          </div>
         </div>
       </div>
     </aside>
