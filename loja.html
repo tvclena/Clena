@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -9,6 +10,7 @@
   <meta name="theme-color" content="#f6f8fc" id="themeColorMeta">
   <meta name="description" content="Loja virtual">
   <title>Loja</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800;900&family=Nunito:wght@400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -21,6 +23,7 @@
     <div class="loader-line"><span></span></div>
     <p>Carregando loja...</p>
   </div>
+
   <div id="storeApp" class="store-app is-hidden">
     <header id="siteHeader" class="site-header">
       <div class="header-inner">
@@ -54,17 +57,6 @@
         </div>
       </section>
       <div id="slot-after_hero" class="content-slot shell"></div>
-
-      <section id="heroSocialSection" class="hero-social-section shell is-hidden" aria-label="Redes sociais da loja">
-        <div class="hero-social-card">
-          <div class="hero-social-copy">
-            <span class="section-kicker">SIGA A LOJA</span>
-            <strong>Encontre-nos nas redes sociais</strong>
-          </div>
-
-          <div id="socialLinks" class="social-links hero-social-links"></div>
-        </div>
-      </section>
 
       <section id="storeInfo" class="store-info shell">
         <div class="store-info-card">
@@ -193,7 +185,7 @@
       <div class="footer-inner shell">
         <div class="footer-brand"><span id="footerLogo" class="footer-logo"><i class="ri-store-2-line"></i></span><div><strong id="footerStoreName">Minha loja</strong><p id="footerDescription"></p></div></div>
         <div id="footerContact" class="footer-column"><h3>Atendimento</h3><a id="footerWhatsapp" class="is-hidden" target="_blank" rel="noopener"><i class="ri-whatsapp-line"></i><span>WhatsApp</span></a><a id="footerInstagram" class="is-hidden" target="_blank" rel="noopener"><i class="ri-instagram-line"></i><span>Instagram</span></a></div>
-        
+        <div id="footerSocialColumn" class="footer-column"><h3>Redes sociais</h3><div id="socialLinks" class="social-links"></div></div>
       </div>
       <div class="footer-bottom shell"><p id="footerText"></p><span>Feito com <strong>CLENA</strong></span></div>
     </footer>
@@ -209,20 +201,11 @@
 
       <div class="product-modal-main">
         <div class="product-media-gallery">
-          <button
-            id="productModalImage"
-            class="product-modal-image"
-            type="button"
-            aria-label="Abrir foto ampliada"
-          >
+          <button id="productModalImage" class="product-modal-image" type="button" aria-label="Abrir foto ampliada">
             <span><i class="ri-image-line"></i></span>
           </button>
 
-          <div
-            id="productImageThumbnails"
-            class="product-image-thumbnails is-hidden"
-            aria-label="Outras fotos do produto"
-          ></div>
+          <div id="productImageThumbnails" class="product-image-thumbnails is-hidden" aria-label="Outras fotos do produto"></div>
         </div>
 
         <div class="product-modal-content">
@@ -288,56 +271,25 @@
     </aside>
   </div>
 
-  <div
-    id="productImageLightbox"
-    class="product-image-lightbox is-hidden"
-    role="dialog"
-    aria-modal="true"
-    aria-label="Fotos do produto"
-  >
-    <div
-      class="product-image-lightbox-backdrop"
-      data-close-product-image
-    ></div>
+  <div id="productImageLightbox" class="product-image-lightbox is-hidden" role="dialog" aria-modal="true" aria-label="Fotos do produto">
+    <div class="product-image-lightbox-backdrop" data-close-product-image></div>
 
     <section class="product-image-lightbox-card">
-      <button
-        class="product-image-lightbox-close"
-        type="button"
-        data-close-product-image
-        aria-label="Fechar foto"
-      >
+      <button class="product-image-lightbox-close" type="button" data-close-product-image aria-label="Fechar foto">
         <i class="ri-close-line"></i>
       </button>
 
-      <button
-        id="productImageLightboxPrev"
-        class="product-image-lightbox-nav product-image-lightbox-prev"
-        type="button"
-        aria-label="Foto anterior"
-      >
+      <button id="productImageLightboxPrev" class="product-image-lightbox-nav product-image-lightbox-prev" type="button" aria-label="Foto anterior">
         <i class="ri-arrow-left-s-line"></i>
       </button>
 
-      <div
-        id="productImageLightboxMedia"
-        class="product-image-lightbox-media"
-      ></div>
+      <div id="productImageLightboxMedia" class="product-image-lightbox-media"></div>
 
-      <button
-        id="productImageLightboxNext"
-        class="product-image-lightbox-nav product-image-lightbox-next"
-        type="button"
-        aria-label="Próxima foto"
-      >
+      <button id="productImageLightboxNext" class="product-image-lightbox-nav product-image-lightbox-next" type="button" aria-label="Próxima foto">
         <i class="ri-arrow-right-s-line"></i>
       </button>
 
-      <div
-        id="productImageLightboxCounter"
-        class="product-image-lightbox-counter"
-        aria-live="polite"
-      ></div>
+      <div id="productImageLightboxCounter" class="product-image-lightbox-counter"></div>
     </section>
   </div>
 
