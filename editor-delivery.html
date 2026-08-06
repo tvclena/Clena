@@ -175,6 +175,148 @@ body{background:linear-gradient(180deg,#f8fafc 0,#f1f5f9 100%);min-height:100vh}
 @media(max-width:760px){.technical-summary-grid{grid-template-columns:1fr}.technical-toolbar-actions{width:100%}.section-toolbar:has(.technical-toolbar-actions){display:grid}.technical-toolbar-actions button{flex:1}.technical-list-head{display:grid}.technical-list-tools{display:grid}.technical-search{width:100%}.technical-sheet-card{grid-template-columns:1fr auto}.technical-sheet-metric,.technical-sheet-status{display:none}.technical-main-grid{display:block}.technical-form-column{padding:12px}.technical-calculation-column{padding:0 12px 12px}.technical-result-grid{grid-template-columns:1fr}.technical-modal-card{width:100vw;height:100dvh;border-radius:0}.technical-ingredient-header,.technical-ingredient-row{grid-template-columns:150px 110px 110px 80px 90px 34px}}
 </style>
 
+
+<style id="clenaTechnicalSheetsV2Styles">
+/* ===== Refinamento geral ===== */
+.technical-modal-card{
+  width:min(98vw,1580px);
+  height:min(96vh,1000px);
+  border:1px solid rgba(255,255,255,.7);
+  box-shadow:0 45px 140px rgba(2,6,23,.42);
+}
+.technical-modal-card>header{
+  padding:20px 24px;
+  background:linear-gradient(180deg,#fff,#fbfdff);
+}
+.technical-modal-card>header h2{font-size:25px;letter-spacing:-.03em}
+.technical-modal-card>header>button{width:42px;height:42px;border-radius:13px}
+.technical-form-column{padding:22px;gap:16px}
+.technical-block{
+  border-radius:20px;
+  padding:19px;
+  box-shadow:0 8px 30px rgba(15,23,42,.045);
+}
+.technical-block-head>span{
+  background:linear-gradient(135deg,#fff7ed,#ffedd5);
+  box-shadow:inset 0 0 0 1px #fed7aa;
+}
+.technical-unit-help{
+  display:flex;align-items:center;gap:11px;
+  margin-bottom:12px;padding:11px 13px;
+  border:1px solid #bae6fd;border-radius:13px;background:#f0f9ff;
+}
+.technical-unit-help>span{
+  width:37px;height:37px;border-radius:11px;background:#e0f2fe;color:#0284c7;
+  display:grid;place-items:center;font-size:18px;flex:0 0 37px;
+}
+.technical-unit-help b,.technical-unit-help small{display:block}
+.technical-unit-help b{font-size:11px;color:#0c4a6e}
+.technical-unit-help small{font-size:9px;line-height:1.45;color:#0369a1;margin-top:2px}
+.technical-ingredient-table{background:#fff;box-shadow:inset 0 0 0 1px rgba(226,232,240,.45)}
+.technical-ingredient-header{
+  background:linear-gradient(180deg,#f8fafc,#f1f5f9);
+  color:#475569;padding:11px 12px;
+}
+.technical-ingredient-row{
+  grid-template-columns:minmax(190px,1.5fr) minmax(180px,1fr) minmax(160px,.9fr) 85px 105px 38px;
+  padding:10px 12px;transition:background .18s;
+}
+.technical-ingredient-row:hover{background:#fffaf5}
+.ingredient-pair{
+  display:grid;grid-template-columns:minmax(62px,1fr) 70px;
+  gap:5px;align-items:center;
+}
+.ingredient-pair.purchase{grid-template-columns:minmax(58px,.7fr) 64px minmax(70px,.8fr)}
+.technical-ingredient-row input,.technical-ingredient-row select{
+  height:40px;background:#fff;border-color:#dbe3ee;
+}
+.technical-ingredient-row input:focus,.technical-ingredient-row select:focus{
+  outline:0;border-color:#fb923c;box-shadow:0 0 0 3px rgba(249,115,22,.1)
+}
+.ingredient-money{
+  padding:8px;border-radius:9px;background:#f8fafc;color:#0f172a!important;
+  text-align:center!important;white-space:nowrap;
+}
+.ingredient-conversion-hint{
+  grid-column:1/-1;font-size:8px;color:#64748b;padding:0 2px 2px 2px;
+}
+.ingredient-conversion-hint strong{color:#0f766e}
+.technical-empty-row{padding:24px;text-align:center;color:#94a3b8;font-size:11px}
+
+/* ===== Gráficos ===== */
+.technical-charts-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.55fr) minmax(300px,.75fr);
+  gap:18px;margin-bottom:18px;
+}
+.technical-chart-wide{grid-row:span 2}
+.technical-chart-card{min-height:320px;overflow:hidden}
+.technical-chart-card .card-head{gap:16px}
+.technical-chart-card .card-head p{margin:4px 0 0;color:var(--muted);font-size:10px}
+.chart-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:9px;color:#64748b}
+.chart-legend span{display:flex;align-items:center;gap:5px}
+.chart-legend i{width:10px;height:10px;border-radius:3px}
+.legend-cmv{background:#f97316}.legend-margin{background:#7c3aed}.legend-goal{background:#0f172a}
+.technical-chart-wrap{position:relative;height:330px}
+.technical-chart-wrap.compact{height:255px}
+.technical-chart-wrap canvas{width:100%!important;height:100%!important}
+.chart-empty{
+  position:absolute;inset:0;display:grid;place-content:center;justify-items:center;
+  gap:5px;text-align:center;color:#94a3b8;background:#fff;
+}
+.chart-empty i{font-size:36px;color:#cbd5e1}.chart-empty strong{color:#64748b}
+.chart-empty small{font-size:9px}
+.technical-donut-layout{
+  display:grid;grid-template-columns:210px 1fr;gap:15px;align-items:center;min-height:230px;
+}
+.technical-donut-layout canvas{width:210px!important;height:210px!important}
+.technical-cost-legend{display:grid;gap:8px}
+.cost-legend-row{display:grid;grid-template-columns:10px 1fr auto;gap:8px;align-items:center}
+.cost-legend-row i{width:10px;height:10px;border-radius:3px;background:var(--legend-color)}
+.cost-legend-row span{font-size:9px;color:#64748b}
+.cost-legend-row strong{font-size:10px}
+.cost-legend-total{margin-top:5px;padding-top:9px;border-top:1px solid var(--line);display:flex;justify-content:space-between}
+.cost-legend-total span{font-size:9px;color:#64748b}.cost-legend-total strong{font-size:12px}
+
+/* ===== Dashboard mais refinado ===== */
+.technical-summary-card{position:relative;overflow:hidden}
+.technical-summary-card:after{
+  content:"";position:absolute;right:-24px;bottom:-28px;width:86px;height:86px;
+  border-radius:50%;background:color-mix(in srgb,currentColor 8%,transparent);
+}
+.technical-sheet-card{border-radius:18px}
+.technical-sheet-card.selected-by-filter{border-color:#fdba74}
+.technical-list-tools select{min-width:145px}
+.technical-health-badge{box-shadow:inset 0 0 0 1px rgba(255,255,255,.4)}
+.technical-calculator-sticky{
+  border-radius:22px;box-shadow:0 22px 65px rgba(15,23,42,.13);
+  background:linear-gradient(180deg,#fff 0%,#fbfdff 100%);
+}
+.technical-result-price{box-shadow:inset 0 0 0 1px #fed7aa}
+.technical-profit-highlight{box-shadow:inset 0 0 0 1px rgba(34,197,94,.12)}
+.technical-suggested-price{box-shadow:inset 0 0 0 1px rgba(124,58,237,.1)}
+
+@media(max-width:1200px){
+  .technical-charts-grid{grid-template-columns:1fr}
+  .technical-chart-wide{grid-row:auto}
+  .technical-donut-layout{grid-template-columns:230px 1fr}
+}
+@media(max-width:850px){
+  .technical-ingredient-row{
+    grid-template-columns:190px 180px 160px 85px 100px 38px;
+  }
+  .technical-donut-layout{grid-template-columns:1fr;justify-items:center}
+  .technical-cost-legend{width:100%}
+}
+@media(max-width:700px){
+  .technical-charts-grid{gap:12px}
+  .technical-chart-card{min-height:280px}
+  .technical-chart-wrap{height:280px}
+  .technical-modal-card>header{padding:15px}
+  .technical-modal-card>header h2{font-size:20px}
+}
+</style>
+
 </head>
 <body>
   <div id="pageLoader" class="page-loader">
@@ -329,6 +471,62 @@ body{background:linear-gradient(180deg,#f8fafc 0,#f1f5f9 100%);min-height:100vh}
             <article class="technical-summary-card">
               <span class="technical-summary-icon profit"><i class="ri-money-dollar-circle-line"></i></span>
               <div><small>Lucro unitário médio</small><strong id="technicalAverageProfit">R$ 0,00</strong><em id="technicalAverageProfitHint">Por unidade vendida</em></div>
+            </article>
+          </section>
+
+          <section class="technical-charts-grid">
+            <article class="panel-card technical-chart-card technical-chart-wide">
+              <div class="card-head">
+                <div>
+                  <small>ANÁLISE FILTRADA</small>
+                  <h3>CMV e margem por produto</h3>
+                  <p>O gráfico acompanha a pesquisa e o filtro selecionado.</p>
+                </div>
+                <div class="chart-legend">
+                  <span><i class="legend-cmv"></i>CMV</span>
+                  <span><i class="legend-margin"></i>Margem líquida</span>
+                  <span><i class="legend-goal"></i>Meta CMV</span>
+                </div>
+              </div>
+              <div class="technical-chart-wrap">
+                <canvas id="technicalPerformanceChart" height="300"></canvas>
+                <div id="technicalPerformanceChartEmpty" class="chart-empty is-hidden">
+                  <i class="ri-bar-chart-grouped-line"></i>
+                  <strong>Nenhum item no filtro atual</strong>
+                  <small>Ajuste a busca ou o status para exibir o gráfico.</small>
+                </div>
+              </div>
+            </article>
+
+            <article class="panel-card technical-chart-card">
+              <div class="card-head">
+                <div>
+                  <small>COMPOSIÇÃO</small>
+                  <h3>Distribuição dos custos</h3>
+                  <p>Média das fichas visíveis.</p>
+                </div>
+              </div>
+              <div class="technical-donut-layout">
+                <canvas id="technicalCostChart" width="230" height="230"></canvas>
+                <div id="technicalCostLegend" class="technical-cost-legend"></div>
+              </div>
+            </article>
+
+            <article class="panel-card technical-chart-card">
+              <div class="card-head">
+                <div>
+                  <small>RESULTADO</small>
+                  <h3>Lucro unitário</h3>
+                  <p>Comparação dos produtos filtrados.</p>
+                </div>
+              </div>
+              <div class="technical-chart-wrap compact">
+                <canvas id="technicalProfitChart" height="260"></canvas>
+                <div id="technicalProfitChartEmpty" class="chart-empty is-hidden">
+                  <i class="ri-line-chart-line"></i>
+                  <strong>Sem dados para comparar</strong>
+                </div>
+              </div>
             </article>
           </section>
 
@@ -685,9 +883,16 @@ body{background:linear-gradient(180deg,#f8fafc 0,#f1f5f9 100%);min-height:100vh}
                 <div><b>Ingredientes e insumos</b><small>Informe compra, quantidade utilizada e perdas.</small></div>
                 <button id="addTechnicalIngredientBtn" class="small-btn" type="button"><i class="ri-add-line"></i>Adicionar</button>
               </div>
+              <div class="technical-unit-help">
+                <span><i class="ri-scales-3-line"></i></span>
+                <div>
+                  <b>Conversão automática de unidades</b>
+                  <small>Compra em kg aceita uso em kg ou g. Compra em litro aceita uso em L ou ml. Unidade aceita somente unidade. O custo é convertido automaticamente.</small>
+                </div>
+              </div>
               <div class="technical-ingredient-table">
                 <div class="technical-ingredient-header">
-                  <span>Insumo</span><span>Compra</span><span>Uso</span><span>Perda</span><span>Custo</span><span></span>
+                  <span>Insumo</span><span>Embalagem comprada</span><span>Quantidade usada</span><span>Perda</span><span>Custo real</span><span></span>
                 </div>
                 <div id="technicalIngredientList"></div>
               </div>
@@ -1106,14 +1311,59 @@ const technicalState = {
   sheets: [],
   editingId: null,
   ingredients: [],
-  goal: 35
+  goal: 35,
+  charts: {},
+  filteredRows: []
 };
 
+const UNIT_GROUPS = {
+  mass: {
+    units: ['kg','g'],
+    labels: {kg:'kg',g:'g'},
+    factors: {kg:1000,g:1},
+    base: 'g'
+  },
+  volume: {
+    units: ['l','ml'],
+    labels: {l:'L',ml:'ml'},
+    factors: {l:1000,ml:1},
+    base: 'ml'
+  },
+  unit: {
+    units: ['un'],
+    labels: {un:'un'},
+    factors: {un:1},
+    base: 'un'
+  }
+};
+
+function unitGroup(unit){
+  if(['kg','g'].includes(unit)) return 'mass';
+  if(['l','ml'].includes(unit)) return 'volume';
+  return 'unit';
+}
+function allowedUseUnits(purchaseUnit){
+  return UNIT_GROUPS[unitGroup(purchaseUnit)].units;
+}
+function unitLabel(unit){
+  const group=UNIT_GROUPS[unitGroup(unit)];
+  return group.labels[unit] || unit;
+}
+function convertToBase(quantity, unit){
+  const group=UNIT_GROUPS[unitGroup(unit)];
+  return Number(quantity||0) * Number(group.factors[unit]||1);
+}
 function tMoney(v){
   return new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number(v||0));
 }
 function tNumber(v){
-  return Number(String(v??'').replace(/\./g,'').replace(',','.').replace(/[^\d.-]/g,''))||0;
+  if(typeof v==='number') return Number.isFinite(v)?v:0;
+  const raw=String(v??'').trim();
+  if(!raw) return 0;
+  const normalized=raw.includes(',')
+    ? raw.replace(/\./g,'').replace(',','.')
+    : raw;
+  return Number(normalized.replace(/[^\d.-]/g,''))||0;
 }
 function tPercent(v){
   return `${Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}%`;
@@ -1122,56 +1372,74 @@ function tEscape(v){
   return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
 }
 function deliveryKey(){
-  const st = window.__CLENA_DELIVERY_STATE__ || {};
-  const id = st.delivery?.id || st.user?.id || 'default';
-  return `clena_delivery_technical_sheets_${id}`;
+  const st=window.__CLENA_DELIVERY_STATE__||{};
+  return `clena_delivery_technical_sheets_${st.delivery?.id||st.user?.id||'default'}`;
 }
 function goalKey(){
-  const st = window.__CLENA_DELIVERY_STATE__ || {};
-  const id = st.delivery?.id || st.user?.id || 'default';
-  return `clena_delivery_technical_goal_${id}`;
+  const st=window.__CLENA_DELIVERY_STATE__||{};
+  return `clena_delivery_technical_goal_${st.delivery?.id||st.user?.id||'default'}`;
 }
 function persistTechnical(){
-  localStorage.setItem(deliveryKey(), JSON.stringify(technicalState.sheets));
-  localStorage.setItem(goalKey(), String(technicalState.goal));
+  localStorage.setItem(deliveryKey(),JSON.stringify(technicalState.sheets));
+  localStorage.setItem(goalKey(),String(technicalState.goal));
+}
+function normalizeIngredient(row={}){
+  const purchaseUnit=['kg','g','l','ml','un'].includes(row.purchaseUnit)?row.purchaseUnit:'kg';
+  const allowed=allowedUseUnits(purchaseUnit);
+  const usedUnit=allowed.includes(row.usedUnit)?row.usedUnit:allowed[allowed.length-1];
+  return {
+    name:String(row.name||''),
+    purchaseQty:Number(row.purchaseQty||0),
+    purchaseUnit,
+    purchaseCost:Number(row.purchaseCost||0),
+    usedQty:Number(row.usedQty||0),
+    usedUnit,
+    lossRate:Number(row.lossRate||0)
+  };
 }
 function loadTechnical(){
   try{
-    technicalState.sheets = JSON.parse(localStorage.getItem(deliveryKey()) || '[]');
+    technicalState.sheets=JSON.parse(localStorage.getItem(deliveryKey())||'[]');
     if(!Array.isArray(technicalState.sheets)) technicalState.sheets=[];
-  }catch{ technicalState.sheets=[]; }
-  technicalState.goal = Number(localStorage.getItem(goalKey()) || 35);
-  if($t('technicalCmvGoal')) $t('technicalCmvGoal').value=technicalState.goal;
+    technicalState.sheets=technicalState.sheets.map(sheet=>({
+      ...sheet,
+      ingredients:(sheet.ingredients||[]).map(normalizeIngredient)
+    }));
+  }catch{technicalState.sheets=[]}
+  technicalState.goal=Number(localStorage.getItem(goalKey())||35);
+  if($t('technicalCmvGoal'))$t('technicalCmvGoal').value=technicalState.goal;
 }
 function itemOptions(){
   const st=window.__CLENA_DELIVERY_STATE__||{};
-  return (st.items||[]).map(item=>`<option value="${tEscape(item.id)}">${tEscape(item.name)}</option>`).join('');
+  return(st.items||[]).map(item=>`<option value="${tEscape(item.id)}">${tEscape(item.name)}</option>`).join('');
 }
 function syncTechnicalItemOptions(){
-  const select=$t('technicalItemId');
-  if(!select) return;
+  const select=$t('technicalItemId');if(!select)return;
   const current=select.value;
   select.innerHTML='<option value="">Ficha independente</option>'+itemOptions();
-  if([...select.options].some(x=>x.value===current)) select.value=current;
-}
-function technicalStatus(calc){
-  if(calc.salePrice<=0 || calc.netProfit<0 || calc.totalCost>calc.salePrice) return 'critical';
-  if(calc.cmv>technicalState.goal || calc.netMargin<10) return 'attention';
-  return 'healthy';
-}
-function technicalStatusLabel(status){
-  return status==='healthy'?'Rentável':status==='attention'?'Atenção':'Crítica';
+  if([...select.options].some(x=>x.value===current))select.value=current;
 }
 function calculateIngredient(row){
-  const purchaseQty=Math.max(0.000001,Number(row.purchaseQty||0));
-  const purchaseCost=Math.max(0,Number(row.purchaseCost||0));
-  const usedQty=Math.max(0,Number(row.usedQty||0));
-  const lossRate=Math.max(0,Number(row.lossRate||0))/100;
-  const unitCost=purchaseCost/purchaseQty;
-  return unitCost*usedQty*(1+lossRate);
+  const r=normalizeIngredient(row);
+  const purchaseBase=convertToBase(r.purchaseQty,r.purchaseUnit);
+  const usedBase=convertToBase(r.usedQty,r.usedUnit);
+  if(purchaseBase<=0||usedBase<0||r.purchaseCost<0)return 0;
+  const costPerBase=r.purchaseCost/purchaseBase;
+  const lossMultiplier=1+(Math.max(0,r.lossRate)/100);
+  return costPerBase*usedBase*lossMultiplier;
+}
+function ingredientConversionText(row){
+  const r=normalizeIngredient(row);
+  const purchaseBase=convertToBase(r.purchaseQty,r.purchaseUnit);
+  const usedBase=convertToBase(r.usedQty,r.usedUnit);
+  const group=UNIT_GROUPS[unitGroup(r.purchaseUnit)];
+  if(!r.purchaseQty||!r.purchaseCost)return 'Informe quantidade e custo da compra.';
+  const costBase=r.purchaseCost/Math.max(purchaseBase,.000001);
+  const baseLabel=group.base;
+  return `${r.purchaseQty} ${unitLabel(r.purchaseUnit)} por ${tMoney(r.purchaseCost)} = ${tMoney(costBase)} por ${baseLabel}; uso convertido: ${usedBase.toLocaleString('pt-BR')} ${baseLabel}.`;
 }
 function calculateSheetFromValues(data){
-  const yieldQty=Math.max(0.000001,Number(data.yield||1));
+  const yieldQty=Math.max(.000001,Number(data.yield||1));
   const recipeIngredients=(data.ingredients||[]).reduce((s,row)=>s+calculateIngredient(row),0);
   const ingredientsUnit=recipeIngredients/yieldQty;
   const packaging=Number(data.packagingCost||0);
@@ -1184,21 +1452,46 @@ function calculateSheetFromValues(data){
   const operational=operationalBase*(1+opLossRate);
   const totalCost=ingredientsUnit+operational;
   const salePrice=Number(data.salePrice||0);
-  const feesRate=(Number(data.taxRate||0)+Number(data.cardRate||0)+Number(data.platformRate||0)+Number(data.commissionRate||0))/100;
-  const fees=salePrice*feesRate;
+  const taxRate=Number(data.taxRate||0)/100;
+  const cardRate=Number(data.cardRate||0)/100;
+  const platformRate=Number(data.platformRate||0)/100;
+  const commissionRate=Number(data.commissionRate||0)/100;
+  const feesRate=taxRate+cardRate+platformRate+commissionRate;
+  const taxes=salePrice*taxRate;
+  const cardFee=salePrice*cardRate;
+  const platformFee=salePrice*platformRate;
+  const commission=salePrice*commissionRate;
+  const fees=taxes+cardFee+platformFee+commission;
   const netProfit=salePrice-totalCost-fees;
   const cmv=salePrice>0?(ingredientsUnit/salePrice)*100:0;
-  const contribution=salePrice>0?((salePrice-ingredientsUnit-fees)/salePrice)*100:0;
+  const totalCostPercent=salePrice>0?(totalCost/salePrice)*100:0;
+  const contributionValue=salePrice-ingredientsUnit-fees-packaging;
+  const contribution=salePrice>0?(contributionValue/salePrice)*100:0;
   const netMargin=salePrice>0?(netProfit/salePrice)*100:0;
+  const markup=totalCost>0?salePrice/totalCost:0;
   const desired=Number(data.desiredMargin||0)/100;
   const denominator=1-feesRate-desired;
   const suggestedPrice=denominator>0?totalCost/denominator:0;
-  const contributionUnit=salePrice-ingredientsUnit-fees-packaging-labor-energy-other;
+  const variableCost=ingredientsUnit+packaging+fees;
+  const contributionUnit=salePrice-variableCost;
   const breakEven=fixed>0&&contributionUnit>0?Math.ceil(fixed/contributionUnit):0;
-  return {recipeIngredients,ingredientsUnit,operational,totalCost,salePrice,fees,netProfit,cmv,contribution,netMargin,suggestedPrice,breakEven};
+  return{
+    recipeIngredients,ingredientsUnit,packaging,labor,energy,other,fixed,
+    operational,totalCost,salePrice,taxes,cardFee,platformFee,commission,
+    fees,netProfit,cmv,totalCostPercent,contributionValue,contribution,
+    netMargin,markup,suggestedPrice,breakEven
+  };
+}
+function technicalStatus(calc){
+  if(calc.salePrice<=0||calc.netProfit<0||calc.totalCost>=calc.salePrice)return'critical';
+  if(calc.cmv>technicalState.goal||calc.netMargin<10)return'attention';
+  return'healthy';
+}
+function technicalStatusLabel(status){
+  return status==='healthy'?'Rentável':status==='attention'?'Atenção':'Crítica';
 }
 function currentTechnicalData(){
-  return {
+  return{
     id:$t('technicalSheetId')?.value||crypto.randomUUID(),
     itemId:$t('technicalItemId')?.value||'',
     name:$t('technicalName')?.value.trim()||'',
@@ -1218,39 +1511,65 @@ function currentTechnicalData(){
     commissionRate:tNumber($t('technicalCommissionRate')?.value),
     desiredMargin:tNumber($t('technicalDesiredMargin')?.value),
     note:$t('technicalNote')?.value.trim()||'',
-    ingredients:technicalState.ingredients.map(x=>({...x})),
+    ingredients:technicalState.ingredients.map(normalizeIngredient),
     updatedAt:new Date().toISOString()
   };
 }
+function unitOptions(units,selected){
+  return units.map(unit=>`<option value="${unit}" ${unit===selected?'selected':''}>${unitLabel(unit)}</option>`).join('');
+}
 function renderIngredientRows(){
-  const host=$t('technicalIngredientList');
-  if(!host) return;
+  const host=$t('technicalIngredientList');if(!host)return;
   if(!technicalState.ingredients.length){
-    host.innerHTML='<div class="technical-empty-row">Nenhum insumo adicionado.</div>';
+    host.innerHTML='<div class="technical-empty-row"><i class="ri-add-circle-line"></i> Nenhum insumo adicionado. Clique em “Adicionar”.</div>';
   }else{
-    host.innerHTML=technicalState.ingredients.map((row,index)=>{
-      const cost=calculateIngredient(row);
-      return `<div class="technical-ingredient-row" data-ingredient-index="${index}">
-        <input data-field="name" value="${tEscape(row.name||'')}" placeholder="Nome do insumo">
-        <div class="ingredient-pair"><input data-field="purchaseQty" inputmode="decimal" value="${row.purchaseQty||''}" placeholder="Qtd"><select data-field="purchaseUnit"><option value="kg" ${row.purchaseUnit==='kg'?'selected':''}>kg</option><option value="g" ${row.purchaseUnit==='g'?'selected':''}>g</option><option value="l" ${row.purchaseUnit==='l'?'selected':''}>L</option><option value="ml" ${row.purchaseUnit==='ml'?'selected':''}>ml</option><option value="un" ${row.purchaseUnit==='un'?'selected':''}>un</option></select><input data-field="purchaseCost" inputmode="decimal" value="${row.purchaseCost||''}" placeholder="R$"></div>
-        <div class="ingredient-pair"><input data-field="usedQty" inputmode="decimal" value="${row.usedQty||''}" placeholder="Qtd"><select data-field="usedUnit"><option value="kg" ${row.usedUnit==='kg'?'selected':''}>kg</option><option value="g" ${row.usedUnit==='g'?'selected':''}>g</option><option value="l" ${row.usedUnit==='l'?'selected':''}>L</option><option value="ml" ${row.usedUnit==='ml'?'selected':''}>ml</option><option value="un" ${row.usedUnit==='un'?'selected':''}>un</option></select></div>
+    host.innerHTML=technicalState.ingredients.map((raw,index)=>{
+      const row=normalizeIngredient(raw);
+      technicalState.ingredients[index]=row;
+      const allowed=allowedUseUnits(row.purchaseUnit);
+      return`<div class="technical-ingredient-row" data-ingredient-index="${index}">
+        <input data-field="name" value="${tEscape(row.name)}" placeholder="Ex.: Arroz, picanha, molho">
+        <div class="ingredient-pair purchase">
+          <input data-field="purchaseQty" inputmode="decimal" value="${row.purchaseQty||''}" placeholder="Qtd">
+          <select data-field="purchaseUnit">${unitOptions(['kg','g','l','ml','un'],row.purchaseUnit)}</select>
+          <input data-field="purchaseCost" inputmode="decimal" value="${row.purchaseCost||''}" placeholder="R$">
+        </div>
+        <div class="ingredient-pair">
+          <input data-field="usedQty" inputmode="decimal" value="${row.usedQty||''}" placeholder="Qtd">
+          <select data-field="usedUnit">${unitOptions(allowed,row.usedUnit)}</select>
+        </div>
         <input data-field="lossRate" inputmode="decimal" value="${row.lossRate||''}" placeholder="%">
-        <strong class="ingredient-money">${tMoney(cost)}</strong>
-        <button type="button" data-remove-ingredient="${index}"><i class="ri-delete-bin-line"></i></button>
+        <strong class="ingredient-money">${tMoney(calculateIngredient(row))}</strong>
+        <button type="button" data-remove-ingredient="${index}" title="Remover insumo"><i class="ri-delete-bin-line"></i></button>
+        <small class="ingredient-conversion-hint">${tEscape(ingredientConversionText(row))}</small>
       </div>`;
     }).join('');
   }
-  $t('technicalIngredientsTotal').textContent=tMoney(technicalState.ingredients.reduce((s,row)=>s+calculateIngredient(row),0));
+  updateIngredientTotals();
   $$t('[data-ingredient-index]',host).forEach(rowEl=>{
     const index=Number(rowEl.dataset.ingredientIndex);
     $$t('input,select',rowEl).forEach(input=>{
       input.addEventListener('input',()=>{
         const key=input.dataset.field;
-        technicalState.ingredients[index][key]=['name','purchaseUnit','usedUnit'].includes(key)?input.value:tNumber(input.value);
-        renderTechnicalCalculation();
+        const row=technicalState.ingredients[index];
+        row[key]=['name','purchaseUnit','usedUnit'].includes(key)?input.value:tNumber(input.value);
+        if(key==='purchaseUnit'){
+          const allowed=allowedUseUnits(row.purchaseUnit);
+          if(!allowed.includes(row.usedUnit))row.usedUnit=allowed[allowed.length-1];
+          renderIngredientRows();
+          renderTechnicalCalculation();
+          return;
+        }
         const money=rowEl.querySelector('.ingredient-money');
-        if(money) money.textContent=tMoney(calculateIngredient(technicalState.ingredients[index]));
-        $t('technicalIngredientsTotal').textContent=tMoney(technicalState.ingredients.reduce((s,row)=>s+calculateIngredient(row),0));
+        const hint=rowEl.querySelector('.ingredient-conversion-hint');
+        if(money)money.textContent=tMoney(calculateIngredient(row));
+        if(hint)hint.textContent=ingredientConversionText(row);
+        updateIngredientTotals();
+        renderTechnicalCalculation();
+      });
+      input.addEventListener('change',()=>{
+        if(input.dataset.field==='purchaseUnit')return;
+        renderTechnicalCalculation();
       });
     });
   });
@@ -1259,54 +1578,55 @@ function renderIngredientRows(){
     renderIngredientRows();renderTechnicalCalculation();
   }));
 }
+function updateIngredientTotals(){
+  const total=technicalState.ingredients.reduce((s,row)=>s+calculateIngredient(row),0);
+  if($t('technicalIngredientsTotal'))$t('technicalIngredientsTotal').textContent=tMoney(total);
+}
 function renderTechnicalCalculation(){
-  if(!$t('technicalSheetModal')) return;
-  const data=currentTechnicalData();
-  const calc=calculateSheetFromValues(data);
+  if(!$t('technicalSheetModal'))return;
+  const calc=calculateSheetFromValues(currentTechnicalData());
   const status=technicalStatus(calc);
-  $t('technicalResultSalePrice').textContent=tMoney(calc.salePrice);
-  $t('technicalResultIngredients').textContent=tMoney(calc.ingredientsUnit);
-  $t('technicalResultOperational').textContent=tMoney(calc.operational);
-  $t('technicalResultTotalCost').textContent=tMoney(calc.totalCost);
-  $t('technicalResultFees').textContent=tMoney(calc.fees);
-  $t('technicalResultCmv').textContent=tPercent(calc.cmv);
-  $t('technicalResultContributionMargin').textContent=tPercent(calc.contribution);
-  $t('technicalResultNetMargin').textContent=tPercent(calc.netMargin);
-  $t('technicalResultProfit').textContent=tMoney(calc.netProfit);
-  $t('technicalSuggestedPrice').textContent=tMoney(calc.suggestedPrice);
-  $t('technicalBreakEvenUnits').textContent=calc.breakEven?`${calc.breakEven} un.`:'0 un.';
-  $t('technicalCmvBar').style.width=`${Math.min(100,Math.max(0,calc.cmv))}%`;
-  $t('technicalContributionBar').style.width=`${Math.min(100,Math.max(0,calc.contribution))}%`;
-  $t('technicalNetBar').style.width=`${Math.min(100,Math.max(0,calc.netMargin))}%`;
+  const set=(id,val)=>{if($t(id))$t(id).textContent=val};
+  set('technicalResultSalePrice',tMoney(calc.salePrice));
+  set('technicalResultIngredients',tMoney(calc.ingredientsUnit));
+  set('technicalResultOperational',tMoney(calc.operational));
+  set('technicalResultTotalCost',tMoney(calc.totalCost));
+  set('technicalResultFees',tMoney(calc.fees));
+  set('technicalResultCmv',tPercent(calc.cmv));
+  set('technicalResultContributionMargin',tPercent(calc.contribution));
+  set('technicalResultNetMargin',tPercent(calc.netMargin));
+  set('technicalResultProfit',tMoney(calc.netProfit));
+  set('technicalSuggestedPrice',tMoney(calc.suggestedPrice));
+  set('technicalBreakEvenUnits',calc.breakEven?`${calc.breakEven} un.`:'0 un.');
+  if($t('technicalCmvBar'))$t('technicalCmvBar').style.width=`${Math.min(100,Math.max(0,calc.cmv))}%`;
+  if($t('technicalContributionBar'))$t('technicalContributionBar').style.width=`${Math.min(100,Math.max(0,calc.contribution))}%`;
+  if($t('technicalNetBar'))$t('technicalNetBar').style.width=`${Math.min(100,Math.max(0,calc.netMargin))}%`;
   const badge=$t('technicalResultBadge');
-  badge.className=`technical-result-badge ${status}`;
-  badge.textContent=technicalStatusLabel(status);
-  $t('technicalResultProfitHint').textContent=calc.netProfit<0?'O produto está gerando prejuízo.':'Após custos, impostos e taxas';
-  $t('technicalBreakEvenHint').textContent=calc.breakEven?'Quantidade estimada para cobrir o rateio fixo.':'Informe o rateio fixo para calcular.';
+  if(badge){badge.className=`technical-result-badge ${status}`;badge.textContent=technicalStatusLabel(status)}
+  set('technicalResultProfitHint',calc.netProfit<0?'O produto está gerando prejuízo.':'Após custos, impostos e taxas');
+  set('technicalBreakEvenHint',calc.breakEven?'Quantidade estimada para cobrir o rateio fixo.':'Informe o rateio fixo para calcular.');
 }
 function resetTechnicalForm(){
-  technicalState.editingId=null;
-  technicalState.ingredients=[];
+  technicalState.editingId=null;technicalState.ingredients=[];
   const ids=['technicalSheetId','technicalName','technicalCategory','technicalSalePrice','technicalPackagingCost','technicalLaborCost','technicalEnergyCost','technicalOtherCost','technicalOperationalLoss','technicalFixedAllocation','technicalTaxRate','technicalCardRate','technicalPlatformRate','technicalCommissionRate','technicalNote'];
   ids.forEach(id=>{if($t(id))$t(id).value=''});
   if($t('technicalItemId'))$t('technicalItemId').value='';
   if($t('technicalSaleUnit'))$t('technicalSaleUnit').value='un';
   if($t('technicalYield'))$t('technicalYield').value='1';
   if($t('technicalDesiredMargin'))$t('technicalDesiredMargin').value='20,00';
-  $t('technicalModalTitle').textContent='Nova ficha técnica';
-  $t('duplicateTechnicalSheetBtn').classList.add('is-hidden');
+  if($t('technicalModalTitle'))$t('technicalModalTitle').textContent='Nova ficha técnica';
+  $t('duplicateTechnicalSheetBtn')?.classList.add('is-hidden');
   renderIngredientRows();renderTechnicalCalculation();
 }
 function openTechnicalModal(sheet=null){
-  syncTechnicalItemOptions();
-  resetTechnicalForm();
+  syncTechnicalItemOptions();resetTechnicalForm();
   if(sheet){
     technicalState.editingId=sheet.id;
-    technicalState.ingredients=(sheet.ingredients||[]).map(x=>({...x}));
+    technicalState.ingredients=(sheet.ingredients||[]).map(normalizeIngredient);
     const map={technicalSheetId:'id',technicalItemId:'itemId',technicalName:'name',technicalCategory:'category',technicalSaleUnit:'saleUnit',technicalYield:'yield',technicalSalePrice:'salePrice',technicalPackagingCost:'packagingCost',technicalLaborCost:'laborCost',technicalEnergyCost:'energyCost',technicalOtherCost:'otherCost',technicalOperationalLoss:'operationalLoss',technicalFixedAllocation:'fixedAllocation',technicalTaxRate:'taxRate',technicalCardRate:'cardRate',technicalPlatformRate:'platformRate',technicalCommissionRate:'commissionRate',technicalDesiredMargin:'desiredMargin',technicalNote:'note'};
     Object.entries(map).forEach(([id,key])=>{if($t(id))$t(id).value=sheet[key]??''});
     $t('technicalModalTitle').textContent=`Editar ficha • ${sheet.name}`;
-    $t('duplicateTechnicalSheetBtn').classList.remove('is-hidden');
+    $t('duplicateTechnicalSheetBtn')?.classList.remove('is-hidden');
     renderIngredientRows();renderTechnicalCalculation();
   }
   const modal=$t('technicalSheetModal');
@@ -1319,28 +1639,36 @@ function saveTechnicalSheet(){
   const data=currentTechnicalData();
   if(!data.name){alert('Informe o nome da ficha técnica.');return}
   if(data.salePrice<=0){alert('Informe o preço de venda.');return}
+  const invalid=data.ingredients.find(row=>{
+    const r=normalizeIngredient(row);
+    return r.purchaseQty<=0||r.purchaseCost<0||r.usedQty<0||!allowedUseUnits(r.purchaseUnit).includes(r.usedUnit);
+  });
+  if(invalid){alert('Revise as quantidades e unidades dos ingredientes.');return}
   const index=technicalState.sheets.findIndex(x=>x.id===data.id);
-  if(index>=0) technicalState.sheets[index]=data; else technicalState.sheets.unshift(data);
+  if(index>=0)technicalState.sheets[index]=data;else technicalState.sheets.unshift(data);
   persistTechnical();renderTechnicalDashboard();closeTechnicalModal();
 }
 function duplicateTechnical(){
-  const data=currentTechnicalData();
-  data.id=crypto.randomUUID();data.name=`${data.name} — Cópia`;data.updatedAt=new Date().toISOString();
+  const data=currentTechnicalData();data.id=crypto.randomUUID();data.name=`${data.name} — Cópia`;data.updatedAt=new Date().toISOString();
   technicalState.sheets.unshift(data);persistTechnical();renderTechnicalDashboard();closeTechnicalModal();
 }
-function renderTechnicalDashboard(){
+function filteredTechnicalRows(){
   const search=($t('technicalSearch')?.value||'').toLowerCase();
   const filter=$t('technicalStatusFilter')?.value||'';
-  const rows=technicalState.sheets.map(sheet=>({sheet,calc:calculateSheetFromValues(sheet)}));
-  const visible=rows.filter(({sheet,calc})=>{
+  return technicalState.sheets.map(sheet=>({sheet,calc:calculateSheetFromValues(sheet)})).filter(({sheet,calc})=>{
     const status=technicalStatus(calc);
     const hit=!search||`${sheet.name} ${sheet.category} ${sheet.note}`.toLowerCase().includes(search);
     return hit&&(!filter||filter===status);
   });
+}
+function renderTechnicalDashboard(){
+  const allRows=technicalState.sheets.map(sheet=>({sheet,calc:calculateSheetFromValues(sheet)}));
+  const visible=filteredTechnicalRows();
+  technicalState.filteredRows=visible;
   const host=$t('technicalSheetList');
-  if(host) host.innerHTML=visible.map(({sheet,calc})=>{
+  if(host)host.innerHTML=visible.map(({sheet,calc})=>{
     const status=technicalStatus(calc);
-    return `<article class="technical-sheet-card">
+    return`<article class="technical-sheet-card selected-by-filter">
       <div class="technical-sheet-main"><span class="technical-sheet-icon"><i class="ri-calculator-line"></i></span><div><b>${tEscape(sheet.name)}</b><small>${tEscape(sheet.category||'Sem categoria')} • ${tEscape(sheet.saleUnit||'un')} • Atualizada ${new Date(sheet.updatedAt||Date.now()).toLocaleDateString('pt-BR')}</small></div></div>
       <div class="technical-sheet-metric"><span>Venda</span><strong>${tMoney(calc.salePrice)}</strong></div>
       <div class="technical-sheet-metric"><span>Custo total</span><strong>${tMoney(calc.totalCost)}</strong></div>
@@ -1350,40 +1678,131 @@ function renderTechnicalDashboard(){
       <div class="technical-sheet-actions"><button type="button" data-edit-technical="${sheet.id}" title="Editar"><i class="ri-pencil-line"></i></button><button type="button" data-delete-technical="${sheet.id}" title="Excluir"><i class="ri-delete-bin-line"></i></button></div>
     </article>`;
   }).join('');
-  $t('technicalEmpty')?.classList.toggle('is-hidden',technicalState.sheets.length>0);
-  host?.classList.toggle('is-hidden',technicalState.sheets.length===0);
+  const noAny=technicalState.sheets.length===0;
+  const noFiltered=!noAny&&visible.length===0;
+  $t('technicalEmpty')?.classList.toggle('is-hidden',!noAny);
+  host?.classList.toggle('is-hidden',noAny);
+  if(noFiltered&&host)host.innerHTML='<div class="technical-empty"><span><i class="ri-filter-off-line"></i></span><h3>Nenhuma ficha encontrada</h3><p>Não existem fichas correspondentes à pesquisa e ao filtro atual.</p></div>';
   $$t('[data-edit-technical]',host).forEach(btn=>btn.addEventListener('click',()=>openTechnicalModal(technicalState.sheets.find(x=>x.id===btn.dataset.editTechnical))));
   $$t('[data-delete-technical]',host).forEach(btn=>btn.addEventListener('click',()=>{if(confirm('Excluir esta ficha técnica?')){technicalState.sheets=technicalState.sheets.filter(x=>x.id!==btn.dataset.deleteTechnical);persistTechnical();renderTechnicalDashboard()}}));
-  const count=rows.length;
-  const avg=key=>count?rows.reduce((s,x)=>s+x.calc[key],0)/count:0;
+  const count=visible.length;
+  const avg=key=>count?visible.reduce((s,x)=>s+x.calc[key],0)/count:0;
   $t('technicalAverageCost').textContent=tMoney(avg('totalCost'));
-  $t('technicalAverageCostHint').textContent=`${count} ficha${count===1?'':'s'} calculada${count===1?'':'s'}`;
+  $t('technicalAverageCostHint').textContent=`${count} ficha${count===1?'':'s'} no filtro`;
   $t('technicalAverageCmv').textContent=tPercent(avg('cmv'));
   $t('technicalAverageMargin').textContent=tPercent(avg('netMargin'));
   $t('technicalAverageProfit').textContent=tMoney(avg('netProfit'));
-  const counts={healthy:0,attention:0,critical:0};rows.forEach(x=>counts[technicalStatus(x.calc)]++);
+  const counts={healthy:0,attention:0,critical:0};allRows.forEach(x=>counts[technicalStatus(x.calc)]++);
   $t('technicalHealthyCount').textContent=`${counts.healthy} ${counts.healthy===1?'item saudável':'itens saudáveis'}`;
   $t('technicalAttentionCount').textContent=`${counts.attention} ${counts.attention===1?'item em atenção':'itens em atenção'}`;
   $t('technicalCriticalCount').textContent=`${counts.critical} ${counts.critical===1?'item crítico':'itens críticos'}`;
-  $t('navTechnicalCount').textContent=count;
+  $t('navTechnicalCount').textContent=allRows.length;
   $t('technicalCmvGoalLabel').textContent=`${technicalState.goal}%`;
-  const health=$t('technicalHealthBadge');
-  let status='neutral',label='Sem dados';
-  if(count){status=counts.critical?'critical':counts.attention?'attention':'healthy';label=status==='healthy'?'Saudável':status==='attention'?'Atenção':'Crítico'}
+  const health=$t('technicalHealthBadge');let status='neutral',label='Sem dados';
+  if(allRows.length){status=counts.critical?'critical':counts.attention?'attention':'healthy';label=status==='healthy'?'Saudável':status==='attention'?'Atenção':'Crítico'}
   health.className=`technical-health-badge ${status}`;health.textContent=label;
+  renderAllCharts(visible);
+}
+function canvasSetup(canvas){
+  const rect=canvas.getBoundingClientRect();
+  const ratio=Math.max(1,window.devicePixelRatio||1);
+  canvas.width=Math.max(1,Math.round(rect.width*ratio));
+  canvas.height=Math.max(1,Math.round(rect.height*ratio));
+  const ctx=canvas.getContext('2d');
+  ctx.setTransform(ratio,0,0,ratio,0,0);
+  return{ctx,width:rect.width,height:rect.height};
+}
+function roundRect(ctx,x,y,w,h,r){
+  const radius=Math.min(r,w/2,h/2);ctx.beginPath();ctx.roundRect(x,y,w,h,r);
+}
+function drawPerformanceChart(rows){
+  const canvas=$t('technicalPerformanceChart'),empty=$t('technicalPerformanceChartEmpty');
+  if(!canvas)return;
+  empty?.classList.toggle('is-hidden',rows.length>0);
+  canvas.classList.toggle('is-hidden',rows.length===0);
+  if(!rows.length)return;
+  const {ctx,width,height}=canvasSetup(canvas);
+  ctx.clearRect(0,0,width,height);
+  const data=rows.slice(0,12);
+  const pad={l:42,r:16,t:18,b:68};
+  const chartW=width-pad.l-pad.r,chartH=height-pad.t-pad.b;
+  ctx.font='9px Manrope, sans-serif';ctx.textAlign='right';ctx.textBaseline='middle';
+  for(let v=0;v<=100;v+=20){
+    const y=pad.t+chartH-(v/100)*chartH;
+    ctx.strokeStyle='#e8edf3';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(width-pad.r,y);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.fillText(`${v}%`,pad.l-7,y);
+  }
+  const goalY=pad.t+chartH-(Math.min(100,technicalState.goal)/100)*chartH;
+  ctx.strokeStyle='#0f172a';ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(pad.l,goalY);ctx.lineTo(width-pad.r,goalY);ctx.stroke();ctx.setLineDash([]);
+  const groupW=chartW/data.length,barW=Math.min(18,groupW*.24);
+  data.forEach((row,i)=>{
+    const x=pad.l+i*groupW+groupW/2;
+    const cmv=Math.max(0,Math.min(100,row.calc.cmv));
+    const margin=Math.max(0,Math.min(100,row.calc.netMargin));
+    const cmvH=cmv/100*chartH,marginH=margin/100*chartH;
+    ctx.fillStyle='#f97316';roundRect(ctx,x-barW-2,pad.t+chartH-cmvH,barW,cmvH,4);ctx.fill();
+    ctx.fillStyle='#7c3aed';roundRect(ctx,x+2,pad.t+chartH-marginH,barW,marginH,4);ctx.fill();
+    ctx.save();ctx.translate(x,height-pad.b+10);ctx.rotate(-.55);ctx.textAlign='right';ctx.fillStyle='#64748b';ctx.font='8px Manrope, sans-serif';ctx.fillText(String(row.sheet.name).slice(0,18),0,0);ctx.restore();
+  });
+}
+function drawProfitChart(rows){
+  const canvas=$t('technicalProfitChart'),empty=$t('technicalProfitChartEmpty');
+  if(!canvas)return;
+  empty?.classList.toggle('is-hidden',rows.length>0);
+  canvas.classList.toggle('is-hidden',rows.length===0);
+  if(!rows.length)return;
+  const {ctx,width,height}=canvasSetup(canvas);ctx.clearRect(0,0,width,height);
+  const data=rows.slice(0,8),pad={l:100,r:35,t:12,b:15};
+  const max=Math.max(...data.map(x=>Math.abs(x.calc.netProfit)),1);
+  const rowH=(height-pad.t-pad.b)/data.length;
+  data.forEach((row,i)=>{
+    const y=pad.t+i*rowH+rowH*.18,h=rowH*.55;
+    const val=row.calc.netProfit;
+    const w=(Math.abs(val)/max)*(width-pad.l-pad.r);
+    ctx.fillStyle=val>=0?'#10b981':'#ef4444';roundRect(ctx,pad.l,y,w,h,5);ctx.fill();
+    ctx.fillStyle='#475569';ctx.font='9px Manrope, sans-serif';ctx.textAlign='right';ctx.textBaseline='middle';ctx.fillText(String(row.sheet.name).slice(0,18),pad.l-8,y+h/2);
+    ctx.textAlign='left';ctx.fillStyle=val>=0?'#047857':'#b91c1c';ctx.font='bold 9px Manrope, sans-serif';ctx.fillText(tMoney(val),pad.l+w+6,y+h/2);
+  });
+}
+function drawCostChart(rows){
+  const canvas=$t('technicalCostChart'),legend=$t('technicalCostLegend');if(!canvas||!legend)return;
+  const sums={Ingredientes:0,Embalagem:0,'Mão de obra':0,'Energia':0,'Outros/Rateio':0,'Impostos/Taxas':0};
+  rows.forEach(({calc})=>{
+    sums.Ingredientes+=calc.ingredientsUnit;sums.Embalagem+=calc.packaging;sums['Mão de obra']+=calc.labor;sums.Energia+=calc.energy;sums['Outros/Rateio']+=calc.other+calc.fixed;sums['Impostos/Taxas']+=calc.fees;
+  });
+  const count=Math.max(rows.length,1);Object.keys(sums).forEach(k=>sums[k]/=count);
+  const colors=['#f97316','#0284c7','#7c3aed','#eab308','#64748b','#ef4444'];
+  const total=Object.values(sums).reduce((a,b)=>a+b,0);
+  const {ctx,width,height}=canvasSetup(canvas);ctx.clearRect(0,0,width,height);
+  const cx=width/2,cy=height/2,r=Math.min(width,height)*.39,inner=r*.60;
+  let angle=-Math.PI/2;
+  Object.values(sums).forEach((v,i)=>{
+    const part=total>0?v/total:1/Object.keys(sums).length;
+    ctx.beginPath();ctx.arc(cx,cy,r,angle,angle+part*Math.PI*2);ctx.arc(cx,cy,inner,angle+part*Math.PI*2,angle,true);ctx.closePath();ctx.fillStyle=colors[i];ctx.fill();angle+=part*Math.PI*2;
+  });
+  ctx.fillStyle='#0f172a';ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='bold 15px Manrope, sans-serif';ctx.fillText(tMoney(total),cx,cy-4);
+  ctx.fillStyle='#94a3b8';ctx.font='8px Manrope, sans-serif';ctx.fillText('custo médio',cx,cy+13);
+  legend.innerHTML=Object.entries(sums).map(([name,val],i)=>`<div class="cost-legend-row"><i style="--legend-color:${colors[i]}"></i><span>${name}</span><strong>${tMoney(val)}</strong></div>`).join('')+`<div class="cost-legend-total"><span>Total médio</span><strong>${tMoney(total)}</strong></div>`;
+}
+function renderAllCharts(rows){
+  requestAnimationFrame(()=>{drawPerformanceChart(rows);drawCostChart(rows);drawProfitChart(rows)});
 }
 function exportTechnical(){
-  const rows=technicalState.sheets.map(sheet=>{const c=calculateSheetFromValues(sheet);return {Produto:sheet.name,Categoria:sheet.category,Preco_Venda:c.salePrice,Custo_Insumos:c.ingredientsUnit,Custo_Total:c.totalCost,Impostos_Taxas:c.fees,CMV_Percentual:c.cmv,Lucro_Unitario:c.netProfit,Margem_Liquida_Percentual:c.netMargin,Preco_Sugerido:c.suggestedPrice}});
-  if(!rows.length){alert('Não existem fichas para exportar.');return}
+  const rows=filteredTechnicalRows().map(({sheet,calc})=>({Produto:sheet.name,Categoria:sheet.category,Preco_Venda:calc.salePrice,Custo_Insumos:calc.ingredientsUnit,Custo_Operacional:calc.operational,Custo_Total:calc.totalCost,Impostos_Taxas:calc.fees,CMV_Percentual:calc.cmv,Lucro_Unitario:calc.netProfit,Margem_Liquida_Percentual:calc.netMargin,Markup:calc.markup,Preco_Sugerido:calc.suggestedPrice}));
+  if(!rows.length){alert('Não existem fichas no filtro atual para exportar.');return}
   const headers=Object.keys(rows[0]);const csv=[headers.join(';'),...rows.map(r=>headers.map(h=>String(r[h]).replace('.',',')).join(';'))].join('\n');
-  const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`fichas-tecnicas-${new Date().toISOString().slice(0,10)}.csv`;a.click();URL.revokeObjectURL(url);
+  const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download=`fichas-tecnicas-filtradas-${new Date().toISOString().slice(0,10)}.csv`;a.click();URL.revokeObjectURL(url);
 }
 function bindTechnical(){
   loadTechnical();renderTechnicalDashboard();syncTechnicalItemOptions();
   $t('newTechnicalSheetBtn')?.addEventListener('click',()=>openTechnicalModal());
   $$t('[data-new-technical]').forEach(x=>x.addEventListener('click',()=>openTechnicalModal()));
   $$t('[data-close-technical]').forEach(x=>x.addEventListener('click',closeTechnicalModal));
-  $t('addTechnicalIngredientBtn')?.addEventListener('click',()=>{technicalState.ingredients.push({name:'',purchaseQty:1,purchaseUnit:'kg',purchaseCost:0,usedQty:0,usedUnit:'kg',lossRate:0});renderIngredientRows();renderTechnicalCalculation()});
+  $t('addTechnicalIngredientBtn')?.addEventListener('click',()=>{
+    technicalState.ingredients.push(normalizeIngredient({purchaseQty:1,purchaseUnit:'kg',purchaseCost:0,usedQty:0,usedUnit:'g',lossRate:0}));
+    renderIngredientRows();renderTechnicalCalculation();
+  });
   $t('saveTechnicalSheetBtn')?.addEventListener('click',saveTechnicalSheet);
   $t('duplicateTechnicalSheetBtn')?.addEventListener('click',duplicateTechnical);
   $t('applyTechnicalSuggestedPriceBtn')?.addEventListener('click',()=>{const calc=calculateSheetFromValues(currentTechnicalData());$t('technicalSalePrice').value=calc.suggestedPrice.toFixed(2).replace('.',',');renderTechnicalCalculation()});
@@ -1391,16 +1810,21 @@ function bindTechnical(){
   $t('technicalStatusFilter')?.addEventListener('change',renderTechnicalDashboard);
   $t('technicalExportBtn')?.addEventListener('click',exportTechnical);
   $t('technicalCmvGoal')?.addEventListener('input',e=>{technicalState.goal=Number(e.target.value);persistTechnical();renderTechnicalDashboard();renderTechnicalCalculation()});
-  const calcIds=['technicalYield','technicalSalePrice','technicalPackagingCost','technicalLaborCost','technicalEnergyCost','technicalOtherCost','technicalOperationalLoss','technicalFixedAllocation','technicalTaxRate','technicalCardRate','technicalPlatformRate','technicalCommissionRate','technicalDesiredMargin'];
-  calcIds.forEach(id=>$t(id)?.addEventListener('input',renderTechnicalCalculation));
+  ['technicalYield','technicalSalePrice','technicalPackagingCost','technicalLaborCost','technicalEnergyCost','technicalOtherCost','technicalOperationalLoss','technicalFixedAllocation','technicalTaxRate','technicalCardRate','technicalPlatformRate','technicalCommissionRate','technicalDesiredMargin'].forEach(id=>$t(id)?.addEventListener('input',renderTechnicalCalculation));
   $t('technicalItemId')?.addEventListener('change',()=>{
-    const st=window.__CLENA_DELIVERY_STATE__||{};const item=(st.items||[]).find(x=>x.id===$t('technicalItemId').value);
-    if(item){if(!$t('technicalName').value)$t('technicalName').value=item.name||'';const price=item.sale_price??item.price??0;$t('technicalSalePrice').value=Number(price).toFixed(2).replace('.',',');const cat=(st.categories||[]).find(x=>x.id===item.category_id);if(cat)$t('technicalCategory').value=cat.name||'';renderTechnicalCalculation()}
+    const st=window.__CLENA_DELIVERY_STATE__||{},item=(st.items||[]).find(x=>x.id===$t('technicalItemId').value);
+    if(item){
+      if(!$t('technicalName').value)$t('technicalName').value=item.name||'';
+      const price=item.sale_price??item.price??0;$t('technicalSalePrice').value=Number(price).toFixed(2).replace('.',',');
+      const cat=(st.categories||[]).find(x=>x.id===item.category_id);if(cat)$t('technicalCategory').value=cat.name||'';
+      renderTechnicalCalculation();
+    }
   });
+  window.addEventListener('resize',()=>renderAllCharts(technicalState.filteredRows));
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$t('technicalSheetModal')?.classList.contains('open'))closeTechnicalModal()});
 }
 function waitTechnical(){
-  if($t('app')&&!$t('app').classList.contains('is-hidden')) bindTechnical(); else setTimeout(waitTechnical,200);
+  if($t('app')&&!$t('app').classList.contains('is-hidden'))bindTechnical();else setTimeout(waitTechnical,200);
 }
 waitTechnical();
 </script>
