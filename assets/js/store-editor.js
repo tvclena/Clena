@@ -59,10 +59,6 @@ function getPreviewObjectUrl(kind,file){
  state.previewUrls[kind]=URL.createObjectURL(file);
  return state.previewUrls[kind];
 }
-
-
-
-
 function updateLivePreview(){
  const primary=$('primaryColorText').value||'#2563eb',accent=$('accentColorText').value||'#0f172a';
  let coverPreviewUrl='';
@@ -84,12 +80,6 @@ function updateLivePreview(){
   products:state.products
  })
 }
-
-
-
-
-
-
 
 function navigate(section){
   state.currentSection=section;

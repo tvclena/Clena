@@ -1337,3 +1337,75 @@
 .clena-editor-v2 .alp-products article * {
   min-width: 0;
 }
+
+
+/* =========================================================
+   CORREÇÃO FINAL — 3 PRODUTOS POR LINHA NA PRÉVIA
+   ========================================================= */
+
+.clena-editor-v2 .store-live-preview.mobile .alp-products,
+.clena-editor-v2 .store-live-preview.desktop .alp-products,
+.clena-editor-v2 .alp-products,
+.clena-editor-v2 .alp-featured-products {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+/* Ajustes para caber 3 por linha sem deformar */
+.clena-editor-v2 .alp-products {
+  gap: 6px !important;
+  padding-inline: 8px !important;
+}
+
+.clena-editor-v2 .alp-products article {
+  padding: 5px !important;
+  min-width: 0 !important;
+}
+
+.clena-editor-v2 .alp-image {
+  height: 62px !important;
+}
+
+.clena-editor-v2 .store-live-preview[data-ratio="portrait"] .alp-image {
+  height: 78px !important;
+}
+
+.clena-editor-v2 .store-live-preview[data-ratio="landscape"] .alp-image {
+  height: 48px !important;
+}
+
+.clena-editor-v2 .alp-products h4 {
+  min-height: 18px !important;
+  max-height: 18px !important;
+  font-size: 7px !important;
+  line-height: 9px !important;
+}
+
+.clena-editor-v2 .alp-products p {
+  min-height: 14px !important;
+  max-height: 14px !important;
+  font-size: 5.5px !important;
+  line-height: 7px !important;
+}
+
+.clena-editor-v2 .alp-products strong {
+  font-size: 7px !important;
+}
+
+.clena-editor-v2 .alp-products button {
+  width: 20px !important;
+  height: 20px !important;
+  font-size: 10px !important;
+}
+
+.clena-editor-v2 .alp-featured-products article,
+.clena-editor-v2 .alp-products:not(.alp-featured-products) article {
+  min-height: 132px !important;
+}
+
+.clena-editor-v2 .store-live-preview[data-ratio="portrait"] .alp-products article {
+  min-height: 148px !important;
+}
+
+.clena-editor-v2 .store-live-preview[data-ratio="landscape"] .alp-products article {
+  min-height: 118px !important;
+}
