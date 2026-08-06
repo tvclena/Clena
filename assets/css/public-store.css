@@ -2272,3 +2272,11 @@ body[data-header-style="floating"] .header-cart {
   }
 }
 
+
+
+/* CLENA — REDES SOCIAIS SOMENTE ABAIXO DO BANNER */
+#headerInstagram,
+.site-header .header-actions a[href*="instagram"],
+.site-header .header-actions .social-links {
+  display: none !important;
+}

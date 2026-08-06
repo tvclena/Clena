@@ -575,6 +575,7 @@ function setLogo(element, url, shape) {
 }
 
 function renderStoreInformation() {
+  const headerInstagramElement = $('headerInstagram');
   const verified = store.is_verified === true;
   $('headerVerified')?.classList.toggle('is-hidden', !verified);
   $('heroVerified')?.classList.toggle('is-hidden', !verified);
