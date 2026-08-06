@@ -1,4 +1,5 @@
 
+
 <!-- CLENA: HTML COMPLETO COM CSS E JAVASCRIPT INCORPORADOS -->
 <!doctype html>
 <html lang="pt-BR">
@@ -416,6 +417,10 @@ body{background:linear-gradient(180deg,#f8fafc 0,#f1f5f9 100%);min-height:100vh}
 #fullDeliveryPreview[data-hero="split"] .fdp-hero-content{display:grid;grid-template-columns:120px 1fr auto}#fullDeliveryPreview[data-hero="minimal"] .fdp-hero{height:150px!important}#fullDeliveryPreview[data-hero="minimal"] .fdp-hero:after{opacity:.45}#fullDeliveryPreview[data-hero="poster"] .fdp-hero{clip-path:polygon(0 0,100% 0,100% 84%,62% 100%,0 90%)}#fullDeliveryPreview[data-hero="poster"] .fdp-title h1{text-transform:uppercase;max-width:720px}#fullDeliveryPreview[data-cards="bordered"] .fdp-card{box-shadow:none;border:2px solid color-mix(in srgb,var(--preview-primary) 25%,#ddd)}#fullDeliveryPreview[data-cards="flat"] .fdp-card{box-shadow:none;border:0}#fullDeliveryPreview[data-cards="poster"] .fdp-card{border-radius:4px;border:2px solid var(--preview-text);box-shadow:5px 5px 0 var(--preview-text)}#fullDeliveryPreview[data-motion="reveal"] .fdp-card{animation:vsReveal .55s both}#fullDeliveryPreview[data-motion="reveal"] .fdp-card:nth-child(2){animation-delay:.06s}#fullDeliveryPreview[data-motion="reveal"] .fdp-card:nth-child(3){animation-delay:.12s}#fullDeliveryPreview[data-motion="reveal"] .fdp-card:nth-child(4){animation-delay:.18s}#fullDeliveryPreview[data-motion="float"] .fdp-card:nth-child(odd){animation:vsFloat 4s ease-in-out infinite}#fullDeliveryPreview[data-motion="energetic"] .fdp-card:hover{transform:rotate(-1deg) scale(1.025)}#fullDeliveryPreview[data-motion="soft"] .fdp-card:hover{transform:translateY(-5px)}@keyframes vsReveal{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}@keyframes vsFloat{50%{transform:translateY(-7px)}}#fullDeliveryPreview[data-texture="grain"]:before,#fullDeliveryPreview[data-texture="grid"]:before,#fullDeliveryPreview[data-texture="dots"]:before,#fullDeliveryPreview[data-texture="waves"]:before{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.22}#fullDeliveryPreview{position:relative}#fullDeliveryPreview>*{position:relative;z-index:1}#fullDeliveryPreview[data-texture="grain"]:before{background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E")}#fullDeliveryPreview[data-texture="grid"]:before{background-image:linear-gradient(rgba(0,0,0,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.09) 1px,transparent 1px);background-size:36px 36px}#fullDeliveryPreview[data-texture="dots"]:before{background-image:radial-gradient(rgba(0,0,0,.18) 1px,transparent 1px);background-size:18px 18px}#fullDeliveryPreview[data-texture="waves"]:before{background:repeating-radial-gradient(ellipse at 0 0,transparent 0 26px,rgba(0,0,0,.08) 27px 28px)}
 @media(max-width:1100px){.clena-three-themes{grid-template-columns:1fr}.clena-three-themes .theme-preset{min-height:170px;display:grid;grid-template-columns:190px 1fr}.theme-visual{height:100%}.visual-control-grid{grid-template-columns:1fr 1fr}}@media(max-width:700px){.clena-three-themes .theme-preset{display:block}.theme-visual{height:110px}.visual-control-grid,.visual-range-grid,.visual-extra-switches{grid-template-columns:1fr}.visual-studio-head{display:grid}#fullDeliveryPreview[data-categories="rail"] .fdp-main{display:block}[data-store-theme] #fullDeliveryPreview .fdp-products{grid-template-columns:1fr!important}}
 </style>
+
+<style id="clenaThemeOnlyModeStyles">
+.theme-only-description{margin:-4px 0 18px;color:var(--muted);font-size:13px;line-height:1.55}.theme-only-grid{grid-template-columns:1fr!important}.theme-only-grid .theme-preset{min-height:126px;display:grid;grid-template-columns:170px 1fr;align-items:center;gap:16px}.theme-only-grid .theme-visual{height:100px;margin:0}.theme-only-grid .theme-copy b{font-size:16px}.theme-only-grid .theme-copy small{font-size:11px;margin-top:4px}.theme-only-grid .theme-copy em{display:block;font-style:normal;color:var(--muted);font-size:10px;margin-top:7px}.theme-compatibility-fields{display:none!important}@media(max-width:700px){.theme-only-grid .theme-preset{display:block}.theme-only-grid .theme-visual{height:105px;margin-bottom:12px}}
+</style>
 </head>
 <body>
   <div id="pageLoader" class="page-loader">
@@ -802,7 +807,7 @@ body{background:linear-gradient(180deg,#f8fafc 0,#f1f5f9 100%);min-height:100vh}
         </section>
 
         <section id="section-appearance" class="editor-section">
-          <div class="section-toolbar"><div><h2>Aparência</h2><p>Personalize a identidade visual do delivery.</p></div></div>
+          <div class="section-toolbar"><div><h2>Aparência</h2><p>Escolha apenas um dos três temas prontos da loja.</p></div></div>
           <div class="settings-grid">
             <article class="panel-card">
               <div class="card-head"><div><small>IDENTIDADE</small><h3>Dados principais</h3></div></div>
@@ -817,101 +822,59 @@ body{background:linear-gradient(180deg,#f8fafc 0,#f1f5f9 100%);min-height:100vh}
                 <div class="image-editor"><span>Capa</span><div id="coverPreview" class="image-preview cover"><i class="ri-image-add-line"></i></div><div><button id="chooseCoverBtn" type="button">Escolher</button><button id="removeCoverBtn" type="button">Remover</button></div><input id="coverInput" type="file" hidden accept="image/png,image/jpeg,image/webp" /></div>
               </div>
             </article>
+
             <article class="panel-card">
-              <div class="card-head"><div><small>TEMA</small><h3>Cores e exibição</h3></div></div>
-              <div class="theme-preset-block">
-                <div class="sub-head premium-subhead">
-                  <div>
-                    <strong>3 direções visuais completas</strong>
-                    <small>Cada tema muda estrutura, tipografia, movimento, cards e navegação — não apenas as cores.</small>
-                  </div>
-                  <span id="activeThemeName" class="theme-current-badge">Atelier</span>
-                </div>
+              <div class="card-head"><div><small>TEMA DA LOJA</small><h3>Escolha um visual</h3></div><span id="activeThemeName" class="theme-current-badge">Atelier</span></div>
+              <p class="theme-only-description">Cada tema já possui layout, tipografia, cores, cards, categorias e animações próprias. Não é necessário configurar mais nada.</p>
 
-                <div id="themePresetGrid" class="theme-preset-grid clena-three-themes">
-                  <button class="theme-preset active" type="button" data-theme="atelier" data-primary="#c6924b" data-accent="#17130f" data-bg="#f4efe7" data-card="#fffdf9">
-                    <span class="theme-visual theme-visual-atelier"><i></i><i></i><i></i></span>
-                    <span class="theme-copy"><b>Atelier</b><small>Editorial, elegante e gastronômico</small><em>Hero cinematográfico • serifas • composição assimétrica</em></span>
-                  </button>
-                  <button class="theme-preset" type="button" data-theme="botanica" data-primary="#2f6f4e" data-accent="#d59b62" data-bg="#eef3ec" data-card="#ffffff">
-                    <span class="theme-visual theme-visual-botanica"><i></i><i></i><i></i></span>
-                    <span class="theme-copy"><b>Botânica</b><small>Natural, leve e acolhedor</small><em>Formas orgânicas • cards suaves • navegação limpa</em></span>
-                  </button>
-                  <button class="theme-preset" type="button" data-theme="pulse" data-primary="#ff4d00" data-accent="#111111" data-bg="#f4f0e8" data-card="#ffffff">
-                    <span class="theme-visual theme-visual-pulse"><i></i><i></i><i></i></span>
-                    <span class="theme-copy"><b>Pulse</b><small>Urbano, ousado e dinâmico</small><em>Tipografia forte • blocos gráficos • movimento intenso</em></span>
-                  </button>
-                </div>
-              </div>
-
-              <div class="color-row premium-color-row">
-                <label><span>Cor principal</span><div><input id="primaryColor" type="color" /><input id="primaryColorText" type="text" maxlength="7" /></div></label>
-                <label><span>Cor de destaque</span><div><input id="accentColor" type="color" /><input id="accentColorText" type="text" maxlength="7" /></div></label>
-              </div>
-
-              <div class="choice-group premium-choice-group">
-                <span>Formato dos produtos</span>
-                <div id="itemLayoutChoices">
-                  <button class="choice active" data-value="cards" type="button"><i class="ri-layout-grid-line"></i><b>Cards visuais</b><small>Fotos em destaque</small></button>
-                  <button class="choice" data-value="compact" type="button"><i class="ri-list-check-2"></i><b>Lista compacta</b><small>Mais itens na tela</small></button>
-                </div>
-              </div>
-
-              <div class="appearance-switches">
-                <label class="toggle-row"><span><i class="ri-image-line"></i><b>Exibir capa</b><small>Mostra imagem no topo</small></span><input id="showCover" type="checkbox" /><i></i></label>
-                <label class="toggle-row"><span><i class="ri-fire-line"></i><b>Mostrar destaques</b><small>Seção especial no início</small></span><input id="showFeatured" type="checkbox" /><i></i></label>
-              </div>
-
-              <div class="visual-studio">
-                <div class="visual-studio-head"><div><small>ESTÚDIO VISUAL</small><h3>Personalização avançada</h3><p>Combine estrutura, tipografia, imagens e efeitos sem alterar o funcionamento da loja.</p></div><button id="resetVisualStudio" class="small-btn" type="button"><i class="ri-restart-line"></i>Restaurar tema</button></div>
-                <div class="visual-control-grid">
-                  <label class="field"><span>Estilo do cabeçalho</span><select id="visualHero"><option value="cinematic">Cinematográfico</option><option value="split">Dividido</option><option value="minimal">Minimalista</option><option value="poster">Pôster gráfico</option></select></label>
-                  <label class="field"><span>Tipografia</span><select id="visualFont"><option value="theme">Do tema</option><option value="modern">Moderna</option><option value="editorial">Editorial</option><option value="rounded">Arredondada</option><option value="condensed">Impactante</option></select></label>
-                  <label class="field"><span>Estilo dos cards</span><select id="visualCards"><option value="theme">Do tema</option><option value="floating">Flutuantes</option><option value="bordered">Contornados</option><option value="flat">Planos</option><option value="poster">Pôster</option></select></label>
-                  <label class="field"><span>Formato das imagens</span><select id="visualRatio"><option value="landscape">Horizontal</option><option value="square">Quadrado</option><option value="portrait">Vertical</option><option value="wide">Panorâmico</option></select></label>
-                  <label class="field"><span>Navegação de categorias</span><select id="visualCategories"><option value="pills">Pílulas</option><option value="underline">Linha editorial</option><option value="blocks">Blocos</option><option value="rail">Trilho lateral</option></select></label>
-                  <label class="field"><span>Forma dos botões</span><select id="visualButtons"><option value="rounded">Arredondados</option><option value="pill">Pílula</option><option value="square">Retos</option><option value="cut">Cantos recortados</option></select></label>
-                  <label class="field"><span>Densidade do cardápio</span><select id="visualDensity"><option value="comfortable">Confortável</option><option value="compact">Compacta</option><option value="airy">Ampla</option></select></label>
-                  <label class="field"><span>Animação</span><select id="visualMotion"><option value="soft">Suave</option><option value="reveal">Entrada em sequência</option><option value="float">Flutuação</option><option value="energetic">Energética</option><option value="none">Sem animação</option></select></label>
-                  <label class="field"><span>Textura de fundo</span><select id="visualTexture"><option value="none">Limpo</option><option value="grain">Granulado</option><option value="grid">Grade</option><option value="dots">Pontilhado</option><option value="waves">Ondas</option></select></label>
-                  <label class="field"><span>Alinhamento da marca</span><select id="visualAlignment"><option value="left">Esquerda</option><option value="center">Centralizado</option><option value="offset">Deslocado</option></select></label>
-                  <label class="field"><span>Formato da logo</span><select id="visualLogo"><option value="rounded">Arredondada</option><option value="circle">Circular</option><option value="square">Quadrada</option><option value="stamp">Selo</option></select></label>
-                  <label class="field"><span>Sobreposição da capa</span><select id="visualOverlay"><option value="soft">Leve</option><option value="dark">Escura</option><option value="gradient">Gradiente</option><option value="color">Cor do tema</option><option value="none">Sem sobreposição</option></select></label>
-                </div>
-                <div class="visual-range-grid">
-                  <label><span>Arredondamento <b id="visualRadiusValue">18px</b></span><input id="visualRadius" type="range" min="0" max="36" value="18" /></label>
-                  <label><span>Intensidade das sombras <b id="visualShadowValue">55%</b></span><input id="visualShadow" type="range" min="0" max="100" value="55" /></label>
-                  <label><span>Altura da capa <b id="visualHeroHeightValue">220px</b></span><input id="visualHeroHeight" type="range" min="150" max="420" value="220" /></label>
-                </div>
-                <div class="appearance-switches visual-extra-switches">
-                  <label class="toggle-row"><span><i class="ri-search-eye-line"></i><b>Busca visível</b><small>Campo de busca no topo</small></span><input id="visualShowSearch" type="checkbox" checked /><i></i></label>
-                  <label class="toggle-row"><span><i class="ri-information-line"></i><b>Resumo da loja</b><small>Tempo, taxa e pedido mínimo</small></span><input id="visualShowInfo" type="checkbox" checked /><i></i></label>
-                  <label class="toggle-row"><span><i class="ri-shopping-bag-3-line"></i><b>Carrinho flutuante</b><small>Barra fixa de finalização</small></span><input id="visualShowCart" type="checkbox" checked /><i></i></label>
-                  <label class="toggle-row"><span><i class="ri-price-tag-3-line"></i><b>Etiquetas visuais</b><small>Destaque para novidades e ofertas</small></span><input id="visualShowBadges" type="checkbox" checked /><i></i></label>
-                </div>
+              <div id="themePresetGrid" class="theme-preset-grid clena-three-themes theme-only-grid">
+                <button class="theme-preset active" type="button" data-theme="atelier" data-primary="#c6924b" data-accent="#17130f" data-bg="#f4efe7" data-card="#fffdf9">
+                  <span class="theme-visual theme-visual-atelier"><i></i><i></i><i></i></span>
+                  <span class="theme-copy"><b>Atelier</b><small>Elegante e gastronômico</small><em>Editorial, sofisticado e equilibrado.</em></span>
+                </button>
+                <button class="theme-preset" type="button" data-theme="botanica" data-primary="#2f6f4e" data-accent="#d59b62" data-bg="#eef3ec" data-card="#ffffff">
+                  <span class="theme-visual theme-visual-botanica"><i></i><i></i><i></i></span>
+                  <span class="theme-copy"><b>Botânica</b><small>Natural e acolhedor</small><em>Leve, orgânico e confortável.</em></span>
+                </button>
+                <button class="theme-preset" type="button" data-theme="pulse" data-primary="#ff4d00" data-accent="#111111" data-bg="#f4f0e8" data-card="#ffffff">
+                  <span class="theme-visual theme-visual-pulse"><i></i><i></i><i></i></span>
+                  <span class="theme-copy"><b>Pulse</b><small>Urbano e marcante</small><em>Direto, moderno e dinâmico.</em></span>
+                </button>
               </div>
 
               <div class="preview-device-header">
-                <div><strong>Prévia ao vivo</strong><small>Atualiza conforme você altera os campos.</small></div>
+                <div><strong>Prévia do tema</strong><small>A prévia muda automaticamente ao escolher um tema.</small></div>
                 <button id="expandPreviewBtn" class="small-btn" type="button"><i class="ri-fullscreen-line"></i>Ampliar</button>
               </div>
 
               <div id="phonePreview" class="phone-preview premium-phone-preview">
                 <div class="preview-statusbar"><span>9:41</span><i></i><b>100%</b></div>
-                <div id="previewCover" class="phone-cover">
-                  <div class="preview-cover-shade"></div>
-                  <span id="previewOpenPill"><i class="ri-checkbox-blank-circle-fill"></i> Aberto</span>
-                </div>
-                <div class="phone-store premium-store-head">
-                  <span id="previewLogo"><i class="ri-restaurant-2-line"></i></span>
-                  <div><b id="previewStoreName">Meu delivery</b><small id="previewStoreMeta">Delivery • 40–60 min</small></div>
-                  <button type="button"><i class="ri-heart-3-line"></i></button>
-                </div>
+                <div id="previewCover" class="phone-cover"><div class="preview-cover-shade"></div><span id="previewOpenPill"><i class="ri-checkbox-blank-circle-fill"></i> Aberto</span></div>
+                <div class="phone-store premium-store-head"><span id="previewLogo"><i class="ri-restaurant-2-line"></i></span><div><b id="previewStoreName">Meu delivery</b><small id="previewStoreMeta">Delivery • 40–60 min</small></div><button type="button"><i class="ri-heart-3-line"></i></button></div>
                 <div class="preview-search"><i class="ri-search-line"></i><span>Buscar no cardápio</span></div>
                 <div id="previewCategories" class="phone-tabs"><button class="active">Destaques</button><button>Combos</button><button>Bebidas</button></div>
                 <div id="previewFeaturedLabel" class="preview-section-title"><b>Mais pedidos</b><small>Ver todos</small></div>
                 <div id="previewProducts" class="phone-products premium-products"></div>
                 <div class="preview-cartbar"><span><i class="ri-shopping-bag-3-line"></i><b>2 itens</b></span><strong>Ver carrinho</strong></div>
+              </div>
+
+              <div class="theme-compatibility-fields" aria-hidden="true">
+                <input id="primaryColor" type="color" value="#c6924b"><input id="primaryColorText" value="#c6924b">
+                <input id="accentColor" type="color" value="#17130f"><input id="accentColorText" value="#17130f">
+                <div id="itemLayoutChoices"><button class="choice active" data-value="cards" type="button"></button></div>
+                <input id="showCover" type="checkbox" checked><input id="showFeatured" type="checkbox" checked>
+                <select id="visualHero"><option value="cinematic"></option></select><select id="visualFont"><option value="editorial"></option></select>
+                <select id="visualCards"><option value="floating"></option></select><select id="visualRatio"><option value="landscape"></option></select>
+                <select id="visualCategories"><option value="underline"></option></select><select id="visualButtons"><option value="rounded"></option></select>
+                <select id="visualDensity"><option value="comfortable"></option></select><select id="visualMotion"><option value="soft"></option></select>
+                <select id="visualTexture"><option value="none"></option></select><select id="visualAlignment"><option value="left"></option></select>
+                <select id="visualLogo"><option value="rounded"></option></select><select id="visualOverlay"><option value="gradient"></option></select>
+                <input id="visualRadius" type="range" min="0" max="36" value="16"><span id="visualRadiusValue"></span>
+                <input id="visualShadow" type="range" min="0" max="100" value="45"><span id="visualShadowValue"></span>
+                <input id="visualHeroHeight" type="range" min="150" max="420" value="260"><span id="visualHeroHeightValue"></span>
+                <input id="visualShowSearch" type="checkbox" checked><input id="visualShowInfo" type="checkbox" checked>
+                <input id="visualShowCart" type="checkbox" checked><input id="visualShowBadges" type="checkbox" checked>
+                <button id="resetVisualStudio" type="button"></button>
               </div>
             </article>
           </div>
