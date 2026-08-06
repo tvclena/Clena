@@ -2057,14 +2057,40 @@ function bindEvents() {
   $('headerSearchButton')?.addEventListener(
     'click',
     () => {
-      $('catalog')?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
+      const searchArea = $('searchArea');
+      const searchInput = $('searchInput');
+      const header = $('siteHeader');
+
+      if (!searchArea) return;
+
+      /*
+       * A pesquisa fica depois da seção de destaques.
+       * Por isso, rolar para #catalog levava o usuário aos destaques.
+       * Agora o destino é exatamente a área de pesquisa.
+       */
+      const headerHeight =
+        header?.getBoundingClientRect().height || 0;
+
+      const targetTop =
+        searchArea.getBoundingClientRect().top +
+        window.scrollY -
+        headerHeight -
+        18;
+
+      window.scrollTo({
+        top: Math.max(0, targetTop),
+        behavior: 'smooth'
       });
 
-      setTimeout(() => {
-        $('searchInput')?.focus();
-      }, 500);
+      window.setTimeout(() => {
+        if (!searchInput) return;
+
+        try {
+          searchInput.focus({ preventScroll: true });
+        } catch {
+          searchInput.focus();
+        }
+      }, 450);
     }
   );
 

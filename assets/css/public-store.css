@@ -2849,3 +2849,15 @@ body[data-theme="poster"] .site-footer {
     padding: 18px;
   }
 }
+
+
+/* CLENA — destino correto do botão de pesquisa */
+#searchArea {
+  scroll-margin-top: 110px;
+}
+
+@media (max-width: 720px) {
+  #searchArea {
+    scroll-margin-top: 86px;
+  }
+}
