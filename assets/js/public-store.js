@@ -1,10 +1,12 @@
 import { getSupabase } from './supabase-client.js';
+
 const db = await getSupabase();
 const $ = (id) => document.getElementById(id);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const money = (value) => Number(value || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>'"]/g, (char) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' }[char]));
 const digits = (value) => String(value || '').replace(/\D/g, '');
+
 const APPEARANCE_DEFAULTS = {
   theme:'minimal', cover_type:'image', cover_video_external_url:'', cover_fit:'cover', cover_position:'center', cover_height:'medium', cover_overlay:35,
   logo_shape:'rounded', hero_alignment:'left', hero_title:'', hero_subtitle:'', hero_button_text:'Ver produtos', hero_button_target:'products',
@@ -17,12 +19,13 @@ const APPEARANCE_DEFAULTS = {
   banner_display_mode:'carousel', banner_autoplay:true, banner_autoplay_delay:5000, banner_loop:true, banner_arrows:true, banner_dots:true, banner_pause_interaction:true, banner_default_height:'medium', banner_transition:'slide',
   gallery_layout:'grid', gallery_columns:3, gallery_ratio:'square', gallery_gap:'medium', gallery_title:'Nossa galeria', gallery_subtitle:'', gallery_position:'after_products', gallery_lightbox:true, gallery_autoplay:false, gallery_loop:true
 };
+
 const SOCIALS = [
   ['social_instagram','ri-instagram-line','Instagram','https://instagram.com/'], ['social_facebook','ri-facebook-circle-line','Facebook','https://facebook.com/'],
   ['social_tiktok','ri-tiktok-line','TikTok','https://tiktok.com/@'], ['social_youtube','ri-youtube-line','YouTube','https://youtube.com/@'],
   ['social_x','ri-twitter-x-line','X','https://x.com/'], ['social_pinterest','ri-pinterest-line','Pinterest','https://pinterest.com/']
 ];
-     
+
 let store = null;
 let appearance = { ...APPEARANCE_DEFAULTS };
 let categories = [];
@@ -131,7 +134,7 @@ function restoreCart() {
       .filter(Boolean);
 
     /*
-     * Regrava o carrinhoT depois da validação.
+     * Regrava o carrinho depois da validação.
      * Assim produtos removidos desta loja não permanecem salvos.
      */
     saveCart();
@@ -423,7 +426,10 @@ function applyAppearance() {
       store.checkout_mode === 'catalog_only'
   );
 
-  $('headerCartButton')?.classList.remove('is-hidden');
+  $('headerCartButton')?.classList.toggle(
+    'is-hidden',
+    store.checkout_mode === 'catalog_only'
+  );
 
   $('backToTop')?.classList.toggle(
     'enabled',
@@ -607,7 +613,6 @@ function renderSocialLinks() {
   if (!values.social_instagram && store.instagram) values.social_instagram = store.instagram;
   const links = SOCIALS.map(([key, icon, label, base]) => ({ icon, label, url: normalizeSocialUrl(values[key], base) })).filter((item) => item.url);
   $('socialLinks').innerHTML = appearance.show_social_links ? links.map((item) => `<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener" aria-label="${item.label}" title="${item.label}"><i class="${item.icon}"></i></a>`).join('') : '';
-  updateHeroSocialVisibility();
   $('footerSocialColumn').classList.toggle('is-hidden', !appearance.show_social_links || !links.length);
 }
 
@@ -1682,21 +1687,6 @@ function checkout() {
   if (store.order_note) message.push('', store.order_note);
   window.open(`https://wa.me/${digits(store.whatsapp)}?text=${encodeURIComponent(message.join('\n'))}`, '_blank', 'noopener');
 }
-
-function updateHeroSocialVisibility() {
-  const socialContainer = $('socialLinks');
-  const socialSection = $('heroSocialSection');
-
-  if (!socialSection || !socialContainer) return;
-
-  const hasLinks = socialContainer.querySelector('a') !== null;
-
-  socialSection.classList.toggle(
-    'is-hidden',
-    !hasLinks
-  );
-}
-
 function bindEvents() {
   $('searchInput')?.addEventListener('input', () => {
     const clearSearch = $('clearSearch');
