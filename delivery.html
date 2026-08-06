@@ -961,7 +961,7 @@
               <p class="product-description">${esc(item.description || "")}</p>
               <div class="product-footer">
                 <div class="price-block">
-                  ${item.price_source === "technical_sheet" ? `<span class="technical-price">PREÇO ATUALIZADO</span>` : ""}
+                  ${item.price_source === "technical_sheet" ? `<span class="technical-price">PREÇO</span>` : ""}
                   ${showOldPrice ? `<small>${money(item.price)}</small>` : ""}
                   <strong>${money(price)}</strong>
                 </div>
