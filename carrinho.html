@@ -1,0 +1,134 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Carrinho</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
+<style>
+:root{
+  --primary:#2563eb;--accent:#0f172a;--bg:#f6f8fc;--card:#fff;--text:#0f172a;--muted:#64748b;
+  --line:rgba(15,23,42,.10);--shadow:0 12px 36px rgba(15,23,42,.08);--shell:1240px;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Manrope,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit}.is-hidden{display:none!important}a{text-decoration:none;color:inherit}.shell{width:min(var(--shell),calc(100% - 32px));margin:auto}
+.btn{border:0;min-height:44px;padding:0 15px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:800;cursor:pointer}
+.btn-primary{background:var(--primary);color:#fff}.btn-soft{background:var(--card);border:1px solid var(--line);color:var(--text)}
+.icon-btn{width:42px;height:42px;border:1px solid var(--line);border-radius:12px;background:var(--card);display:grid;place-items:center;cursor:pointer}
+.loader{position:fixed;inset:0;background:var(--bg);z-index:999;display:grid;place-items:center}.loader span{width:48px;height:48px;border:4px solid var(--line);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;right:18px;top:18px;z-index:1000;padding:12px 15px;border-radius:12px;background:#111827;color:white;box-shadow:var(--shadow);font-size:.82rem}
+.site-header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.header-inner{height:68px;display:flex;align-items:center;justify-content:space-between;gap:14px}.brand{display:flex;align-items:center;gap:10px;min-width:0}.brand-logo{width:40px;height:40px;border-radius:11px;overflow:hidden;background:var(--card);border:1px solid var(--line);display:grid;place-items:center}.brand-logo img{width:100%;height:100%;object-fit:cover}.brand-copy{display:grid;min-width:0}.brand-copy strong{font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brand-copy small{font-size:.65rem;color:var(--muted)}
+.header-actions{display:flex;gap:8px}.cart-link{position:relative}.cart-count{position:absolute;right:-5px;top:-5px;min-width:19px;height:19px;padding:0 5px;border-radius:99px;background:var(--primary);color:#fff;font-size:.6rem;font-weight:900;display:grid;place-items:center}
+.footer{margin-top:64px;padding:34px 0;background:var(--accent);color:#fff}.footer-inner{display:flex;justify-content:space-between;gap:20px;align-items:center}.footer small{opacity:.7}
+@media(max-width:640px){.shell{width:min(100% - 20px,var(--shell))}.brand-copy small{display:none}.footer-inner{display:grid}.header-inner{height:60px}}
+
+.cart-page{padding:26px 0 50px}.cart-layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(300px,.75fr);gap:18px}.box{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px}.box h1,.box h2{margin:0}.box h1{font-size:1.5rem}.box h2{font-size:1rem}.muted{color:var(--muted);font-size:.78rem}.items{display:grid;margin-top:12px}.item{display:grid;grid-template-columns:64px 1fr;gap:11px;padding:12px 0;border-bottom:1px solid var(--line)}.item-img{width:64px;height:64px;border-radius:10px;overflow:hidden;background:#eef2f7}.item-img img{width:100%;height:100%;object-fit:cover}.item h3{font-size:.82rem;margin:0}.item p,.item small{font-size:.66rem;color:var(--muted);margin:3px 0}.item-head,.item-bottom{display:flex;justify-content:space-between;gap:8px}.remove{border:0;background:transparent;color:#ef4444}.qty{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}.qty button{width:28px;height:28px;border:0;background:transparent}.qty strong{min-width:24px;display:grid;place-items:center;font-size:.7rem}.checkout{position:sticky;top:86px;align-self:start}.summary{display:grid;gap:7px;margin:14px 0}.summary div{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted)}.summary .total{padding-top:9px;border-top:1px solid var(--line);color:var(--text);font-size:1rem;font-weight:900}.fields{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.field{display:grid;gap:5px}.field.full{grid-column:1/-1}.field span{font-size:.64rem;font-weight:800}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 10px;background:var(--card);color:var(--text);outline:0}.field textarea{min-height:64px;resize:vertical}.checkout-btn{width:100%;margin-top:12px}.warning{padding:8px 10px;border-radius:9px;background:#fff7ed;color:#9a3412;font-size:.68rem}.empty{text-align:center;padding:60px 20px}.empty i{font-size:34px;color:var(--primary)}
+@media(max-width:800px){.cart-layout{grid-template-columns:1fr}.checkout{position:relative;top:auto}}@media(max-width:480px){.fields{grid-template-columns:1fr}.field.full{grid-column:1}.box{padding:14px}}
+</style></head><body><div id="loader" class="loader"><span></span></div>
+<header class="site-header"><div class="header-inner shell"><a id="backLink" class="brand" href="index.html"><span id="brandLogo" class="brand-logo"></span><span class="brand-copy"><strong id="storeName">Loja</strong><small id="storeStatus"></small></span></a><div class="icon-btn cart-link"><i class="ri-shopping-bag-3-line"></i><b id="cartCount" class="cart-count">0</b></div></div></header>
+<main class="cart-page shell"><div id="empty" class="box empty is-hidden"><i class="ri-shopping-bag-line"></i><h2>Seu carrinho está vazio</h2><p class="muted">Adicione produtos antes de finalizar.</p><a id="continue" class="btn btn-primary" href="index.html">Ver produtos</a></div>
+<div id="cartContent" class="cart-layout"><section class="box"><h1>Seu carrinho</h1><p class="muted">Revise produtos, quantidades e observações.</p><div id="items" class="items"></div></section>
+<aside id="checkoutBox" class="box checkout"><h2>Finalizar pedido</h2><div class="fields"><label class="field"><span>Nome</span><input id="customerName" autocomplete="name"></label><label class="field"><span>WhatsApp</span><input id="customerPhone" inputmode="tel" autocomplete="tel"></label><label class="field full"><span>Entrega / retirada</span><select id="fee"></select></label><div id="addressFields" class="field full"><div class="fields"><label class="field"><span>Rua</span><input id="street"></label><label class="field"><span>Número</span><input id="number"></label><label class="field"><span>Bairro</span><input id="neighborhood"></label><label class="field"><span>Cidade</span><input id="city"></label><label class="field"><span>UF</span><input id="state" maxlength="2"></label><label class="field"><span>CEP</span><input id="zip"></label></div></div><label class="field full"><span>Pagamento</span><select id="payment"></select></label><label class="field full"><span>Observações</span><textarea id="notes"></textarea></label></div>
+<div class="summary"><div><span>Subtotal</span><strong id="subtotal"></strong></div><div><span>Entrega</span><strong id="delivery"></strong></div><div class="total"><span>Total</span><strong id="total"></strong></div></div><div id="warning" class="warning is-hidden"></div><button id="checkout" class="btn btn-primary checkout-btn">Finalizar pedido <i class="ri-whatsapp-line"></i></button></aside></div></main>
+<footer class="footer"><div class="footer-inner shell"><strong id="footerName">Loja</strong><small>Checkout</small></div></footer><script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const $ = (id) => document.getElementById(id);
+const $$ = (selector,root=document) => [...root.querySelectorAll(selector)];
+const money = value => Number(value||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const esc = value => String(value??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+const digits = value => String(value||'').replace(/\D/g,'');
+const qs = new URLSearchParams(location.search);
+
+function slug(){
+  const q = qs.get('slug');
+  if(q) return q;
+  const parts=location.pathname.split('/').filter(Boolean);
+  const last=(parts.at(-1)||'').replace(/\.html$/i,'');
+  return ['index','loja','carrinho','pop_produto'].includes(last)?'':last;
+}
+async function getDb(){
+  const r=await fetch('/api/public-config',{headers:{Accept:'application/json'},cache:'no-store'});
+  if(!r.ok) throw new Error('Configuração pública indisponível.');
+  const c=await r.json();
+  if(!c.supabaseUrl||!c.supabaseAnonKey) throw new Error('Supabase não configurado.');
+  return createClient(c.supabaseUrl,c.supabaseAnonKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+}
+function cartKey(storeId){return `clena_cart_${storeId}`}
+function readCart(storeId){try{return JSON.parse(localStorage.getItem(cartKey(storeId))||'[]')}catch{return []}}
+function writeCart(storeId,items){localStorage.setItem(cartKey(storeId),JSON.stringify(items)); window.dispatchEvent(new CustomEvent('clena-cart-updated'))}
+function cartCount(items){return items.reduce((n,i)=>n+Number(i.quantity||0),0)}
+function toast(msg){const el=document.createElement('div');el.className='toast';el.textContent=msg;document.body.appendChild(el);setTimeout(()=>el.remove(),2500)}
+function productPrice(p){const sale=Number(p.sale_price||0);return sale>0&&sale<Number(p.price||0)?sale:Number(p.price||0)}
+function hasSale(p){return Number(p.sale_price||0)>0&&Number(p.sale_price)<Number(p.price||0)}
+async function loadStore(db,s){
+  if(!s) throw new Error('Informe o slug da loja.');
+  const {data,error}=await db.from('stores').select('*').eq('slug',s).eq('is_published',true).maybeSingle();
+  if(error) throw error;if(!data) throw new Error('Loja não encontrada.');
+  return data;
+}
+function applyStoreTheme(store){
+  document.documentElement.style.setProperty('--primary',store.primary_color||'#2563eb');
+  document.documentElement.style.setProperty('--accent',store.accent_color||'#0f172a');
+  const a=store.appearance_settings||{};
+  document.documentElement.style.setProperty('--bg',a.background_color||'#f6f8fc');
+  document.documentElement.style.setProperty('--card',a.card_color||'#fff');
+  document.documentElement.style.setProperty('--text',a.text_color||'#0f172a');
+  document.documentElement.style.setProperty('--muted',a.muted_color||'#64748b');
+}
+function setHeader(store){
+  document.title=store.name;
+  $('storeName').textContent=store.name;
+  $('storeStatus').textContent=store.is_published?'Loja online':'Catálogo';
+  $('brandLogo').innerHTML=store.logo_url?`<img src="${esc(store.logo_url)}" alt="">`:'<i class="ri-store-2-line"></i>';
+  $('footerName').textContent=store.name;
+}
+function setCartBadge(store){
+  const badge=$('cartCount');
+  if(badge) badge.textContent=cartCount(readCart(store.id));
+}
+
+let db,store,items=[],fees=[],selectedFee=null,mpConfig=null;
+function indexUrl(){return `index.html?slug=${encodeURIComponent(store.slug)}`}
+function unit(item){return productPrice(item.product)+Number(item.variation?.price_adjustment||0)}
+function subtotal(){return items.reduce((s,i)=>s+unit(i)*Number(i.quantity||0),0)}
+function delivery(){return Number(selectedFee?.fee||0)}
+function minimum(){return Math.max(Number(store.minimum_order||0),Number(selectedFee?.minimum_order||0))}
+function save(){writeCart(store.id,items);setCartBadge(store);render()}
+function render(){
+  $('items').innerHTML=items.map((i,idx)=>`<article class="item"><div class="item-img">${i.product.image_url?`<img src="${esc(i.product.image_url)}" alt="">`:''}</div><div><div class="item-head"><div><h3>${esc(i.product.name)}</h3>${i.variation?`<p>${esc(i.variation.name)}</p>`:''}${i.note?`<small>Obs.: ${esc(i.note)}</small>`:''}</div><button class="remove" data-r="${idx}"><i class="ri-delete-bin-line"></i></button></div><div class="item-bottom"><div class="qty"><button data-d="-1" data-i="${idx}">−</button><strong>${i.quantity}</strong><button data-d="1" data-i="${idx}">+</button></div><strong>${money(unit(i)*i.quantity)}</strong></div></div></article>`).join('');
+  const empty=!items.length;$('empty').classList.toggle('is-hidden',!empty);$('cartContent').classList.toggle('is-hidden',empty);$('checkoutBox').classList.toggle('is-hidden',empty);
+  const sub=subtotal(),del=delivery(),tot=sub+del,min=minimum();$('subtotal').textContent=money(sub);$('delivery').textContent=selectedFee?(del?money(del):'Grátis'):'—';$('total').textContent=money(tot);
+  const under=min>0&&sub<min;$('warning').classList.toggle('is-hidden',!under);$('warning').textContent=under?`Faltam ${money(min-sub)} para atingir o pedido mínimo.`:'';$('checkout').disabled=under;
+  $$('[data-r]').forEach(b=>b.onclick=()=>{items.splice(Number(b.dataset.r),1);save()});$$('[data-d]').forEach(b=>b.onclick=()=>{const i=items[Number(b.dataset.i)];if(!i)return;i.quantity+=Number(b.dataset.d);if(i.quantity<1)items.splice(Number(b.dataset.i),1);save()});
+}
+function customer(){
+  const name=$('customerName').value.trim(),phone=$('customerPhone').value.trim();
+  if(!name)throw new Error('Informe seu nome.');if(digits(phone).length<8)throw new Error('Informe um WhatsApp válido.');
+  return {name,phone};
+}
+function whatsappCheckout(){
+  const c=customer();if(!digits(store.whatsapp))throw new Error('A loja não configurou WhatsApp.');
+  const lines=items.map(i=>`• ${i.quantity}x ${i.product.name}${i.variation?` (${i.variation.name})`:''}${i.note?` — Obs.: ${i.note}`:''} — ${money(unit(i)*i.quantity)}`);
+  const msg=[`Olá! Quero fazer um pedido na *${store.name}*.`,'',`*Cliente:* ${c.name}`,`*WhatsApp:* ${c.phone}`,'','*Itens:*',...lines,'',`*Subtotal:* ${money(subtotal())}`];
+  if(selectedFee)msg.push(`*Entrega/retirada:* ${selectedFee.name}`,`*Taxa:* ${delivery()?money(delivery()):'Grátis'}`);
+  msg.push(`*Total:* ${money(subtotal()+delivery())}`,`*Pagamento:* ${$('payment').selectedOptions[0]?.textContent||'A combinar'}`);
+  const addr=['street','number','neighborhood','city','state','zip'].map(id=>$(id).value.trim());
+  if(selectedFee?.delivery_type!=='pickup'&&addr.some(Boolean))msg.push('','*Endereço:*',`${addr[0]}, ${addr[1]}`,`${addr[2]} — ${addr[3]}/${addr[4]}`,`CEP: ${addr[5]}`);
+  if($('notes').value.trim())msg.push(`*Observações:* ${$('notes').value.trim()}`);
+  window.open(`https://wa.me/${digits(store.whatsapp)}?text=${encodeURIComponent(msg.join('\n'))}`,'_blank','noopener');
+}
+async function checkout(){
+  try{const method=$('payment').value;if(method==='mp_checkout_pro'||method==='mp_pix'){toast('Pagamento online deve ser configurado pela função Mercado Pago desta loja.');return}whatsappCheckout()}catch(e){toast(e.message)}
+}
+async function init(){
+  try{
+    db=await getDb();store=await loadStore(db,slug());applyStoreTheme(store);setHeader(store);$('backLink').href=indexUrl();$('continue').href=indexUrl();items=readCart(store.id);setCartBadge(store);
+    const {data,error}=await db.from('store_delivery_fees').select('*').eq('store_id',store.id).eq('active',true).order('position');if(error)throw error;fees=data||[];
+    $('fee').innerHTML=`<option value="">Selecione entrega/retirada</option>`+fees.map(f=>`<option value="${esc(f.id)}">${esc(f.name)}${Number(f.fee||0)?` — ${money(f.fee)}`:' — Grátis'}</option>`).join('');
+    $('fee').onchange=()=>{selectedFee=fees.find(f=>f.id===$('fee').value)||null;$('addressFields').classList.toggle('is-hidden',selectedFee?.delivery_type==='pickup');render()};
+    $('payment').innerHTML=`<option value="whatsapp">Combinar pelo WhatsApp</option><option value="cash">Dinheiro</option><option value="pix">Pix</option><option value="card">Cartão na entrega</option>`;
+    $('checkout').onclick=checkout;render();$('loader').classList.add('is-hidden');
+  }catch(e){document.body.innerHTML=`<main class="shell" style="padding:80px 0"><h1>Não foi possível abrir o carrinho</h1><p>${esc(e.message)}</p></main>`}
+}
+init();
+</script></body></html>
