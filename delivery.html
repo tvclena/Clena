@@ -6,6 +6,7 @@
 
 
 
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -1946,10 +1947,7 @@
               <span id="profilePixAmount">R$ 0,00</span>
             </div>
             <div id="profilePixQr" class="profile-pix-qr">
-              <div style="text-align:center;color:#777">
-                <i class="ri-loader-4-line spinner" style="font-size:38px"></i>
-                <small style="display:block;margin-top:7px">Gerando PIX...</small>
-              </div>
+              <i class="ri-qr-code-line" style="font-size:54px"></i>
             </div>
             <textarea id="profilePixCode" class="profile-pix-code" readonly placeholder="O código PIX aparecerá aqui"></textarea>
             <button id="profileCopyPixBtn" class="primary-btn" type="button">
@@ -2002,6 +2000,14 @@
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
     const $ = id => document.getElementById(id);
+
+    /* PIX:
+       - só abre a tela quando houver QR/copia-e-cola de verdade;
+       - nunca deixa "Gerando PIX..." aberto indefinidamente;
+       - pedido online não pago expira visualmente em 10 minutos. */
+    const PIX_HISTORY_TTL_MS = 10 * 60 * 1000;
+    const PIX_CREATE_WAIT_MS = 12 * 1000;
+    const PIX_CREATE_POLL_MS = 850;
     const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
     const DAYS = ["Domingo","Segunda-feira","Terça-feira","Quarta-feira","Quinta-feira","Sexta-feira","Sábado"];
@@ -2026,6 +2032,7 @@
       product:null,
       onlinePayment:null,
       paymentPollTimer:null,
+      orderExpiryTimer:null,
       profileSelectedOrderId:null,
       modalQty:1,
       modalSelections:new Map(),
@@ -2153,11 +2160,24 @@
         restoreCustomerProfileStorage();
         restoreCheckoutDraftFromStorage();
         migrateLegacyLastOrderToHistory();
+        cleanupExpiredOrders();
+
+        /* remove pendências antigas/incompletas que nunca receberam QR */
+        setOrdersHistory(
+          getOrdersHistory().filter(order =>
+            !isPendingPaymentOrder(order) ||
+            !!(order.qr_code || order.qr_code_base64)
+          )
+        );
+
         bindEvents();
         updateProfilePendingIndicator();
+        startOrderExpiryWatcher();
 
-        const latestPending=pendingPaymentOrders()[0];
-        if(latestPending?.order_id){
+        const latestPending=pendingPaymentOrders().find(order =>
+          order.order_id && (order.qr_code || order.qr_code_base64)
+        );
+        if(latestPending){
           startPaymentPolling(latestPending.order_id,latestPending.payment_id || null);
         }
 
@@ -4041,6 +4061,86 @@ $("cartButton").classList.toggle(
       return getOrdersHistory().filter(isPendingPaymentOrder);
     }
 
+    function orderBaseTime(order){
+      const value=order?.pix_created_at || order?.saved_at || order?.updated_at;
+      const ms=new Date(value || 0).getTime();
+      return Number.isFinite(ms) ? ms : 0;
+    }
+
+    function isOrderExpired(order,now=Date.now()){
+      if(!isPendingPaymentOrder(order)) return false;
+      const base=orderBaseTime(order);
+      return !base || (now-base)>=PIX_HISTORY_TTL_MS;
+    }
+
+    function removeOrderFromHistory(orderId){
+      const id=String(orderId||"");
+      if(!id) return;
+      const rows=getOrdersHistory().filter(row=>String(row.order_id||"")!==id);
+      setOrdersHistory(rows);
+
+      const last=safeLocalStorageGet(lastOrderStorageKey());
+      if(last && String(last.order_id||"")===id){
+        try{localStorage.removeItem(lastOrderStorageKey())}catch{}
+      }
+
+      if(String(state.profileSelectedOrderId||"")===id){
+        state.profileSelectedOrderId=null;
+        $("profilePixSection")?.classList.add("hidden");
+        $("profileHistorySection")?.classList.remove("hidden");
+      }
+
+      if(state.onlinePayment && String(state.onlinePayment.order_id||"")===id){
+        state.onlinePayment=null;
+        if(state.paymentPollTimer){
+          clearInterval(state.paymentPollTimer);
+          state.paymentPollTimer=null;
+        }
+      }
+    }
+
+    function cleanupExpiredOrders(){
+      const now=Date.now();
+      const rows=getOrdersHistory();
+      const expired=rows.filter(row=>isOrderExpired(row,now));
+      if(!expired.length){
+        updateProfilePendingIndicator();
+        return;
+      }
+
+      const expiredIds=new Set(expired.map(row=>String(row.order_id||"")).filter(Boolean));
+      const clean=rows.filter(row=>!expiredIds.has(String(row.order_id||"")));
+      setOrdersHistory(clean);
+
+      const last=safeLocalStorageGet(lastOrderStorageKey());
+      if(last && expiredIds.has(String(last.order_id||""))){
+        try{localStorage.removeItem(lastOrderStorageKey())}catch{}
+      }
+
+      if(state.onlinePayment && expiredIds.has(String(state.onlinePayment.order_id||""))){
+        state.onlinePayment=null;
+        if(state.paymentPollTimer){
+          clearInterval(state.paymentPollTimer);
+          state.paymentPollTimer=null;
+        }
+      }
+
+      if(expiredIds.has(String(state.profileSelectedOrderId||""))){
+        state.profileSelectedOrderId=null;
+        $("profilePixSection")?.classList.add("hidden");
+        $("profileHistorySection")?.classList.remove("hidden");
+      }
+
+      if(!$("profileModal")?.classList.contains("hidden")) renderProfilePanel();
+      updateProfilePendingIndicator();
+    }
+
+    function startOrderExpiryWatcher(){
+      cleanupExpiredOrders();
+      if(state.orderExpiryTimer) clearInterval(state.orderExpiryTimer);
+      state.orderExpiryTimer=setInterval(cleanupExpiredOrders,15000);
+    }
+
     function migrateLegacyLastOrderToHistory(){
       const last=safeLocalStorageGet(lastOrderStorageKey());
       if(!last || String(last.delivery_id)!==String(state.delivery?.id)) return;
@@ -4242,6 +4342,8 @@ $("cartButton").classList.toggle(
         qr_code:meta.qr_code || null,
         qr_code_base64:meta.qr_code_base64 || null,
         ticket_url:meta.ticket_url || null,
+        pix_created_at:meta.pix_created_at || null,
+        expires_at:meta.expires_at || null,
         payload,
         items:state.cart.map(row=>({
           item_id:row.item.id,
@@ -4438,6 +4540,7 @@ $("cartButton").classList.toggle(
     }
 
     function openProfileModal(){
+      cleanupExpiredOrders();
       renderProfilePanel();
       $("profileHistorySection")?.classList.remove("hidden");
       $("profilePixSection")?.classList.add("hidden");
@@ -4458,6 +4561,22 @@ $("cartButton").classList.toggle(
 
     function renderProfilePix(order){
       if(!order) return;
+
+      if(isOrderExpired(order)){
+        removeOrderFromHistory(order.order_id);
+        renderProfilePanel();
+        toast("Esse pagamento expirou.","error");
+        return;
+      }
+
+      const hasPix=!!(order.qr_code || order.qr_code_base64);
+      if(!hasPix){
+        removeOrderFromHistory(order.order_id);
+        renderProfilePanel();
+        toast("PIX indisponível. Gere um novo pedido.","error");
+        return;
+      }
+
       state.profileSelectedOrderId=String(order.order_id||"");
       $("profileHistorySection")?.classList.add("hidden");
       $("profilePixSection")?.classList.remove("hidden");
@@ -4471,8 +4590,8 @@ $("cartButton").classList.toggle(
         $("profilePixQr").innerHTML=`<img alt="QR Code PIX" src="data:image/png;base64,${order.qr_code_base64}">`;
         $("profilePixQr").dataset.paymentId=String(order.payment_id||"");
       }else{
-        $("profilePixQr").innerHTML=`<div style="text-align:center;color:#777"><i class="ri-loader-4-line spinner" style="font-size:38px"></i><small style="display:block;margin-top:7px">Gerando PIX...</small></div>`;
-        $("profilePixQr").dataset.paymentId="";
+        $("profilePixQr").innerHTML=`<i class="ri-qr-code-line" style="font-size:54px"></i>`;
+        $("profilePixQr").dataset.paymentId=String(order.payment_id||"");
       }
 
       const status=String(order.payment_status||"pending").toLowerCase();
@@ -4482,8 +4601,16 @@ $("cartButton").classList.toggle(
     }
 
     function openHistoryPix(orderId){
+      cleanupExpiredOrders();
       const order=getOrdersHistory().find(row=>String(row.order_id||"")===String(orderId));
-      if(!order) return toast("Pedido não encontrado.","error");
+      if(!order) return toast("Pedido não encontrado ou expirado.","error");
+
+      if(!(order.qr_code || order.qr_code_base64)){
+        removeOrderFromHistory(orderId);
+        renderProfilePanel();
+        return toast("PIX indisponível. Gere um novo pedido.","error");
+      }
+
       if($("profileModal")?.classList.contains("hidden")) openProfileModal();
       renderProfilePix(order);
       if(isPendingPaymentOrder(order)) startPaymentPolling(order.order_id,order.payment_id||null);
@@ -4517,6 +4644,11 @@ $("cartButton").classList.toggle(
     }
 
     function showPixPaymentModal(data){
+      if(!data?.order_id) throw new Error("Pagamento sem identificador.");
+
+      const hasPix=!!(data.qr_code || data.qr_code_base64);
+      if(!hasPix) throw new Error("Mercado Pago não retornou o PIX.");
+
       if(state.paymentPollTimer){
         clearInterval(state.paymentPollTimer);
         state.paymentPollTimer=null;
@@ -4534,11 +4666,10 @@ $("cartButton").classList.toggle(
         qr_code:data.qr_code || null,
         qr_code_base64:data.qr_code_base64 || null,
         ticket_url:data.ticket_url || null,
-        total:Number(data.total||0)
+        pix_created_at:new Date().toISOString(),
+        expires_at:new Date(Date.now()+PIX_HISTORY_TTL_MS).toISOString()
       });
 
-      /* Pedido já foi criado: a sacola volta a ficar livre para um novo pedido.
-         O pagamento permanece disponível no Perfil/Histórico. */
       state.cart=[];
       clearOrderDraftStorage();
       renderCart();
@@ -4546,7 +4677,6 @@ $("cartButton").classList.toggle(
 
       openProfileModal();
       openHistoryPix(data.order_id);
-      startPaymentPolling(data.order_id,data.payment_id || null);
     }
 
     async function copyPixCode(){
@@ -4574,17 +4704,54 @@ $("cartButton").classList.toggle(
         p_payment_id:paymentId ? String(paymentId) : null
       });
 
-      if (error){
+      if(error){
         console.error("[MERCADO PAGO STATUS RPC]",error);
-        throw new Error(error.message || "Não foi possível consultar o pagamento.");
+        const err=new Error(error.message || "Não foi possível consultar o pagamento.");
+        err.code=error.code || "";
+        throw err;
       }
 
-      if (!data?.ok){
+      if(!data?.ok){
         console.error("[MERCADO PAGO STATUS RPC]",data);
-        throw new Error(data?.error || data?.message || "Não foi possível consultar o pagamento.");
+        const err=new Error(data?.error || data?.message || "Não foi possível consultar o pagamento.");
+        err.paymentResult=data || null;
+        throw err;
       }
 
       return data;
+    }
+
+    async function waitForPixReady(orderId,paymentId=null,timeoutMs=PIX_CREATE_WAIT_MS){
+      const started=Date.now();
+      let currentPaymentId=paymentId ? String(paymentId) : null;
+      let lastResult=null;
+
+      while(Date.now()-started < timeoutMs){
+        const result=await queryOnlinePaymentStatus(orderId,currentPaymentId);
+        lastResult=result || lastResult;
+
+        if(result?.payment_id) currentPaymentId=String(result.payment_id);
+
+        const status=String(result?.status || "pending").toLowerCase();
+        if(["rejected","cancelled","refunded","charged_back"].includes(status)){
+          throw new Error(result?.error || result?.status_detail || "O Mercado Pago recusou o pagamento.");
+        }
+
+        if(result?.qr_code || result?.qr_code_base64){
+          return {
+            ...result,
+            order_id:orderId,
+            payment_id:result.payment_id || currentPaymentId || null
+          };
+        }
+
+        await new Promise(resolve=>setTimeout(resolve,PIX_CREATE_POLL_MS));
+      }
+
+      const message=lastResult?.status_detail && lastResult.status_detail!=="waiting_mercadopago"
+        ? lastResult.status_detail
+        : "Não foi possível gerar o PIX agora.";
+      throw new Error(message);
     }
 
     function markOrderPaid(orderId,result={}){
@@ -4621,6 +4788,12 @@ $("cartButton").classList.toggle(
       const currentOrderId=String(orderId||"");
       if(!currentOrderId) return;
 
+      const before=getOrdersHistory().find(row=>String(row.order_id||"")===currentOrderId);
+      if(!before || isOrderExpired(before)){
+        removeOrderFromHistory(currentOrderId);
+        return;
+      }
+
       try{
         const result=await queryOnlinePaymentStatus(currentOrderId,paymentId);
         const status=String(result.status || "pending").toLowerCase();
@@ -4628,28 +4801,20 @@ $("cartButton").classList.toggle(
         const failed=["rejected","cancelled","refunded","charged_back"].includes(status);
 
         const current=getOrdersHistory().find(row=>String(row.order_id||"")===currentOrderId);
+        if(!current) return;
+
         updateOrderHistory(currentOrderId,{
-          payment_id:result.payment_id || current?.payment_id || null,
+          payment_id:result.payment_id || current.payment_id || null,
           payment_status:status,
-          qr_code:result.qr_code || current?.qr_code || null,
-          qr_code_base64:result.qr_code_base64 || current?.qr_code_base64 || null,
-          ticket_url:result.ticket_url || current?.ticket_url || null,
-          paid_at:result.paid_at || current?.paid_at || null
+          qr_code:result.qr_code || current.qr_code || null,
+          qr_code_base64:result.qr_code_base64 || current.qr_code_base64 || null,
+          ticket_url:result.ticket_url || current.ticket_url || null,
+          paid_at:result.paid_at || current.paid_at || null
         });
 
         if(state.onlinePayment && String(state.onlinePayment.order_id)===currentOrderId && result.payment_id){
           state.onlinePayment.payment_id=String(result.payment_id);
         }
-
-        const updated=getOrdersHistory().find(row=>String(row.order_id||"")===currentOrderId);
-
-        if(String(state.profileSelectedOrderId||"")===currentOrderId && updated){
-          renderProfilePix(updated);
-        }else if(!$("profileModal")?.classList.contains("hidden")){
-          renderProfilePanel();
-        }
-
-        updateProfilePendingIndicator();
 
         if(approved){
           if(state.paymentPollTimer){
@@ -4661,13 +4826,43 @@ $("cartButton").classList.toggle(
           return;
         }
 
-        if(failed && state.paymentPollTimer){
-          clearInterval(state.paymentPollTimer);
-          state.paymentPollTimer=null;
+        if(failed){
+          if(state.paymentPollTimer){
+            clearInterval(state.paymentPollTimer);
+            state.paymentPollTimer=null;
+          }
+          removeOrderFromHistory(currentOrderId);
+          renderProfilePanel();
+          toast("Pagamento não aprovado. O pedido foi removido.","error");
+          return;
+        }
+
+        const updated=getOrdersHistory().find(row=>String(row.order_id||"")===currentOrderId);
+        if(String(state.profileSelectedOrderId||"")===currentOrderId && updated){
+          renderProfilePix(updated);
+        }else if(!$("profileModal")?.classList.contains("hidden")){
           renderProfilePanel();
         }
+
+        updateProfilePendingIndicator();
       }catch(error){
         console.warn("[PAGAMENTO]",error);
+
+        if(state.paymentPollTimer){
+          clearInterval(state.paymentPollTimer);
+          state.paymentPollTimer=null;
+        }
+
+        removeOrderFromHistory(currentOrderId);
+        renderProfilePanel();
+
+        if(String(state.profileSelectedOrderId||"")===currentOrderId){
+          state.profileSelectedOrderId=null;
+          $("profilePixSection")?.classList.add("hidden");
+          $("profileHistorySection")?.classList.remove("hidden");
+        }
+
+        toast(error.message || "Não foi possível consultar o PIX.","error");
       }
     }
 
@@ -4680,29 +4875,32 @@ $("cartButton").classList.toggle(
       const currentOrderId=String(orderId||"");
       if(!currentOrderId) return;
 
+      const existing=getOrdersHistory().find(row=>String(row.order_id||"")===currentOrderId);
+      if(!existing || isOrderExpired(existing) || !(existing.qr_code || existing.qr_code_base64)){
+        removeOrderFromHistory(currentOrderId);
+        return;
+      }
+
       state.onlinePayment={
         order_id:currentOrderId,
-        payment_id:paymentId ? String(paymentId) : null,
+        payment_id:paymentId ? String(paymentId) : existing.payment_id || null,
         delivery_id:String(state.delivery.id)
       };
 
-      refreshPixStatus(currentOrderId,paymentId);
-
       state.paymentPollTimer=setInterval(()=>{
         const order=getOrdersHistory().find(row=>String(row.order_id||"")===currentOrderId);
-        if(!order || !isPendingPaymentOrder(order)){
+
+        if(!order || isOrderExpired(order) || !isPendingPaymentOrder(order)){
           clearInterval(state.paymentPollTimer);
           state.paymentPollTimer=null;
+          if(order && isOrderExpired(order)) removeOrderFromHistory(currentOrderId);
           updateProfilePendingIndicator();
           return;
         }
+
         refreshPixStatus(currentOrderId,order.payment_id || state.onlinePayment?.payment_id || null);
-      },3500);
+      },4000);
     }
-
-
-
-
 
     async function checkoutOnlinePayment(payload){
       const onlineMethod = selectedOnlineMethod() || "pix";
@@ -4757,28 +4955,44 @@ $("cartButton").classList.toggle(
       }
 
       if (data.method === "pix"){
-        saveLastOrderToStorage(
-          {...payload,total:Number(data.total ?? payload.total),subtotal:Number(data.subtotal ?? payload.subtotal),delivery_fee:Number(data.delivery_fee ?? payload.delivery_fee)},
-          {
-            channel:"online-pix",
-            order_id:data.order_id,
-            payment_id:data.payment_id || null,
-            payment_status:data.status || "pending",
-            qr_code:data.qr_code || null,
-            qr_code_base64:data.qr_code_base64 || null,
-            ticket_url:data.ticket_url || null
-          }
-        );
+        /* Não abre nenhuma tela vazia.
+           Espera apenas durante o processamento do botão.
+           Se vier QR, mostra. Se não vier, falha e mantém o carrinho. */
+        const ready = (data.qr_code || data.qr_code_base64)
+          ? data
+          : await waitForPixReady(data.order_id,data.payment_id || null);
 
-        /* showPixPaymentModal já abre o modal e inicia a consulta automática. */
+        if(!(ready.qr_code || ready.qr_code_base64)){
+          throw new Error("Mercado Pago não retornou um PIX válido.");
+        }
+
+        const finalPayload={
+          ...payload,
+          total:Number(ready.total ?? data.total ?? payload.total),
+          subtotal:Number(ready.subtotal ?? data.subtotal ?? payload.subtotal),
+          delivery_fee:Number(ready.delivery_fee ?? data.delivery_fee ?? payload.delivery_fee)
+        };
+
+        saveLastOrderToStorage(finalPayload,{
+          channel:"online-pix",
+          order_id:data.order_id,
+          payment_id:ready.payment_id || data.payment_id || null,
+          payment_status:ready.status || data.status || "pending",
+          qr_code:ready.qr_code || null,
+          qr_code_base64:ready.qr_code_base64 || null,
+          ticket_url:ready.ticket_url || null,
+          pix_created_at:new Date().toISOString(),
+          expires_at:new Date(Date.now()+PIX_HISTORY_TTL_MS).toISOString()
+        });
+
         showPixPaymentModal({
           order_id:data.order_id,
-          payment_id:data.payment_id,
-          status:data.status,
-          qr_code:data.qr_code,
-          qr_code_base64:data.qr_code_base64,
-          ticket_url:data.ticket_url,
-          total:data.total
+          payment_id:ready.payment_id || data.payment_id || null,
+          status:ready.status || data.status || "pending",
+          qr_code:ready.qr_code,
+          qr_code_base64:ready.qr_code_base64,
+          ticket_url:ready.ticket_url || null,
+          total:finalPayload.total
         });
 
         return;
