@@ -1,0 +1,24 @@
+# 1) Entrar na pasta do projeto
+cd clena_delivery_mercadopago_completo
+
+# 2) Instalar CLI, se necessário
+npm install -g supabase
+
+# 3) Login
+supabase login
+
+# 4) Vincular ao projeto
+supabase link --project-ref SEU_PROJECT_REF
+
+# 5) Deploy
+supabase functions deploy mp-create-payment --no-verify-jwt
+supabase functions deploy mp-payment-status --no-verify-jwt
+supabase functions deploy mp-webhook --no-verify-jwt
+
+# 6) Domínio (trocar pelo seu)
+supabase secrets set PUBLIC_SITE_URL=https://SEU-DOMINIO.com
+supabase secrets set ALLOWED_ORIGINS=https://SEU-DOMINIO.com
+
+# Banco:
+# Execute sql/01_MERCADOPAGO_COMPLETO.sql no SQL Editor do Supabase.
+# Depois execute sql/02_CONFIGURAR_CREDENCIAL_LOJA.sql preenchido.

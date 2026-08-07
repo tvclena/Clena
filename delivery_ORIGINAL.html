@@ -1565,29 +1565,6 @@
     }
   </style>
 
-
-  <style id="mercado-pago-online-v1">
-    .online-payment-box{margin-top:12px;border:1px solid #dbeafe;background:#eff6ff;border-radius:16px;padding:13px}
-    .online-payment-box.hidden{display:none!important}
-    .online-payment-box h4{margin:0 0 4px;font-size:12px;color:#172033}
-    .online-payment-box>p{margin:0 0 10px;font-size:9px;line-height:1.5;color:#64748b}
-    .online-payment-box .payment-cards{margin-bottom:10px}
-    .online-secure-note{display:flex;align-items:flex-start;gap:7px;font-size:8px;color:#475569;line-height:1.45;margin-top:4px}
-    .online-secure-note i{color:#059669;font-size:14px}
-    .payment-modal-card{width:min(460px,calc(100% - 24px));background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 35px 110px rgba(2,6,23,.38)}
-    .payment-modal-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .payment-modal-head h2{font-size:19px;margin:0}.payment-modal-head small{display:block;color:var(--muted);font-size:8px;margin-bottom:3px}
-    .payment-modal-body{padding:20px;text-align:center}
-    .pix-amount{font-size:28px;font-weight:900;letter-spacing:-.04em;margin:2px 0 14px}
-    .pix-qr{width:min(270px,80vw);aspect-ratio:1;margin:0 auto 13px;border:1px solid var(--line);border-radius:18px;padding:12px;background:#fff;display:grid;place-items:center}
-    .pix-qr img{width:100%;height:100%;object-fit:contain}
-    .pix-code{width:100%;min-height:88px;border:1px solid var(--line);border-radius:12px;padding:10px;font-size:10px;line-height:1.45;resize:none;background:#f8fafc;color:#334155}
-    .pix-actions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px}
-    .pix-status{margin:14px 0 0;padding:11px;border-radius:12px;background:#fff7ed;color:#9a3412;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:7px}
-    .pix-status.approved{background:#ecfdf5;color:#166534}.pix-status.failed{background:#fef2f2;color:#991b1b}
-    .payment-modal-footer{padding:12px 20px 18px}.secondary-btn{width:100%;min-height:44px;border:1px solid var(--line);background:#fff;border-radius:13px;font-weight:800;color:var(--text)}
-    @media(max-width:650px){.online-payment-box{padding:10px;border-radius:13px}.payment-modal-card{width:100%;border-radius:24px 24px 0 0}.modal-overlay.payment-modal-overlay{align-items:end;padding:0}.payment-modal-body{padding:16px}.pix-amount{font-size:24px}}
-  </style>
 </head>
 
 <body>
@@ -1709,27 +1686,6 @@
           </div>
           <p id="paymentNote" class="payment-note"></p>
 
-          <div id="onlinePaymentBox" class="online-payment-box hidden">
-            <h4>Pagamento online Mercado Pago</h4>
-            <p>Escolha como deseja pagar agora. O token da loja nunca fica exposto neste navegador.</p>
-            <div class="payment-cards">
-              <label class="choice-card">
-                <input type="radio" name="onlinePayment" value="pix" checked>
-                <span><i class="ri-qr-code-line"></i>PIX online</span>
-              </label>
-              <label class="choice-card">
-                <input type="radio" name="onlinePayment" value="checkout">
-                <span><i class="ri-bank-card-line"></i>Checkout Mercado Pago</span>
-              </label>
-            </div>
-            <label id="customerEmailField" class="field">
-              <span>E-mail para o pagamento *</span>
-              <input id="customerEmail" type="email" autocomplete="email" placeholder="seuemail@exemplo.com">
-              <small>Necessário para gerar o PIX e identificar o pagamento.</small>
-            </label>
-            <div class="online-secure-note"><i class="ri-shield-check-line"></i><span>Pagamento processado pela API segura do Mercado Pago. Nenhuma credencial privada é enviada ao cliente.</span></div>
-          </div>
-
           <div id="orderSummary" class="summary-box"></div>
         </section>
       </div>
@@ -1795,26 +1751,6 @@
     </section>
   </div>
 
-
-  <div id="paymentModal" class="modal-overlay payment-modal-overlay hidden" aria-hidden="true">
-    <section class="payment-modal-card" role="dialog" aria-modal="true" aria-labelledby="paymentModalTitle">
-      <header class="payment-modal-head">
-        <div><small>PAGAMENTO ONLINE</small><h2 id="paymentModalTitle">Pague com PIX</h2></div>
-        <button id="closePaymentModalBtn" class="icon-btn" type="button" aria-label="Fechar pagamento"><i class="ri-close-line"></i></button>
-      </header>
-      <div class="payment-modal-body">
-        <div id="pixAmount" class="pix-amount">R$ 0,00</div>
-        <div id="pixQr" class="pix-qr"><i class="ri-loader-4-line spinner" style="font-size:34px"></i></div>
-        <textarea id="pixCode" class="pix-code" readonly placeholder="Código PIX Copia e Cola"></textarea>
-        <div class="pix-actions">
-          <button id="copyPixBtn" class="primary-btn" type="button"><i class="ri-file-copy-line"></i><span>Copiar código PIX</span></button>
-        </div>
-        <div id="pixStatus" class="pix-status"><i class="ri-time-line"></i><span>Aguardando pagamento...</span></div>
-      </div>
-      <footer class="payment-modal-footer"><button id="paymentDoneBtn" class="secondary-btn" type="button">Voltar à loja</button></footer>
-    </section>
-  </div>
-
   <div id="toastHost" class="toast-host" aria-live="polite"></div>
 
   <script type="module">
@@ -1843,8 +1779,6 @@
       category:"all",
       search:"",
       product:null,
-      onlinePayment:null,
-      paymentPollTimer:null,
       modalQty:1,
       modalSelections:new Map(),
       openInfo:null
@@ -1975,7 +1909,6 @@
         $("loadingScreen").classList.add("hidden");
         $("app").classList.remove("hidden");
         renderCart();
-        await handleMercadoPagoReturn();
       }catch(error){
         console.error(error);
         $("loadingScreen").innerHTML = `
@@ -3475,16 +3408,6 @@ function syncStoreAvailability(showTransitionToast=false){
       return document.querySelector('input[name="payment"]:checked')?.value || "";
     }
 
-    function selectedOnlineMethod(){
-      return document.querySelector('input[name="onlinePayment"]:checked')?.value || "pix";
-    }
-
-    function updateOnlinePaymentVisibility(){
-      const online = selectedPayment() === "Online";
-      $("onlinePaymentBox")?.classList.toggle("hidden", !online);
-      if ($("customerEmail")) $("customerEmail").required = online;
-    }
-
     function selectedZone(){
       return state.zones.find(zone => zone.id === $("zoneSelect").value) || null;
     }
@@ -3625,11 +3548,7 @@ $("cartButton").classList.toggle(
 
       $$('input[name="payment"]').forEach(input => input.addEventListener("change", () => {
         $("cashChangeField").classList.toggle("hidden", selectedPayment() !== "Dinheiro");
-        updateOnlinePaymentVisibility();
-        renderOrderSummary();
-        persistOrderDraft();
       }));
-      updateOnlinePaymentVisibility();
     }
 
     function updateCheckoutVisibility(){
@@ -3640,7 +3559,6 @@ $("cartButton").classList.toggle(
       $("addressField").classList.toggle("hidden", !delivery);
       $("scheduleFields").classList.toggle("hidden", !state.delivery.allow_scheduling);
       $("notesField").classList.toggle("hidden", state.delivery.allow_order_notes === false);
-      updateOnlinePaymentVisibility();
 
       if (delivery && !state.zones.length){
         $("zoneField").classList.add("hidden");
@@ -3665,10 +3583,8 @@ $("cartButton").classList.toggle(
       `;
 
       const mode = state.delivery.checkout_mode || "whatsapp";
-      const online = selectedPayment() === "Online";
-      const onlineMethod = selectedOnlineMethod();
-      const icon = online ? (onlineMethod === "pix" ? "ri-qr-code-line" : "ri-secure-payment-line") : (mode === "internal" ? "ri-send-plane-fill" : "ri-whatsapp-line");
-      const label = online ? (onlineMethod === "pix" ? "Gerar PIX e pagar" : "Ir para o Mercado Pago") : (mode === "internal" ? "Confirmar pedido" : mode === "catalog" ? "Solicitar pelo WhatsApp" : "Enviar pelo WhatsApp");
+      const icon = mode === "internal" ? "ri-send-plane-fill" : "ri-whatsapp-line";
+      const label = mode === "internal" ? "Confirmar pedido" : mode === "catalog" ? "Solicitar pelo WhatsApp" : "Enviar pelo WhatsApp";
       if (!state.openInfo.open){
         $("checkoutButton").innerHTML = `<i class="ri-lock-2-line"></i><span>Loja fechada</span>`;
         $("checkoutButton").disabled = true;
@@ -3697,11 +3613,6 @@ $("cartButton").classList.toggle(
       if (!selectedPayment()) return "Escolha uma forma de pagamento.";
       if (!$("customerName").value.trim()) return "Informe o seu nome.";
       if (digits($("customerPhone").value).length < 10) return "Informe um WhatsApp válido.";
-      if (selectedPayment() === "Online"){
-        const email = $("customerEmail")?.value.trim() || "";
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "Informe um e-mail válido para o pagamento online.";
-        if (!selectedOnlineMethod()) return "Escolha PIX online ou Checkout Mercado Pago.";
-      }
 
       if (selectedFulfillment() === "delivery"){
         if (!$("customerAddress").value.trim()) return "Informe o endereço completo.";
@@ -3802,13 +3713,11 @@ $("cartButton").classList.toggle(
       return {
         customer_name:$("customerName")?.value || "",
         customer_phone:$("customerPhone")?.value || "",
-        customer_email:$("customerEmail")?.value || "",
         address:$("customerAddress")?.value || "",
         notes:$("orderNotes")?.value || "",
         fulfillment:checkedFulfillment?.value || "",
         zone_id:$("zoneSelect")?.value || "",
         payment:checkedPayment?.value || "",
-        online_method:selectedOnlineMethod(),
         cash_change:$("cashChange")?.value || "",
         schedule_date:$("scheduleDate")?.value || "",
         schedule_time:$("scheduleTime")?.value || ""
@@ -3851,7 +3760,6 @@ $("cartButton").classList.toggle(
       if (!draft || String(saved.delivery_id)!==String(state.delivery?.id)) return;
       if ($("customerName")) $("customerName").value=draft.customer_name || "";
       if ($("customerPhone")) $("customerPhone").value=draft.customer_phone || "";
-      if ($("customerEmail")) $("customerEmail").value=draft.customer_email || "";
       if ($("customerAddress")) $("customerAddress").value=draft.address || "";
       if ($("orderNotes")) $("orderNotes").value=draft.notes || "";
       if ($("zoneSelect") && [...$("zoneSelect").options].some(o=>String(o.value)===String(draft.zone_id))) $("zoneSelect").value=draft.zone_id;
@@ -3860,7 +3768,6 @@ $("cartButton").classList.toggle(
       if ($("scheduleTime")) $("scheduleTime").value=draft.schedule_time || "";
       if (draft.fulfillment){ const el=document.querySelector(`input[name="fulfillment"][value="${CSS.escape(String(draft.fulfillment))}"]`); if(el) el.checked=true; }
       if (draft.payment){ const el=document.querySelector(`input[name="payment"][value="${CSS.escape(String(draft.payment))}"]`); if(el) el.checked=true; }
-      if (draft.online_method){ const el=document.querySelector(`input[name="onlinePayment"][value="${CSS.escape(String(draft.online_method))}"]`); if(el) el.checked=true; }
       updateCheckoutVisibility();
       renderOrderSummary();
     }
@@ -3909,7 +3816,6 @@ $("cartButton").classList.toggle(
         owner_id:state.delivery.owner_id,
         customer_name:$("customerName").value.trim(),
         customer_phone:digits($("customerPhone").value),
-        customer_email:$("customerEmail")?.value.trim() || null,
         fulfillment_type:fulfillment,
         address:fulfillment === "delivery" ? {
           text:$("customerAddress").value.trim(),
@@ -3919,7 +3825,6 @@ $("cartButton").classList.toggle(
         },
         zone_id:fulfillment === "delivery" ? zone?.id || null : null,
         payment_method:selectedPayment(),
-        payment_online_method:selectedPayment() === "Online" ? selectedOnlineMethod() : null,
         subtotal,
         delivery_fee:fee,
         total,
@@ -3972,151 +3877,6 @@ $("cartButton").classList.toggle(
       return `https://wa.me/${normalized}?text=${encodeURIComponent(message)}`;
     }
 
-    function onlineCartPayload(){
-      return state.cart.map(row => ({
-        item_id:String(row.item.id),
-        quantity:Math.max(1,Number(row.qty)||1),
-        addon_ids:(row.addons || []).map(addon => String(addon.id)),
-        note:row.note || ""
-      }));
-    }
-
-    function closePaymentModal(){
-      if (state.paymentPollTimer){ clearInterval(state.paymentPollTimer); state.paymentPollTimer=null; }
-      $("paymentModal")?.classList.add("hidden");
-      $("paymentModal")?.setAttribute("aria-hidden","true");
-      if ($("cartOverlay")?.classList.contains("hidden")) document.body.classList.remove("no-scroll");
-    }
-
-    function showPixPaymentModal(data){
-      state.onlinePayment={order_id:data.order_id,payment_id:data.payment_id,delivery_id:String(state.delivery.id)};
-      $("paymentModalTitle").textContent="Pague com PIX";
-      $("pixAmount").textContent=money(data.total || cartSubtotal()+deliveryFee());
-      $("pixCode").value=data.qr_code || "";
-      $("pixQr").innerHTML=data.qr_code_base64
-        ? `<img alt="QR Code PIX" src="data:image/png;base64,${data.qr_code_base64}">`
-        : `<i class="ri-qr-code-line" style="font-size:52px"></i>`;
-      $("pixStatus").className="pix-status";
-      $("pixStatus").innerHTML=`<i class="ri-time-line"></i><span>Aguardando pagamento...</span>`;
-      $("paymentModal").classList.remove("hidden");
-      $("paymentModal").setAttribute("aria-hidden","false");
-      document.body.classList.add("no-scroll");
-      startPaymentPolling(data.order_id,data.payment_id);
-    }
-
-    async function copyPixCode(){
-      const code=$("pixCode")?.value || "";
-      if (!code) return toast("Código PIX indisponível.","error");
-      try{
-        await navigator.clipboard.writeText(code);
-        toast("Código PIX copiado.","success");
-      }catch{
-        $("pixCode").focus(); $("pixCode").select();
-        document.execCommand("copy");
-        toast("Código PIX copiado.","success");
-      }
-    }
-
-    function paymentStatusLabel(status){
-      const map={approved:"Pagamento aprovado!",pending:"Aguardando pagamento...",in_process:"Pagamento em análise...",rejected:"Pagamento rejeitado.",cancelled:"Pagamento cancelado.",refunded:"Pagamento estornado.",charged_back:"Pagamento contestado."};
-      return map[status] || `Status: ${status || "pendente"}`;
-    }
-
-    async function queryOnlinePaymentStatus(orderId,paymentId=null){
-      const {data,error}=await state.db.functions.invoke("mp-payment-status",{
-        body:{delivery_id:String(state.delivery.id),order_id:String(orderId),payment_id:paymentId ? String(paymentId) : null}
-      });
-      if (error) throw new Error(error.message || "Não foi possível consultar o pagamento.");
-      if (!data?.ok) throw new Error(data?.error || "Não foi possível consultar o pagamento.");
-      return data;
-    }
-
-    function markOrderPaid(orderId){
-      const key=lastOrderStorageKey();
-      const last=safeLocalStorageGet(key);
-      if (last && String(last.order_id)===String(orderId)){
-        last.payment_status="approved";
-        last.paid_at=new Date().toISOString();
-        safeLocalStorageSet(key,last);
-      }
-      state.cart=[];
-      clearOrderDraftStorage();
-      renderCart();
-    }
-
-    async function refreshPixStatus(orderId,paymentId){
-      try{
-        const result=await queryOnlinePaymentStatus(orderId,paymentId);
-        const status=result.status || "pending";
-        const approved=status === "approved";
-        const failed=["rejected","cancelled","refunded","charged_back"].includes(status);
-        $("pixStatus").className=`pix-status ${approved ? "approved" : failed ? "failed" : ""}`;
-        $("pixStatus").innerHTML=`<i class="${approved ? "ri-checkbox-circle-line" : failed ? "ri-close-circle-line" : "ri-time-line"}"></i><span>${esc(paymentStatusLabel(status))}</span>`;
-        if (approved){
-          if (state.paymentPollTimer){ clearInterval(state.paymentPollTimer); state.paymentPollTimer=null; }
-          markOrderPaid(orderId);
-          toast("Pagamento aprovado. Pedido confirmado!","success");
-        }else if(failed && state.paymentPollTimer){
-          clearInterval(state.paymentPollTimer); state.paymentPollTimer=null;
-        }
-      }catch(error){ console.warn("[PAGAMENTO]",error); }
-    }
-
-    function startPaymentPolling(orderId,paymentId){
-      if (state.paymentPollTimer) clearInterval(state.paymentPollTimer);
-      refreshPixStatus(orderId,paymentId);
-      state.paymentPollTimer=setInterval(()=>refreshPixStatus(orderId,paymentId),4000);
-    }
-
-    async function checkoutOnlinePayment(payload){
-      const requestBody={
-        delivery_id:String(state.delivery.id),
-        method:selectedOnlineMethod(),
-        customer:{name:payload.customer_name,phone:payload.customer_phone,email:payload.customer_email,address:payload.address},
-        fulfillment_type:payload.fulfillment_type,
-        zone_id:payload.zone_id ? String(payload.zone_id) : null,
-        notes:payload.notes,
-        scheduled_for:payload.scheduled_for,
-        items:onlineCartPayload(),
-        return_url:`${location.origin}${location.pathname}?slug=${encodeURIComponent(state.delivery.slug || slugFromUrl())}`
-      };
-      const {data,error}=await state.db.functions.invoke("mp-create-payment",{body:requestBody});
-      if (error) throw new Error(error.message || "Falha ao iniciar o pagamento online.");
-      if (!data?.ok) throw new Error(data?.error || "Falha ao iniciar o pagamento online.");
-
-      const localPayload={...payload,total:Number(data.total ?? payload.total),subtotal:Number(data.subtotal ?? payload.subtotal),delivery_fee:Number(data.delivery_fee ?? payload.delivery_fee)};
-      saveLastOrderToStorage(localPayload,{channel:`mercadopago:${requestBody.method}`,order_id:data.order_id});
-      persistOrderDraft();
-
-      if (requestBody.method === "pix"){
-        showPixPaymentModal(data);
-        return {handled:true,redirect:false};
-      }
-      if (!data.init_point) throw new Error("O Mercado Pago não retornou a URL do checkout.");
-      location.href=data.init_point;
-      return {handled:true,redirect:true};
-    }
-
-    async function handleMercadoPagoReturn(){
-      const params=new URLSearchParams(location.search);
-      const orderId=params.get("order_id") || params.get("external_reference");
-      const paymentId=params.get("payment_id") || params.get("collection_id");
-      const hasReturn=params.has("mp_return") || params.has("collection_status") || params.has("payment_id") || params.has("collection_id");
-      if (!hasReturn || !orderId) return;
-      try{
-        const result=await queryOnlinePaymentStatus(orderId,paymentId);
-        if (result.status === "approved"){
-          markOrderPaid(orderId);
-          toast("Pagamento aprovado. Pedido confirmado!","success");
-        }else{
-          toast(paymentStatusLabel(result.status),result.status === "rejected" ? "error" : "default");
-        }
-      }catch(error){ console.warn("[PAGAMENTO RETORNO]",error); }
-      const clean=new URL(location.href);
-      ["mp_return","order_id","payment_id","collection_id","collection_status","payment_type","merchant_order_id","preference_id","status","external_reference","merchant_account_id"].forEach(k=>clean.searchParams.delete(k));
-      history.replaceState({},"",clean.pathname+(clean.search ? clean.search : "")+clean.hash);
-    }
-
     async function checkout(){
       refreshOpenInfo();
       if (!state.openInfo.open){
@@ -4141,11 +3901,6 @@ $("cartButton").classList.toggle(
       button.innerHTML = `<i class="ri-loader-4-line spinner"></i><span>Processando...</span>`;
 
       try{
-        if (selectedPayment() === "Online"){
-          await checkoutOnlinePayment(payload);
-          return;
-        }
-
         if (mode === "internal"){
           const {data:orderRows,error} = await state.db
             .from("delivery_orders")
@@ -4505,26 +4260,21 @@ $("cartButton").classList.toggle(
 
       $("addToCartBtn").addEventListener("click",addModalProductToCart);
       $("checkoutButton").addEventListener("click",checkout);
-      $("copyPixBtn")?.addEventListener("click",copyPixCode);
-      $("closePaymentModalBtn")?.addEventListener("click",closePaymentModal);
-      $("paymentDoneBtn")?.addEventListener("click",closePaymentModal);
-      $$('input[name="onlinePayment"]').forEach(input=>input.addEventListener("change",()=>{renderOrderSummary();persistOrderDraft();}));
 
-      ["customerName","customerPhone","customerEmail","customerAddress","orderNotes","zoneSelect","cashChange","scheduleDate","scheduleTime"].forEach(id=>{
+      ["customerName","customerPhone","customerAddress","orderNotes","zoneSelect","cashChange","scheduleDate","scheduleTime"].forEach(id=>{
         const el=$(id); if(!el) return;
         el.addEventListener("input",persistOrderDraft);
         el.addEventListener("change",persistOrderDraft);
       });
       $("checkoutForm")?.addEventListener("change",event=>{
-        if(event.target.matches('input[name="fulfillment"],input[name="payment"],input[name="onlinePayment"]')) persistOrderDraft();
+        if(event.target.matches('input[name="fulfillment"],input[name="payment"]')) persistOrderDraft();
       });
 
       $("scheduleDate").min = new Date().toISOString().slice(0,10);
 
       document.addEventListener("keydown",event => {
         if (event.key !== "Escape") return;
-        if (!$("paymentModal").classList.contains("hidden")) closePaymentModal();
-        else if (!$("informationModal").classList.contains("hidden")) closeInformationModal();
+        if (!$("informationModal").classList.contains("hidden")) closeInformationModal();
         else if (!$("productModal").classList.contains("hidden")) closeProductModal();
         else if (!$("cartOverlay").classList.contains("hidden")) closeCart();
       });

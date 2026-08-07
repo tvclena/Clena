@@ -1,0 +1,11 @@
+CLENA DELIVERY + MERCADO PAGO
+Gerado em: 2026-08-07
+
+Arquivos principais:
+- delivery_ORIGINAL.html : original recebido, preservado
+- delivery.html          : frontend completo ajustado
+- index.html             : mesma versão ajustada com nome index
+- sql/                   : migração, credencial e diagnóstico
+- supabase/functions/    : criação PIX/Checkout, status e webhook
+- README_INSTALACAO.md   : instalação passo a passo
+- COMANDOS_VSCODE.txt    : comandos rápidos
