@@ -4193,8 +4193,20 @@ $("cartButton").classList.toggle(
     renderCart = function(){
       persistOrderDraft();
       const count=state.cart.reduce((sum,row)=>sum+row.qty,0), subtotal=cartSubtotal();
-      refreshOpenInfo(); const storeOpen=!!state.openInfo.open;
-      $("cartCount").textContent=count; $("cartButtonTotal").textContent=money(subtotal); $("cartButton").classList.remove("hidden");
+refreshOpenInfo();
+
+const storeOpen = !!state.openInfo?.open;
+const visualAllowsCart = state.visual?.showCart !== false;
+
+$("cartCount").textContent = count;
+$("cartButtonTotal").textContent = money(subtotal);
+
+$("cartButton").classList.toggle(
+  "hidden",
+  !visualAllowsCart || count <= 0 || !storeOpen
+);
+
+
       const minimum=Math.max(0,numberValue(state.delivery.minimum_order));
       const progress=minimum>0?Math.min(100,(subtotal/minimum)*100):(count?100:0);
       if($("cartMinimumText")) $("cartMinimumText").textContent=minimum>0?`Pedido mínimo ${money(minimum)}`:(count?`${count} item(ns) na sacola`:"Sacola vazia");
