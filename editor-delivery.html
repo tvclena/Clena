@@ -540,6 +540,21 @@ th{position:sticky;top:0;z-index:2}.filters-row{background:#fff;position:sticky;
 @media(max-width:700px){.item-media-column{max-width:none!important}.item-media-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 
+
+<style id="clenaAppearanceFinalCleanupV9">
+/* O layout visual é padrão e não aparece mais na aba Aparência */
+#section-appearance .appearance-clean-layout{
+  grid-template-columns:1fr!important;
+}
+#section-appearance .appearance-clean-card{
+  width:100%;
+}
+#section-appearance .appearance-preview-card,
+#section-appearance .appearance-promo-card{
+  grid-column:auto!important;
+}
+</style>
+
 </head>
 <body>
   <div id="pageLoader" class="page-loader">
@@ -973,35 +988,6 @@ th{position:sticky;top:0;z-index:2}.filters-row{background:#fff;position:sticky;
               </div>
             </article>
 
-            <article class="panel-card appearance-clean-card">
-              <div class="appearance-clean-head">
-                <span class="appearance-clean-icon"><i class="ri-layout-grid-line"></i></span>
-                <div><small>LAYOUT</small><h3>Capa, logo e produtos</h3><p>Configurações que a página pública realmente lê.</p></div>
-              </div>
-              <div class="appearance-clean-body">
-                <div class="appearance-control-grid">
-                  <label class="appearance-range"><span><b>Altura da capa</b><output id="proCoverHeightOut">260px</output></span><input id="proCoverHeight" type="range" min="160" max="520" step="5" value="260"></label>
-                  <label class="appearance-range"><span><b>Tamanho do logo</b><output id="proLogoSizeOut">88px</output></span><input id="proLogoSize" type="range" min="48" max="180" step="2" value="88"></label>
-
-                  <label class="appearance-select"><span>Encaixe da capa</span><select id="proCoverFit"><option value="cover">Preencher</option><option value="contain">Mostrar imagem inteira</option></select></label>
-                  <label class="appearance-select"><span>Posição da capa</span><select id="proCoverPosition"><option value="center">Centro</option><option value="top">Topo</option><option value="bottom">Base</option><option value="left">Esquerda</option><option value="right">Direita</option></select></label>
-                  <label class="appearance-select"><span>Formato do logo</span><select id="proLogoShape"><option value="rounded">Arredondado</option><option value="circle">Circular</option><option value="square">Quadrado suave</option></select></label>
-
-                  <label class="appearance-select"><span>Produtos no desktop</span><select id="proDesktopCols"><option value="2">2 colunas</option><option value="3">3 colunas</option><option value="4">4 colunas</option><option value="5">5 colunas</option></select></label>
-                  <label class="appearance-select appearance-mobile-cols"><span>Produtos no celular</span><select id="proMobileCols"><option value="1">1 coluna</option><option value="2">2 colunas</option><option value="3">3 colunas</option><option value="4">4 colunas</option></select></label>
-
-                  <label class="appearance-range"><span><b>Espaço entre produtos</b><output id="proCardGapOut">15px</output></span><input id="proCardGap" type="range" min="6" max="30" step="1" value="15"></label>
-                </div>
-
-                <div class="appearance-clean-tip"><i class="ri-database-2-line"></i><div><b>Salvo no cadastro da loja</b><small>Não fica mais somente neste navegador. O público recebe a mesma configuração.</small></div></div>
-
-                <div class="appearance-actions">
-                  <button id="proResetAppearance" class="outline-btn" type="button"><i class="ri-refresh-line"></i>Restaurar padrão</button>
-                  <button id="proOpenPreview" class="primary-btn" type="button"><i class="ri-fullscreen-line"></i>Ver prévia completa</button>
-                </div>
-              </div>
-            </article>
-
             <article class="panel-card appearance-clean-card appearance-promo-card">
               <div class="appearance-clean-head appearance-promo-head">
                 <span class="appearance-clean-icon"><i class="ri-slideshow-3-line"></i></span>
@@ -1049,6 +1035,21 @@ th{position:sticky;top:0;z-index:2}.filters-row{background:#fff;position:sticky;
 
           <!-- IDs mantidos invisíveis somente para compatibilidade do código-base -->
           <div class="appearance-compatibility" aria-hidden="true">
+            <!-- Layout público padronizado: mantido somente como valores técnicos -->
+            <input id="proCoverHeight" type="range" min="160" max="520" value="260">
+            <output id="proCoverHeightOut">260px</output>
+            <input id="proLogoSize" type="range" min="48" max="180" value="88">
+            <output id="proLogoSizeOut">88px</output>
+            <select id="proCoverFit"><option value="cover" selected>Preencher</option></select>
+            <select id="proCoverPosition"><option value="center" selected>Centro</option></select>
+            <select id="proLogoShape"><option value="rounded" selected>Arredondado</option></select>
+            <select id="proDesktopCols"><option value="4" selected>4</option></select>
+            <select id="proMobileCols"><option value="3" selected>3</option></select>
+            <input id="proCardGap" type="range" min="6" max="30" value="15">
+            <output id="proCardGapOut">15px</output>
+            <button id="proResetAppearance" type="button"></button>
+            <button id="proOpenPreview" type="button"></button>
+
             <span id="activeThemeName">Padrão</span><div id="themePresetGrid"></div>
             <input id="primaryColor" type="color" value="#ef252f"><input id="primaryColorText" value="#ef252f">
             <input id="accentColor" type="color" value="#111111"><input id="accentColorText" value="#111111">
@@ -1086,6 +1087,14 @@ th{position:sticky;top:0;z-index:2}.filters-row{background:#fff;position:sticky;
                     <label class="field is-hidden" id="promoUrlField"><span>Link externo</span><input id="promoExternalUrl" type="url" placeholder="https://..."></label>
                     <div class="form-grid two"><label class="field"><span>Início</span><input id="promoStartsAt" type="datetime-local"></label><label class="field"><span>Fim</span><input id="promoEndsAt" type="datetime-local"></label></div>
                     <label class="toggle-row highlighted"><span><i class="ri-eye-line"></i><b>Promoção ativa</b><small>Exibir na página pública</small></span><input id="promoActive" type="checkbox" checked><i></i></label>
+
+                    <!-- Campos técnicos mantidos invisíveis para compatibilidade -->
+                    <div class="appearance-compatibility" aria-hidden="true">
+                      <input id="promoDurationSeconds" type="number" min="1" max="60" value="5">
+                      <input id="promoMuted" type="checkbox" checked>
+                      <input id="promoLoop" type="checkbox" checked>
+                      <div id="promoLinkedItemPreview" class="is-hidden"></div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2743,12 +2752,12 @@ function syncSettings(){
 async function load(){const st=S();if(!st?.sb||!st?.delivery?.id)return;const {data,error}=await st.sb.from('delivery_promotional_media').select('*').eq('delivery_id',st.delivery.id).order('position').order('created_at');if(error){console.warn('[CLENA] Promoções:',error);return}local.rows=data||[];render();renderPreviews()}
 function render(){const list=$('promoList');if(!list)return;$('promoCountBadge').textContent=`${local.rows.length} ${local.rows.length===1?'mídia':'mídias'}`;if(!local.rows.length){list.innerHTML='<div class="promo-empty"><i class="ri-gallery-line"></i><h4>Nenhuma promoção cadastrada</h4><p>Adicione imagens ou vídeos e vincule-os aos itens do cardápio.</p></div>';return}list.innerHTML=local.rows.map((r,i)=>`<article class="promo-row" data-promo-id="${r.id}"><div class="promo-thumb">${mediaHTML(r)}<span class="promo-type-badge">${r.media_type==='video'?'VÍDEO':r.kind==='vertical_banner'?'BANNER':'STORY'}</span></div><div class="promo-copy"><b>${esc(r.title||'Sem título')}</b><small>${esc(r.subtitle||'Sem descrição')}<br>Posição ${i+1} • ${r.duration_seconds||5}s</small></div><div><span class="promo-link-pill"><i class="ri-link"></i>${esc(linkedName(r))}</span></div><div><span class="promo-status-pill ${activeNow(r)?'':'off'}">${activeNow(r)?'Em exibição':'Inativo/agendado'}</span></div><div class="promo-actions"><button type="button" title="Subir" data-promo-up="${r.id}"><i class="ri-arrow-up-line"></i></button><button type="button" title="Descer" data-promo-down="${r.id}"><i class="ri-arrow-down-line"></i></button><button type="button" title="Editar" data-promo-edit="${r.id}"><i class="ri-edit-line"></i></button><button type="button" title="Excluir" data-promo-delete="${r.id}"><i class="ri-delete-bin-line"></i></button></div></article>`).join('')}
 function fillSelects(){const st=S(),item=$('promoItemId'),cat=$('promoCategoryId');item.innerHTML='<option value="">Selecione um item</option>'+(st?.items||[]).map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');cat.innerHTML='<option value="">Selecione uma categoria</option>'+(st?.categories||[]).map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('')}
-function open(id=null){fillSelects();local.editing=id;local.pendingFile=null;local.removeMedia=false;const r=local.rows.find(x=>x.id===id)||{};$('promoModalTitle').textContent=id?'Editar promoção':'Nova promoção';$('promoTitle').value=r.title||'';$('promoSubtitle').value=r.subtitle||'';$('promoKind').value=r.kind||'story';$('promoActionType').value=r.action_type||'item';$('promoItemId').value=r.item_id||'';$('promoCategoryId').value=r.category_id||'';$('promoExternalUrl').value=r.external_url||'';$('promoDurationSeconds').value=r.duration_seconds||5;$('promoStartsAt').value=fmtDate(r.starts_at);$('promoEndsAt').value=fmtDate(r.ends_at);$('promoActive').checked=r.active!==false;$('promoMuted').checked=r.video_muted!==false;$('promoLoop').checked=r.video_loop!==false;previewMedia(r.media_url,r.media_type);syncAction();$('promoModal').classList.add('open')}
+function open(id=null){fillSelects();local.editing=id;local.pendingFile=null;local.removeMedia=false;const r=local.rows.find(x=>x.id===id)||{};$('promoModalTitle').textContent=id?'Editar promoção':'Nova promoção';$('promoTitle').value=r.title||'';$('promoSubtitle').value=r.subtitle||'';$('promoKind').value=r.kind||'story';$('promoActionType').value=r.action_type||'item';$('promoItemId').value=r.item_id||'';$('promoCategoryId').value=r.category_id||'';$('promoExternalUrl').value=r.external_url||'';if($('promoDurationSeconds'))$('promoDurationSeconds').value=r.duration_seconds||5;$('promoStartsAt').value=fmtDate(r.starts_at);$('promoEndsAt').value=fmtDate(r.ends_at);$('promoActive').checked=r.active!==false;if($('promoMuted'))$('promoMuted').checked=r.video_muted!==false;if($('promoLoop'))$('promoLoop').checked=r.video_loop!==false;previewMedia(r.media_url,r.media_type);syncAction();$('promoModal').classList.add('open')}
 function close(){$('promoModal').classList.remove('open');local.pendingFile=null}
 function previewMedia(url,type){const p=$('promoMediaPreview');if(!url){p.innerHTML='<i class="ri-image-add-line"></i><span>Imagem ou vídeo</span><small>JPG, PNG, WebP ou MP4</small>';return}p.innerHTML=type==='video'?`<video src="${esc(url)}" muted autoplay loop playsinline></video>`:`<img src="${esc(url)}" alt="Prévia">`}
-function syncAction(){const type=$('promoActionType').value;$('promoItemId').closest('.field').classList.toggle('is-hidden',type!=='item');$('promoCategoryId').closest('.field').classList.toggle('is-hidden',type!=='category');$('promoExternalUrl').closest('.field').classList.toggle('is-hidden',type!=='external_url');const item=S()?.items?.find(x=>x.id===$('promoItemId').value),box=$('promoLinkedItemPreview');box.classList.toggle('is-hidden',!item||type!=='item');if(item&&type==='item')box.innerHTML=`<span>${item.image_url?`<img src="${esc(item.image_url)}">`:'<i class="ri-restaurant-line"></i>'}</span><div><b>${esc(item.name)}</b><small>Ao clicar, abrirá este item no cardápio.</small></div>`}
+function syncAction(){const type=$('promoActionType').value;$('promoItemId')?.closest('.field')?.classList.toggle('is-hidden',type!=='item');$('promoCategoryId')?.closest('.field')?.classList.toggle('is-hidden',type!=='category');$('promoExternalUrl')?.closest('.field')?.classList.toggle('is-hidden',type!=='external_url');const item=S()?.items?.find(x=>x.id===$('promoItemId')?.value),box=$('promoLinkedItemPreview');if(box){box.classList.toggle('is-hidden',!item||type!=='item');if(item&&type==='item')box.innerHTML=`<span>${item.image_url?`<img src="${esc(item.image_url)}">`:'<i class="ri-restaurant-line"></i>'}</span><div><b>${esc(item.name)}</b><small>Ao clicar, abrirá este item no cardápio.</small></div>`}}
 async function upload(file){const st=S(),ext=(file.name.split('.').pop()||'bin').replace(/[^a-z0-9]/gi,'').toLowerCase(),path=`${st.user.id}/${st.delivery.id}/promotions/${crypto.randomUUID()}.${ext}`;const {error}=await st.sb.storage.from('delivery-assets').upload(path,file,{upsert:false,contentType:file.type});if(error)throw error;return st.sb.storage.from('delivery-assets').getPublicUrl(path).data.publicUrl}
-async function save(){const st=S();if(!st?.sb)return;const old=local.rows.find(x=>x.id===local.editing)||{};if(!$('promoTitle').value.trim())return toast('Informe o título da promoção.','error');if(!old.media_url&&!local.pendingFile)return toast('Escolha uma imagem ou vídeo.','error');const action=$('promoActionType').value;if(action==='item'&&!$('promoItemId').value)return toast('Selecione o item vinculado.','error');if(action==='category'&&!$('promoCategoryId').value)return toast('Selecione a categoria vinculada.','error');if(action==='external_url'&&!/^https?:\/\//i.test($('promoExternalUrl').value))return toast('Informe um link externo completo.','error');$('savePromoBtn').disabled=true;try{let url=old.media_url||null,type=old.media_type||'image';if(local.pendingFile){url=await upload(local.pendingFile);type=local.pendingFile.type.startsWith('video/')?'video':'image'}const payload={owner_id:st.user.id,delivery_id:st.delivery.id,title:$('promoTitle').value.trim(),subtitle:$('promoSubtitle').value.trim()||null,kind:$('promoKind').value,media_type:type,media_url:url,action_type:action,item_id:action==='item'?$('promoItemId').value:null,category_id:action==='category'?$('promoCategoryId').value:null,external_url:action==='external_url'?$('promoExternalUrl').value.trim():null,duration_seconds:Math.max(1,Math.min(60,Number($('promoDurationSeconds').value)||5)),starts_at:$('promoStartsAt').value?new Date($('promoStartsAt').value).toISOString():null,ends_at:$('promoEndsAt').value?new Date($('promoEndsAt').value).toISOString():null,active:$('promoActive').checked,video_muted:$('promoMuted').checked,video_loop:$('promoLoop').checked,position:old.position??local.rows.length};let q=local.editing?st.sb.from('delivery_promotional_media').update(payload).eq('id',local.editing):st.sb.from('delivery_promotional_media').insert(payload);const {error}=await q;if(error)throw error;await load();close();toast('Promoção salva com sucesso.')}catch(e){console.error(e);toast(e.message||'Erro ao salvar promoção.','error')}finally{$('savePromoBtn').disabled=false}}
+async function save(){const st=S();if(!st?.sb)return;const old=local.rows.find(x=>x.id===local.editing)||{};if(!$('promoTitle').value.trim())return toast('Informe o título da promoção.','error');if(!old.media_url&&!local.pendingFile)return toast('Escolha uma imagem ou vídeo.','error');const action=$('promoActionType').value;if(action==='item'&&!$('promoItemId').value)return toast('Selecione o item vinculado.','error');if(action==='category'&&!$('promoCategoryId').value)return toast('Selecione a categoria vinculada.','error');if(action==='external_url'&&!/^https?:\/\//i.test($('promoExternalUrl').value))return toast('Informe um link externo completo.','error');$('savePromoBtn').disabled=true;try{let url=old.media_url||null,type=old.media_type||'image';if(local.pendingFile){url=await upload(local.pendingFile);type=local.pendingFile.type.startsWith('video/')?'video':'image'}const payload={owner_id:st.user.id,delivery_id:st.delivery.id,title:$('promoTitle').value.trim(),subtitle:$('promoSubtitle').value.trim()||null,kind:$('promoKind').value,media_type:type,media_url:url,action_type:action,item_id:action==='item'?$('promoItemId').value:null,category_id:action==='category'?$('promoCategoryId').value:null,external_url:action==='external_url'?$('promoExternalUrl').value.trim():null,duration_seconds:Math.max(1,Math.min(60,Number($('promoDurationSeconds')?.value)||5)),starts_at:$('promoStartsAt').value?new Date($('promoStartsAt').value).toISOString():null,ends_at:$('promoEndsAt').value?new Date($('promoEndsAt').value).toISOString():null,active:$('promoActive').checked,video_muted:$('promoMuted')?.checked!==false,video_loop:$('promoLoop')?.checked!==false,position:old.position??local.rows.length};let q=local.editing?st.sb.from('delivery_promotional_media').update(payload).eq('id',local.editing):st.sb.from('delivery_promotional_media').insert(payload);const {error}=await q;if(error)throw error;await load();close();toast('Promoção salva com sucesso.')}catch(e){console.error(e);toast(e.message||'Erro ao salvar promoção.','error')}finally{$('savePromoBtn').disabled=false}}
 async function remove(id){if(!confirm('Excluir esta promoção?'))return;const st=S(),{error}=await st.sb.from('delivery_promotional_media').delete().eq('id',id);if(error)return toast(error.message,'error');await load();toast('Promoção excluída.')}
 async function move(id,dir){const idx=local.rows.findIndex(x=>x.id===id),j=idx+dir;if(idx<0||j<0||j>=local.rows.length)return;[local.rows[idx],local.rows[j]]=[local.rows[j],local.rows[idx]];const st=S(),updates=local.rows.map((x,i)=>st.sb.from('delivery_promotional_media').update({position:i}).eq('id',x.id));const rs=await Promise.all(updates);if(rs.some(x=>x.error))return toast('Não foi possível reordenar.','error');render();renderPreviews()}
 async function saveSettings(){const st=S();if(!st?.sb)return;const payload={promotions_enabled:$('promoEnabled').checked,promotions_display_mode:$('promoDisplayMode').value,promotions_transition:$('promoTransition').value,promotions_visible_count:Number($('promoVisibleCount').value)||3,promotions_autoplay:$('promoAutoplay').checked,promotions_autoplay_seconds:Number($('promoAutoplaySeconds').value)||5,promotions_pause_on_hover:$('promoPauseHover').checked};Object.assign(st.delivery,payload);const {error}=await st.sb.from('delivery_profiles').update(payload).eq('id',st.delivery.id);if(error){toast(error.message,'error');return}const i=$('saveIndicator');if(i){i.classList.remove('saving');i.querySelector('b').textContent='Salvo'}renderPreviews()}
@@ -2828,7 +2837,7 @@ function wait(){const st=S();if(st?.sb&&st?.delivery&&$('promoList')){bind();syn
 (()=>{
 'use strict';
 const $=id=>document.getElementById(id),S=()=>window.__CLENA_DELIVERY_STATE__;
-const DEF={coverHeight:260,logoSize:88,coverFit:'cover',coverPosition:'center',logoShape:'rounded',desktopCols:4,mobileCols:1,cardGap:15};
+const DEF={coverHeight:260,logoSize:88,coverFit:'cover',coverPosition:'center',logoShape:'rounded',desktopCols:4,mobileCols:3,cardGap:15};
 const clamp=(v,min,max,f)=>{v=Number(v);return Number.isFinite(v)?Math.min(max,Math.max(min,v)):f};
 let cfg={...DEF};
 function coverMediaPreview(){
