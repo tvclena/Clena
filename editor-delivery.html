@@ -2751,8 +2751,17 @@ function injectAppearanceStudio(){
     <label class="pro-select-field"><span>Posição da capa</span><select id="proCoverPosition">${selectOptions(cfg.coverPosition,[['center','Centro'],['top','Topo'],['bottom','Base'],['left','Esquerda'],['right','Direita']])}</select></label>
     <label class="pro-select-field"><span>Formato do logo</span><select id="proLogoShape">${selectOptions(cfg.logoShape,[['rounded','Arredondado'],['circle','Circular'],['square','Quadrado suave']])}</select></label>
     <label class="pro-select-field"><span>Colunas no desktop</span><select id="proDesktopCols">${selectOptions(cfg.desktopCols,[[2,'2 colunas'],[3,'3 colunas'],[4,'4 colunas'],[5,'5 colunas']])}</select></label>
-    <label class="pro-select-field"><span>Colunas no celular</span><select id="proMobileCols">${selectOptions(cfg.mobileCols,[[1,'1 coluna'],[2,'2 colunas']])}</select></label>
-    <label class="pro-range-field"><span>Espaço entre produtos <output id="proCardGapOut">${cfg.cardGap}px</output></span><input id="proCardGap" type="range" min="8" max="30" step="1" value="${cfg.cardGap}"></label>
+<label class="pro-select-field"><span>Colunas no celular</span><select id="proMobileCols">${selectOptions(cfg.mobileCols,[
+  [1,'1 coluna'],
+  [2,'2 colunas'],
+  [3,'3 colunas'],
+  [4,'4 colunas']
+])}</select></label>
+
+
+
+
+<label class="pro-range-field"><span>Espaço entre produtos <output id="proCardGapOut">${cfg.cardGap}px</output></span><input id="proCardGap" type="range" min="8" max="30" step="1" value="${cfg.cardGap}"></label>
    </div>
    <div class="pro-tip"><i class="ri-information-line"></i><div><b>Prévia fiel</b><small>Estes controles são aplicados simultaneamente à prévia de celular e à prévia completa. A imagem original continua intacta.</small></div></div>
    <div class="pro-actions-row"><button id="proResetAppearance" class="outline-btn" type="button"><i class="ri-refresh-line"></i>Restaurar dimensões</button><button id="proOpenPreview" class="primary-btn" type="button"><i class="ri-fullscreen-line"></i>Ver prévia completa</button></div>
@@ -2788,7 +2797,7 @@ function injectGlobalUX(){
 }
 function applyVisuals(){
  const root=document.documentElement;
- cfg.coverHeight=n(cfg.coverHeight,160,520,260);cfg.logoSize=n(cfg.logoSize,52,160,88);cfg.storeMax=n(cfg.storeMax,960,1600,1200);cfg.desktopCols=n(cfg.desktopCols,2,5,4);cfg.mobileCols=n(cfg.mobileCols,1,2,1);cfg.cardGap=n(cfg.cardGap,8,30,15);cfg.bannerHeight=n(cfg.bannerHeight,180,420,260);cfg.bannerRadius=n(cfg.bannerRadius,0,34,18);cfg.bannerGap=n(cfg.bannerGap,6,30,14);cfg.bannerSpeed=n(cfg.bannerSpeed,16,70,34);
+ cfg.coverHeight=n(cfg.coverHeight,160,520,260);cfg.logoSize=n(cfg.logoSize,52,160,88);cfg.storeMax=n(cfg.storeMax,960,1600,1200);cfg.desktopCols=n(cfg.desktopCols,2,5,4);cfg.mobileCols=n(cfg.mobileCols,1,4,1);cfg.cardGap=n(cfg.cardGap,8,30,15);cfg.bannerHeight=n(cfg.bannerHeight,180,420,260);cfg.bannerRadius=n(cfg.bannerRadius,0,34,18);cfg.bannerGap=n(cfg.bannerGap,6,30,14);cfg.bannerSpeed=n(cfg.bannerSpeed,16,70,34);
  root.style.setProperty('--pro-cover-height',`${cfg.coverHeight}px`);root.style.setProperty('--pro-logo-size',`${cfg.logoSize}px`);root.style.setProperty('--pro-store-max',`${cfg.storeMax}px`);root.style.setProperty('--pro-product-cols',cfg.desktopCols);root.style.setProperty('--pro-mobile-cols',cfg.mobileCols);root.style.setProperty('--pro-card-gap',`${cfg.cardGap}px`);root.style.setProperty('--pro-banner-height',`${cfg.bannerHeight}px`);root.style.setProperty('--pro-banner-radius',`${cfg.bannerRadius}px`);root.style.setProperty('--pro-banner-gap',`${cfg.bannerGap}px`);root.style.setProperty('--pro-loop-duration',`${cfg.bannerSpeed}s`);root.style.setProperty('--pro-loop-hover',cfg.bannerPauseHover?'paused':'running');root.style.setProperty('--pro-cover-fit',cfg.coverFit);root.style.setProperty('--pro-cover-position',cfg.coverPosition);root.style.setProperty('--pro-phone-banner-ratio',cfg.phoneBannerRatio);
  const radius=cfg.logoShape==='circle'?'50%':cfg.logoShape==='square'?'12px':'25px';const radiusPhone=cfg.logoShape==='circle'?'50%':cfg.logoShape==='square'?'9px':'14px';root.style.setProperty('--pro-logo-radius',radius);root.style.setProperty('--pro-logo-radius-phone',radiusPhone);
  [['proCoverHeightOut',`${cfg.coverHeight}px`],['proLogoSizeOut',`${cfg.logoSize}px`],['proStoreMaxOut',`${cfg.storeMax}px`],['proCardGapOut',`${cfg.cardGap}px`],['proBannerHeightOut',`${cfg.bannerHeight}px`],['proBannerSpeedOut',`${cfg.bannerSpeed}s`],['proBannerRadiusOut',`${cfg.bannerRadius}px`],['proBannerGapOut',`${cfg.bannerGap}px`]].forEach(([id,v])=>{if($(id))$(id).textContent=v});
@@ -2861,6 +2870,5 @@ function wait(){if($('app')&&!$('app').classList.contains('is-hidden'))boot();el
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wait,{once:true});else wait();
 })();
 </script>
-
 </body>
 </html>

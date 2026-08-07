@@ -1643,8 +1643,9 @@
         storeMax:clamp(d.store_max_width ?? merged.storeMax,760,1800,1200),
         desktopCols:clamp(d.desktop_columns ?? d.product_columns_desktop ?? merged.desktopCols,1,6,4),
         tabletCols:clamp(d.tablet_columns ?? d.product_columns_tablet ?? merged.tabletCols,1,4,2),
-        mobileCols:clamp(d.mobile_columns ?? d.product_columns_mobile ?? merged.mobileCols,1,3,1),
-        cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
+mobileCols:clamp(d.mobile_columns ?? d.product_columns_mobile ?? merged.mobileCols,1,4,1), 
+
+cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
         bannerHeight:clamp(d.banner_height ?? merged.bannerHeight,120,520,260),
         bannerRadius:clamp(d.banner_radius ?? merged.bannerRadius,0,48,18),
         bannerGap:clamp(d.banner_gap ?? merged.bannerGap,4,36,14),
