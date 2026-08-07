@@ -1,16 +1,4 @@
 {
-  "rewrites": [
-    {
-      "source": "/loja/:slug",
-      "destination": "/loja.html?slug=:slug"
-    },
-    {
-      "source": "/delivery/:slug",
-      "destination": "/delivery.html?slug=:slug"
-    },
-    {
-      "source": "/agendar/:slug",
-      "destination": "/agendar.html?slug=:slug"
-    }
-  ]
+  "cleanUrls": false,
+  "trailingSlash": false
 }

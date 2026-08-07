@@ -31,7 +31,7 @@ button,input,select,textarea{font:inherit}.is-hidden{display:none!important}a{te
 @media(max-width:1100px){.grid{grid-template-columns:repeat(5,1fr)}}@media(max-width:900px){.grid{grid-template-columns:repeat(4,1fr)}}@media(max-width:680px){.hero{min-height:240px}.hero-content{padding-top:58px}.catalog-head{display:block}.catalog-head p{margin-top:6px}.tools{grid-template-columns:1fr}.grid{grid-template-columns:repeat(3,1fr);gap:7px}.product-body{padding:7px}.product h3{font-size:.64rem}.price strong{font-size:.67rem}.view-btn{width:28px;height:28px}}@media(max-width:390px){.grid{grid-template-columns:repeat(2,1fr)}}
 </style></head>
 <body><div id="loader" class="loader"><span></span></div>
-<header class="site-header"><div class="header-inner shell"><a class="brand" href="#"><span id="brandLogo" class="brand-logo"></span><span class="brand-copy"><strong id="storeName">Loja</strong><small id="storeStatus"></small></span></a><div class="header-actions"><a id="cartLink" class="icon-btn cart-link" href="carrinho.html" aria-label="Carrinho"><i class="ri-shopping-bag-3-line"></i><b id="cartCount" class="cart-count">0</b></a></div></div></header>
+<header class="site-header"><div class="header-inner shell"><a class="brand" href="#"><span id="brandLogo" class="brand-logo"></span><span class="brand-copy"><strong id="storeName">Loja</strong><small id="storeStatus"></small></span></a><div class="header-actions"><a id="cartLink" class="icon-btn cart-link" href="/carrinho.html" aria-label="Carrinho"><i class="ri-shopping-bag-3-line"></i><b id="cartCount" class="cart-count">0</b></a></div></div></header>
 <section id="hero" class="hero"><div id="heroMedia" class="hero-media"></div><div class="hero-content shell"><h1 id="heroTitle"></h1><p id="heroText"></p><a href="#catalog" class="btn btn-primary">Ver produtos <i class="ri-arrow-down-line"></i></a></div></section>
 <main id="catalog" class="catalog shell"><div class="catalog-head"><div><h2>Produtos</h2><p>Escolha um item para abrir todos os detalhes.</p></div></div><div class="tools"><label class="search"><i class="ri-search-line"></i><input id="search" placeholder="Buscar produtos..."></label><label class="sort"><i class="ri-sort-desc"></i><select id="sort"><option value="">Ordenar</option><option value="name">Nome</option><option value="price_asc">Menor preço</option><option value="price_desc">Maior preço</option></select></label></div><div id="categories" class="categories"></div><div id="grid" class="grid"></div><div id="empty" class="empty is-hidden"><i class="ri-search-eye-line"></i><p>Nenhum produto encontrado.</p></div></main>
 <footer class="footer"><div class="footer-inner shell"><strong id="footerName">Loja</strong><small>Catálogo online</small></div></footer>
@@ -95,8 +95,8 @@ function setCartBadge(store){
 
 let db,store,categories=[],products=[],current='all';
 
-function productUrl(id){return `pop_produto.html?slug=${encodeURIComponent(store.slug)}&id=${encodeURIComponent(id)}`}
-function cartUrl(){return `carrinho.html?slug=${encodeURIComponent(store.slug)}`}
+function productUrl(id){return `/pop_produto.html?slug=${encodeURIComponent(store.slug)}&id=${encodeURIComponent(id)}`}
+function cartUrl(){return `/carrinho.html?slug=${encodeURIComponent(store.slug)}`}
 
 function renderCategories(){
   $('categories').innerHTML=[`<button class="cat ${current==='all'?'active':''}" data-cat="all">Todos</button>`,
@@ -112,18 +112,26 @@ function renderProducts(){
   if(sort==='name') list.sort((a,b)=>String(a.name).localeCompare(String(b.name),'pt-BR'));
   $('grid').innerHTML=list.map(p=>{
     const cat=categories.find(c=>c.id===p.category_id);
-    return `<a class="product" href="${productUrl(p.id)}">
+    return `<a class="product" data-product-id="${esc(p.id)}" href="${productUrl(p.id)}">
       <div class="product-media">${p.image_url?`<img src="${esc(p.image_url)}" alt="${esc(p.name)}" loading="lazy">`:'<div class="empty"><i class="ri-image-line"></i></div>'}${hasSale(p)?'<span class="badge">OFERTA</span>':''}</div>
       <div class="product-body"><span class="product-cat">${esc(cat?.name||'Produto')}</span><h3>${esc(p.name)}</h3>
       <div class="product-footer"><div class="price">${hasSale(p)?`<small>${money(p.price)}</small>`:''}<strong>${money(productPrice(p))}</strong></div><span class="view-btn"><i class="ri-arrow-right-line"></i></span></div></div>
     </a>`;
   }).join('');
   $('empty').classList.toggle('is-hidden',list.length>0);
+
+  $$('[data-product-id]').forEach(link=>{
+    link.addEventListener('click',(event)=>{
+      event.preventDefault();
+      const id=link.dataset.productId;
+      location.assign(productUrl(id));
+    });
+  });
 }
 async function init(){
   try{
     db=await getDb(); store=await loadStore(db,slug()); applyStoreTheme(store); setHeader(store); setCartBadge(store);
-    $('cartLink').href=cartUrl();
+    $('cartLink').href=cartUrl(); $('cartLink').onclick=(event)=>{event.preventDefault();location.assign(cartUrl());};
     const [{data:cats,error:ce},{data:prods,error:pe}]=await Promise.all([
       db.from('store_categories').select('*').eq('store_id',store.id).order('position'),
       db.from('store_products').select('*').eq('store_id',store.id).eq('active',true).order('position')
