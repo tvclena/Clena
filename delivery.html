@@ -4068,34 +4068,164 @@ $("cartButton").classList.toggle(
       state.paymentPollTimer=setInterval(()=>refreshPixStatus(orderId,paymentId),4000);
     }
 
-    async function checkoutOnlinePayment(payload){
-      const requestBody={
-        delivery_id:String(state.delivery.id),
-        method:selectedOnlineMethod(),
-        customer:{name:payload.customer_name,phone:payload.customer_phone,email:payload.customer_email,address:payload.address},
-        fulfillment_type:payload.fulfillment_type,
-        zone_id:payload.zone_id ? String(payload.zone_id) : null,
-        notes:payload.notes,
-        scheduled_for:payload.scheduled_for,
-        items:onlineCartPayload(),
-        return_url:`${location.origin}${location.pathname}?slug=${encodeURIComponent(state.delivery.slug || slugFromUrl())}`
-      };
-      const {data,error}=await state.db.functions.invoke("mp-create-payment",{body:requestBody});
-      if (error) throw new Error(error.message || "Falha ao iniciar o pagamento online.");
-      if (!data?.ok) throw new Error(data?.error || "Falha ao iniciar o pagamento online.");
 
-      const localPayload={...payload,total:Number(data.total ?? payload.total),subtotal:Number(data.subtotal ?? payload.subtotal),delivery_fee:Number(data.delivery_fee ?? payload.delivery_fee)};
-      saveLastOrderToStorage(localPayload,{channel:`mercadopago:${requestBody.method}`,order_id:data.order_id});
-      persistOrderDraft();
 
-      if (requestBody.method === "pix"){
-        showPixPaymentModal(data);
-        return {handled:true,redirect:false};
-      }
-      if (!data.init_point) throw new Error("O Mercado Pago não retornou a URL do checkout.");
-      location.href=data.init_point;
-      return {handled:true,redirect:true};
+
+async function checkoutOnlinePayment(payload){
+  const onlineMethod =
+    window.__onlinePaymentMethod ||
+    "pix";
+
+  const items = state.cart.map(row => ({
+    item_id: row.item.id,
+    quantity: row.qty,
+    addon_ids: (row.addons || [])
+      .map(addon => addon.id)
+      .filter(Boolean),
+    note: row.note || ""
+  }));
+
+  const customer = {
+    name: $("customerName").value.trim(),
+    phone: digits($("customerPhone").value),
+    email: $("customerEmail")?.value?.trim() || "",
+    address: {
+      text:
+        selectedFulfillment() === "delivery"
+          ? $("customerAddress").value.trim()
+          : state.delivery.pickup_address || "Retirada na loja"
     }
+  };
+
+  const returnUrl =
+    window.location.origin +
+    window.location.pathname +
+    window.location.search;
+
+  const { data, error } = await state.db.rpc(
+    "mp_criar_pagamento",
+    {
+      p_delivery_id: String(state.delivery.id),
+
+      p_method:
+        onlineMethod === "checkout"
+          ? "checkout"
+          : "pix",
+
+      p_fulfillment_type:
+        selectedFulfillment(),
+
+      p_customer:
+        customer,
+
+      p_items:
+        items,
+
+      p_zone_id:
+        selectedFulfillment() === "delivery"
+          ? selectedZone()?.id
+            ? String(selectedZone().id)
+            : null
+          : null,
+
+      p_notes:
+        state.delivery.allow_order_notes === false
+          ? null
+          : $("orderNotes").value.trim() || null,
+
+      p_scheduled_for:
+        payload.scheduled_for || null,
+
+      p_return_url:
+        returnUrl
+    }
+  );
+
+  if (error){
+    console.error("[MERCADO PAGO RPC]", error);
+
+    throw new Error(
+      error.message ||
+      "Não foi possível criar o pagamento."
+    );
+  }
+
+  if (!data?.ok){
+    console.error("[MERCADO PAGO RPC]", data);
+
+    throw new Error(
+      data?.message ||
+      "Não foi possível iniciar o pagamento."
+    );
+  }
+
+  /* ======================================================
+     PIX
+     ====================================================== */
+
+  if (data.method === "pix"){
+
+    saveLastOrderToStorage(
+      payload,
+      {
+        channel: "online-pix",
+        order_id: data.order_id
+      }
+    );
+
+    showMercadoPagoPixModal({
+      order_id: data.order_id,
+      payment_id: data.payment_id,
+      status: data.status,
+      qr_code: data.qr_code,
+      qr_code_base64: data.qr_code_base64,
+      ticket_url: data.ticket_url,
+      total: data.total
+    });
+
+    startMercadoPagoStatusPolling(
+      data.order_id,
+      data.payment_id
+    );
+
+    return;
+  }
+
+
+  /* ======================================================
+     CHECKOUT MERCADO PAGO
+     ====================================================== */
+
+  if (data.method === "checkout"){
+
+    saveLastOrderToStorage(
+      payload,
+      {
+        channel: "mercadopago-checkout",
+        order_id: data.order_id
+      }
+    );
+
+    const checkoutUrl =
+      data.init_point ||
+      data.sandbox_init_point;
+
+    if (!checkoutUrl){
+      throw new Error(
+        "Mercado Pago não retornou o endereço do checkout."
+      );
+    }
+
+    window.location.href = checkoutUrl;
+
+    return;
+  }
+
+
+  throw new Error(
+    "Resposta de pagamento desconhecida."
+  );
+}
 
     async function handleMercadoPagoReturn(){
       const params=new URLSearchParams(location.search);
