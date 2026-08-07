@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <title>Gerenciador de Pedidos • Delivery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f5f7fb;--panel:#fff;--ink:#101828;--muted:#667085;--line:#e4e7ec;
+      --brand:#f97316;--brand2:#ea580c;--green:#16a34a;--red:#dc2626;--amber:#d97706;
+      --blue:#2563eb;--purple:#7c3aed;--shadow:0 18px 50px rgba(16,24,40,.08);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+    button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    .hidden{display:none!important}
+    .app{min-height:100vh}
+    .topbar{height:76px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:40}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand-icon{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,var(--brand),#fb923c);display:grid;place-items:center;color:#fff;font-size:22px;box-shadow:0 8px 20px rgba(249,115,22,.25)}
+    .brand h1{font-size:16px;margin:0;font-weight:800}.brand small{display:block;color:var(--muted);margin-top:3px}
+    .top-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .btn{border:1px solid var(--line);background:#fff;color:#344054;padding:10px 13px;border-radius:11px;display:inline-flex;align-items:center;gap:8px;font-weight:700}
+    .btn:hover{background:#f8fafc}.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}.btn.primary:hover{background:var(--brand2)}
+    .btn.success{background:#16a34a;border-color:#16a34a;color:#fff}.btn.danger{color:#b42318;background:#fff5f5;border-color:#fecaca}
+    .status-dot{width:9px;height:9px;border-radius:50%;background:#98a2b3}.status-dot.live{background:#22c55e;box-shadow:0 0 0 5px rgba(34,197,94,.12)}
+    .layout{display:grid;grid-template-columns:255px minmax(0,1fr);min-height:calc(100vh - 76px)}
+    .sidebar{background:#fff;border-right:1px solid var(--line);padding:18px 14px;position:sticky;top:76px;height:calc(100vh - 76px);overflow:auto}
+    .store-card{padding:14px;background:#f8fafc;border:1px solid var(--line);border-radius:15px;margin-bottom:16px}
+    .store-card b{display:block;font-size:14px}.store-card small{color:var(--muted);display:block;margin-top:4px}
+    .nav-title{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#98a2b3;font-weight:800;padding:10px 10px 7px}
+    .nav-btn{width:100%;border:0;background:transparent;text-align:left;padding:11px 12px;border-radius:11px;color:#475467;font-weight:700;display:flex;align-items:center;gap:10px;margin:2px 0}
+    .nav-btn.active,.nav-btn:hover{background:#fff7ed;color:#c2410c}.nav-btn .count{margin-left:auto;background:#f2f4f7;border-radius:999px;padding:2px 7px;font-size:11px;color:#667085}
+    .nav-btn.active .count{background:#ffedd5;color:#c2410c}
+    .side-sep{height:1px;background:var(--line);margin:14px 6px}
+    .main{padding:22px;min-width:0}
+    .headline{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:18px}
+    .headline h2{margin:0;font-size:24px}.headline p{margin:5px 0 0;color:var(--muted)}
+    .live-pill{display:flex;align-items:center;gap:8px;background:#ecfdf3;border:1px solid #abefc6;color:#027a48;font-weight:800;padding:8px 12px;border-radius:999px;font-size:12px}
+    .stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:18px}
+    .stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;box-shadow:0 4px 14px rgba(16,24,40,.03)}
+    .stat span{color:var(--muted);font-size:12px;font-weight:700}.stat strong{display:block;font-size:22px;margin-top:8px}.stat small{display:block;margin-top:4px;color:#98a2b3}
+    .toolbar{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+    .search{position:relative;min-width:240px;flex:1}.search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#98a2b3}.search input{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px 10px 36px;outline:none}
+    select,.field input,.field textarea{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff;outline:none;color:#344054}
+    .orders{display:grid;gap:10px}
+    .order-card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:15px;display:grid;grid-template-columns:72px minmax(170px,1.4fr) minmax(150px,1fr) minmax(150px,1fr) 140px 140px;gap:14px;align-items:center;transition:.15s}
+    .order-card:hover{border-color:#fdba74;box-shadow:0 10px 32px rgba(16,24,40,.07);transform:translateY(-1px)}
+    .order-card.new-order{border-color:#fb923c;box-shadow:0 0 0 2px rgba(249,115,22,.08),0 12px 34px rgba(249,115,22,.1)}
+    .order-num{font-weight:900;font-size:16px}.order-time{font-size:11px;color:var(--muted);margin-top:4px}
+    .customer b,.summary b{display:block;font-size:13px}.customer small,.summary small{display:block;color:var(--muted);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .money{font-weight:900;font-size:15px}
+    .pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 9px;font-size:11px;font-weight:800;white-space:nowrap}
+    .s-pending{background:#fff7ed;color:#c2410c}.s-confirmed{background:#eff6ff;color:#1d4ed8}.s-preparing{background:#fef3c7;color:#92400e}.s-ready{background:#f3e8ff;color:#6d28d9}.s-out_for_delivery{background:#ecfeff;color:#0e7490}.s-completed{background:#ecfdf3;color:#047857}.s-cancelled{background:#fef2f2;color:#b91c1c}
+    .pay-paid{background:#ecfdf3;color:#047857}.pay-pending{background:#fef3c7;color:#92400e}.pay-failed,.pay-cancelled{background:#fef2f2;color:#b91c1c}
+    .card-actions{display:flex;justify-content:flex-end;gap:7px}.icon-btn{width:38px;height:38px;border:1px solid var(--line);border-radius:10px;background:#fff;display:grid;place-items:center;color:#475467}.icon-btn:hover{background:#f8fafc}
+    .empty{background:#fff;border:1px dashed #d0d5dd;border-radius:18px;padding:60px 20px;text-align:center;color:var(--muted)}.empty i{font-size:36px;color:#98a2b3}
+    .drawer-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.42);z-index:70;opacity:0;pointer-events:none;transition:.2s}.drawer-backdrop.open{opacity:1;pointer-events:auto}
+    .drawer{position:fixed;top:0;right:0;width:min(560px,100%);height:100vh;background:#fff;z-index:80;transform:translateX(100%);transition:.22s ease;display:flex;flex-direction:column;box-shadow:-24px 0 70px rgba(15,23,42,.15)}
+    .drawer.open{transform:none}.drawer-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}.drawer-head h3{margin:0;font-size:18px}
+    .drawer-body{padding:18px 20px;overflow:auto;flex:1}.drawer-foot{padding:14px 20px;border-top:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap;background:#fff}
+    .section-card{border:1px solid var(--line);border-radius:15px;padding:15px;margin-bottom:12px}.section-card h4{margin:0 0 12px;font-size:13px}
+    .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.info{background:#f8fafc;border-radius:10px;padding:10px}.info span{display:block;font-size:10px;text-transform:uppercase;color:#98a2b3;font-weight:800}.info b{display:block;margin-top:4px;font-size:13px}
+    .item-row{display:grid;grid-template-columns:1fr auto;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line)}.item-row:last-child{border-bottom:0}.item-row b{font-size:13px}.item-row small{display:block;color:var(--muted);margin-top:3px}.item-price{font-weight:800;font-size:13px}
+    .total-row{display:flex;justify-content:space-between;padding:5px 0;font-size:13px}.total-row.grand{font-size:17px;font-weight:900;border-top:1px solid var(--line);margin-top:8px;padding-top:10px}
+    .modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:90;display:grid;place-items:center;padding:20px}
+    .modal{width:min(620px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:20px;box-shadow:var(--shadow)}
+    .modal-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}.modal-head h3{margin:0}.modal-body{padding:18px 20px}.modal-foot{padding:14px 20px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px}
+    .settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:flex;flex-direction:column;gap:6px}.field label{font-size:12px;font-weight:800;color:#344054}
+    .toggle{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:12px;padding:12px;gap:12px}.toggle b{font-size:13px}.toggle small{display:block;color:var(--muted);margin-top:3px}.switch{position:relative;width:44px;height:24px;background:#d0d5dd;border-radius:999px;flex:none}.switch input{opacity:0;position:absolute}.switch i{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.18s;box-shadow:0 1px 4px rgba(0,0,0,.2)}.switch:has(input:checked){background:#22c55e}.switch:has(input:checked) i{left:23px}
+    .toast-host{position:fixed;right:18px;bottom:18px;z-index:120;display:grid;gap:8px}.toast{background:#101828;color:#fff;padding:12px 14px;border-radius:12px;box-shadow:var(--shadow);font-size:13px;max-width:360px}.toast.error{background:#b42318}.toast.success{background:#067647}
+    .loader{position:fixed;inset:0;background:#f8fafc;z-index:200;display:grid;place-items:center}.loader-box{text-align:center}.spinner{width:42px;height:42px;border:4px solid #e4e7ec;border-top-color:var(--brand);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}@keyframes spin{to{transform:rotate(360deg)}}
+    .kpi-alert{color:#b54708!important}
+    .section-view.hidden{display:none!important}
+    .report-panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
+    .report-table{width:100%;border-collapse:collapse}.report-table th,.report-table td{padding:12px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}.report-table th{color:#667085;font-size:11px;text-transform:uppercase}
+    @media(max-width:1150px){.stats{grid-template-columns:repeat(3,1fr)}.order-card{grid-template-columns:70px 1.5fr 1fr 130px 120px}.order-card .delivery-col{display:none}}
+    @media(max-width:850px){.layout{grid-template-columns:1fr}.sidebar{display:none}.main{padding:14px}.topbar{padding:0 12px}.brand small{display:none}.stats{grid-template-columns:1fr 1fr}.order-card{grid-template-columns:60px 1fr auto}.order-card .summary,.order-card .delivery-col,.order-card .status-col{display:none}.card-actions{justify-content:flex-end}.headline{align-items:center}.headline p{font-size:12px}.top-actions .desktop-only{display:none}}
+    @media(max-width:520px){.stats{grid-template-columns:1fr 1fr}.stat{padding:12px}.stat strong{font-size:18px}.settings-grid,.info-grid{grid-template-columns:1fr}.toolbar select{max-width:48%}.drawer-foot .btn{flex:1;justify-content:center}}
+    @media print{
+      @page{margin:0}
+      body *{visibility:hidden!important}
+      #thermalReceipt,#thermalReceipt *{visibility:visible!important}
+      #thermalReceipt{position:absolute!important;left:0;top:0;width:80mm!important;padding:4mm!important;font-family:ui-monospace,Consolas,monospace!important;color:#000!important;background:#fff!important;font-size:12px!important}
+      #thermalReceipt.receipt-58{width:58mm!important;padding:3mm!important;font-size:10px!important}
+    }
+  </style>
+</head>
+<body>
+<div id="loader" class="loader"><div class="loader-box"><div class="spinner"></div><b>Abrindo gerenciador de pedidos...</b><div style="color:#667085;font-size:12px;margin-top:6px">Conectando ao delivery</div></div></div>
+
+<div id="app" class="app hidden">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-icon"><i class="ri-restaurant-2-line"></i></div>
+      <div><h1>Gerenciador de Pedidos</h1><small id="storeNameTop">Delivery</small></div>
+    </div>
+    <div class="top-actions">
+      <button id="soundBtn" class="btn desktop-only"><i class="ri-volume-up-line"></i><span>Som ligado</span></button>
+      <button id="notifyBtn" class="btn desktop-only"><i class="ri-notification-3-line"></i><span>Notificações</span></button>
+      <button id="thermalBtn" class="btn desktop-only"><i class="ri-printer-line"></i><span>Impressora</span></button>
+      <button id="settingsBtn" class="btn"><i class="ri-settings-3-line"></i></button>
+      <div class="btn" title="Supabase Realtime"><span id="realtimeDot" class="status-dot"></span><span id="realtimeText">Conectando</span></div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="store-card"><b id="storeNameSide">Minha loja</b><small id="storeSlugSide">—</small></div>
+      <div class="nav-title">Pedidos</div>
+      <button class="nav-btn active" data-status="active"><i class="ri-inbox-archive-line"></i> Em andamento <span class="count" id="countActive">0</span></button>
+      <button class="nav-btn" data-status="pending"><i class="ri-alarm-warning-line"></i> Novos <span class="count" id="countPending">0</span></button>
+      <button class="nav-btn" data-status="confirmed"><i class="ri-checkbox-circle-line"></i> Confirmados <span class="count" id="countConfirmed">0</span></button>
+      <button class="nav-btn" data-status="preparing"><i class="ri-restaurant-line"></i> Em preparo <span class="count" id="countPreparing">0</span></button>
+      <button class="nav-btn" data-status="ready"><i class="ri-shopping-bag-3-line"></i> Prontos <span class="count" id="countReady">0</span></button>
+      <button class="nav-btn" data-status="out_for_delivery"><i class="ri-e-bike-2-line"></i> Em entrega <span class="count" id="countDelivery">0</span></button>
+      <div class="side-sep"></div>
+      <button class="nav-btn" data-status="completed"><i class="ri-check-double-line"></i> Finalizados</button>
+      <button class="nav-btn" data-status="cancelled"><i class="ri-close-circle-line"></i> Cancelados</button>
+      <button class="nav-btn" data-view="reports"><i class="ri-bar-chart-box-line"></i> Relatório do dia</button>
+      <div class="side-sep"></div>
+      <button id="refreshSide" class="nav-btn"><i class="ri-refresh-line"></i> Atualizar agora</button>
+    </aside>
+
+    <main class="main">
+      <section id="ordersView" class="section-view">
+        <div class="headline">
+          <div><h2 id="viewTitle">Pedidos em andamento</h2><p id="viewSubtitle">Acompanhe os pedidos da loja em tempo real.</p></div>
+          <div class="live-pill"><span class="status-dot live"></span> Tempo real</div>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><span>Novos pedidos</span><strong id="statNew">0</strong><small>Aguardando aceite</small></div>
+          <div class="stat"><span>Em preparo</span><strong id="statPreparing">0</strong><small>Cozinha</small></div>
+          <div class="stat"><span>Prontos</span><strong id="statReady">0</strong><small>Aguardando saída/retirada</small></div>
+          <div class="stat"><span>Vendas hoje</span><strong id="statSales">R$ 0,00</strong><small id="statOrdersToday">0 pedidos</small></div>
+          <div class="stat"><span>Ticket médio</span><strong id="statTicket">R$ 0,00</strong><small>Pedidos finalizados/pagos</small></div>
+        </div>
+
+        <div class="toolbar">
+          <div class="search"><i class="ri-search-line"></i><input id="searchInput" placeholder="Buscar nº, cliente, telefone, endereço..."></div>
+          <select id="paymentFilter"><option value="">Todos os pagamentos</option><option value="pix">PIX</option><option value="cash">Dinheiro</option><option value="credit_card">Cartão crédito</option><option value="debit_card">Cartão débito</option><option value="online">Pagamento online</option></select>
+          <select id="typeFilter"><option value="">Entrega e retirada</option><option value="delivery">Entrega</option><option value="pickup">Retirada</option></select>
+          <button id="refreshBtn" class="btn"><i class="ri-refresh-line"></i> Atualizar</button>
+        </div>
+
+        <div id="ordersList" class="orders"></div>
+      </section>
+
+      <section id="reportsView" class="section-view hidden">
+        <div class="headline">
+          <div><h2>Relatório do dia</h2><p>Resumo operacional dos pedidos de hoje.</p></div>
+          <button id="backOrdersBtn" class="btn"><i class="ri-arrow-left-line"></i> Voltar aos pedidos</button>
+        </div>
+        <div class="stats">
+          <div class="stat"><span>Total de pedidos</span><strong id="rOrders">0</strong></div>
+          <div class="stat"><span>Faturamento</span><strong id="rSales">R$ 0,00</strong></div>
+          <div class="stat"><span>Taxas de entrega</span><strong id="rFees">R$ 0,00</strong></div>
+          <div class="stat"><span>Cancelados</span><strong id="rCancelled">0</strong></div>
+          <div class="stat"><span>Ticket médio</span><strong id="rTicket">R$ 0,00</strong></div>
+        </div>
+        <div class="report-panel">
+          <h3 style="margin-top:0">Por forma de pagamento</h3>
+          <table class="report-table"><thead><tr><th>Pagamento</th><th>Pedidos</th><th>Total</th></tr></thead><tbody id="paymentReportBody"></tbody></table>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<div id="drawerBackdrop" class="drawer-backdrop"></div>
+<aside id="orderDrawer" class="drawer">
+  <div class="drawer-head"><div><h3 id="drawerTitle">Pedido</h3><small id="drawerStatusText" style="color:#667085"></small></div><button id="closeDrawerBtn" class="icon-btn"><i class="ri-close-line"></i></button></div>
+  <div id="drawerBody" class="drawer-body"></div>
+  <div class="drawer-foot">
+    <button id="printOrderBtn" class="btn"><i class="ri-printer-line"></i> Imprimir</button>
+    <button id="whatsappOrderBtn" class="btn"><i class="ri-whatsapp-line"></i> WhatsApp</button>
+    <button id="cancelOrderBtn" class="btn danger"><i class="ri-close-circle-line"></i> Cancelar</button>
+    <button id="advanceOrderBtn" class="btn primary" style="margin-left:auto"><i class="ri-arrow-right-circle-line"></i> Avançar</button>
+  </div>
+</aside>
+
+<div id="settingsModal" class="modal-backdrop hidden">
+  <div class="modal">
+    <div class="modal-head"><h3>Configurações do gerenciador</h3><button data-close-settings class="icon-btn"><i class="ri-close-line"></i></button></div>
+    <div class="modal-body">
+      <div style="display:grid;gap:10px">
+        <div class="toggle"><div><b>Som para pedido novo</b><small>Alerta sonoro até o pedido ser visualizado.</small></div><label class="switch"><input id="settingSound" type="checkbox"><i></i></label></div>
+        <div class="toggle"><div><b>Notificação do navegador</b><small>Mostra nome, número e valor do pedido.</small></div><label class="switch"><input id="settingNotifications" type="checkbox"><i></i></label></div>
+        <div class="toggle"><div><b>Imprimir automaticamente</b><small>Ao receber pedido novo, abre/imprime a comanda conforme configuração.</small></div><label class="switch"><input id="settingAutoPrint" type="checkbox"><i></i></label></div>
+        <div class="settings-grid">
+          <div class="field"><label>Largura do papel</label><select id="settingPaper"><option value="80">80 mm</option><option value="58">58 mm</option></select></div>
+          <div class="field"><label>Número de vias</label><select id="settingCopies"><option value="1">1 via</option><option value="2">2 vias</option><option value="3">3 vias</option></select></div>
+          <div class="field"><label>Tempo de repetição do som</label><select id="settingSoundRepeat"><option value="0">Uma vez</option><option value="15">A cada 15 s</option><option value="30">A cada 30 s</option><option value="60">A cada 1 min</option></select></div>
+          <div class="field"><label>Modo de impressão</label><select id="settingPrintMode"><option value="browser">Impressão do navegador</option><option value="webusb">Térmica direta (WebUSB/ESC-POS)</option></select></div>
+        </div>
+        <div class="field"><label>Cabeçalho da comanda</label><input id="settingReceiptHeader" placeholder="Nome da loja / cozinha"></div>
+        <div class="toggle"><div><b>Imprimir dados do cliente</b><small>Nome, telefone e endereço na comanda.</small></div><label class="switch"><input id="settingPrintCustomer" type="checkbox"><i></i></label></div>
+        <div class="toggle"><div><b>Imprimir pagamento e valores</b><small>Inclui subtotal, taxa e total.</small></div><label class="switch"><input id="settingPrintValues" type="checkbox"><i></i></label></div>
+        <div style="padding:12px;border-radius:12px;background:#f8fafc;border:1px solid var(--line);font-size:12px;color:#667085;line-height:1.6">
+          <b style="color:#344054">Impressora térmica:</b> “Impressão do navegador” funciona com qualquer impressora instalada no computador. “WebUSB/ESC-POS” tenta impressão direta em impressoras USB compatíveis com ESC/POS e exige Chrome/Edge + permissão do usuário.
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot"><button id="testSoundBtn" class="btn"><i class="ri-volume-up-line"></i> Testar som</button><button id="testPrintBtn" class="btn"><i class="ri-printer-line"></i> Testar impressão</button><button id="connectUsbBtn" class="btn"><i class="ri-usb-line"></i> Conectar USB</button><button id="saveSettingsBtn" class="btn primary">Salvar configurações</button></div>
+  </div>
+</div>
+
+<div id="toastHost" class="toast-host"></div>
+<div id="thermalReceipt" class="hidden"></div>
+
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const $=id=>document.getElementById(id);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const ACTIVE_STATUSES=['pending','confirmed','preparing','ready','out_for_delivery'];
+const STATUS={
+  pending:{label:'Novo pedido',next:'confirmed',nextLabel:'Aceitar pedido'},
+  confirmed:{label:'Confirmado',next:'preparing',nextLabel:'Iniciar preparo'},
+  preparing:{label:'Em preparo',next:'ready',nextLabel:'Marcar como pronto'},
+  ready:{label:'Pronto',next:'out_for_delivery',nextLabel:'Saiu para entrega'},
+  out_for_delivery:{label:'Em entrega',next:'completed',nextLabel:'Finalizar pedido'},
+  completed:{label:'Finalizado',next:null,nextLabel:null},
+  cancelled:{label:'Cancelado',next:null,nextLabel:null}
+};
+const PAYMENT_LABELS={pix:'PIX',cash:'Dinheiro',credit_card:'Cartão crédito',debit_card:'Cartão débito',online:'Pagamento online',mercado_pago:'Mercado Pago',card:'Cartão'};
+const state={
+  sb:null,user:null,delivery:null,orders:[],itemsByOrder:new Map(),current:null,
+  filterStatus:'active',realtime:null,lastIds:new Set(),initialLoaded:false,
+  usbDevice:null,usbInterface:null,usbEndpoint:null,
+  settings:{sound:true,notifications:false,autoPrint:false,paper:'80',copies:1,soundRepeat:15,printMode:'browser',receiptHeader:'',printCustomer:true,printValues:true}
+};
+
+function toast(msg,type='success'){const n=document.createElement('div');n.className='toast '+type;n.textContent=msg;$('toastHost').appendChild(n);setTimeout(()=>n.remove(),4200)}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
+function money(v){return new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number(v||0))}
+function digits(v){return String(v||'').replace(/\D/g,'')}
+function localDate(v){if(!v)return '—';return new Intl.DateTimeFormat('pt-BR',{dateStyle:'short',timeStyle:'short',timeZone:'America/Bahia'}).format(new Date(v))}
+function localTime(v){if(!v)return '—';return new Intl.DateTimeFormat('pt-BR',{hour:'2-digit',minute:'2-digit',timeZone:'America/Bahia'}).format(new Date(v))}
+function isToday(v){if(!v)return false;const d=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Bahia'}).format(new Date(v));const t=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Bahia'}).format(new Date());return d===t}
+function orderNumber(o){return o.order_number||o.number||String(o.id||'').slice(-6).toUpperCase()}
+function orderName(o){return o.customer_name||o.customer?.name||o.name||'Cliente'}
+function orderPhone(o){return o.customer_phone||o.customer?.phone||o.phone||''}
+function orderTotal(o){return Number(o.total_amount??o.total??0)}
+function orderSubtotal(o){return Number(o.subtotal_amount??o.subtotal??Math.max(0,orderTotal(o)-Number(o.delivery_fee||0)))}
+function orderStatus(o){return o.status||'pending'}
+function paymentStatus(o){return o.payment_status||((o.payment_method==='cash')?'pending':'pending')}
+function paymentMethod(o){return o.payment_method||o.payment||''}
+function deliveryType(o){return o.delivery_type||o.fulfillment_type||o.order_type||'delivery'}
+function addressText(o){const a=o.address||o.delivery_address||{};if(typeof a==='string')return a;const parts=[a.street||o.street,a.number||o.number,a.complement||o.complement,a.neighborhood||o.neighborhood,a.city||o.city].filter(Boolean);return parts.join(', ')}
+function noteText(o){return o.notes||o.note||o.observation||''}
+
+async function getConfig(){
+  const r=await fetch('/api/public-config',{cache:'no-store',headers:{Accept:'application/json'}});
+  if(!r.ok)throw new Error('Não foi possível carregar /api/public-config.');
+  const c=await r.json();
+  if(!c.supabaseUrl||!c.supabaseAnonKey)throw new Error('SUPABASE_URL/SUPABASE_ANON_KEY não configuradas.');
+  return c;
+}
+async function auth(){
+  const c=await getConfig();
+  state.sb=createClient(c.supabaseUrl,c.supabaseAnonKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+  const {data:{session},error}=await state.sb.auth.getSession();
+  if(error)throw error;
+  if(!session){location.href='./index.html';return false}
+  state.user=session.user;return true;
+}
+async function loadDelivery(){
+  const {data,error}=await state.sb.from('delivery_profiles').select('*').eq('owner_id',state.user.id).order('updated_at',{ascending:false}).limit(1);
+  if(error)throw error;
+  if(!data?.length)throw new Error('Nenhum delivery_profiles encontrado para este usuário.');
+  state.delivery=data[0];
+  $('storeNameTop').textContent=state.delivery.name||'Delivery';
+  $('storeNameSide').textContent=state.delivery.name||'Delivery';
+  $('storeSlugSide').textContent=state.delivery.slug?'/delivery/'+state.delivery.slug:'ID '+state.delivery.id;
+}
+async function fetchOrders(){
+  const since=new Date(Date.now()-14*86400000).toISOString();
+  let q=state.sb.from('delivery_orders').select('*').eq('delivery_id',state.delivery.id).gte('created_at',since).order('created_at',{ascending:false}).limit(500);
+  const {data,error}=await q;
+  if(error)throw new Error('Erro em delivery_orders: '+error.message);
+  const rows=data||[];
+  state.orders=rows;
+  if(rows.length){
+    const ids=rows.map(x=>x.id);
+    const {data:items,error:itemErr}=await state.sb.from('delivery_order_items').select('*').in('order_id',ids).order('created_at',{ascending:true});
+    if(itemErr)throw new Error('Erro em delivery_order_items: '+itemErr.message);
+    state.itemsByOrder=new Map();
+    (items||[]).forEach(it=>{const a=state.itemsByOrder.get(it.order_id)||[];a.push(it);state.itemsByOrder.set(it.order_id,a)});
+  }else state.itemsByOrder=new Map();
+  updateUI();
+}
+function filtered(){
+  const s=$('searchInput').value.trim().toLowerCase(),pf=$('paymentFilter').value,tf=$('typeFilter').value;
+  return state.orders.filter(o=>{
+    const st=orderStatus(o);
+    if(state.filterStatus==='active'){if(!ACTIVE_STATUSES.includes(st))return false}
+    else if(st!==state.filterStatus)return false;
+    if(pf&&paymentMethod(o)!==pf)return false;
+    if(tf&&deliveryType(o)!==tf)return false;
+    if(s){
+      const hay=[orderNumber(o),orderName(o),orderPhone(o),addressText(o),o.id].join(' ').toLowerCase();
+      if(!hay.includes(s))return false;
+    }
+    return true;
+  });
+}
+function pillStatus(st){return `<span class="pill s-${esc(st)}">${esc(STATUS[st]?.label||st)}</span>`}
+function pillPayment(o){
+  const ps=paymentStatus(o),pl=ps==='paid'?'Pago':ps==='failed'?'Falhou':ps==='cancelled'?'Cancelado':'Pendente';
+  return `<span class="pill pay-${esc(ps)}">${esc(pl)}</span>`;
+}
+function renderOrders(){
+  const list=$('ordersList'),rows=filtered();
+  if(!rows.length){list.innerHTML=`<div class="empty"><i class="ri-inbox-2-line"></i><h3>Nenhum pedido aqui</h3><p>Os pedidos aparecerão automaticamente quando chegarem.</p></div>`;return}
+  list.innerHTML=rows.map(o=>{
+    const items=state.itemsByOrder.get(o.id)||[],summary=items.slice(0,2).map(i=>`${i.quantity||1}x ${i.product_name||i.name||'Item'}`).join(' • ');
+    const isnew=orderStatus(o)==='pending'&&!o.viewed_at;
+    return `<article class="order-card ${isnew?'new-order':''}" data-open-order="${esc(o.id)}">
+      <div><div class="order-num">#${esc(orderNumber(o))}</div><div class="order-time">${esc(localTime(o.created_at))}</div></div>
+      <div class="customer"><b>${esc(orderName(o))}</b><small>${esc(orderPhone(o)||'Sem telefone')}</small></div>
+      <div class="summary"><b>${items.length} ${items.length===1?'item':'itens'}</b><small>${esc(summary||noteText(o)||'Sem detalhes')}</small></div>
+      <div class="delivery-col"><b style="font-size:12px">${deliveryType(o)==='pickup'?'Retirada':'Entrega'}</b><small style="display:block;color:#667085;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(deliveryType(o)==='pickup'?'Retirada na loja':addressText(o)||'Endereço não informado')}</small></div>
+      <div class="status-col">${pillStatus(orderStatus(o))}<div style="margin-top:6px">${pillPayment(o)}</div></div>
+      <div><div class="money">${money(orderTotal(o))}</div><div class="card-actions"><button class="icon-btn" data-print="${esc(o.id)}" title="Imprimir"><i class="ri-printer-line"></i></button><button class="icon-btn" data-open="${esc(o.id)}" title="Abrir"><i class="ri-arrow-right-line"></i></button></div></div>
+    </article>`
+  }).join('');
+}
+function updateStats(){
+  const counts={};state.orders.forEach(o=>counts[orderStatus(o)]=(counts[orderStatus(o)]||0)+1);
+  $('countPending').textContent=counts.pending||0;$('countConfirmed').textContent=counts.confirmed||0;$('countPreparing').textContent=counts.preparing||0;$('countReady').textContent=counts.ready||0;$('countDelivery').textContent=counts.out_for_delivery||0;
+  $('countActive').textContent=ACTIVE_STATUSES.reduce((n,s)=>n+(counts[s]||0),0);
+  $('statNew').textContent=counts.pending||0;$('statPreparing').textContent=counts.preparing||0;$('statReady').textContent=counts.ready||0;
+  const today=state.orders.filter(o=>isToday(o.created_at)),valid=today.filter(o=>orderStatus(o)!=='cancelled'),sales=valid.reduce((a,o)=>a+orderTotal(o),0);
+  $('statSales').textContent=money(sales);$('statOrdersToday').textContent=`${valid.length} ${valid.length===1?'pedido':'pedidos'}`;
+  $('statTicket').textContent=money(valid.length?sales/valid.length:0);
+}
+function updateReport(){
+  const today=state.orders.filter(o=>isToday(o.created_at)),valid=today.filter(o=>orderStatus(o)!=='cancelled'),sales=valid.reduce((a,o)=>a+orderTotal(o),0),fees=valid.reduce((a,o)=>a+Number(o.delivery_fee||0),0);
+  $('rOrders').textContent=today.length;$('rSales').textContent=money(sales);$('rFees').textContent=money(fees);$('rCancelled').textContent=today.filter(o=>orderStatus(o)==='cancelled').length;$('rTicket').textContent=money(valid.length?sales/valid.length:0);
+  const map={};valid.forEach(o=>{const p=paymentMethod(o)||'other';map[p]??={count:0,total:0};map[p].count++;map[p].total+=orderTotal(o)});
+  $('paymentReportBody').innerHTML=Object.entries(map).map(([k,v])=>`<tr><td>${esc(PAYMENT_LABELS[k]||k)}</td><td>${v.count}</td><td><b>${money(v.total)}</b></td></tr>`).join('')||'<tr><td colspan="3">Sem pedidos hoje.</td></tr>';
+}
+function updateUI(){renderOrders();updateStats();updateReport()}
+function orderItems(o){return state.itemsByOrder.get(o.id)||[]}
+function addonsText(it){
+  let a=it.addons||it.options||it.complements;
+  if(typeof a==='string'){try{a=JSON.parse(a)}catch{return a}}
+  if(!Array.isArray(a))return '';
+  return a.map(x=>typeof x==='string'?x:(x.name||x.label||'')).filter(Boolean).join(', ');
+}
+async function openOrder(id){
+  const o=state.orders.find(x=>String(x.id)===String(id));if(!o)return;state.current=o;
+  if(!o.viewed_at){const now=new Date().toISOString();o.viewed_at=now;state.sb.from('delivery_orders').update({viewed_at:now}).eq('id',o.id).then(()=>{renderOrders()})}
+  $('drawerTitle').textContent='Pedido #'+orderNumber(o);$('drawerStatusText').textContent=localDate(o.created_at)+' • '+(STATUS[orderStatus(o)]?.label||orderStatus(o));
+  const items=orderItems(o);
+  $('drawerBody').innerHTML=`
+    <div class="section-card"><h4>Cliente</h4><div class="info-grid">
+      <div class="info"><span>Nome</span><b>${esc(orderName(o))}</b></div>
+      <div class="info"><span>WhatsApp</span><b>${esc(orderPhone(o)||'—')}</b></div>
+      <div class="info"><span>Modalidade</span><b>${deliveryType(o)==='pickup'?'Retirada':'Entrega'}</b></div>
+      <div class="info"><span>Pagamento</span><b>${esc(PAYMENT_LABELS[paymentMethod(o)]||paymentMethod(o)||'A combinar')} • ${paymentStatus(o)==='paid'?'Pago':'Pendente'}</b></div>
+    </div>${deliveryType(o)!=='pickup'?`<div class="info" style="margin-top:10px"><span>Endereço</span><b>${esc(addressText(o)||'Não informado')}</b>${o.address_reference||o.reference?`<small style="display:block;color:#667085;margin-top:4px">Referência: ${esc(o.address_reference||o.reference)}</small>`:''}</div>`:''}</div>
+    <div class="section-card"><h4>Itens do pedido</h4>
+      ${items.map(it=>`<div class="item-row"><div><b>${esc(it.quantity||1)}x ${esc(it.product_name||it.name||'Item')}</b>${it.variation_name?`<small>${esc(it.variation_name)}</small>`:''}${addonsText(it)?`<small>+ ${esc(addonsText(it))}</small>`:''}${it.notes||it.note?`<small><b>Obs.:</b> ${esc(it.notes||it.note)}</small>`:''}</div><div class="item-price">${money((Number(it.unit_price||it.price||0)+Number(it.addons_total||0))*Number(it.quantity||1))}</div></div>`).join('')||'<div style="color:#667085">Itens não encontrados.</div>'}
+    </div>
+    ${noteText(o)?`<div class="section-card"><h4>Observações</h4><div style="font-size:13px;line-height:1.55">${esc(noteText(o))}</div></div>`:''}
+    <div class="section-card"><h4>Valores</h4>
+      <div class="total-row"><span>Subtotal</span><b>${money(orderSubtotal(o))}</b></div>
+      <div class="total-row"><span>Taxa de entrega</span><b>${money(o.delivery_fee||0)}</b></div>
+      ${Number(o.discount_amount||0)>0?`<div class="total-row"><span>Desconto</span><b>- ${money(o.discount_amount)}</b></div>`:''}
+      <div class="total-row grand"><span>Total</span><span>${money(orderTotal(o))}</span></div>
+    </div>
+    <div class="section-card"><h4>Status do pagamento</h4><div style="display:flex;gap:8px;flex-wrap:wrap">${pillPayment(o)}<button class="btn" data-pay="${paymentStatus(o)==='paid'?'pending':'paid'}">${paymentStatus(o)==='paid'?'Marcar pendente':'Marcar como pago'}</button></div></div>`;
+  const st=orderStatus(o),cfg=STATUS[st];
+  $('advanceOrderBtn').classList.toggle('hidden',!cfg?.next);if(cfg?.next)$('advanceOrderBtn').innerHTML=`<i class="ri-arrow-right-circle-line"></i> ${esc(cfg.nextLabel)}`;
+  $('cancelOrderBtn').classList.toggle('hidden',['completed','cancelled'].includes(st));
+  $('orderDrawer').classList.add('open');$('drawerBackdrop').classList.add('open');
+}
+function closeDrawer(){$('orderDrawer').classList.remove('open');$('drawerBackdrop').classList.remove('open');state.current=null}
+async function updateOrder(payload){
+  if(!state.current)return;
+  const {data,error}=await state.sb.from('delivery_orders').update({...payload,updated_at:new Date().toISOString()}).eq('id',state.current.id).select('*').maybeSingle();
+  if(error)throw error;
+  if(data){Object.assign(state.current,data);const i=state.orders.findIndex(x=>x.id===data.id);if(i>=0)state.orders[i]=data}
+  updateUI();await openOrder(state.current.id);
+}
+async function advance(){
+  const o=state.current,cfg=STATUS[orderStatus(o)];if(!cfg?.next)return;
+  const payload={status:cfg.next};
+  if(cfg.next==='confirmed')payload.accepted_at=new Date().toISOString();
+  if(cfg.next==='preparing')payload.preparing_at=new Date().toISOString();
+  if(cfg.next==='ready')payload.ready_at=new Date().toISOString();
+  if(cfg.next==='out_for_delivery')payload.out_for_delivery_at=new Date().toISOString();
+  if(cfg.next==='completed')payload.completed_at=new Date().toISOString();
+  try{await updateOrder(payload);toast('Status atualizado.')}catch(e){toast(e.message,'error')}
+}
+async function cancelOrder(){
+  if(!state.current||!confirm('Cancelar este pedido?'))return;
+  const reason=prompt('Motivo do cancelamento (opcional):')||'';
+  try{await updateOrder({status:'cancelled',cancelled_at:new Date().toISOString(),cancellation_reason:reason});toast('Pedido cancelado.')}catch(e){toast(e.message,'error')}
+}
+
+function loadSettings(){
+  try{Object.assign(state.settings,JSON.parse(localStorage.getItem('delivery_order_manager_settings_v2')||'{}'))}catch{}
+  if(!state.settings.receiptHeader)state.settings.receiptHeader=state.delivery?.name||'DELIVERY';
+}
+function syncSettingsUI(){
+  $('settingSound').checked=!!state.settings.sound;$('settingNotifications').checked=!!state.settings.notifications;$('settingAutoPrint').checked=!!state.settings.autoPrint;
+  $('settingPaper').value=String(state.settings.paper||'80');$('settingCopies').value=String(state.settings.copies||1);$('settingSoundRepeat').value=String(state.settings.soundRepeat||0);
+  $('settingPrintMode').value=state.settings.printMode||'browser';$('settingReceiptHeader').value=state.settings.receiptHeader||'';$('settingPrintCustomer').checked=state.settings.printCustomer!==false;$('settingPrintValues').checked=state.settings.printValues!==false;
+  $('soundBtn').innerHTML=`<i class="ri-volume-${state.settings.sound?'up':'mute'}-line"></i><span>Som ${state.settings.sound?'ligado':'desligado'}</span>`;
+}
+function saveSettings(){
+  state.settings={sound:$('settingSound').checked,notifications:$('settingNotifications').checked,autoPrint:$('settingAutoPrint').checked,paper:$('settingPaper').value,copies:Number($('settingCopies').value)||1,soundRepeat:Number($('settingSoundRepeat').value)||0,printMode:$('settingPrintMode').value,receiptHeader:$('settingReceiptHeader').value.trim(),printCustomer:$('settingPrintCustomer').checked,printValues:$('settingPrintValues').checked};
+  localStorage.setItem('delivery_order_manager_settings_v2',JSON.stringify(state.settings));syncSettingsUI();$('settingsModal').classList.add('hidden');toast('Configurações salvas.');
+}
+let audioCtx=null,repeatTimer=null;
+function beep(){
+  if(!state.settings.sound)return;
+  try{
+    audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+    const now=audioCtx.currentTime;
+    [[880,0,.15],[1175,.18,.18],[880,.42,.25]].forEach(([freq,off,dur])=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=freq;g.gain.setValueAtTime(.0001,now+off);g.gain.exponentialRampToValueAtTime(.18,now+off+.02);g.gain.exponentialRampToValueAtTime(.0001,now+off+dur);o.connect(g);g.connect(audioCtx.destination);o.start(now+off);o.stop(now+off+dur+.03)});
+  }catch(e){console.warn(e)}
+}
+async function requestNotifications(){
+  if(!('Notification'in window))return toast('Este navegador não suporta notificações.','error');
+  const p=await Notification.requestPermission();state.settings.notifications=p==='granted';localStorage.setItem('delivery_order_manager_settings_v2',JSON.stringify(state.settings));syncSettingsUI();toast(p==='granted'?'Notificações ativadas.':'Permissão de notificação não concedida.',p==='granted'?'success':'error')
+}
+function browserNotify(o){
+  if(!state.settings.notifications||Notification.permission!=='granted')return;
+  try{const n=new Notification(`Novo pedido #${orderNumber(o)}`,{body:`${orderName(o)} • ${money(orderTotal(o))}`,tag:'delivery-'+o.id,renotify:true});n.onclick=()=>{window.focus();openOrder(o.id);n.close()}}catch{}
+}
+function announce(o){
+  beep();browserNotify(o);toast(`Novo pedido #${orderNumber(o)} • ${orderName(o)} • ${money(orderTotal(o))}`);
+  if(state.settings.soundRepeat>0){clearInterval(repeatTimer);repeatTimer=setInterval(()=>{const still=state.orders.some(x=>orderStatus(x)==='pending'&&!x.viewed_at);if(still)beep();else clearInterval(repeatTimer)},state.settings.soundRepeat*1000)}
+  if(state.settings.autoPrint)setTimeout(()=>printOrder(o,true),600);
+}
+
+function receiptText(o){
+  const width=state.settings.paper==='58'?32:42,line='-'.repeat(width),items=orderItems(o);
+  const lines=[(state.settings.receiptHeader||state.delivery.name||'DELIVERY').toUpperCase(),`PEDIDO #${orderNumber(o)}`,localDate(o.created_at),line];
+  if(state.settings.printCustomer){lines.push(`CLIENTE: ${orderName(o)}`);if(orderPhone(o))lines.push(`FONE: ${orderPhone(o)}`);lines.push(`TIPO: ${deliveryType(o)==='pickup'?'RETIRADA':'ENTREGA'}`);if(deliveryType(o)!=='pickup'&&addressText(o))lines.push(`END: ${addressText(o)}`);lines.push(line)}
+  items.forEach(it=>{lines.push(`${it.quantity||1}x ${(it.product_name||it.name||'ITEM').toUpperCase()}`);if(it.variation_name)lines.push(`  ${it.variation_name}`);if(addonsText(it))lines.push(`  + ${addonsText(it)}`);if(it.notes||it.note)lines.push(`  OBS: ${it.notes||it.note}`)});
+  if(noteText(o)){lines.push(line,'OBS GERAL:',noteText(o))}
+  if(state.settings.printValues){lines.push(line,`SUBTOTAL: ${money(orderSubtotal(o))}`,`ENTREGA: ${money(o.delivery_fee||0)}`,`TOTAL: ${money(orderTotal(o))}`,`PAGAMENTO: ${(PAYMENT_LABELS[paymentMethod(o)]||paymentMethod(o)||'A COMBINAR').toUpperCase()} / ${paymentStatus(o)==='paid'?'PAGO':'PENDENTE'}`)}
+  lines.push(line,'*** FIM DO PEDIDO ***','','');
+  return lines.join('\n');
+}
+function receiptHtml(o){
+  const text=esc(receiptText(o)).replace(/\n/g,'<br>');
+  return `<div style="text-align:center;font-weight:900;font-size:15px;margin-bottom:8px">${esc(state.settings.receiptHeader||state.delivery.name||'DELIVERY')}</div><div style="white-space:normal;line-height:1.45">${text}</div>`;
+}
+async function printOrder(o=state.current,automatic=false){
+  if(!o)return;
+  if(state.settings.printMode==='webusb'){
+    try{await printUsb(o);return}catch(e){console.error(e);if(!automatic)toast('Impressão USB falhou. Abrindo impressão do navegador.','error')}
+  }
+  $('thermalReceipt').className=state.settings.paper==='58'?'receipt-58':'';
+  $('thermalReceipt').innerHTML=receiptHtml(o);
+  for(let i=0;i<(state.settings.copies||1);i++){window.print();if(i+1<state.settings.copies)await new Promise(r=>setTimeout(r,500))}
+  setTimeout(()=>$('thermalReceipt').classList.add('hidden'),500);
+}
+function enc(s){return new TextEncoder().encode(s)}
+async function connectUsb(){
+  if(!navigator.usb)return toast('WebUSB não está disponível neste navegador. Use Chrome/Edge ou impressão normal.','error');
+  try{
+    const dev=await navigator.usb.requestDevice({filters:[]});
+    await dev.open();if(!dev.configuration)await dev.selectConfiguration(1);
+    let iface=null,endpoint=null;
+    for(const intf of dev.configuration.interfaces){for(const alt of intf.alternates){const ep=alt.endpoints.find(e=>e.direction==='out');if(ep){iface=intf.interfaceNumber;endpoint=ep.endpointNumber;break}}if(endpoint)break}
+    if(endpoint==null)throw new Error('Não encontrei endpoint de saída da impressora.');
+    await dev.claimInterface(iface);state.usbDevice=dev;state.usbInterface=iface;state.usbEndpoint=endpoint;
+    toast('Impressora USB conectada.');state.settings.printMode='webusb';$('settingPrintMode').value='webusb';
+  }catch(e){toast('Não foi possível conectar: '+e.message,'error')}
+}
+async function printUsb(o){
+  if(!state.usbDevice||!state.usbDevice.opened)await connectUsb();
+  if(!state.usbDevice||!state.usbEndpoint)throw new Error('Impressora não conectada.');
+  const init=new Uint8Array([0x1b,0x40]),boldOn=new Uint8Array([0x1b,0x45,0x01]),boldOff=new Uint8Array([0x1b,0x45,0x00]),cut=new Uint8Array([0x1d,0x56,0x00]);
+  await state.usbDevice.transferOut(state.usbEndpoint,init);
+  await state.usbDevice.transferOut(state.usbEndpoint,boldOn);
+  await state.usbDevice.transferOut(state.usbEndpoint,enc((state.settings.receiptHeader||state.delivery.name||'DELIVERY')+'\n'));
+  await state.usbDevice.transferOut(state.usbEndpoint,boldOff);
+  for(let i=0;i<(state.settings.copies||1);i++){await state.usbDevice.transferOut(state.usbEndpoint,enc(receiptText(o)+'\n\n'));await state.usbDevice.transferOut(state.usbEndpoint,cut)}
+}
+async function setupRealtime(){
+  if(state.realtime)await state.sb.removeChannel(state.realtime);
+  state.realtime=state.sb.channel('delivery-orders-'+state.delivery.id)
+    .on('postgres_changes',{event:'*',schema:'public',table:'delivery_orders',filter:`delivery_id=eq.${state.delivery.id}`},async payload=>{
+      if(payload.eventType==='INSERT'){await fetchOrders();const o=state.orders.find(x=>x.id===payload.new.id);if(o)announce(o)}
+      else if(payload.eventType==='UPDATE'){const i=state.orders.findIndex(x=>x.id===payload.new.id);if(i>=0)state.orders[i]={...state.orders[i],...payload.new};else state.orders.unshift(payload.new);updateUI();if(state.current?.id===payload.new.id)openOrder(payload.new.id)}
+      else if(payload.eventType==='DELETE'){state.orders=state.orders.filter(x=>x.id!==payload.old.id);updateUI()}
+    })
+    .on('postgres_changes',{event:'*',schema:'public',table:'delivery_order_items'},async()=>{await fetchOrders();if(state.current)openOrder(state.current.id)})
+    .subscribe(status=>{const ok=status==='SUBSCRIBED';$('realtimeDot').classList.toggle('live',ok);$('realtimeText').textContent=ok?'Online':'Conectando'});
+}
+function setFilter(status){
+  state.filterStatus=status;$$('.nav-btn[data-status]').forEach(b=>b.classList.toggle('active',b.dataset.status===status));
+  const names={active:'Pedidos em andamento',pending:'Novos pedidos',confirmed:'Pedidos confirmados',preparing:'Pedidos em preparo',ready:'Pedidos prontos',out_for_delivery:'Pedidos em entrega',completed:'Pedidos finalizados',cancelled:'Pedidos cancelados'};
+  $('viewTitle').textContent=names[status]||'Pedidos';renderOrders();showOrders();
+}
+function showOrders(){$('ordersView').classList.remove('hidden');$('reportsView').classList.add('hidden')}
+function showReports(){$('ordersView').classList.add('hidden');$('reportsView').classList.remove('hidden');updateReport()}
+
+function bind(){
+  $('searchInput').oninput=renderOrders;$('paymentFilter').onchange=renderOrders;$('typeFilter').onchange=renderOrders;
+  $('refreshBtn').onclick=$('refreshSide').onclick=()=>fetchOrders().then(()=>toast('Pedidos atualizados.')).catch(e=>toast(e.message,'error'));
+  $$('.nav-btn[data-status]').forEach(b=>b.onclick=()=>setFilter(b.dataset.status));
+  $$('[data-view="reports"]').forEach(b=>b.onclick=showReports);$('backOrdersBtn').onclick=showOrders;
+  $('ordersList').onclick=e=>{const p=e.target.closest('[data-print]'),o=e.target.closest('[data-open],[data-open-order]');if(p){e.stopPropagation();const row=state.orders.find(x=>String(x.id)===p.dataset.print);if(row)printOrder(row)}else if(o)openOrder(o.dataset.open||o.dataset.openOrder)};
+  $('closeDrawerBtn').onclick=$('drawerBackdrop').onclick=closeDrawer;$('advanceOrderBtn').onclick=advance;$('cancelOrderBtn').onclick=cancelOrder;$('printOrderBtn').onclick=()=>printOrder();
+  $('whatsappOrderBtn').onclick=()=>{if(!state.current)return;const p=digits(orderPhone(state.current));if(!p)return toast('Pedido sem telefone.','error');window.open(`https://wa.me/${p}?text=${encodeURIComponent('Olá '+orderName(state.current)+', sobre seu pedido #'+orderNumber(state.current)+':')}`,'_blank')};
+  $('drawerBody').onclick=e=>{const b=e.target.closest('[data-pay]');if(b)updateOrder({payment_status:b.dataset.pay}).catch(er=>toast(er.message,'error'))};
+  $('settingsBtn').onclick=()=>{syncSettingsUI();$('settingsModal').classList.remove('hidden')};$$('[data-close-settings]').forEach(b=>b.onclick=()=>$('settingsModal').classList.add('hidden'));
+  $('saveSettingsBtn').onclick=saveSettings;$('testSoundBtn').onclick=beep;$('testPrintBtn').onclick=()=>{const sample=state.orders[0]||{id:'teste',order_number:'TESTE',customer_name:'Cliente Teste',customer_phone:'(77) 99999-9999',status:'pending',payment_method:'pix',payment_status:'pending',delivery_type:'delivery',address:'Rua Exemplo, 123',subtotal:49.9,delivery_fee:5,total:54.9,created_at:new Date().toISOString()};printOrder(sample)};
+  $('connectUsbBtn').onclick=connectUsb;$('soundBtn').onclick=()=>{state.settings.sound=!state.settings.sound;localStorage.setItem('delivery_order_manager_settings_v2',JSON.stringify(state.settings));syncSettingsUI();if(state.settings.sound)beep()};
+  $('notifyBtn').onclick=requestNotifications;$('thermalBtn').onclick=()=>{syncSettingsUI();$('settingsModal').classList.remove('hidden')};
+}
+
+async function init(){
+  try{
+    if(!await auth())return;
+    await loadDelivery();loadSettings();syncSettingsUI();bind();await fetchOrders();await setupRealtime();
+    state.lastIds=new Set(state.orders.map(x=>x.id));state.initialLoaded=true;
+    $('app').classList.remove('hidden');$('loader').remove();
+  }catch(e){
+    console.error(e);$('loader').innerHTML=`<div class="loader-box" style="max-width:540px;padding:24px"><div style="font-size:42px;color:#b42318"><i class="ri-error-warning-line"></i></div><h2>Não foi possível abrir o gerenciador</h2><p style="color:#667085;line-height:1.6">${esc(e.message)}</p><button class="btn primary" onclick="location.reload()">Tentar novamente</button><p style="font-size:12px;color:#98a2b3">Confira se as tabelas delivery_orders e delivery_order_items existem e se o Realtime/RLS estão configurados.</p></div>`;
+  }
+}
+init();
+</script>
+</body>
+</html>
