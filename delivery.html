@@ -5,6 +5,7 @@
 
 
 
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -1589,6 +1590,114 @@
     .payment-modal-footer{padding:12px 20px 18px}.secondary-btn{width:100%;min-height:44px;border:1px solid var(--line);background:#fff;border-radius:13px;font-weight:800;color:var(--text)}
     @media(max-width:650px){.online-payment-box{padding:10px;border-radius:13px}.payment-modal-card{width:100%;border-radius:24px 24px 0 0}.modal-overlay.payment-modal-overlay{align-items:end;padding:0}.payment-modal-body{padding:16px}.pix-amount{font-size:24px}}
   </style>
+
+  <style id="clena-customer-profile-orders-v1">
+    @keyframes clenaPendingPulse{
+      0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(220,38,38,.55)}
+      50%{transform:scale(1.04);box-shadow:0 0 0 10px rgba(220,38,38,0)}
+    }
+    .hero-profile-btn{position:relative}
+    .hero-profile-btn.has-pending{
+      color:#dc2626!important;
+      animation:clenaPendingPulse 1.15s ease-in-out infinite;
+    }
+    .hero-profile-badge{
+      position:absolute;right:-3px;top:-3px;min-width:20px;height:20px;padding:0 5px;
+      border-radius:999px;background:#dc2626;color:#fff;border:2px solid #fff;
+      display:none;place-items:center;font-size:9px;font-weight:900;line-height:1;
+    }
+    .hero-profile-btn.has-pending .hero-profile-badge{display:grid}
+    .profile-modal-card{
+      width:min(620px,100%);max-height:94vh;background:#f7f7f8;border-radius:26px;
+      overflow:hidden;display:flex;flex-direction:column;box-shadow:0 35px 110px rgba(2,6,23,.38);
+    }
+    .profile-modal-head{
+      padding:18px 20px;background:#fff;border-bottom:1px solid #ececec;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+    }
+    .profile-modal-head small{display:block;color:#8a8a8a;font-size:8px;font-weight:800;letter-spacing:.08em}
+    .profile-modal-head h2{margin:3px 0 0;font-size:21px;letter-spacing:-.03em}
+    .profile-modal-body{padding:16px;overflow:auto;display:grid;gap:14px}
+    .profile-card{
+      background:#fff;border:1px solid #ececec;border-radius:20px;padding:16px;
+      box-shadow:0 8px 24px rgba(15,23,42,.04)
+    }
+    .profile-card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+    .profile-card-head h3{margin:0;font-size:15px}
+    .profile-card-head small{color:#8a8a8a;font-size:9px}
+    .profile-person-line{display:grid;grid-template-columns:42px 1fr;gap:11px;align-items:center}
+    .profile-avatar{
+      width:42px;height:42px;border-radius:50%;background:#111;color:#fff;display:grid;place-items:center;font-size:20px
+    }
+    .profile-person-line strong,.profile-person-line small{display:block}
+    .profile-person-line strong{font-size:13px}
+    .profile-person-line small{font-size:10px;color:#7a7a7a;margin-top:2px}
+    .profile-empty{padding:34px 14px;text-align:center;color:#7a7a7a}
+    .profile-empty i{display:block;font-size:38px;color:#b8b8b8;margin-bottom:8px}
+    .orders-list{display:grid;gap:10px}
+    .order-history-card{
+      border:1px solid #e8e8e8;border-radius:16px;padding:13px;background:#fff;display:grid;gap:10px;
+    }
+    .order-history-card.pending{border-color:#fecaca;background:#fffafa}
+    .order-history-card.approved{border-color:#bbf7d0;background:#fbfffc}
+    .order-history-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+    .order-history-top strong{font-size:12px}
+    .order-history-top small{display:block;color:#888;font-size:9px;margin-top:3px}
+    .order-status-pill{
+      border-radius:999px;padding:6px 8px;font-size:8px;font-weight:900;white-space:nowrap;
+      background:#f1f5f9;color:#475569
+    }
+    .order-status-pill.pending,.order-status-pill.in_process{
+      background:#fee2e2;color:#b91c1c
+    }
+    .order-status-pill.approved{background:#dcfce7;color:#166534}
+    .order-status-pill.rejected,.order-status-pill.cancelled,.order-status-pill.refunded,.order-status-pill.charged_back{
+      background:#f3f4f6;color:#6b7280
+    }
+    .order-history-items{font-size:10px;color:#555;line-height:1.55}
+    .order-history-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .order-history-total{font-size:15px;font-weight:900}
+    .order-history-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+    .mini-action{
+      min-height:35px;border:1px solid #e5e5e5;background:#fff;border-radius:10px;padding:0 11px;
+      display:inline-flex;align-items:center;gap:6px;font-size:9px;font-weight:800;color:#111
+    }
+    .mini-action.primary{background:#111;color:#fff;border-color:#111}
+    .mini-action.danger{background:#dc2626;color:#fff;border-color:#dc2626}
+    .profile-pix-box{display:grid;gap:12px}
+    .profile-pix-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .profile-pix-top strong{font-size:14px}.profile-pix-top span{font-size:18px;font-weight:900}
+    .profile-pix-qr{
+      width:min(260px,75vw);aspect-ratio:1;margin:auto;border:1px solid #e7e7e7;border-radius:18px;
+      background:#fff;padding:12px;display:grid;place-items:center;overflow:hidden
+    }
+    .profile-pix-qr img{width:100%;height:100%;object-fit:contain}
+    .profile-pix-code{
+      width:100%;min-height:90px;border:1px solid #e7e7e7;border-radius:12px;background:#f8fafc;
+      padding:10px;font-size:10px;line-height:1.45;resize:none;color:#334155
+    }
+    .profile-pix-status{
+      padding:11px;border-radius:12px;background:#fff7ed;color:#9a3412;font-size:10px;font-weight:800;
+      display:flex;align-items:center;justify-content:center;gap:7px
+    }
+    .profile-pix-status.approved{background:#ecfdf5;color:#166534}
+    .profile-pix-status.failed{background:#fef2f2;color:#991b1b}
+    .profile-pending-banner{
+      display:none;align-items:center;gap:9px;padding:11px 13px;border-radius:14px;
+      background:#dc2626;color:#fff;font-size:10px;font-weight:900;
+      animation:clenaPendingPulse 1.15s ease-in-out infinite;
+    }
+    .profile-pending-banner.visible{display:flex}
+    .profile-modal-footer{padding:12px 16px 16px;background:#f7f7f8}
+    @media(max-width:650px){
+      .profile-modal-card{width:100%;max-height:96dvh;border-radius:24px 24px 0 0}
+      .modal-overlay.profile-modal-overlay{align-items:end;padding:0}
+      .profile-modal-body{padding:11px}
+      .profile-modal-head{padding:14px}
+      .profile-card{padding:13px;border-radius:16px}
+    }
+  </style>
+
 </head>
 
 <body>
@@ -1797,6 +1906,77 @@
   </div>
 
 
+
+  <div id="profileModal" class="modal-overlay profile-modal-overlay hidden" aria-hidden="true">
+    <section class="profile-modal-card" role="dialog" aria-modal="true" aria-labelledby="profileModalTitle">
+      <header class="profile-modal-head">
+        <div>
+          <small>MEU PERFIL</small>
+          <h2 id="profileModalTitle">Pedidos e pagamentos</h2>
+        </div>
+        <button id="closeProfileModalBtn" class="icon-btn" type="button" aria-label="Fechar perfil">
+          <i class="ri-close-line"></i>
+        </button>
+      </header>
+
+      <div class="profile-modal-body">
+        <div id="profilePendingBanner" class="profile-pending-banner">
+          <i class="ri-alarm-warning-fill"></i>
+          <span>Você tem pedido aguardando pagamento</span>
+        </div>
+
+        <section class="profile-card">
+          <div class="profile-card-head">
+            <h3>Seus dados</h3>
+            <small>Usados para facilitar o próximo pedido</small>
+          </div>
+          <div id="profileCustomerSummary"></div>
+        </section>
+
+        <section id="profilePixSection" class="profile-card hidden">
+          <div class="profile-card-head">
+            <h3>Pagamento PIX</h3>
+            <button id="profileBackToHistoryBtn" class="mini-action" type="button">
+              <i class="ri-arrow-left-line"></i> Histórico
+            </button>
+          </div>
+          <div class="profile-pix-box">
+            <div class="profile-pix-top">
+              <strong id="profilePixOrderLabel">Pedido</strong>
+              <span id="profilePixAmount">R$ 0,00</span>
+            </div>
+            <div id="profilePixQr" class="profile-pix-qr">
+              <div style="text-align:center;color:#777">
+                <i class="ri-loader-4-line spinner" style="font-size:38px"></i>
+                <small style="display:block;margin-top:7px">Gerando PIX...</small>
+              </div>
+            </div>
+            <textarea id="profilePixCode" class="profile-pix-code" readonly placeholder="O código PIX aparecerá aqui"></textarea>
+            <button id="profileCopyPixBtn" class="primary-btn" type="button">
+              <i class="ri-file-copy-line"></i>
+              <span>Copiar código PIX</span>
+            </button>
+            <div id="profilePixStatus" class="profile-pix-status">
+              <i class="ri-time-line"></i><span>Aguardando pagamento...</span>
+            </div>
+          </div>
+        </section>
+
+        <section id="profileHistorySection" class="profile-card">
+          <div class="profile-card-head">
+            <h3>Histórico de pedidos</h3>
+            <small id="profileHistoryCount">0 pedidos</small>
+          </div>
+          <div id="profileOrdersList" class="orders-list"></div>
+        </section>
+      </div>
+
+      <footer class="profile-modal-footer">
+        <button id="closeProfileActionBtn" class="secondary-btn" type="button">Voltar à loja</button>
+      </footer>
+    </section>
+  </div>
+
   <div id="paymentModal" class="modal-overlay payment-modal-overlay hidden" aria-hidden="true">
     <section class="payment-modal-card" role="dialog" aria-modal="true" aria-labelledby="paymentModalTitle">
       <header class="payment-modal-head">
@@ -1846,6 +2026,7 @@
       product:null,
       onlinePayment:null,
       paymentPollTimer:null,
+      profileSelectedOrderId:null,
       modalQty:1,
       modalSelections:new Map(),
       openInfo:null
@@ -1971,7 +2152,15 @@
         renderAll();
         restoreCustomerProfileStorage();
         restoreCheckoutDraftFromStorage();
+        migrateLegacyLastOrderToHistory();
         bindEvents();
+        updateProfilePendingIndicator();
+
+        const latestPending=pendingPaymentOrders()[0];
+        if(latestPending?.order_id){
+          startPaymentPolling(latestPending.order_id,latestPending.payment_id || null);
+        }
+
         startAvailabilityWatcher();
 
         $("loadingScreen").classList.add("hidden");
@@ -3773,7 +3962,7 @@ $("cartButton").classList.toggle(
     }
 
     /* =========================================================
-       STORAGE DO PEDIDO • ISOLADO PELO ID DA LOJA
+       DADOS DO PEDIDO • ISOLADO PELO ID DA LOJA
        Estrutura preparada para a futura sacolinha_delivery.html.
     ========================================================= */
     function orderDraftStorageKey(){
@@ -3782,6 +3971,88 @@ $("cartButton").classList.toggle(
 
     function lastOrderStorageKey(){
       return state.delivery?.id ? `delivery:ultimo-pedido:v1:${state.delivery.id}` : null;
+    }
+
+    function ordersHistoryStorageKey(){
+      return state.delivery?.id ? `delivery:historico-pedidos:v2:${state.delivery.id}` : null;
+    }
+
+    function getOrdersHistory(){
+      const rows=safeLocalStorageGet(ordersHistoryStorageKey());
+      return Array.isArray(rows) ? rows.filter(row=>String(row?.delivery_id)===String(state.delivery?.id)) : [];
+    }
+
+    function setOrdersHistory(rows){
+      const clean=(Array.isArray(rows)?rows:[])
+        .filter(Boolean)
+        .sort((a,b)=>new Date(b.saved_at||b.updated_at||0)-new Date(a.saved_at||a.updated_at||0))
+        .slice(0,80);
+      safeLocalStorageSet(ordersHistoryStorageKey(),clean);
+      updateProfilePendingIndicator();
+      if (!$("profileModal")?.classList.contains("hidden")) renderProfilePanel();
+      return clean;
+    }
+
+    function orderHistoryIdentity(row){
+      return String(row?.order_id || row?.client_order_id || "");
+    }
+
+    function upsertOrderHistory(order){
+      if (!order || !state.delivery?.id) return null;
+      const rows=getOrdersHistory();
+      const identity=orderHistoryIdentity(order) || `local-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
+      const index=rows.findIndex(row=>orderHistoryIdentity(row)===identity);
+      const current=index>=0 ? rows[index] : {};
+      const merged={
+        ...current,
+        ...order,
+        client_order_id:order.client_order_id || current.client_order_id || identity,
+        delivery_id:state.delivery.id,
+        delivery_slug:state.delivery.slug || null,
+        saved_at:current.saved_at || order.saved_at || new Date().toISOString(),
+        updated_at:new Date().toISOString()
+      };
+      if(index>=0) rows[index]=merged; else rows.unshift(merged);
+      setOrdersHistory(rows);
+      return merged;
+    }
+
+    function updateOrderHistory(orderId,patch={}){
+      const id=String(orderId||"");
+      if(!id) return null;
+      const rows=getOrdersHistory();
+      const index=rows.findIndex(row=>String(row.order_id||"")===id);
+      if(index<0) return null;
+      rows[index]={...rows[index],...patch,updated_at:new Date().toISOString()};
+      setOrdersHistory(rows);
+      return rows[index];
+    }
+
+    function isPendingPaymentOrder(order){
+      if(!order) return false;
+      const method=String(order.payload?.payment_method || order.payment_method || "").toLowerCase();
+      const channel=String(order.channel || "").toLowerCase();
+      const online=method==="online" || channel.includes("online") || channel.includes("mercadopago");
+      const status=String(order.payment_status || order.status || "pending").toLowerCase();
+      return online && ["pending","in_process","authorized","processing"].includes(status);
+    }
+
+    function pendingPaymentOrders(){
+      return getOrdersHistory().filter(isPendingPaymentOrder);
+    }
+
+    function migrateLegacyLastOrderToHistory(){
+      const last=safeLocalStorageGet(lastOrderStorageKey());
+      if(!last || String(last.delivery_id)!==String(state.delivery?.id)) return;
+      const identity=String(last.order_id || "");
+      const exists=getOrdersHistory().some(row=>identity && String(row.order_id||"")===identity);
+      if(!exists){
+        upsertOrderHistory({
+          ...last,
+          client_order_id:last.client_order_id || identity || `legacy-${Date.now()}`,
+          payment_status:last.payment_status || (last.channel==="online-pix" ? "pending" : "sent")
+        });
+      }
     }
 
     /* =========================================================
@@ -3818,6 +4089,7 @@ $("cartButton").classList.toggle(
         updated_at:new Date().toISOString(),
         ...customerProfileFields()
       });
+      if(!$("profileModal")?.classList.contains("hidden")) renderProfilePanel();
     }
 
     function restoreCustomerProfileStorage(){
@@ -3855,13 +4127,13 @@ $("cartButton").classList.toggle(
     function safeLocalStorageSet(key,value){
       if (!key) return;
       try{ localStorage.setItem(key,JSON.stringify(value)); }
-      catch(error){ console.warn("[DELIVERY] Não foi possível salvar no storage:",error); }
+      catch(error){ console.warn("[DELIVERY] Não foi possível salvar no dados locais:",error); }
     }
 
     function safeLocalStorageGet(key){
       if (!key) return null;
       try{ return parseJSON(localStorage.getItem(key),null); }
-      catch(error){ console.warn("[DELIVERY] Não foi possível ler o storage:",error); return null; }
+      catch(error){ console.warn("[DELIVERY] Não foi possível ler o dados locais:",error); return null; }
     }
 
     function serializeCartForStorage(){
@@ -3952,14 +4224,24 @@ $("cartButton").classList.toggle(
 
     function saveLastOrderToStorage(payload,meta={}){
       const key=lastOrderStorageKey();
-      if (!key) return;
-      safeLocalStorageSet(key,{
-        version:1,
+      const snapshot={
+        version:2,
         delivery_id:state.delivery.id,
         delivery_slug:state.delivery.slug || null,
         saved_at:new Date().toISOString(),
         channel:meta.channel || state.delivery.checkout_mode || "whatsapp",
         order_id:meta.order_id || null,
+        client_order_id:meta.client_order_id || meta.order_id || `local-${Date.now()}-${Math.random().toString(36).slice(2,8)}`,
+        payment_id:meta.payment_id || null,
+        payment_status:meta.payment_status || (
+          String(meta.channel||"").includes("online") || String(meta.channel||"").includes("mercadopago")
+            ? "pending"
+            : "sent"
+        ),
+        status:meta.status || payload.status || "pending",
+        qr_code:meta.qr_code || null,
+        qr_code_base64:meta.qr_code_base64 || null,
+        ticket_url:meta.ticket_url || null,
         payload,
         items:state.cart.map(row=>({
           item_id:row.item.id,
@@ -3970,7 +4252,9 @@ $("cartButton").classList.toggle(
           note:row.note || null,
           line_total:cartLineUnit(row)*row.qty
         }))
-      });
+      };
+      if(key) safeLocalStorageSet(key,snapshot);
+      return upsertOrderHistory(snapshot);
     }
 
     function buildOrderPayload(){
@@ -4060,6 +4344,165 @@ $("cartButton").classList.toggle(
       }));
     }
 
+
+    function historyStatusLabel(status){
+      const map={
+        approved:"Pago",
+        pending:"Aguardando pagamento",
+        processing:"Gerando pagamento",
+        in_process:"Em análise",
+        authorized:"Autorizado",
+        rejected:"Rejeitado",
+        cancelled:"Cancelado",
+        refunded:"Estornado",
+        charged_back:"Contestado",
+        sent:"Enviado"
+      };
+      return map[String(status||"pending").toLowerCase()] || String(status||"Pedido");
+    }
+
+    function historyDate(value){
+      const d=new Date(value||Date.now());
+      if(Number.isNaN(d.getTime())) return "";
+      return d.toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"});
+    }
+
+    function profileCustomerHTML(){
+      const saved=safeLocalStorageGet(customerProfileStorageKey()) || {};
+      const name=saved.customer_name || $("customerName")?.value || "Cliente";
+      const phone=saved.customer_phone || $("customerPhone")?.value || "WhatsApp não informado";
+      const email=saved.customer_email || $("customerEmail")?.value || "E-mail não informado";
+      return `<div class="profile-person-line">
+        <div class="profile-avatar"><i class="ri-user-3-line"></i></div>
+        <div>
+          <strong>${esc(name)}</strong>
+          <small>${esc(phone)}</small>
+          <small>${esc(email)}</small>
+        </div>
+      </div>`;
+    }
+
+    function updateProfilePendingIndicator(){
+      const pending=pendingPaymentOrders();
+      const button=$("deliveryProfileBtn");
+      const badge=$("deliveryProfileBadge");
+      if(button){
+        button.classList.toggle("has-pending",pending.length>0);
+        button.setAttribute("aria-label",pending.length ? `Perfil: ${pending.length} pedido(s) aguardando pagamento` : "Meu perfil e pedidos");
+      }
+      if(badge) badge.textContent=String(Math.min(99,pending.length));
+      $("profilePendingBanner")?.classList.toggle("visible",pending.length>0);
+    }
+
+    function renderProfilePanel(){
+      if(!$("profileCustomerSummary")) return;
+      $("profileCustomerSummary").innerHTML=profileCustomerHTML();
+
+      const orders=getOrdersHistory();
+      const pending=orders.filter(isPendingPaymentOrder);
+      $("profilePendingBanner")?.classList.toggle("visible",pending.length>0);
+      if($("profileHistoryCount")) $("profileHistoryCount").textContent=`${orders.length} pedido${orders.length===1?"":"s"}`;
+
+      const list=$("profileOrdersList");
+      if(!orders.length){
+        list.innerHTML=`<div class="profile-empty"><i class="ri-receipt-line"></i><strong>Nenhum pedido ainda</strong><div style="font-size:10px;margin-top:5px">Seus pedidos aparecerão aqui.</div></div>`;
+      }else{
+        list.innerHTML=orders.map(order=>{
+          const status=String(order.payment_status || order.status || "pending").toLowerCase();
+          const pendingOrder=isPendingPaymentOrder(order);
+          const total=Number(order.payload?.total ?? order.total ?? 0);
+          const number=order.order_id ? String(order.order_id).slice(0,8).toUpperCase() : String(order.client_order_id||"").slice(-8).toUpperCase();
+          const items=(order.items||[]).map(item=>`${Number(item.quantity||1)}x ${esc(item.item_name||"Item")}`).join(" • ");
+          const canOpenPix=(String(order.channel||"").includes("online-pix") || order.payment_id || order.qr_code || pendingOrder) && !!order.order_id;
+          return `<article class="order-history-card ${pendingOrder?"pending":status==="approved"?"approved":""}">
+            <div class="order-history-top">
+              <div>
+                <strong>Pedido #${esc(number || "—")}</strong>
+                <small>${esc(historyDate(order.saved_at))}</small>
+              </div>
+              <span class="order-status-pill ${esc(status)}">${esc(historyStatusLabel(status))}</span>
+            </div>
+            <div class="order-history-items">${items || "Pedido registrado"}</div>
+            <div class="order-history-bottom">
+              <div class="order-history-total">${money(total)}</div>
+              <div class="order-history-actions">
+                ${canOpenPix ? `<button type="button" class="mini-action ${pendingOrder?"danger":"primary"}" data-open-history-pix="${esc(order.order_id)}"><i class="ri-qr-code-line"></i>${pendingOrder?"Pagar PIX":"Ver pagamento"}</button>`:""}
+              </div>
+            </div>
+          </article>`;
+        }).join("");
+      }
+
+      $$("[data-open-history-pix]",list).forEach(btn=>btn.addEventListener("click",()=>openHistoryPix(btn.dataset.openHistoryPix)));
+      updateProfilePendingIndicator();
+    }
+
+    function openProfileModal(){
+      renderProfilePanel();
+      $("profileHistorySection")?.classList.remove("hidden");
+      $("profilePixSection")?.classList.add("hidden");
+      $("profileModal")?.classList.remove("hidden");
+      $("profileModal")?.setAttribute("aria-hidden","false");
+      document.body.classList.add("no-scroll");
+    }
+
+    function closeProfileModal(){
+      const modal=$("profileModal");
+      if(modal?.contains(document.activeElement)){
+        try{document.activeElement.blur()}catch{}
+      }
+      modal?.classList.add("hidden");
+      modal?.setAttribute("aria-hidden","true");
+      if($("cartOverlay")?.classList.contains("hidden") && $("paymentModal")?.classList.contains("hidden")) document.body.classList.remove("no-scroll");
+    }
+
+    function renderProfilePix(order){
+      if(!order) return;
+      state.profileSelectedOrderId=String(order.order_id||"");
+      $("profileHistorySection")?.classList.add("hidden");
+      $("profilePixSection")?.classList.remove("hidden");
+
+      const number=String(order.order_id||"").slice(0,8).toUpperCase();
+      $("profilePixOrderLabel").textContent=`Pedido #${number || "—"}`;
+      $("profilePixAmount").textContent=money(Number(order.payload?.total ?? order.total ?? 0));
+      $("profilePixCode").value=order.qr_code || "";
+
+      if(order.qr_code_base64){
+        $("profilePixQr").innerHTML=`<img alt="QR Code PIX" src="data:image/png;base64,${order.qr_code_base64}">`;
+        $("profilePixQr").dataset.paymentId=String(order.payment_id||"");
+      }else{
+        $("profilePixQr").innerHTML=`<div style="text-align:center;color:#777"><i class="ri-loader-4-line spinner" style="font-size:38px"></i><small style="display:block;margin-top:7px">Gerando PIX...</small></div>`;
+        $("profilePixQr").dataset.paymentId="";
+      }
+
+      const status=String(order.payment_status||"pending").toLowerCase();
+      const failed=["rejected","cancelled","refunded","charged_back"].includes(status);
+      $("profilePixStatus").className=`profile-pix-status ${status==="approved"?"approved":failed?"failed":""}`;
+      $("profilePixStatus").innerHTML=`<i class="${status==="approved"?"ri-checkbox-circle-line":failed?"ri-close-circle-line":"ri-time-line"}"></i><span>${esc(historyStatusLabel(status))}</span>`;
+    }
+
+    function openHistoryPix(orderId){
+      const order=getOrdersHistory().find(row=>String(row.order_id||"")===String(orderId));
+      if(!order) return toast("Pedido não encontrado.","error");
+      if($("profileModal")?.classList.contains("hidden")) openProfileModal();
+      renderProfilePix(order);
+      if(isPendingPaymentOrder(order)) startPaymentPolling(order.order_id,order.payment_id||null);
+    }
+
+    async function copyProfilePixCode(){
+      const code=$("profilePixCode")?.value || "";
+      if(!code) return toast("O código PIX ainda está sendo gerado.","error");
+      try{
+        await navigator.clipboard.writeText(code);
+        toast("Código PIX copiado.","success");
+      }catch{
+        $("profilePixCode").focus();
+        $("profilePixCode").select();
+        document.execCommand("copy");
+        toast("Código PIX copiado.","success");
+      }
+    }
+
     function closePaymentModal(){
       if (state.paymentPollTimer){ clearInterval(state.paymentPollTimer); state.paymentPollTimer=null; }
 
@@ -4074,19 +4517,36 @@ $("cartButton").classList.toggle(
     }
 
     function showPixPaymentModal(data){
-      state.onlinePayment={order_id:data.order_id,payment_id:data.payment_id,delivery_id:String(state.delivery.id)};
-      $("paymentModalTitle").textContent="Pague com PIX";
-      $("pixAmount").textContent=money(data.total || cartSubtotal()+deliveryFee());
-      $("pixCode").value=data.qr_code || "";
-      $("pixQr").innerHTML=data.qr_code_base64
-        ? `<img alt="QR Code PIX" src="data:image/png;base64,${data.qr_code_base64}">`
-        : `<i class="ri-qr-code-line" style="font-size:52px"></i>`;
-      $("pixStatus").className="pix-status";
-      $("pixStatus").innerHTML=`<i class="ri-time-line"></i><span>Aguardando pagamento...</span>`;
-      $("paymentModal").classList.remove("hidden");
-      $("paymentModal").setAttribute("aria-hidden","false");
-      document.body.classList.add("no-scroll");
-      startPaymentPolling(data.order_id,data.payment_id);
+      if(state.paymentPollTimer){
+        clearInterval(state.paymentPollTimer);
+        state.paymentPollTimer=null;
+      }
+
+      state.onlinePayment={
+        order_id:String(data.order_id),
+        payment_id:data.payment_id ? String(data.payment_id) : null,
+        delivery_id:String(state.delivery.id)
+      };
+
+      updateOrderHistory(data.order_id,{
+        payment_id:data.payment_id || null,
+        payment_status:data.status || "pending",
+        qr_code:data.qr_code || null,
+        qr_code_base64:data.qr_code_base64 || null,
+        ticket_url:data.ticket_url || null,
+        total:Number(data.total||0)
+      });
+
+      /* Pedido já foi criado: a sacola volta a ficar livre para um novo pedido.
+         O pagamento permanece disponível no Perfil/Histórico. */
+      state.cart=[];
+      clearOrderDraftStorage();
+      renderCart();
+      closeCart();
+
+      openProfileModal();
+      openHistoryPix(data.order_id);
+      startPaymentPolling(data.order_id,data.payment_id || null);
     }
 
     async function copyPixCode(){
@@ -4127,41 +4587,117 @@ $("cartButton").classList.toggle(
       return data;
     }
 
-    function markOrderPaid(orderId){
+    function markOrderPaid(orderId,result={}){
       const key=lastOrderStorageKey();
       const last=safeLocalStorageGet(key);
-      if (last && String(last.order_id)===String(orderId)){
+      if(last && String(last.order_id)===String(orderId)){
         last.payment_status="approved";
-        last.paid_at=new Date().toISOString();
+        last.payment_id=result.payment_id || last.payment_id || null;
+        last.qr_code=result.qr_code || last.qr_code || null;
+        last.qr_code_base64=result.qr_code_base64 || last.qr_code_base64 || null;
+        last.ticket_url=result.ticket_url || last.ticket_url || null;
+        last.paid_at=result.paid_at || new Date().toISOString();
         safeLocalStorageSet(key,last);
       }
-      state.cart=[];
-      clearOrderDraftStorage();
-      renderCart();
+
+      updateOrderHistory(orderId,{
+        payment_status:"approved",
+        payment_id:result.payment_id || null,
+        qr_code:result.qr_code || undefined,
+        qr_code_base64:result.qr_code_base64 || undefined,
+        ticket_url:result.ticket_url || undefined,
+        paid_at:result.paid_at || new Date().toISOString()
+      });
+
+      updateProfilePendingIndicator();
+      renderProfilePanel();
+      if(String(state.profileSelectedOrderId||"")===String(orderId)){
+        const current=getOrdersHistory().find(row=>String(row.order_id||"")===String(orderId));
+        if(current) renderProfilePix(current);
+      }
     }
 
-    async function refreshPixStatus(orderId,paymentId){
+    async function refreshPixStatus(orderId,paymentId=null){
+      const currentOrderId=String(orderId||"");
+      if(!currentOrderId) return;
+
       try{
-        const result=await queryOnlinePaymentStatus(orderId,paymentId);
-        const status=result.status || "pending";
-        const approved=status === "approved";
+        const result=await queryOnlinePaymentStatus(currentOrderId,paymentId);
+        const status=String(result.status || "pending").toLowerCase();
+        const approved=status==="approved";
         const failed=["rejected","cancelled","refunded","charged_back"].includes(status);
-        $("pixStatus").className=`pix-status ${approved ? "approved" : failed ? "failed" : ""}`;
-        $("pixStatus").innerHTML=`<i class="${approved ? "ri-checkbox-circle-line" : failed ? "ri-close-circle-line" : "ri-time-line"}"></i><span>${esc(paymentStatusLabel(status))}</span>`;
-        if (approved){
-          if (state.paymentPollTimer){ clearInterval(state.paymentPollTimer); state.paymentPollTimer=null; }
-          markOrderPaid(orderId);
-          toast("Pagamento aprovado. Pedido confirmado!","success");
-        }else if(failed && state.paymentPollTimer){
-          clearInterval(state.paymentPollTimer); state.paymentPollTimer=null;
+
+        const current=getOrdersHistory().find(row=>String(row.order_id||"")===currentOrderId);
+        updateOrderHistory(currentOrderId,{
+          payment_id:result.payment_id || current?.payment_id || null,
+          payment_status:status,
+          qr_code:result.qr_code || current?.qr_code || null,
+          qr_code_base64:result.qr_code_base64 || current?.qr_code_base64 || null,
+          ticket_url:result.ticket_url || current?.ticket_url || null,
+          paid_at:result.paid_at || current?.paid_at || null
+        });
+
+        if(state.onlinePayment && String(state.onlinePayment.order_id)===currentOrderId && result.payment_id){
+          state.onlinePayment.payment_id=String(result.payment_id);
         }
-      }catch(error){ console.warn("[PAGAMENTO]",error); }
+
+        const updated=getOrdersHistory().find(row=>String(row.order_id||"")===currentOrderId);
+
+        if(String(state.profileSelectedOrderId||"")===currentOrderId && updated){
+          renderProfilePix(updated);
+        }else if(!$("profileModal")?.classList.contains("hidden")){
+          renderProfilePanel();
+        }
+
+        updateProfilePendingIndicator();
+
+        if(approved){
+          if(state.paymentPollTimer){
+            clearInterval(state.paymentPollTimer);
+            state.paymentPollTimer=null;
+          }
+          markOrderPaid(currentOrderId,result);
+          toast("Pagamento aprovado. Pedido confirmado!","success");
+          return;
+        }
+
+        if(failed && state.paymentPollTimer){
+          clearInterval(state.paymentPollTimer);
+          state.paymentPollTimer=null;
+          renderProfilePanel();
+        }
+      }catch(error){
+        console.warn("[PAGAMENTO]",error);
+      }
     }
 
-    function startPaymentPolling(orderId,paymentId){
-      if (state.paymentPollTimer) clearInterval(state.paymentPollTimer);
-      refreshPixStatus(orderId,paymentId);
-      state.paymentPollTimer=setInterval(()=>refreshPixStatus(orderId,paymentId),4000);
+    function startPaymentPolling(orderId,paymentId=null){
+      if(state.paymentPollTimer){
+        clearInterval(state.paymentPollTimer);
+        state.paymentPollTimer=null;
+      }
+
+      const currentOrderId=String(orderId||"");
+      if(!currentOrderId) return;
+
+      state.onlinePayment={
+        order_id:currentOrderId,
+        payment_id:paymentId ? String(paymentId) : null,
+        delivery_id:String(state.delivery.id)
+      };
+
+      refreshPixStatus(currentOrderId,paymentId);
+
+      state.paymentPollTimer=setInterval(()=>{
+        const order=getOrdersHistory().find(row=>String(row.order_id||"")===currentOrderId);
+        if(!order || !isPendingPaymentOrder(order)){
+          clearInterval(state.paymentPollTimer);
+          state.paymentPollTimer=null;
+          updateProfilePendingIndicator();
+          return;
+        }
+        refreshPixStatus(currentOrderId,order.payment_id || state.onlinePayment?.payment_id || null);
+      },3500);
     }
 
 
@@ -4221,10 +4757,18 @@ $("cartButton").classList.toggle(
       }
 
       if (data.method === "pix"){
-        saveLastOrderToStorage(payload,{
-          channel:"online-pix",
-          order_id:data.order_id
-        });
+        saveLastOrderToStorage(
+          {...payload,total:Number(data.total ?? payload.total),subtotal:Number(data.subtotal ?? payload.subtotal),delivery_fee:Number(data.delivery_fee ?? payload.delivery_fee)},
+          {
+            channel:"online-pix",
+            order_id:data.order_id,
+            payment_id:data.payment_id || null,
+            payment_status:data.status || "pending",
+            qr_code:data.qr_code || null,
+            qr_code_base64:data.qr_code_base64 || null,
+            ticket_url:data.ticket_url || null
+          }
+        );
 
         /* showPixPaymentModal já abre o modal e inicia a consulta automática. */
         showPixPaymentModal({
@@ -4243,7 +4787,8 @@ $("cartButton").classList.toggle(
       if (data.method === "checkout"){
         saveLastOrderToStorage(payload,{
           channel:"mercadopago-checkout",
-          order_id:data.order_id
+          order_id:data.order_id,
+          payment_status:data.status || "pending"
         });
 
         const checkoutUrl=data.init_point || data.sandbox_init_point;
@@ -4341,7 +4886,7 @@ $("cartButton").classList.toggle(
           const {error:itemError} = await state.db.from("delivery_order_items").insert(rows);
           if (itemError) throw itemError;
 
-          saveLastOrderToStorage(payload,{channel:"internal",order_id:order.id});
+          saveLastOrderToStorage(payload,{channel:"internal",order_id:order.id,payment_status:"sent",status:"pending"});
           toast(state.delivery.order_success_message || "Pedido recebido com sucesso!","success");
           state.cart = [];
           clearOrderDraftStorage();
@@ -4353,7 +4898,7 @@ $("cartButton").classList.toggle(
         const phone = digits(state.delivery.order_whatsapp);
         if (!phone) throw new Error("O WhatsApp de pedidos não foi configurado.");
 
-        saveLastOrderToStorage(payload,{channel:"whatsapp"});
+        saveLastOrderToStorage(payload,{channel:"whatsapp",payment_status:"sent",status:"sent"});
         persistOrderDraft();
         const message = buildWhatsAppMessage(payload);
         location.href = whatsappUrl(phone,message);
@@ -4433,10 +4978,17 @@ $("cartButton").classList.toggle(
           <div class="hero-actions hero-actions-share-only">
             <div></div>
             <div class="hero-actions-right">
+              <button id="deliveryProfileBtn" class="hero-circle-btn hero-profile-btn" type="button" aria-label="Meu perfil e pedidos">
+                <i class="ri-user-3-line"></i>
+                <b id="deliveryProfileBadge" class="hero-profile-badge">0</b>
+              </button>
               <button id="deliveryShareBtn" class="hero-circle-btn" type="button" aria-label="Compartilhar"><i class="ri-share-line"></i></button>
             </div>
           </div>
         </div>`;
+
+      $("deliveryProfileBtn")?.addEventListener("click",openProfileModal);
+      updateProfilePendingIndicator();
 
       $("deliveryShareBtn")?.addEventListener("click",async()=>{
         try{
@@ -4674,6 +5226,19 @@ $("cartButton").classList.toggle(
       $("copyPixBtn")?.addEventListener("click",copyPixCode);
       $("closePaymentModalBtn")?.addEventListener("click",closePaymentModal);
       $("paymentDoneBtn")?.addEventListener("click",closePaymentModal);
+
+      $("closeProfileModalBtn")?.addEventListener("click",closeProfileModal);
+      $("closeProfileActionBtn")?.addEventListener("click",closeProfileModal);
+      $("profileModal")?.addEventListener("click",event=>{
+        if(event.target===$("profileModal")) closeProfileModal();
+      });
+      $("profileCopyPixBtn")?.addEventListener("click",copyProfilePixCode);
+      $("profileBackToHistoryBtn")?.addEventListener("click",()=>{
+        state.profileSelectedOrderId=null;
+        $("profilePixSection")?.classList.add("hidden");
+        $("profileHistorySection")?.classList.remove("hidden");
+        renderProfilePanel();
+      });
       $$('input[name="onlinePayment"]').forEach(input=>input.addEventListener("change",()=>{renderOrderSummary();persistOrderDraft();}));
 
       ["customerName","customerPhone","customerEmail","customerAddress","orderNotes","zoneSelect","cashChange","scheduleDate","scheduleTime"].forEach(id=>{
@@ -4689,7 +5254,8 @@ $("cartButton").classList.toggle(
 
       document.addEventListener("keydown",event => {
         if (event.key !== "Escape") return;
-        if (!$("paymentModal").classList.contains("hidden")) closePaymentModal();
+        if (!$("profileModal").classList.contains("hidden")) closeProfileModal();
+        else if (!$("paymentModal").classList.contains("hidden")) closePaymentModal();
         else if (!$("informationModal").classList.contains("hidden")) closeInformationModal();
         else if (!$("productModal").classList.contains("hidden")) closeProductModal();
         else if (!$("cartOverlay").classList.contains("hidden")) closeCart();
