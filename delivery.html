@@ -3020,7 +3020,6 @@ function syncStoreAvailability(showTransitionToast=false){
       $("productsGrid").className = `products-grid ${layout === "compact" ? "compact" : ""}`;
       $("resultCount").textContent = `${items.length} item(ns)`;
 
-      const storeOpen = !!state.openInfo?.open;
 
       $("productsGrid").innerHTML = items.map(item => {
         const soldout = isSoldOut(item);
