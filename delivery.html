@@ -3,6 +3,7 @@
 
 
 
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -1307,6 +1308,7 @@
     .add-btn{width:36px!important;height:36px!important;min-width:36px!important;border-radius:10px!important;background:#ef252f!important;color:#fff!important;box-shadow:none!important;font-size:20px!important}.add-btn:disabled{background:#d6d6d6!important}
     .empty-state{margin:0 30px!important;padding:42px 20px!important;border-radius:18px!important}
 
+    /* RODAPÉ */
     .restaurant-footer-note{padding:30px 30px 10px!important;font-size:9px!important}
 
     /* BARRA FIXA DA SACOLA */
@@ -1535,6 +1537,31 @@
       .product-rail .product-card .product-body{
         padding:10px 10px 11px!important;
       }
+    }
+  </style>
+
+
+  <style id="clena-cover-video-final-v1">
+    .hero > video.hero-cover,
+    video.hero-cover{
+      position:absolute!important;
+      inset:0!important;
+      width:100%!important;
+      height:100%!important;
+      object-fit:cover!important;
+      object-position:center!important;
+      display:block!important;
+      background:#111!important;
+      border:0!important;
+      pointer-events:none!important;
+    }
+
+    .hero > video.hero-cover::-webkit-media-controls,
+    .hero > video.hero-cover::-webkit-media-controls-panel,
+    .hero > video.hero-cover::-webkit-media-controls-play-button,
+    .hero > video.hero-cover::-webkit-media-controls-start-playback-button{
+      display:none!important;
+      -webkit-appearance:none;
     }
   </style>
 
@@ -2409,6 +2436,43 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
       return result;
     }
 
+    function isVideoMediaUrl(url){
+      const value = String(url || "").toLowerCase();
+      if (!value) return false;
+
+      const clean = value.split("#")[0].split("?")[0];
+
+      return (
+        clean.endsWith(".mp4") ||
+        clean.endsWith(".webm") ||
+        clean.endsWith(".mov") ||
+        value.includes("video/mp4") ||
+        value.includes("video/webm") ||
+        value.includes("video/quicktime")
+      );
+    }
+
+    function coverMediaHTML(url,name="Delivery"){
+      if (!url) return "";
+
+      if (isVideoMediaUrl(url)){
+        return `
+          <video
+            class="hero-cover"
+            src="${esc(url)}"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            aria-label="Capa em vídeo de ${esc(name)}"
+          ></video>
+        `;
+      }
+
+      return `<img class="hero-cover" src="${esc(url)}" alt="Capa de ${esc(name)}">`;
+    }
+
     function galleryMainHTML(media,item){
       if (!media){
         return `<div class="product-gallery-empty"><i class="ri-restaurant-2-line"></i></div>`;
@@ -2844,7 +2908,7 @@ function syncStoreAvailability(showTransitionToast=false){
     function renderHero(){
       const d = state.delivery;
       $("hero").innerHTML = `
-        ${d.show_cover && d.cover_url ? `<img class="hero-cover" src="${esc(d.cover_url)}" alt="Capa de ${esc(d.name)}">` : ""}
+        ${d.show_cover && d.cover_url ? coverMediaHTML(d.cover_url,d.name || "Delivery") : ""}
         <div class="hero-shade"></div>
         <div class="hero-content">
           <div class="store-logo">
@@ -3948,7 +4012,7 @@ function syncStoreAvailability(showTransitionToast=false){
       const d = state.delivery;
       const cover = d.cover_url || state.items.map(item => (itemMediaList(item) || []).find(m => m && m.type === "image" && m.url)?.url).find(Boolean);
       $("hero").innerHTML = `
-        ${cover ? `<img class="hero-cover" src="${esc(cover)}" alt="Capa de ${esc(d.name || "Delivery")}">` : ""}
+        ${cover ? coverMediaHTML(cover,d.name || "Delivery") : ""}
         <div class="hero-shade"></div>
         <div class="hero-content">
           <div class="hero-actions hero-actions-share-only">
@@ -4203,5 +4267,42 @@ function syncStoreAvailability(showTransitionToast=false){
     installZoomBlock();
     init();
   </script>
+
+<script id="clena-cover-video-autoplay-fix">
+(()=>{
+  "use strict";
+
+  function tryPlayCover(){
+    const video=document.querySelector(".hero > video.hero-cover");
+    if(!video)return;
+
+    video.muted=true;
+    video.loop=true;
+    video.playsInline=true;
+
+    const promise=video.play();
+    if(promise && typeof promise.catch==="function"){
+      promise.catch(()=>{});
+    }
+  }
+
+  document.addEventListener("visibilitychange",()=>{
+    if(!document.hidden)tryPlayCover();
+  });
+
+  window.addEventListener("focus",tryPlayCover);
+
+  const observer=new MutationObserver(()=>{
+    tryPlayCover();
+  });
+
+  document.addEventListener("DOMContentLoaded",()=>{
+    const hero=document.getElementById("hero");
+    if(hero)observer.observe(hero,{childList:true});
+    tryPlayCover();
+  },{once:true});
+})();
+</script>
+
 </body>
 </html>
