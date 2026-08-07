@@ -4,6 +4,7 @@
 
 
 
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -1968,6 +1969,7 @@
         restoreCartFromStorage();
 
         renderAll();
+        restoreCustomerProfileStorage();
         restoreCheckoutDraftFromStorage();
         bindEvents();
         startAvailabilityWatcher();
@@ -3370,8 +3372,15 @@ function syncStoreAvailability(showTransitionToast=false){
     }
 
     function closeProductModal(){
-      $("productModal").classList.add("hidden");
-      $("productModal").setAttribute("aria-hidden","true");
+      const modal = $("productModal");
+      if (!modal) return;
+
+      if (modal.contains(document.activeElement)){
+        try{ document.activeElement.blur(); }catch{}
+      }
+
+      modal.classList.add("hidden");
+      modal.setAttribute("aria-hidden","true");
       state.product = null;
       document.body.classList.remove("no-scroll");
     }
@@ -3775,6 +3784,74 @@ $("cartButton").classList.toggle(
       return state.delivery?.id ? `delivery:ultimo-pedido:v1:${state.delivery.id}` : null;
     }
 
+    /* =========================================================
+       DADOS PERMANENTES DO CLIENTE • ISOLADOS PELO ID DA LOJA
+       Mantém os campos preenchidos no próximo pedido.
+       O cliente pode editar normalmente; cada alteração é salva.
+    ========================================================= */
+    function customerProfileStorageKey(){
+      return state.delivery?.id ? `delivery:cliente:v1:${state.delivery.id}` : null;
+    }
+
+    function customerProfileFields(){
+      const checkedFulfillment=document.querySelector('input[name="fulfillment"]:checked');
+      const checkedPayment=document.querySelector('input[name="payment"]:checked');
+      return {
+        customer_name:$("customerName")?.value || "",
+        customer_phone:$("customerPhone")?.value || "",
+        customer_email:$("customerEmail")?.value || "",
+        address:$("customerAddress")?.value || "",
+        fulfillment:checkedFulfillment?.value || "",
+        zone_id:$("zoneSelect")?.value || "",
+        payment:checkedPayment?.value || "",
+        online_method:selectedOnlineMethod() || ""
+      };
+    }
+
+    function persistCustomerProfileStorage(){
+      const key=customerProfileStorageKey();
+      if (!key) return;
+      safeLocalStorageSet(key,{
+        version:1,
+        delivery_id:state.delivery.id,
+        delivery_slug:state.delivery.slug || null,
+        updated_at:new Date().toISOString(),
+        ...customerProfileFields()
+      });
+    }
+
+    function restoreCustomerProfileStorage(){
+      const saved=safeLocalStorageGet(customerProfileStorageKey());
+      if (!saved || String(saved.delivery_id)!==String(state.delivery?.id)) return;
+
+      if ($("customerName") && !$("customerName").value) $("customerName").value=saved.customer_name || "";
+      if ($("customerPhone") && !$("customerPhone").value) $("customerPhone").value=saved.customer_phone || "";
+      if ($("customerEmail") && !$("customerEmail").value) $("customerEmail").value=saved.customer_email || "";
+      if ($("customerAddress") && !$("customerAddress").value) $("customerAddress").value=saved.address || "";
+
+      if (saved.fulfillment){
+        const el=document.querySelector(`input[name="fulfillment"][value="${CSS.escape(String(saved.fulfillment))}"]`);
+        if(el) el.checked=true;
+      }
+
+      if ($("zoneSelect") && saved.zone_id && [...$("zoneSelect").options].some(o=>String(o.value)===String(saved.zone_id))){
+        $("zoneSelect").value=saved.zone_id;
+      }
+
+      if (saved.payment){
+        const el=document.querySelector(`input[name="payment"][value="${CSS.escape(String(saved.payment))}"]`);
+        if(el) el.checked=true;
+      }
+
+      if (saved.online_method){
+        const el=document.querySelector(`input[name="onlinePayment"][value="${CSS.escape(String(saved.online_method))}"]`);
+        if(el) el.checked=true;
+      }
+
+      updateCheckoutVisibility();
+      renderOrderSummary();
+    }
+
     function safeLocalStorageSet(key,value){
       if (!key) return;
       try{ localStorage.setItem(key,JSON.stringify(value)); }
@@ -3816,6 +3893,8 @@ $("cartButton").classList.toggle(
     }
 
     function persistOrderDraft(){
+      persistCustomerProfileStorage();
+
       const key=orderDraftStorageKey();
       if (!key) return;
       safeLocalStorageSet(key,{
@@ -3983,8 +4062,14 @@ $("cartButton").classList.toggle(
 
     function closePaymentModal(){
       if (state.paymentPollTimer){ clearInterval(state.paymentPollTimer); state.paymentPollTimer=null; }
-      $("paymentModal")?.classList.add("hidden");
-      $("paymentModal")?.setAttribute("aria-hidden","true");
+
+      const modal=$("paymentModal");
+      if (modal?.contains(document.activeElement)){
+        try{ document.activeElement.blur(); }catch{}
+      }
+
+      modal?.classList.add("hidden");
+      modal?.setAttribute("aria-hidden","true");
       if ($("cartOverlay")?.classList.contains("hidden")) document.body.classList.remove("no-scroll");
     }
 
@@ -4023,11 +4108,22 @@ $("cartButton").classList.toggle(
     }
 
     async function queryOnlinePaymentStatus(orderId,paymentId=null){
-      const {data,error}=await state.db.functions.invoke("mp-payment-status",{
-        body:{delivery_id:String(state.delivery.id),order_id:String(orderId),payment_id:paymentId ? String(paymentId) : null}
+      const {data,error}=await state.db.rpc("mp_consultar_pagamento",{
+        p_delivery_id:String(state.delivery.id),
+        p_order_id:String(orderId),
+        p_payment_id:paymentId ? String(paymentId) : null
       });
-      if (error) throw new Error(error.message || "Não foi possível consultar o pagamento.");
-      if (!data?.ok) throw new Error(data?.error || "Não foi possível consultar o pagamento.");
+
+      if (error){
+        console.error("[MERCADO PAGO STATUS RPC]",error);
+        throw new Error(error.message || "Não foi possível consultar o pagamento.");
+      }
+
+      if (!data?.ok){
+        console.error("[MERCADO PAGO STATUS RPC]",data);
+        throw new Error(data?.error || data?.message || "Não foi possível consultar o pagamento.");
+      }
+
       return data;
     }
 
@@ -4071,161 +4167,96 @@ $("cartButton").classList.toggle(
 
 
 
-async function checkoutOnlinePayment(payload){
-  const onlineMethod =
-    window.__onlinePaymentMethod ||
-    "pix";
 
-  const items = state.cart.map(row => ({
-    item_id: row.item.id,
-    quantity: row.qty,
-    addon_ids: (row.addons || [])
-      .map(addon => addon.id)
-      .filter(Boolean),
-    note: row.note || ""
-  }));
+    async function checkoutOnlinePayment(payload){
+      const onlineMethod = selectedOnlineMethod() || "pix";
 
-  const customer = {
-    name: $("customerName").value.trim(),
-    phone: digits($("customerPhone").value),
-    email: $("customerEmail")?.value?.trim() || "",
-    address: {
-      text:
-        selectedFulfillment() === "delivery"
-          ? $("customerAddress").value.trim()
-          : state.delivery.pickup_address || "Retirada na loja"
-    }
-  };
+      /* Salva SEMPRE os dados do cliente e o rascunho antes de iniciar
+         qualquer pagamento ou redirecionamento. */
+      persistCustomerProfileStorage();
+      persistOrderDraft();
 
-  const returnUrl =
-    window.location.origin +
-    window.location.pathname +
-    window.location.search;
+      const customer = {
+        name:$("customerName").value.trim(),
+        phone:digits($("customerPhone").value),
+        email:$("customerEmail")?.value.trim() || "",
+        address:{
+          text:selectedFulfillment() === "delivery"
+            ? $("customerAddress").value.trim()
+            : state.delivery.pickup_address || "Retirada na loja"
+        }
+      };
 
-  const { data, error } = await state.db.rpc(
-    "mp_criar_pagamento",
-    {
-      p_delivery_id: String(state.delivery.id),
+      const returnUrl =
+        window.location.origin +
+        window.location.pathname +
+        window.location.search;
 
-      p_method:
-        onlineMethod === "checkout"
-          ? "checkout"
-          : "pix",
-
-      p_fulfillment_type:
-        selectedFulfillment(),
-
-      p_customer:
-        customer,
-
-      p_items:
-        items,
-
-      p_zone_id:
-        selectedFulfillment() === "delivery"
-          ? selectedZone()?.id
+      const {data,error}=await state.db.rpc("mp_criar_pagamento",{
+        p_delivery_id:String(state.delivery.id),
+        p_method:onlineMethod === "checkout" ? "checkout" : "pix",
+        p_fulfillment_type:selectedFulfillment(),
+        p_customer:customer,
+        p_items:onlineCartPayload(),
+        p_zone_id:
+          selectedFulfillment() === "delivery" && selectedZone()?.id
             ? String(selectedZone().id)
-            : null
-          : null,
+            : null,
+        p_notes:
+          state.delivery.allow_order_notes === false
+            ? null
+            : $("orderNotes").value.trim() || null,
+        p_scheduled_for:payload.scheduled_for || null,
+        p_return_url:returnUrl
+      });
 
-      p_notes:
-        state.delivery.allow_order_notes === false
-          ? null
-          : $("orderNotes").value.trim() || null,
-
-      p_scheduled_for:
-        payload.scheduled_for || null,
-
-      p_return_url:
-        returnUrl
-    }
-  );
-
-  if (error){
-    console.error("[MERCADO PAGO RPC]", error);
-
-    throw new Error(
-      error.message ||
-      "Não foi possível criar o pagamento."
-    );
-  }
-
-  if (!data?.ok){
-    console.error("[MERCADO PAGO RPC]", data);
-
-    throw new Error(
-      data?.message ||
-      "Não foi possível iniciar o pagamento."
-    );
-  }
-
-  /* ======================================================
-     PIX
-     ====================================================== */
-
-  if (data.method === "pix"){
-
-    saveLastOrderToStorage(
-      payload,
-      {
-        channel: "online-pix",
-        order_id: data.order_id
+      if (error){
+        console.error("[MERCADO PAGO RPC]",error);
+        throw new Error(error.message || "Não foi possível criar o pagamento.");
       }
-    );
 
-    showMercadoPagoPixModal({
-      order_id: data.order_id,
-      payment_id: data.payment_id,
-      status: data.status,
-      qr_code: data.qr_code,
-      qr_code_base64: data.qr_code_base64,
-      ticket_url: data.ticket_url,
-      total: data.total
-    });
-
-    startMercadoPagoStatusPolling(
-      data.order_id,
-      data.payment_id
-    );
-
-    return;
-  }
-
-
-  /* ======================================================
-     CHECKOUT MERCADO PAGO
-     ====================================================== */
-
-  if (data.method === "checkout"){
-
-    saveLastOrderToStorage(
-      payload,
-      {
-        channel: "mercadopago-checkout",
-        order_id: data.order_id
+      if (!data?.ok){
+        console.error("[MERCADO PAGO RPC]",data);
+        throw new Error(data?.error || data?.message || "Não foi possível iniciar o pagamento.");
       }
-    );
 
-    const checkoutUrl =
-      data.init_point ||
-      data.sandbox_init_point;
+      if (data.method === "pix"){
+        saveLastOrderToStorage(payload,{
+          channel:"online-pix",
+          order_id:data.order_id
+        });
 
-    if (!checkoutUrl){
-      throw new Error(
-        "Mercado Pago não retornou o endereço do checkout."
-      );
+        /* showPixPaymentModal já abre o modal e inicia a consulta automática. */
+        showPixPaymentModal({
+          order_id:data.order_id,
+          payment_id:data.payment_id,
+          status:data.status,
+          qr_code:data.qr_code,
+          qr_code_base64:data.qr_code_base64,
+          ticket_url:data.ticket_url,
+          total:data.total
+        });
+
+        return;
+      }
+
+      if (data.method === "checkout"){
+        saveLastOrderToStorage(payload,{
+          channel:"mercadopago-checkout",
+          order_id:data.order_id
+        });
+
+        const checkoutUrl=data.init_point || data.sandbox_init_point;
+        if (!checkoutUrl){
+          throw new Error("Mercado Pago não retornou o endereço do checkout.");
+        }
+
+        window.location.href=checkoutUrl;
+        return;
+      }
+
+      throw new Error("Resposta de pagamento desconhecida.");
     }
-
-    window.location.href = checkoutUrl;
-
-    return;
-  }
-
-
-  throw new Error(
-    "Resposta de pagamento desconhecida."
-  );
-}
 
     async function handleMercadoPagoReturn(){
       const params=new URLSearchParams(location.search);
@@ -4262,6 +4293,11 @@ async function checkoutOnlinePayment(payload){
         toast(validation,"error");
         return;
       }
+
+      /* Mantém nome, WhatsApp, e-mail, endereço e preferências para
+         o próximo pedido, mesmo quando o rascunho/carrinho for limpo. */
+      persistCustomerProfileStorage();
+      persistOrderDraft();
 
       const payload = buildOrderPayload();
       const mode = state.delivery.checkout_mode || "whatsapp";
