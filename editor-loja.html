@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#f6f8fc">
-  <title>CLENA • Editor da Loja</title>
+  <title>CLENA • Commerce Studio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=Montserrat:wght@500;600;700;800;900&family=Nunito:wght@400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -2177,10 +2177,191 @@
 @media(max-width:1050px){.mercado-pago-grid{grid-template-columns:1fr}.mercado-pago-status-card{position:static}.mercado-pago-status-details{grid-template-columns:repeat(2,1fr)}.mercado-pago-status-details>div:nth-child(2){border-right:0}.mercado-pago-status-details>div{border-right:1px solid var(--line)}}
 @media(max-width:720px){.mercado-pago-panel{margin-top:16px}.mercado-pago-panel-head{align-items:flex-start;flex-direction:column}.mercado-pago-connection-status{align-self:flex-start}.mercado-pago-security-note{padding:13px}.mercado-pago-grid{gap:16px}.mercado-pago-status-details{grid-template-columns:1fr}.mercado-pago-status-details>div{border-right:0}.mercado-pago-status-card{padding:18px}.secret-input-wrap button{height:34px}}
 
+
+
+/* =========================================================
+   CLENA COMMERCE STUDIO V3 — CAMADA DE PRODUTO
+   Mantém todos os hooks funcionais do editor V2.
+   ========================================================= */
+:root{
+  --v3-sidebar:288px;
+  --v3-bg:#f6f8fc;
+  --v3-panel:#ffffff;
+  --v3-text:#101828;
+  --v3-muted:#667085;
+  --v3-line:#e7ebf2;
+  --v3-line-strong:#d6dce7;
+  --v3-blue:#2563eb;
+  --v3-blue-strong:#1d4ed8;
+  --v3-blue-soft:#eef4ff;
+  --v3-navy:#0b1220;
+  --v3-success:#16a34a;
+  --v3-warning:#d97706;
+  --v3-danger:#dc2626;
+  --v3-radius-xl:24px;
+  --v3-radius-lg:18px;
+  --v3-radius-md:13px;
+  --v3-shadow:0 18px 45px rgba(16,24,40,.07);
+  --v3-shadow-soft:0 6px 18px rgba(16,24,40,.045);
+}
+
+body.clena-editor-v2{
+  background:
+    radial-gradient(circle at 82% -5%,rgba(37,99,235,.07),transparent 31rem),
+    linear-gradient(180deg,#f8faff 0,#f4f7fb 38%,#f6f8fc 100%);
+}
+
+.clena-editor-v2 .sidebar{
+  width:var(--v3-sidebar);
+  padding:18px 14px 16px;
+  background:
+    radial-gradient(circle at 20% -5%,rgba(59,130,246,.20),transparent 17rem),
+    linear-gradient(180deg,#0b1425 0%,#101828 64%,#0d1524 100%);
+  border-right:1px solid rgba(255,255,255,.055);
+  box-shadow:20px 0 55px rgba(16,24,40,.08);
+}
+.clena-editor-v2 .shell{margin-left:var(--v3-sidebar);width:calc(100% - var(--v3-sidebar))}
+.clena-editor-v2 .brand{min-height:66px;padding:7px 8px 18px;margin-bottom:10px}
+.clena-editor-v2 .brand-mark{width:45px;height:45px;border-radius:15px;background:linear-gradient(135deg,#3b82f6,#4f46e5);box-shadow:0 12px 26px rgba(37,99,235,.28)}
+.clena-editor-v2 .brand strong{font-size:16px;letter-spacing:.08em}
+.clena-editor-v2 .brand small{font-size:10px;color:#9fb0c9}
+.clena-editor-v2 .brand-version{font-size:8px;padding:4px 7px;border:1px solid rgba(191,219,254,.16);background:rgba(96,165,250,.09)}
+
+.clena-editor-v2 .nav-v3{display:block;overflow:auto;padding:0 2px 8px;scrollbar-width:thin}
+.clena-editor-v2 .nav-group{display:grid;gap:4px;margin-top:12px}
+.clena-editor-v2 .nav-group:first-child{margin-top:2px}
+.clena-editor-v2 .nav-group-label{padding:0 11px 5px;color:#6f829f;font-size:8px;font-weight:900;letter-spacing:.16em;user-select:none}
+.clena-editor-v2 .nav-item{min-height:43px;border-radius:12px;padding:10px 12px;color:#b8c4d6}
+.clena-editor-v2 .nav-item i{width:22px;text-align:center;font-size:18px;color:#8fa0b9}
+.clena-editor-v2 .nav-item:hover{background:rgba(255,255,255,.055);color:#fff}
+.clena-editor-v2 .nav-item:hover i{color:#bfdbfe}
+.clena-editor-v2 .nav-item.active{background:linear-gradient(135deg,rgba(59,130,246,.24),rgba(79,70,229,.12));border-color:rgba(147,197,253,.12);box-shadow:inset 3px 0 0 #60a5fa,0 6px 18px rgba(2,6,23,.14);color:#fff}
+.clena-editor-v2 .nav-item.active i{color:#93c5fd}
+.clena-editor-v2 .nav-item b{margin-left:auto;min-width:23px;text-align:center;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.05);color:#dbeafe}
+.clena-editor-v2 .sidebar-bottom{padding-top:13px;background:linear-gradient(180deg,transparent,rgba(11,18,32,.38))}
+.clena-editor-v2 .preview-link,.clena-editor-v2 .back-link{min-height:42px}
+.clena-editor-v2 .preview-link{background:rgba(37,99,235,.10);color:#bfdbfe}
+
+.clena-editor-v2 .topbar{height:84px;padding:0 28px;background:rgba(255,255,255,.88);backdrop-filter:blur(20px) saturate(140%);border-bottom:1px solid rgba(214,220,231,.8);box-shadow:0 5px 25px rgba(16,24,40,.025)}
+.clena-editor-v2 .topbar-heading h1{font-size:22px;letter-spacing:-.035em}
+.clena-editor-v2 .topbar-heading p{font-size:10.5px;color:#7a8699}
+.clena-editor-v2 .topbar-actions{gap:8px}
+.clena-editor-v2 .save-indicator{height:34px;padding:0 10px;border:1px solid var(--v3-line);border-radius:999px;background:#fff;margin-right:2px}
+.clena-editor-v2 .save-indicator b{font-size:10px}
+.clena-editor-v2 .primary-btn,.clena-editor-v2 .secondary-btn{min-height:40px;border-radius:11px}
+.clena-editor-v2 .primary-btn{background:linear-gradient(135deg,var(--v3-blue),var(--v3-blue-strong));box-shadow:0 9px 20px rgba(37,99,235,.20)}
+.clena-editor-v2 .secondary-btn{background:rgba(255,255,255,.94);border-color:var(--v3-line-strong)}
+.clena-editor-v2 .profile-chip{border-color:var(--v3-line);box-shadow:0 3px 12px rgba(16,24,40,.035)}
+
+.clena-editor-v2 .content{max-width:1640px;padding:26px 30px 72px}
+.clena-editor-v2 .section-page-head{margin-bottom:18px}
+.clena-editor-v2 .section-page-head h2{font-size:26px;line-height:1.15;letter-spacing:-.045em}
+.clena-editor-v2 .section-page-head p{font-size:12px;line-height:1.55}
+.clena-editor-v2 .eyebrow{font-size:8.5px;letter-spacing:.17em}
+
+.clena-editor-v2 .hero-card{min-height:184px;border:1px solid rgba(147,197,253,.09);border-radius:26px;padding:31px;background:radial-gradient(circle at 90% 8%,rgba(96,165,250,.27),transparent 19rem),linear-gradient(135deg,#101b30,#203867 70%,#27457c);box-shadow:0 20px 50px rgba(15,23,42,.13)}
+.clena-editor-v2 .hero-card h2{font-size:29px;letter-spacing:-.045em}
+.clena-editor-v2 .hero-card p{line-height:1.65}
+.clena-editor-v2 .progress-ring{box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 12px 30px rgba(2,6,23,.16)}
+
+.clena-editor-v2 .stat-grid{gap:14px;margin:16px 0}
+.clena-editor-v2 .stat-card{min-height:112px;padding:17px;border-radius:17px;background:rgba(255,255,255,.94);box-shadow:var(--v3-shadow-soft)}
+.clena-editor-v2 .stat-card:hover{transform:translateY(-2px);box-shadow:var(--v3-shadow)}
+.clena-editor-v2 .stat-icon{width:44px;height:44px;border-radius:13px}
+.clena-editor-v2 .stat-card strong{font-size:22px;letter-spacing:-.04em}
+
+.clena-editor-v2 .control-center{margin:18px 0 20px;padding:22px;border:1px solid var(--v3-line);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(247,250,255,.96));box-shadow:var(--v3-shadow-soft)}
+.clena-editor-v2 .control-center-head{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:16px}
+.clena-editor-v2 .control-center-head h3{margin:3px 0 4px;font-size:18px;letter-spacing:-.03em}
+.clena-editor-v2 .control-center-head p{margin:0;color:var(--v3-muted);font-size:11px;line-height:1.5}
+.clena-editor-v2 .workflow-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:9px}
+.clena-editor-v2 .workflow-card{position:relative;min-height:124px;padding:15px 12px;border:1px solid var(--v3-line);border-radius:15px;background:#fff;text-align:left;cursor:pointer;overflow:hidden}
+.clena-editor-v2 .workflow-card>span{position:absolute;right:10px;top:9px;color:#b8c2d0;font-size:9px;font-weight:900;letter-spacing:.08em}
+.clena-editor-v2 .workflow-card>i{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--v3-blue-soft);color:var(--v3-blue);font-size:17px;margin-bottom:12px}
+.clena-editor-v2 .workflow-card strong,.clena-editor-v2 .workflow-card small{display:block}
+.clena-editor-v2 .workflow-card strong{font-size:11px;color:var(--v3-text);margin-bottom:4px}
+.clena-editor-v2 .workflow-card small{font-size:9px;line-height:1.45;color:var(--v3-muted)}
+.clena-editor-v2 .workflow-card:hover{transform:translateY(-2px);border-color:#bfd3f7;box-shadow:0 12px 24px rgba(37,99,235,.08)}
+
+.clena-editor-v2 .panel,.clena-editor-v2 .product-table-wrap,.clena-editor-v2 .status-card{border-color:var(--v3-line);box-shadow:var(--v3-shadow-soft)}
+.clena-editor-v2 .panel{border-radius:20px;padding:21px;background:rgba(255,255,255,.96)}
+.clena-editor-v2 .panel-head{margin-bottom:17px}
+.clena-editor-v2 .panel-head h3{font-size:17px;letter-spacing:-.025em}
+.clena-editor-v2 .field>span{font-size:10.5px;color:#344054;letter-spacing:.005em}
+.clena-editor-v2 .field input,.clena-editor-v2 .field textarea,.clena-editor-v2 .field select{min-height:43px;border-radius:11px;border-color:var(--v3-line-strong);box-shadow:0 1px 2px rgba(16,24,40,.015)}
+.clena-editor-v2 .field input:focus,.clena-editor-v2 .field textarea:focus,.clena-editor-v2 .field select:focus{border-color:#84adf8;box-shadow:0 0 0 4px rgba(37,99,235,.08)}
+
+.clena-editor-v2 .section-toolbar{padding:13px 14px;border:1px solid var(--v3-line);border-radius:15px;background:rgba(255,255,255,.82);box-shadow:0 4px 14px rgba(16,24,40,.025)}
+.clena-editor-v2 .section-toolbar p{font-size:11px}
+.clena-editor-v2 .search-box{height:40px;min-width:280px;border-color:var(--v3-line-strong);box-shadow:0 2px 6px rgba(16,24,40,.02)}
+.clena-editor-v2 .toolbar-actions select{height:40px;border-color:var(--v3-line-strong)}
+.clena-editor-v2 .bulk-bar{border-radius:13px;background:#eef4ff;border-color:#cfddf8}
+
+.clena-editor-v2 .product-table-wrap{border-radius:18px;overflow:auto}
+.clena-editor-v2 .product-table th{height:46px;background:#f8f9fc;color:#667085;border-bottom-color:var(--v3-line)}
+.clena-editor-v2 .product-table td{height:70px;border-bottom-color:#edf0f4}
+.clena-editor-v2 .product-table tbody tr:hover{background:#fbfdff}
+.clena-editor-v2 .status-pill{border:1px solid rgba(22,163,74,.10)}
+.clena-editor-v2 .row-actions button,.clena-editor-v2 .category-actions button,.clena-editor-v2 .visual-actions button{border-color:var(--v3-line);box-shadow:0 2px 5px rgba(16,24,40,.02)}
+
+.clena-editor-v2 .category-item{border-color:var(--v3-line);background:#fff;box-shadow:0 3px 10px rgba(16,24,40,.025)}
+.clena-editor-v2 .category-item:hover{border-color:#cbd8eb;transform:translateY(-1px)}
+.clena-editor-v2 .info-card{background:linear-gradient(145deg,#f3f7ff,#f8f6ff);border-color:#dbe7fa}
+
+.clena-editor-v2 .theme-card{border-color:var(--v3-line);box-shadow:0 3px 10px rgba(16,24,40,.025)}
+.clena-editor-v2 .theme-card.active{border-color:#8bb2f8;box-shadow:0 0 0 3px rgba(37,99,235,.08),0 10px 25px rgba(37,99,235,.08)}
+.clena-editor-v2 .choice{border-color:var(--v3-line);box-shadow:0 2px 6px rgba(16,24,40,.02)}
+.clena-editor-v2 .choice.active{border-color:#91b7fa;box-shadow:0 0 0 3px rgba(37,99,235,.07)}
+
+.clena-editor-v2 .verification-badge{box-shadow:0 4px 14px rgba(16,24,40,.025)}
+.clena-editor-v2 .media-tabs{box-shadow:0 4px 14px rgba(16,24,40,.025)}
+.clena-editor-v2 .media-tabs button.active{background:linear-gradient(135deg,#15233a,#0f172a)}
+.clena-editor-v2 .visual-content-card,.clena-editor-v2 .gallery-admin-card{border-color:var(--v3-line);box-shadow:0 4px 14px rgba(16,24,40,.03)}
+
+.clena-editor-v2 .modal-card{border-radius:22px;border-color:rgba(255,255,255,.85)}
+.clena-editor-v2 .modal-head,.clena-editor-v2 .modal-foot{padding:17px 20px}
+.clena-editor-v2 .modal-body{padding:20px}
+
+.clena-editor-v2 .publish-card{background:linear-gradient(145deg,#fff,#fbfdff)}
+.clena-editor-v2 .publish-icon{box-shadow:0 10px 25px rgba(37,99,235,.10)}
+.clena-editor-v2 .status-card{background:#fff}
+
+/* Rolagem e foco acessível */
+.clena-editor-v2 *{scrollbar-color:#cbd5e1 transparent;scrollbar-width:thin}
+.clena-editor-v2 button:focus-visible,.clena-editor-v2 a:focus-visible,.clena-editor-v2 input:focus-visible,.clena-editor-v2 textarea:focus-visible,.clena-editor-v2 select:focus-visible{outline:3px solid rgba(37,99,235,.20);outline-offset:2px}
+
+@media(max-width:1380px){
+  .clena-editor-v2 .workflow-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:1100px){
+  .clena-editor-v2 .sidebar{width:var(--v3-sidebar)}
+  .clena-editor-v2 .shell{margin-left:0;width:100%}
+  .clena-editor-v2 .workflow-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:760px){
+  .clena-editor-v2 .content{padding:16px 11px 54px}
+  .clena-editor-v2 .topbar{height:68px;padding:0 10px}
+  .clena-editor-v2 .topbar-heading h1{font-size:17px}
+  .clena-editor-v2 .section-page-head h2{font-size:22px}
+  .clena-editor-v2 .hero-card{min-height:156px;padding:23px;border-radius:20px}
+  .clena-editor-v2 .hero-card h2{font-size:23px}
+  .clena-editor-v2 .control-center{padding:16px;border-radius:18px}
+  .clena-editor-v2 .control-center-head{align-items:flex-start;flex-direction:column}
+  .clena-editor-v2 .workflow-grid{grid-template-columns:repeat(2,1fr)}
+  .clena-editor-v2 .workflow-card{min-height:116px}
+  .clena-editor-v2 .section-toolbar{padding:11px;align-items:stretch}
+  .clena-editor-v2 .search-box{min-width:100%}
+  .clena-editor-v2 .panel{padding:16px;border-radius:17px}
+}
+@media(max-width:430px){
+  .clena-editor-v2 .workflow-grid{grid-template-columns:1fr}
+  .clena-editor-v2 .workflow-card{min-height:96px;padding-right:45px}
+}
+
 </style>
 </head>
 <body class="clena-editor-v2">
-  <div id="pageLoader" class="page-loader"><div class="spinner"></div><span>Carregando sua loja...</span></div>
+  <div id="pageLoader" class="page-loader"><div class="spinner"></div><span>Abrindo o Commerce Studio...</span></div>
   <div id="toastHost" class="toast-host" aria-live="polite"></div>
 
   <div id="app" class="app is-hidden">
@@ -2189,18 +2370,37 @@
         <span class="brand-mark"><i class="ri-store-2-line"></i></span>
         <div class="brand-copy">
           <strong>CLENA</strong>
-          <small>Editor profissional</small>
+          <small>Commerce Studio</small>
         </div>
-        <span class="brand-version">V2</span>
+        <span class="brand-version">V3</span>
       </div>
-      <nav class="nav" id="editorNav">
-        <button type="button" class="nav-item active" data-section="overview"><i class="ri-layout-grid-line"></i><span>Visão geral</span></button>
-        <button type="button" class="nav-item" data-section="products"><i class="ri-shopping-bag-3-line"></i><span>Produtos</span><b id="navProductCount">0</b></button>
-        <button type="button" class="nav-item" data-section="categories"><i class="ri-folders-line"></i><span>Categorias</span></button>
-        <button type="button" class="nav-item" data-section="appearance"><i class="ri-palette-line"></i><span>Aparência</span></button>
-        <button type="button" class="nav-item" data-section="media"><i class="ri-gallery-line"></i><span>Banners e galeria</span><b id="navMediaCount">0</b></button>
-        <button type="button" class="nav-item" data-section="checkout"><i class="ri-bank-card-line"></i><span>Pedidos e pagamento</span></button>
-        <button type="button" class="nav-item" data-section="publish"><i class="ri-global-line"></i><span>Publicação</span></button>
+      <nav class="nav nav-v3" id="editorNav" aria-label="Navegação do editor">
+        <div class="nav-group">
+          <span class="nav-group-label">INÍCIO</span>
+          <button type="button" class="nav-item active" data-section="overview"><i class="ri-layout-grid-line"></i><span>Visão geral</span></button>
+        </div>
+
+        <div class="nav-group">
+          <span class="nav-group-label">CATÁLOGO</span>
+          <button type="button" class="nav-item" data-section="products"><i class="ri-shopping-bag-3-line"></i><span>Produtos</span><b id="navProductCount">0</b></button>
+          <button type="button" class="nav-item" data-section="categories"><i class="ri-folders-line"></i><span>Categorias</span></button>
+        </div>
+
+        <div class="nav-group">
+          <span class="nav-group-label">LOJA ONLINE</span>
+          <button type="button" class="nav-item" data-section="appearance"><i class="ri-palette-line"></i><span>Aparência</span></button>
+          <button type="button" class="nav-item" data-section="media"><i class="ri-gallery-line"></i><span>Banners e galeria</span><b id="navMediaCount">0</b></button>
+        </div>
+
+        <div class="nav-group">
+          <span class="nav-group-label">VENDAS</span>
+          <button type="button" class="nav-item" data-section="checkout"><i class="ri-bank-card-line"></i><span>Pedidos e pagamento</span></button>
+        </div>
+
+        <div class="nav-group">
+          <span class="nav-group-label">CONFIGURAÇÕES</span>
+          <button type="button" class="nav-item" data-section="publish"><i class="ri-global-line"></i><span>Publicação</span></button>
+        </div>
       </nav>
       <div class="sidebar-bottom">
         <button type="button" class="preview-link" id="openPreviewBtn"><i class="ri-eye-line"></i><span>Visualizar loja</span></button>
@@ -2215,7 +2415,7 @@
           <div class="topbar-heading">
             <span class="eyebrow" id="sectionEyebrow">LOJA</span>
             <h1 id="sectionTitle">Visão geral</h1>
-            <p id="sectionDescription">Configure sua vitrine, produtos, pedidos e publicação.</p>
+            <p id="sectionDescription">Gerencie catálogo, identidade, conteúdo, vendas e publicação em um só lugar.</p>
           </div>
         </div>
 
@@ -2237,12 +2437,30 @@
             <div><span class="eyebrow">PAINEL DA LOJA</span><h2>Visão geral</h2><p>Acompanhe a configuração e acesse rapidamente cada área.</p></div>
             <button class="secondary-btn" type="button" data-go="appearance"><i class="ri-palette-line"></i>Ajustar visual</button>
           </div>
-          <div class="hero-card"><div><span class="eyebrow">CONFIGURAÇÃO INICIAL</span><h2>Deixe sua loja pronta para vender</h2><p>Cadastre produtos, organize categorias, ajuste o visual e publique quando estiver tudo correto.</p></div><div class="hero-progress"><div class="progress-ring" id="progressRing"><strong id="setupPercent">0%</strong></div><span>Configuração concluída</span></div></div>
+          <div class="hero-card"><div><span class="eyebrow">CONFIGURAÇÃO INICIAL</span><h2>Sua operação digital, organizada do início ao fim</h2><p>Centralize catálogo, identidade visual, conteúdo, pagamentos, entrega e publicação com uma sequência clara e profissional.</p></div><div class="hero-progress"><div class="progress-ring" id="progressRing"><strong id="setupPercent">0%</strong></div><span>Configuração concluída</span></div></div>
           <div class="stat-grid">
             <article class="stat-card"><span class="stat-icon"><i class="ri-shopping-bag-3-line"></i></span><div><small>Produtos cadastrados</small><strong id="statProducts">0</strong><button data-go="products">Gerenciar produtos</button></div></article>
             <article class="stat-card"><span class="stat-icon"><i class="ri-folders-line"></i></span><div><small>Categorias</small><strong id="statCategories">0</strong><button data-go="categories">Organizar categorias</button></div></article>
             <article class="stat-card"><span class="stat-icon"><i class="ri-eye-line"></i></span><div><small>Status da loja</small><strong id="statStatus">Rascunho</strong><button data-go="publish">Configurar publicação</button></div></article>
           </div>
+          <section class="control-center" aria-label="Central de configuração">
+            <div class="control-center-head">
+              <div>
+                <span class="eyebrow">FLUXO RECOMENDADO</span>
+                <h3>Configure a loja em uma sequência lógica</h3>
+                <p>Do catálogo à publicação, cada etapa usa os mesmos dados que já alimentam a loja pública.</p>
+              </div>
+              <button class="secondary-btn" type="button" data-go="publish"><i class="ri-rocket-2-line"></i>Revisar publicação</button>
+            </div>
+            <div class="workflow-grid">
+              <button type="button" class="workflow-card" data-go="products"><span>01</span><i class="ri-shopping-bag-3-line"></i><strong>Catálogo</strong><small>Produtos, preços, fotos e estoque.</small></button>
+              <button type="button" class="workflow-card" data-go="categories"><span>02</span><i class="ri-folders-line"></i><strong>Organização</strong><small>Categorias e ordem da vitrine.</small></button>
+              <button type="button" class="workflow-card" data-go="appearance"><span>03</span><i class="ri-palette-line"></i><strong>Identidade</strong><small>Tema, capa, cards e tipografia.</small></button>
+              <button type="button" class="workflow-card" data-go="media"><span>04</span><i class="ri-gallery-line"></i><strong>Conteúdo</strong><small>Banners, campanhas e galeria.</small></button>
+              <button type="button" class="workflow-card" data-go="checkout"><span>05</span><i class="ri-bank-card-line"></i><strong>Venda</strong><small>Pedidos, pagamento e entrega.</small></button>
+              <button type="button" class="workflow-card" data-go="publish"><span>06</span><i class="ri-global-line"></i><strong>Publicação</strong><small>Endereço, status e lançamento.</small></button>
+            </div>
+          </section>
           <div class="two-col">
             <article class="panel"><div class="panel-head"><div><span class="eyebrow">DADOS PRINCIPAIS</span><h3>Identidade da loja</h3></div></div><div class="form-grid">
               <label class="field full"><span>Nome da loja</span><input id="storeName" maxlength="80" placeholder="Nome da sua loja"></label>
