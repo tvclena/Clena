@@ -1903,6 +1903,27 @@ body[data-layout="grid"] .product-action{
   }
 }
 
+
+
+/* ============================================================
+   CLENA V8.1 — ESTADO INICIAL DOS POPUPS
+   IMPORTANTE: estados fechados sempre vencem qualquer display.
+   ============================================================ */
+#cartDrawer.drawer.is-hidden,
+#productModal.modal.is-hidden,
+.payment-modal.is-hidden,
+.gallery-lightbox.is-hidden{
+  display:none !important;
+  visibility:hidden !important;
+  pointer-events:none !important;
+}
+
+#cartDrawer.drawer:not(.is-hidden),
+#productModal.modal:not(.is-hidden){
+  visibility:visible;
+  pointer-events:auto;
+}
+
 </style>
 </head>
 <body>
@@ -2095,7 +2116,7 @@ body[data-layout="grid"] .product-action{
     <button id="backToTop" class="back-to-top is-hidden" type="button" aria-label="Voltar ao topo"><i class="ri-arrow-up-line"></i></button>
   </div>
 
-  <div id="productModal" class="modal is-hidden" role="dialog" aria-modal="true" aria-labelledby="productModalName">
+  <div id="productModal" class="modal is-hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="productModalName">
     <div class="modal-backdrop" data-close-product></div>
     <section class="modal-card product-modal-card">
       <button class="modal-close" type="button" data-close-product aria-label="Fechar"><i class="ri-close-line"></i></button>
@@ -2161,7 +2182,7 @@ body[data-layout="grid"] .product-action{
     </section>
   </div>
 
-  <div id="cartDrawer" class="drawer is-hidden" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+  <div id="cartDrawer" class="drawer is-hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
     <div class="drawer-backdrop" data-close-cart></div>
     <aside class="cart-panel">
       <header class="cart-header"><div><span class="section-kicker">SEU PEDIDO</span><h2 id="cartTitle">Carrinho</h2></div><button type="button" data-close-cart aria-label="Fechar carrinho"><i class="ri-close-line"></i></button></header>
