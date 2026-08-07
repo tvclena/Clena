@@ -47,6 +47,13 @@ body.page-leaving{opacity:.68}
 @media(prefers-reduced-motion:reduce){
   body,.page-enter{transition:none!important;animation:none!important}
 }
+
+/* CLENA V10 — navegação de produto previsível */
+.rec{cursor:pointer}
+.back{white-space:nowrap}
+@media(max-width:480px){
+  .back{font-size:.76rem;min-height:40px;padding-inline:12px}
+}
 </style></head>
 <body><header class="site-header"><div class="header-inner shell"><a class="brand" href="#"><span id="brandLogo" class="brand-logo"></span><span class="brand-copy"><strong id="storeName">Loja</strong><small id="storeStatus"></small></span></a><div class="header-actions"><a id="cartLink" class="icon-btn cart-link" href="/carrinho/" aria-label="Carrinho"><i class="ri-shopping-bag-3-line"></i><b id="cartCount" class="cart-count">0</b></a></div></div></header>
 <section id="hero" class="hero page-enter"><div id="heroMedia" class="hero-media"></div><div class="hero-content shell"><h1 id="heroTitle"></h1><p id="heroText"></p><a href="#catalog" class="btn btn-primary">Ver produtos <i class="ri-arrow-down-line"></i></a></div></section>
@@ -141,6 +148,7 @@ function restoreCatalogPosition(){
 function rememberCatalogPosition(){
   if(!store?.slug) return;
   sessionStorage.setItem(`clena_scroll_${store.slug}`,String(window.scrollY||0));
+  sessionStorage.setItem(`clena_store_return_${store.slug}`,`/loja/${encodeURIComponent(store.slug)}`);
 }
 
 

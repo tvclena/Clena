@@ -42,6 +42,13 @@ body.page-leaving{opacity:.68}
 @media(prefers-reduced-motion:reduce){
   body,.page-enter{transition:none!important;animation:none!important}
 }
+
+/* CLENA V10 — navegação de produto previsível */
+.rec{cursor:pointer}
+.back{white-space:nowrap}
+@media(max-width:480px){
+  .back{font-size:.76rem;min-height:40px;padding-inline:12px}
+}
 </style></head><body><header class="site-header"><div class="header-inner shell"><a id="backLink" class="brand" href="/loja/"><span id="brandLogo" class="brand-logo"></span><span class="brand-copy"><strong id="storeName">Loja</strong><small id="storeStatus"></small></span></a><div class="icon-btn cart-link"><i class="ri-shopping-bag-3-line"></i><b id="cartCount" class="cart-count">0</b></div></div></header>
 <main class="cart-page shell page-enter"><div id="empty" class="box empty is-hidden"><i class="ri-shopping-bag-line"></i><h2>Seu carrinho está vazio</h2><p class="muted">Adicione produtos antes de finalizar.</p><a id="continue" class="btn btn-primary" href="/loja/">Ver produtos</a></div>
 <div id="cartContent" class="cart-layout"><section class="box"><h1>Seu carrinho</h1><p class="muted">Revise produtos, quantidades e observações.</p><div id="items" class="items"></div></section>
@@ -114,12 +121,11 @@ function navigateSoft(url){
 }
 function goBack(){
   document.body.classList.add('page-leaving');
-  const sameOrigin = document.referrer && (()=>{try{return new URL(document.referrer).origin===location.origin}catch{return false}})();
-  if(sameOrigin && history.length>1){
-    setTimeout(()=>history.back(),60);
-  }else{
-    setTimeout(()=>location.assign(indexUrl()),60);
-  }
+
+  // O carrinho sempre retorna ao catálogo da loja.
+  setTimeout(()=>{
+    location.assign(indexUrl());
+  },60);
 }
 
 function unit(item){return productPrice(item.product)+Number(item.variation?.price_adjustment||0)}

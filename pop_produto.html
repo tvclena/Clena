@@ -42,8 +42,15 @@ body.page-leaving{opacity:.68}
 @media(prefers-reduced-motion:reduce){
   body,.page-enter{transition:none!important;animation:none!important}
 }
+
+/* CLENA V10 — navegação de produto previsível */
+.rec{cursor:pointer}
+.back{white-space:nowrap}
+@media(max-width:480px){
+  .back{font-size:.76rem;min-height:40px;padding-inline:12px}
+}
 </style></head><body><header class="site-header"><div class="header-inner shell"><a id="backLink" class="brand" href="/loja/"><span id="brandLogo" class="brand-logo"></span><span class="brand-copy"><strong id="storeName">Loja</strong><small id="storeStatus"></small></span></a><a id="cartLink" class="icon-btn cart-link" href="/carrinho/"><i class="ri-shopping-bag-3-line"></i><b id="cartCount" class="cart-count">0</b></a></div></header>
-<main class="page shell page-enter"><button id="backLink2" class="btn btn-soft back" type="button"><i class="ri-arrow-left-line"></i> Voltar</button><div class="product-shell"><section class="gallery"><div id="mainMedia" class="main-media"></div><div id="thumbs" class="thumbs"></div></section><section class="info"><span id="category" class="cat-label"></span><h1 id="name"></h1><p id="description" class="desc"></p><div id="price" class="big-price"></div><div id="variationWrap"><div class="section-title">Escolha uma opção</div><div id="options" class="options"></div></div><div class="section-title">Observação</div><textarea id="note" maxlength="240" placeholder="Ex.: sem cebola, embalagem para presente..."></textarea><div class="buybar"><div class="qty"><button id="minus">−</button><strong id="qty">1</strong><button id="plus">+</button></div><button id="add" class="btn btn-primary"><span>Adicionar</span><strong id="addTotal"></strong></button></div></section></div>
+<main class="page shell page-enter"><button id="backLink2" class="btn btn-soft back" type="button" aria-label="Voltar para a loja"><i class="ri-arrow-left-line"></i> Voltar para a loja</button><div class="product-shell"><section class="gallery"><div id="mainMedia" class="main-media"></div><div id="thumbs" class="thumbs"></div></section><section class="info"><span id="category" class="cat-label"></span><h1 id="name"></h1><p id="description" class="desc"></p><div id="price" class="big-price"></div><div id="variationWrap"><div class="section-title">Escolha uma opção</div><div id="options" class="options"></div></div><div class="section-title">Observação</div><textarea id="note" maxlength="240" placeholder="Ex.: sem cebola, embalagem para presente..."></textarea><div class="buybar"><div class="qty"><button id="minus">−</button><strong id="qty">1</strong><button id="plus">+</button></div><button id="add" class="btn btn-primary"><span>Adicionar</span><strong id="addTotal"></strong></button></div></section></div>
 <section id="recommend" class="recommend is-hidden"><div class="recommend-head"><div><small>DA MESMA CATEGORIA</small><h2>Veja também</h2></div><small>Até 6 produtos</small></div><div id="recommendGrid" class="recommend-grid"></div></section></main>
 <footer class="footer"><div class="footer-inner shell"><strong id="footerName">Loja</strong><small>Detalhes do produto</small></div></footer><script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
@@ -123,14 +130,22 @@ function navigateSoft(url){
   setTimeout(()=>location.assign(url),70);
 }
 
+function navigateRelatedProduct(url){
+  document.body.classList.add('page-leaving');
+
+  // Produto relacionado substitui o produto atual no histórico.
+  // Assim "Voltar" nunca percorre Produto C > Produto B > Produto A.
+  setTimeout(()=>location.replace(url),70);
+}
+
 function goBackToStore(){
   document.body.classList.add('page-leaving');
-  const sameOrigin = document.referrer && (()=>{try{return new URL(document.referrer).origin===location.origin}catch{return false}})();
-  if(sameOrigin && history.length>1){
-    setTimeout(()=>history.back(),60);
-  }else{
-    setTimeout(()=>location.assign(indexUrl()),60);
-  }
+
+  // Regra da loja:
+  // voltar do produto SEMPRE retorna ao catálogo, nunca a outro produto.
+  setTimeout(()=>{
+    location.assign(indexUrl());
+  },60);
 }
 
 function showMedia(){
@@ -171,7 +186,7 @@ async function init(){
     $('recommend').classList.toggle('is-hidden',!(related||[]).length);$('recommendGrid').innerHTML=(related||[]).map(p=>`<a class="rec" href="/produto/${encodeURIComponent(store.slug)}/${encodeURIComponent(p.id)}">${p.image_url?`<img src="${esc(p.image_url)}" alt="">`:''}<div><strong>${esc(p.name)}</strong><span>${money(productPrice(p))}</span></div></a>`).join('');
     $$('.rec',$('recommendGrid')).forEach(link=>{
       const url=link.href;
-      link.addEventListener('click',(event)=>{event.preventDefault();navigateSoft(url)});
+      link.addEventListener('click',(event)=>{event.preventDefault();navigateRelatedProduct(url)});
       link.addEventListener('mouseenter',()=>prefetchUrl(url),{once:true});
       link.addEventListener('focus',()=>prefetchUrl(url),{once:true});
     });
