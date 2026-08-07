@@ -1,5 +1,6 @@
 
 
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -1534,10 +1535,11 @@
 
         renderAll();
         bindEvents();
+        startAvailabilityWatcher();
 
         $("loadingScreen").classList.add("hidden");
         $("app").classList.remove("hidden");
-        $("cartButton").classList.remove("hidden");
+        renderCart();
       }catch(error){
         console.error(error);
         $("loadingScreen").innerHTML = `
@@ -1631,7 +1633,7 @@
         pulse:{hero:"poster",font:"condensed",cards:"poster",ratio:"wide",categories:"blocks",buttons:"cut",density:"compact",motion:"energetic",texture:"grid",alignment:"left",logo:"stamp",overlay:"color",radius:4,shadow:65,heroHeight:285}
       };
       const base = presets[theme] || presets.atelier;
-      const merged = {...base,...studio,...persisted,...fine};
+      const merged = {...base,...studio,...fine,...persisted};
       return {
         ...merged,
         theme,
@@ -1944,6 +1946,56 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
       return `${String(Math.floor(normalized / 60)).padStart(2,"0")}:${String(normalized % 60).padStart(2,"0")}`;
     }
 
+    function refreshOpenInfo(){
+      state.openInfo = getOpenInfo(new Date());
+      return state.openInfo;
+    }
+
+    function storeCanReceiveOrders(){
+      return !!refreshOpenInfo()?.open;
+    }
+
+    function closedStoreMessage(){
+      return state.openInfo?.message || state.delivery?.closed_message || "A loja está fechada no momento.";
+    }
+
+    function guardStoreOpen(showMessage=true){
+      if (storeCanReceiveOrders()) return true;
+      if (showMessage){
+        toast(`${closedStoreMessage()} Não é possível adicionar itens à sacola enquanto a loja estiver fechada.`,"error");
+      }
+      return false;
+    }
+
+    function syncStoreAvailability(showTransitionToast=false){
+      const wasOpen = !!state.openInfo?.open;
+      refreshOpenInfo();
+      const isOpen = !!state.openInfo?.open;
+
+      renderHero();
+      renderClosedNotice();
+      renderProducts();
+      renderCart();
+
+      if (!$("productModal").classList.contains("hidden")){
+        updateModalTotal();
+      }
+
+      if (showTransitionToast && wasOpen && !isOpen){
+        toast(`${closedStoreMessage()} A sacola foi bloqueada para novos itens.`,"error");
+      }
+    }
+
+    function startAvailabilityWatcher(){
+      window.setInterval(() => syncStoreAvailability(true), 30000);
+
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) syncStoreAvailability(false);
+      });
+
+      window.addEventListener("focus", () => syncStoreAvailability(false));
+    }
+
     function renderAll(){
       renderHero();
       renderPromotions();
@@ -2015,14 +2067,13 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
         $("closedNotice").innerHTML = "";
         return;
       }
-      const scheduling = !!state.delivery.allow_scheduling;
       $("closedNotice").innerHTML = `
-        <div class="notice ${scheduling ? "" : "danger"}">
-          <i class="${scheduling ? "ri-calendar-schedule-line" : "ri-store-2-line"}"></i>
+        <div class="notice danger">
+          <i class="ri-store-2-line"></i>
           <div>
             <strong>${esc(state.openInfo.message)}</strong>
             <div style="font-size:10px;margin-top:3px">
-              ${scheduling ? "Você pode montar o pedido e escolher uma data e um horário disponíveis." : "No momento, não é possível finalizar novos pedidos."}
+              A loja está fechada. Não é possível adicionar produtos à sacola nem enviar novos pedidos até a reabertura.
             </div>
           </div>
         </div>
@@ -2074,8 +2125,11 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
       $("productsGrid").className = `products-grid ${layout === "compact" ? "compact" : ""}`;
       $("resultCount").textContent = `${items.length} item(ns)`;
 
+      const storeOpen = !!state.openInfo?.open;
+
       $("productsGrid").innerHTML = items.map(item => {
         const soldout = isSoldOut(item);
+        const blocked = soldout || !storeOpen;
         const price = itemPrice(item);
         const showOldPrice = item.price_source !== "technical_sheet" &&
           numberValue(item.sale_price) > 0 &&
@@ -2097,8 +2151,16 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
                   ${showOldPrice ? `<small>${money(item.price)}</small>` : ""}
                   <strong>${money(price)}</strong>
                 </div>
-                <button class="add-btn" type="button" data-add-item="${esc(item.id)}" ${soldout ? "disabled" : ""} aria-label="Escolher ${esc(item.name)}">
-                  <i class="${soldout ? "ri-forbid-line" : "ri-add-line"}"></i>
+                <button
+                  class="add-btn"
+                  type="button"
+                  data-add-item="${esc(item.id)}"
+                  ${blocked ? "disabled" : ""}
+                  aria-disabled="${blocked ? "true" : "false"}"
+                  title="${soldout ? "Produto esgotado" : !storeOpen ? "Loja fechada" : "Adicionar à sacola"}"
+                  aria-label="${soldout ? "Produto esgotado" : !storeOpen ? "Loja fechada — não é possível adicionar este produto" : `Escolher ${esc(item.name)}`}"
+                >
+                  <i class="${soldout ? "ri-forbid-line" : !storeOpen ? "ri-lock-2-line" : "ri-add-line"}"></i>
                 </button>
               </div>
             </div>
@@ -2208,6 +2270,7 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
       const item = state.items.find(row => row.id === itemId);
       if (!item || isSoldOut(item)) return;
 
+      refreshOpenInfo();
       state.product = item;
       state.modalQty = 1;
       state.modalSelections = new Map();
@@ -2330,14 +2393,33 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
 
     function updateModalTotal(){
       if (!state.product) return;
+
+      refreshOpenInfo();
+
       const additions = selectedModalAddons().reduce((sum,option) => sum + addonPrice(option),0);
       const total = (itemPrice(state.product) + additions) * state.modalQty;
       $("modalQty").textContent = state.modalQty;
-      $("modalTotal").textContent = money(total);
+
+      const button = $("addToCartBtn");
+      if (!state.openInfo.open){
+        button.disabled = true;
+        button.setAttribute("aria-disabled","true");
+        button.innerHTML = `<i class="ri-lock-2-line"></i> Loja fechada`;
+        return;
+      }
+
+      button.disabled = false;
+      button.setAttribute("aria-disabled","false");
+      button.innerHTML = `Adicionar • <span id="modalTotal">${money(total)}</span>`;
     }
 
     function addModalProductToCart(){
-      if (!state.product || !validateModalSelections()) return;
+      if (!state.product) return;
+      if (!guardStoreOpen(true)){
+        updateModalTotal();
+        return;
+      }
+      if (!validateModalSelections()) return;
 
       const addons = selectedModalAddons();
       const note = $("itemNoteInput")?.value.trim() || "";
@@ -2402,8 +2484,14 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
       const count = state.cart.reduce((sum,row) => sum + row.qty,0);
       const subtotal = cartSubtotal();
 
+      refreshOpenInfo();
+      const storeOpen = !!state.openInfo.open;
+
       $("cartCount").textContent = count;
       $("cartButtonTotal").textContent = money(subtotal);
+
+      const visualAllowsCart = state.visual?.showCart !== false;
+      $("cartButton").classList.toggle("hidden", !visualAllowsCart || count === 0);
 
       $("cartItems").innerHTML = state.cart.map((row,index) => `
         <article class="cart-item">
@@ -2417,7 +2505,7 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
             <div class="qty-control">
               <button type="button" data-cart-minus="${index}"><i class="ri-subtract-line"></i></button>
               <strong>${row.qty}</strong>
-              <button type="button" data-cart-plus="${index}"><i class="ri-add-line"></i></button>
+              <button type="button" data-cart-plus="${index}" ${storeOpen ? "" : "disabled"} title="${storeOpen ? "Aumentar quantidade" : "Loja fechada"}"><i class="${storeOpen ? "ri-add-line" : "ri-lock-2-line"}"></i></button>
             </div>
             <button class="remove-link" type="button" data-cart-remove="${index}">Remover</button>
           </div>
@@ -2439,6 +2527,10 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
       }));
 
       $$("[data-cart-plus]").forEach(button => button.addEventListener("click", () => {
+        if (!guardStoreOpen(true)){
+          renderCart();
+          return;
+        }
         const row = state.cart[Number(button.dataset.cartPlus)];
         if (!row) return;
         row.qty += 1;
@@ -2543,8 +2635,13 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
       const mode = state.delivery.checkout_mode || "whatsapp";
       const icon = mode === "internal" ? "ri-send-plane-fill" : "ri-whatsapp-line";
       const label = mode === "internal" ? "Confirmar pedido" : mode === "catalog" ? "Solicitar pelo WhatsApp" : "Enviar pelo WhatsApp";
-      $("checkoutButton").innerHTML = `<i class="${icon}"></i><span>${label}</span>`;
-      $("checkoutButton").disabled = !state.cart.length;
+      if (!state.openInfo.open){
+        $("checkoutButton").innerHTML = `<i class="ri-lock-2-line"></i><span>Loja fechada</span>`;
+        $("checkoutButton").disabled = true;
+      }else{
+        $("checkoutButton").innerHTML = `<i class="${icon}"></i><span>${label}</span>`;
+        $("checkoutButton").disabled = !state.cart.length;
+      }
     }
 
     function openCart(){
@@ -2578,10 +2675,9 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
         return `O pedido mínimo é ${money(minimum)}. Faltam ${money(minimum - subtotal)}.`;
       }
 
+      refreshOpenInfo();
       if (!state.openInfo.open){
-        if (!state.delivery.allow_scheduling) return state.openInfo.message || "A loja está fechada.";
-        if (!$("scheduleDate").value || !$("scheduleTime").value) return "Escolha a data e o horário do pedido.";
-        if (!isScheduleValid($("scheduleDate").value,$("scheduleTime").value)) return "O horário escolhido não está disponível.";
+        return `${closedStoreMessage()} Novos pedidos ficam bloqueados enquanto a loja estiver fechada.`;
       }
 
       if (selectedPayment() === "Dinheiro" && $("cashChange").value){
@@ -2691,6 +2787,15 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
     }
 
     async function checkout(){
+      refreshOpenInfo();
+      if (!state.openInfo.open){
+        renderClosedNotice();
+        renderProducts();
+        renderCart();
+        toast(`${closedStoreMessage()} Não é possível enviar um novo pedido agora.`,"error");
+        return;
+      }
+
       const validation = validateCheckout();
       if (validation){
         toast(validation,"error");
@@ -2750,8 +2855,12 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
         console.error(error);
         toast(error.message || "Não foi possível enviar o pedido.","error");
       }finally{
-        button.disabled = !state.cart.length;
-        if (state.cart.length) button.innerHTML = original;
+        refreshOpenInfo();
+        button.disabled = !state.cart.length || !state.openInfo.open;
+        if (state.cart.length && state.openInfo.open) button.innerHTML = original;
+        if (!state.openInfo.open){
+          button.innerHTML = `<i class="ri-lock-2-line"></i><span>Loja fechada</span>`;
+        }
       }
     }
 
@@ -2818,6 +2927,10 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
       });
 
       $("modalPlusBtn").addEventListener("click",() => {
+        if (!guardStoreOpen(true)){
+          updateModalTotal();
+          return;
+        }
         state.modalQty += 1;
         updateModalTotal();
       });
