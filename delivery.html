@@ -2106,24 +2106,48 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
       return false;
     }
 
-    function syncStoreAvailability(showTransitionToast=false){
-      const wasOpen = !!state.openInfo?.open;
-      refreshOpenInfo();
-      const isOpen = !!state.openInfo?.open;
+function syncStoreAvailability(showTransitionToast=false){
+  const wasOpen = !!state.openInfo?.open;
+  refreshOpenInfo();
+  const isOpen = !!state.openInfo?.open;
 
-      renderHero();
-      renderClosedNotice();
-      renderProducts();
-      renderCart();
+  // Atualiza somente o que realmente precisa mudar
+  renderClosedNotice();
 
-      if (!$("productModal").classList.contains("hidden")){
-        updateModalTotal();
-      }
+  // NÃO recria produtos
+  // NÃO recria hero
+  // NÃO recria carrinho inteiro
 
-      if (showTransitionToast && wasOpen && !isOpen){
-        toast(`${closedStoreMessage()} A sacola foi bloqueada para novos itens.`,"error");
-      }
+  // Apenas atualiza estado dos botões dos produtos
+  document.querySelectorAll("[data-add-item]").forEach(button => {
+    const item = state.items.find(i => String(i.id) === String(button.dataset.addItem));
+    if (!item) return;
+
+    const soldout = !item.available;
+    button.disabled = soldout || !isOpen;
+
+    const icon = button.querySelector("i");
+    if (icon) {
+      icon.className = soldout
+        ? "ri-forbid-line"
+        : !isOpen
+          ? "ri-lock-2-line"
+          : "ri-add-line";
     }
+  });
+
+  // Atualiza somente botão de finalizar
+  updateCheckoutVisibility();
+  renderOrderSummary();
+
+  if (!$("productModal").classList.contains("hidden")){
+    updateModalTotal();
+  }
+
+  if (showTransitionToast && wasOpen && !isOpen){
+    toast(`${closedStoreMessage()} A sacola foi bloqueada para novos itens.`,"error");
+  }
+}
 
     function startAvailabilityWatcher(){
       window.setInterval(() => syncStoreAvailability(true), 30000);
