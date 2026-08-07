@@ -1,4 +1,5 @@
 
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -75,6 +76,7 @@
     --gallery-ratio:1/1;
     --motion-fast:150ms;
     --motion-base:220ms;
+    --font-scale:1;
     --shadow-soft:0 9px 25px rgba(15,23,42,.07);
     --shadow-medium:0 15px 36px rgba(15,23,42,.12);
     --shadow-strong:0 21px 52px rgba(15,23,42,.20);
@@ -89,6 +91,7 @@
     background:var(--bg);
     color:var(--text);
     font-family:var(--body-font);
+    font-size:calc(16px * var(--font-scale));
     -webkit-font-smoothing:antialiased;
     text-rendering:optimizeLegibility;
   }
@@ -220,6 +223,11 @@
   .banner-stage.mode-single .banner-item:not(:first-child){display:none}
   .banner-stage.mode-carousel{overflow:hidden;border-radius:calc(var(--card-radius) + 2px)}
   .banner-track{display:flex;transition:transform var(--banner-transition,450ms) ease;will-change:transform}
+  .banner-stage.mode-carousel[data-transition="fade"] .banner-track,.banner-stage.mode-carousel[data-transition="zoom"] .banner-track{display:grid;transform:none!important;transition:none}
+  .banner-stage.mode-carousel[data-transition="fade"] .banner-item,.banner-stage.mode-carousel[data-transition="zoom"] .banner-item{grid-area:1/1;opacity:0;pointer-events:none;transition:opacity var(--banner-transition,450ms) ease,transform var(--banner-transition,450ms) ease}
+  .banner-stage.mode-carousel[data-transition="fade"] .banner-item.is-active,.banner-stage.mode-carousel[data-transition="zoom"] .banner-item.is-active{opacity:1;pointer-events:auto}
+  .banner-stage.mode-carousel[data-transition="zoom"] .banner-item{transform:scale(1.025)}
+  .banner-stage.mode-carousel[data-transition="zoom"] .banner-item.is-active{transform:scale(1)}
   .banner-stage.mode-carousel .banner-item{flex:0 0 100%}
   .banner-item{
     position:relative;overflow:hidden;min-height:250px;
@@ -270,6 +278,8 @@
   body[data-category-style="underline"] .category-btn.active{color:var(--primary);border-bottom-color:var(--primary)}
   body[data-category-style="minimal"] .category-btn{border:0;background:transparent;padding-inline:4px}
   body[data-category-style="minimal"] .category-btn.active{color:var(--primary)}
+  body[data-category-style="text"] .category-btn{border:0;background:transparent;border-radius:0;padding-inline:4px}
+  body[data-category-style="text"] .category-btn.active{color:var(--primary);font-weight:950}
   body[data-category-style="cards"] .category-btn{border-radius:10px;box-shadow:0 4px 13px rgba(15,23,42,.05)}
 
   .products{
@@ -351,6 +361,11 @@
   .gallery-media img,.gallery-media video{width:100%;height:100%;display:block;object-fit:var(--gallery-fit,cover);object-position:var(--gallery-position,center)}
   .gallery-copy{padding:9px}.gallery-copy strong{font-size:.7rem}.gallery-copy p{margin:3px 0 0;color:var(--muted);font-size:.6rem;line-height:1.4}
   .gallery-open{border:0;padding:0;width:100%;background:transparent;text-align:inherit;color:inherit}
+  .gallery-carousel-wrap{position:relative}
+  .gallery-nav{position:absolute;z-index:8;inset:50% 8px auto;transform:translateY(-50%);display:flex;justify-content:space-between;pointer-events:none}
+  .gallery-nav button{pointer-events:auto;width:38px;height:38px;border:1px solid rgba(255,255,255,.2);border-radius:50%;display:grid;place-items:center;background:rgba(2,6,23,.58);color:#fff;backdrop-filter:blur(10px);box-shadow:0 8px 24px rgba(2,6,23,.2)}
+  .gallery[data-layout="stories"] .gallery-media{aspect-ratio:9/16}
+  .gallery[data-layout="horizontal"] .gallery-item{flex-basis:min(82vw,520px)}
 
   /* ---------- LIGHTBOX ---------- */
   .lightbox{position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:18px;background:rgba(2,6,23,.88);backdrop-filter:blur(14px)}
@@ -389,6 +404,11 @@
   body[data-page-animation="slide-up"].page-ready .hero-copy,
   body[data-page-animation="slide-up"].page-ready .catalog{animation:pageUp var(--page-speed,.32s) both}
   body[data-page-animation="zoom"].page-ready .hero-copy{animation:pageZoom var(--page-speed,.3s) both}
+  body[data-page-animation="cascade"].page-ready .hero-copy{animation:pageUp var(--page-speed,.32s) both}
+  body[data-page-animation="cascade"].page-ready .product-card{animation:pageUp var(--page-speed,.32s) both}
+  body[data-page-animation="cascade"].page-ready .product-card:nth-child(2n){animation-delay:.035s}
+  body[data-page-animation="cascade"].page-ready .product-card:nth-child(3n){animation-delay:.07s}
+  body[data-page-animation="cascade"].page-ready .product-card:nth-child(4n){animation-delay:.105s}
   @keyframes pageFade{from{opacity:.01}to{opacity:1}}
   @keyframes pageUp{from{opacity:.01;transform:translateY(10px)}to{opacity:1;transform:none}}
   @keyframes pageZoom{from{opacity:.01;transform:scale(.985)}to{opacity:1;transform:none}}
@@ -588,6 +608,7 @@ const state = {
   restored: false,
   restoringView: null,
   bannerControllers: [],
+  galleryControllers: [],
   observer: null,
   searchTimer: null
 };
@@ -700,6 +721,12 @@ function heroHeight(value){
 function animationSpeed(value){
   return ({slow:'.48s',normal:'.30s',fast:'.18s'})[value] || '.30s';
 }
+function fontScale(value){
+  return ({small:.9,normal:1,large:1.08,xlarge:1.16})[value] || 1;
+}
+function bannerTransitionSpeed(value){
+  return value === 'zoom' ? '650ms' : value === 'fade' ? '520ms' : '450ms';
+}
 
 function applyAppearance(store, cache = true) {
   const a = normalizeAppearance(store);
@@ -724,6 +751,8 @@ function applyAppearance(store, cache = true) {
   root.setProperty('--cover-fit', a.cover_fit || 'cover');
   root.setProperty('--cover-position', a.cover_position || 'center');
   root.setProperty('--page-speed', animationSpeed(a.animation_speed));
+  root.setProperty('--font-scale', String(fontScale(a.font_scale)));
+  root.setProperty('--banner-transition', bannerTransitionSpeed(a.banner_transition));
   root.setProperty('--sticky-offset', a.header_style === 'floating' ? '86px' : '68px');
 
   document.body.dataset.headerStyle = a.header_style || 'transparent';
@@ -743,6 +772,13 @@ function applyAppearance(store, cache = true) {
   document.body.dataset.footerBackground = a.footer_background || 'accent';
   document.body.dataset.pageAnimation = a.page_animation || 'fade';
   document.body.dataset.scroll = a.scroll_behavior || 'smooth';
+  const reduceMotion = a.respect_reduced_motion !== false && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.body.dataset.reduceMotion = reduceMotion ? '1' : '0';
+  if (reduceMotion) {
+    document.body.dataset.pageAnimation = 'none';
+    document.body.dataset.buttonHover = 'none';
+    document.body.dataset.cardAnimation = 'none';
+  }
 
   $('customStoreCss').textContent = String(a.custom_css || '').slice(0,12000);
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', store.primary_color || a.background_color || '#f6f8fc');
@@ -786,11 +822,14 @@ function renderStoreChrome() {
   const hero = $('heroMedia');
   hero.innerHTML = '';
   hero.style.backgroundImage = '';
-  if (s.cover_type === 'video' && (s.cover_video_url || a.cover_video_external_url)) {
+  const coverType = s.cover_type || a.cover_type || 'image';
+  if (coverType === 'video' && (s.cover_video_url || a.cover_video_external_url)) {
     const src = safeUrl(s.cover_video_url || a.cover_video_external_url);
     if (src) hero.innerHTML = `<video src="${esc(src)}" autoplay muted loop playsinline preload="metadata"></video>`;
-  } else if (s.banner_url) {
+  } else if (coverType === 'image' && s.banner_url) {
     hero.innerHTML = `<img src="${esc(s.banner_url)}" alt="" fetchpriority="high" decoding="async">`;
+  } else {
+    hero.style.backgroundImage = `linear-gradient(135deg,${s.primary_color || '#2563eb'},${s.accent_color || '#0f172a'})`;
   }
 
   $('cartLink').href = routeCart();
@@ -1132,7 +1171,7 @@ function actionUrl(type,value) {
 
 function bannerItem(item) {
   const media = item.media_type === 'video'
-    ? `<video src="${esc(item.media_url)}" autoplay muted loop playsinline preload="metadata"></video>`
+    ? `<video src="${esc(item.media_url)}" ${document.body.dataset.reduceMotion==='1'?'':'autoplay'} muted loop playsinline preload="metadata"></video>`
     : `<img src="${esc(item.media_url)}" alt="${esc(item.title || '')}" loading="lazy" decoding="async">`;
   const url = actionUrl(item.link_type,item.link_value);
   return `<article class="banner-item" data-height="${esc(item.height || normalizeAppearance(state.store).banner_default_height || 'medium')}"
@@ -1154,7 +1193,7 @@ function renderBannerGroup(slotName, items) {
   slot.classList.add('has-content');
 
   if (mode === 'carousel' && items.length > 1) {
-    host.innerHTML = `<div class="banner-stage mode-carousel"><div class="banner-track">${items.map(bannerItem).join('')}</div>
+    host.innerHTML = `<div class="banner-stage mode-carousel" data-transition="${esc(a.banner_transition || 'slide')}"><div class="banner-track">${items.map((item,i)=>bannerItem(item).replace('class="banner-item"',`class="banner-item${i===0?' is-active':''}"`)).join('')}</div>
       ${a.banner_arrows!==false?`<div class="banner-controls"><button data-banner-prev type="button" aria-label="Anterior"><i class="ri-arrow-left-s-line"></i></button><button data-banner-next type="button" aria-label="Próximo"><i class="ri-arrow-right-s-line"></i></button></div>`:''}
       ${a.banner_dots!==false?`<div class="banner-dots">${items.map((_,i)=>`<button type="button" data-banner-dot="${i}" class="${i===0?'active':''}" aria-label="Banner ${i+1}"></button>`).join('')}</div>`:''}
     </div>`;
@@ -1168,18 +1207,20 @@ function initBannerCarousel(stage,count) {
   const a = normalizeAppearance(state.store);
   const track = stage.querySelector('.banner-track');
   let index=0,timer=null,paused=false;
+  const transition = a.banner_transition || 'slide';
   const go = n => {
     index = a.banner_loop === false ? Math.max(0,Math.min(count-1,n)) : (n+count)%count;
-    track.style.transform=`translate3d(${-index*100}%,0,0)`;
+    if (transition === 'slide') track.style.transform=`translate3d(${-index*100}%,0,0)`;
+    else $$('.banner-item',stage).forEach((item,i)=>item.classList.toggle('is-active',i===index));
     $$('[data-banner-dot]',stage).forEach((d,i)=>d.classList.toggle('active',i===index));
   };
   stage.querySelector('[data-banner-prev]')?.addEventListener('click',()=>go(index-1));
   stage.querySelector('[data-banner-next]')?.addEventListener('click',()=>go(index+1));
   $$('[data-banner-dot]',stage).forEach(d=>d.onclick=()=>go(Number(d.dataset.bannerDot)));
   const start = () => {
-    if (a.banner_autoplay === false || count < 2) return;
+    if (a.banner_autoplay === false || count < 2 || document.body.dataset.reduceMotion === '1') return;
     stop();
-    timer=setInterval(()=>{if(!paused)go(index+1)},Math.max(2500,Number(a.banner_autoplay_delay||5000)));
+    timer=setInterval(()=>{if(!paused && !document.hidden)go(index+1)},Math.max(2500,Number(a.banner_autoplay_delay||5000)));
   };
   const stop=()=>{if(timer)clearInterval(timer);timer=null};
   if (a.banner_pause_interaction !== false) {
@@ -1203,10 +1244,12 @@ async function loadBanners() {
 }
 
 function galleryItem(item,index) {
+  const a = normalizeAppearance(state.store);
+  const galleryVideoAuto = a.gallery_autoplay !== false && document.body.dataset.reduceMotion !== '1';
   const media = item.media_type === 'video'
-    ? `<video src="${esc(item.media_url)}" muted playsinline preload="metadata"></video>`
+    ? `<video src="${esc(item.media_url)}" ${galleryVideoAuto?'autoplay':''} muted ${a.gallery_loop!==false?'loop':''} playsinline preload="metadata"></video>`
     : `<img src="${esc(item.media_url)}" alt="${esc(item.title || 'Galeria')}" loading="lazy" decoding="async">`;
-  const url=actionUrl(item.link_type,item.link_value), a=normalizeAppearance(state.store);
+  const url=actionUrl(item.link_type,item.link_value);
   return `<article class="gallery-item">
     <button class="gallery-open" type="button" data-gallery-index="${index}" ${!a.gallery_lightbox && url?`data-gallery-url="${esc(url)}"`:''}>
       <div class="gallery-media" style="--gallery-fit:${esc(item.fit||'cover')};--gallery-position:${esc(item.object_x||'center')} ${esc(item.object_y||'center')}">${media}</div>
@@ -1229,12 +1272,48 @@ async function loadGallery() {
     if(!slot)return;
     slot.classList.add('has-content');
     const host=slot.querySelector('.slot-inner');
+    const galleryLayout = a.gallery_layout || 'grid';
+    const scrollable = ['carousel','horizontal','stories'].includes(galleryLayout);
     host.insertAdjacentHTML('beforeend',`<section class="gallery-section" id="gallerySection">
       <div class="gallery-head"><h2>${esc(a.gallery_title||'Nossa galeria')}</h2>${a.gallery_subtitle?`<p>${esc(a.gallery_subtitle)}</p>`:''}</div>
-      <div class="gallery" id="galleryGrid" data-layout="${esc(a.gallery_layout||'grid')}">${items.map(galleryItem).join('')}</div>
+      <div class="gallery-carousel-wrap">
+        <div class="gallery" id="galleryGrid" data-layout="${esc(galleryLayout)}">${items.map(galleryItem).join('')}</div>
+        ${scrollable && items.length>1 ? `<div class="gallery-nav"><button type="button" data-gallery-prev aria-label="Anterior"><i class="ri-arrow-left-s-line"></i></button><button type="button" data-gallery-next aria-label="Próximo"><i class="ri-arrow-right-s-line"></i></button></div>` : ''}
+      </div>
     </section>`);
     bindGallery(items);
+    if (scrollable && items.length > 1) initGalleryCarousel($('galleryGrid'));
   } catch(error){ console.warn('[CLENA] galeria',error); }
+}
+
+function initGalleryCarousel(grid) {
+  if (!grid) return;
+  const a = normalizeAppearance(state.store);
+  let timer = null, paused = false;
+  const itemStep = () => {
+    const first = grid.querySelector('.gallery-item');
+    if (!first) return Math.max(240, grid.clientWidth * .8);
+    const gap = parseFloat(getComputedStyle(grid).gap || '0') || 0;
+    return first.getBoundingClientRect().width + gap;
+  };
+  const move = dir => {
+    const max = Math.max(0, grid.scrollWidth - grid.clientWidth);
+    if (dir > 0 && a.gallery_loop !== false && grid.scrollLeft >= max - 8) grid.scrollTo({left:0,behavior:'smooth'});
+    else if (dir < 0 && a.gallery_loop !== false && grid.scrollLeft <= 8) grid.scrollTo({left:max,behavior:'smooth'});
+    else grid.scrollBy({left:dir * itemStep(),behavior:'smooth'});
+  };
+  grid.parentElement?.querySelector('[data-gallery-prev]')?.addEventListener('click',()=>move(-1));
+  grid.parentElement?.querySelector('[data-gallery-next]')?.addEventListener('click',()=>move(1));
+  const stop=()=>{if(timer)clearInterval(timer);timer=null};
+  const start=()=>{
+    stop();
+    if (a.gallery_autoplay === false || document.body.dataset.reduceMotion === '1') return;
+    timer=setInterval(()=>{if(!paused && !document.hidden)move(1)},Math.max(3200,Number(a.banner_autoplay_delay||5000)));
+  };
+  ['pointerenter','touchstart','focusin'].forEach(ev=>grid.addEventListener(ev,()=>paused=true,{passive:true}));
+  ['pointerleave','touchend','focusout'].forEach(ev=>grid.addEventListener(ev,()=>paused=false,{passive:true}));
+  start();
+  state.galleryControllers.push({stop});
 }
 
 function bindGallery(items) {
@@ -1253,7 +1332,7 @@ function bindGallery(items) {
 }
 function openLightbox(item) {
   $('lightboxContent').innerHTML=item.media_type==='video'
-    ? `<video src="${esc(item.media_url)}" controls autoplay playsinline></video>`
+    ? `<video src="${esc(item.media_url)}" controls autoplay ${normalizeAppearance(state.store).gallery_loop!==false?'loop':''} playsinline></video>`
     : `<img src="${esc(item.media_url)}" alt="${esc(item.title||'Galeria')}">`;
   $('galleryLightbox').classList.remove('is-hidden');
   document.body.style.overflow='hidden';
@@ -1271,6 +1350,16 @@ function setupObserver() {
     if(entries.some(e=>e.isIntersecting)&&state.hasMore&&!state.loading)loadProducts();
   },{rootMargin:'700px 0px'});
   state.observer.observe($('loadSentinel'));
+}
+
+function resetDeferredMedia() {
+  state.bannerControllers.forEach(c=>c.stop?.());
+  state.galleryControllers.forEach(c=>c.stop?.());
+  state.bannerControllers = [];
+  state.galleryControllers = [];
+  state.bannersLoaded = false;
+  state.galleryLoaded = false;
+  $$('.slot').forEach(slot=>{slot.classList.remove('has-content');const host=slot.querySelector('.slot-inner');if(host)host.innerHTML='';});
 }
 
 function scheduleDeferredMedia() {
@@ -1306,11 +1395,17 @@ function bindUI() {
   $('galleryLightbox').onclick=e=>{if(e.target===$('galleryLightbox'))closeLightbox()};
   addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('galleryLightbox').classList.contains('is-hidden'))closeLightbox()});
   $('backTop').onclick=()=>scrollTo({top:0,behavior:normalizeAppearance(state.store).scroll_behavior==='smooth'?'smooth':'auto'});
+  $('heroButton').addEventListener('click',async e=>{
+    if (normalizeAppearance(state.store).hero_button_target !== 'gallery') return;
+    if (!$('gallerySection')) { e.preventDefault(); await loadGallery(); $('gallerySection')?.scrollIntoView({behavior:normalizeAppearance(state.store).scroll_behavior==='smooth'?'smooth':'auto',block:'start'}); }
+  });
   addEventListener('scroll',()=>{
     $('backTop').classList.toggle('visible',scrollY>700);
   },{passive:true});
   addEventListener('storage',e=>{if(state.store&&e.key===cartKey())updateCartBadges()});
-  addEventListener('pagehide',()=>saveViewState());
+  const mediaMq=matchMedia('(max-width:700px)');
+  mediaMq.addEventListener?.('change',()=>{resetDeferredMedia();scheduleDeferredMedia();});
+  addEventListener('pagehide',()=>{state.bannerControllers.forEach(c=>c.stop?.());state.galleryControllers.forEach(c=>c.stop?.());saveViewState();});
 }
 
 async function init() {
