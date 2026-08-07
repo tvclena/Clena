@@ -2,6 +2,7 @@
 
 
 
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -1338,6 +1339,129 @@
     }
   </style>
 
+
+  <style id="clena-final-fixes-v5">
+    /* Logo antes do nome da loja */
+    .store-brand-row{
+      min-width:0;
+      flex:1;
+      display:flex;
+      align-items:center;
+      gap:13px;
+    }
+    .store-brand-copy{min-width:0;flex:1}
+    .store-main-logo{
+      width:58px;
+      height:58px;
+      flex:0 0 58px;
+      border-radius:16px;
+      overflow:hidden;
+      display:grid;
+      place-items:center;
+      background:#111;
+      color:#fff;
+      font-size:24px;
+      border:1px solid #eee;
+      box-shadow:0 8px 22px rgba(0,0,0,.08);
+    }
+    .store-main-logo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    /* WhatsApp no Ver Mais */
+    .information-whatsapp-block{
+      grid-column:1/-1;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      border-color:#bbf7d0!important;
+      background:#f0fdf4!important;
+    }
+    .information-whatsapp-block h3{margin-bottom:5px!important;color:#166534}
+    .information-whatsapp-block p{margin:0;color:#4b5563;font-size:10px;line-height:1.45}
+    .info-whatsapp-btn{
+      flex:0 0 auto;
+      min-height:44px;
+      padding:0 16px;
+      border-radius:12px;
+      background:#16a34a;
+      color:#fff;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      font-size:11px;
+      font-weight:900;
+      box-shadow:0 9px 22px rgba(22,163,74,.18);
+    }
+
+    /* Banner navegável: autoplay + setas + arrastar/swipe */
+    .public-banner-shell{
+      position:relative;
+      width:100%;
+    }
+    .public-banner-viewport{
+      touch-action:pan-y!important;
+      cursor:grab;
+      user-select:none;
+      -webkit-user-select:none;
+    }
+    .public-banner-viewport:active{cursor:grabbing}
+    .public-banner-track{will-change:transform}
+    .banner-nav{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      z-index:12;
+      width:46px;
+      height:46px;
+      border:1px solid rgba(255,255,255,.75);
+      border-radius:50%;
+      background:rgba(255,255,255,.94);
+      color:#111;
+      display:grid;
+      place-items:center;
+      font-size:25px;
+      box-shadow:0 10px 30px rgba(0,0,0,.16);
+      backdrop-filter:blur(8px);
+    }
+    .banner-nav-prev{left:12px}
+    .banner-nav-next{right:12px}
+    .banner-nav:active{transform:translateY(-50%) scale(.95)}
+
+    /* Corrige o hidden que antes mantinha a sacola sempre visível. */
+    .floating-cart.hidden{display:none!important}
+
+    @media(max-width:650px){
+      .store-main-line{align-items:center!important}
+      .store-brand-row{gap:10px}
+      .store-main-logo{
+        width:48px;
+        height:48px;
+        flex-basis:48px;
+        border-radius:13px;
+      }
+      .store-main-line h1{font-size:22px!important}
+      .information-whatsapp-block{
+        display:grid;
+        grid-template-columns:1fr;
+      }
+      .info-whatsapp-btn{width:100%}
+      .banner-nav{
+        width:38px;
+        height:38px;
+        font-size:21px;
+      }
+      .banner-nav-prev{left:7px}
+      .banner-nav-next{right:7px}
+    }
+  </style>
+
 </head>
 
 <body>
@@ -1544,6 +1668,7 @@
       itemAddons:[],
       zones:[],
       hours:[],
+      specialHours:[],
       promotions:[],
       promoAnimation:null,
       visual:null,
@@ -1648,12 +1773,13 @@
         applyTheme();
         document.title = delivery.name || "Delivery";
 
-        const [categories,items,groups,zones,hours] = await Promise.all([
+        const [categories,items,groups,zones,hours,specialHours] = await Promise.all([
           safeQuery(state.db.from("delivery_categories").select("*").eq("delivery_id",delivery.id).eq("active",true).order("position",{ascending:true})),
           safeQuery(state.db.from("delivery_items").select("*").eq("delivery_id",delivery.id).eq("active",true).order("position",{ascending:true}).order("created_at",{ascending:false})),
           safeQuery(state.db.from("delivery_addon_groups").select("*").eq("delivery_id",delivery.id).eq("active",true).order("position",{ascending:true})),
           safeQuery(state.db.from("delivery_zones").select("*").eq("delivery_id",delivery.id).eq("active",true).order("position",{ascending:true})),
-          safeQuery(state.db.from("delivery_hours").select("*").eq("delivery_id",delivery.id).order("day_of_week",{ascending:true}))
+          safeQuery(state.db.from("delivery_hour_periods").select("*").eq("delivery_id",delivery.id).order("day_of_week",{ascending:true}).order("position",{ascending:true})),
+          safeQuery(state.db.from("delivery_special_hours").select("*").eq("delivery_id",delivery.id).order("special_date",{ascending:true}))
         ]);
 
         state.categories = categories;
@@ -1661,6 +1787,7 @@
         state.addonGroups = groups;
         state.zones = zones;
         state.hours = hours;
+        state.specialHours = specialHours;
 
         await Promise.all([
           loadEffectivePrices(),
@@ -1877,13 +2004,21 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
         const copies = source.length < visible * 2 ? [...source,...source,...source] : [...source,...source];
         bannersBox.style.setProperty("--promo-visible",String(visible));
         bannersBox.innerHTML = `
-          <div class="public-banner-viewport">
-            <div class="public-banner-track">${copies.map((row,index) => `
-              <button class="public-banner" type="button" data-promo-id="${esc(row.id)}" data-copy-index="${index}">
-                ${promoMediaHTML(row)}
-                <span class="public-banner-shade"></span>
-                <span class="public-banner-copy"><b>${esc(row.title || "Promoção")}</b>${row.subtitle ? `<small>${esc(row.subtitle)}</small>` : ""}</span>
-              </button>`).join("")}</div>
+          <div class="public-banner-shell">
+            <button class="banner-nav banner-nav-prev" type="button" data-banner-prev aria-label="Banner anterior">
+              <i class="ri-arrow-left-s-line"></i>
+            </button>
+            <div class="public-banner-viewport">
+              <div class="public-banner-track">${copies.map((row,index) => `
+                <button class="public-banner" type="button" data-promo-id="${esc(row.id)}" data-copy-index="${index}">
+                  ${promoMediaHTML(row)}
+                  <span class="public-banner-shade"></span>
+                  <span class="public-banner-copy"><b>${esc(row.title || "Promoção")}</b>${row.subtitle ? `<small>${esc(row.subtitle)}</small>` : ""}</span>
+                </button>`).join("")}</div>
+            </div>
+            <button class="banner-nav banner-nav-next" type="button" data-banner-next aria-label="Próximo banner">
+              <i class="ri-arrow-right-s-line"></i>
+            </button>
           </div>
           <div class="public-banner-dots">${banners.map((_,i)=>`<i class="${i===0?"active":""}"></i>`).join("")}</div>`;
         startBannerLoop(banners);
@@ -1901,74 +2036,202 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
       const viewport = section?.querySelector(".public-banner-viewport");
       const track = section?.querySelector(".public-banner-track");
       if (!viewport || !track || !originals.length) return;
+
       const cfg = state.visual || getVisualSettings();
-      let x=0,last=performance.now(),paused=false,lastCenter=0;
-      const cards=[...track.querySelectorAll(".public-banner")];
-      const firstSequence = Math.max(1,Math.floor(cards.length / 2));
-      const resetWidth = () => cards.slice(0,firstSequence).reduce((sum,card)=>sum+card.getBoundingClientRect().width+(Number(cfg.bannerGap)||14),0);
-      function center(now){
-        if (now-lastCenter < 120) return; lastCenter=now;
-        const centerX=viewport.getBoundingClientRect().left+viewport.clientWidth/2;
-        let best=null,dist=Infinity;
-        cards.forEach(card=>{const r=card.getBoundingClientRect(),d=Math.abs((r.left+r.right)/2-centerX);if(d<dist){dist=d;best=card}});
-        cards.forEach(card=>card.classList.toggle("is-center",cfg.bannerCenter && card===best));
+      const cards = [...track.querySelectorAll(".public-banner")];
+      const prevBtn = section.querySelector("[data-banner-prev]");
+      const nextBtn = section.querySelector("[data-banner-next]");
+
+      let x = 0;
+      let last = performance.now();
+      let lastCenter = 0;
+      let pointerDown = false;
+      let dragStartX = 0;
+      let dragBaseX = 0;
+      let dragMoved = false;
+      let manualUntil = 0;
+      let initialized = false;
+
+      function dimensions(){
+        const first = cards[0];
+        const width = first?.getBoundingClientRect().width || Math.min(540,viewport.clientWidth * .82);
+        const gap = parseFloat(getComputedStyle(track).gap) || Number(cfg.bannerGap) || 14;
+        const step = width + gap;
+        const loopWidth = Math.max(step,originals.length * step);
+        const centerOffset = Math.max(0,(viewport.clientWidth - width) / 2);
+        return {width,gap,step,loopWidth,centerOffset};
+      }
+
+      function normalize(){
+        const {loopWidth,centerOffset} = dimensions();
+        if (!loopWidth) return;
+        while (x <= centerOffset-loopWidth) x += loopWidth;
+        while (x > centerOffset) x -= loopWidth;
+      }
+
+      function paint(animate=false){
+        track.style.transition = animate ? "transform .36s cubic-bezier(.22,.61,.36,1)" : "none";
+        track.style.transform = `translate3d(${x}px,0,0)`;
+      }
+
+      function currentOriginalIndex(){
+        const centerX = viewport.getBoundingClientRect().left + viewport.clientWidth/2;
+        let best = null, dist = Infinity;
+        cards.forEach(card => {
+          const r = card.getBoundingClientRect();
+          const d = Math.abs((r.left+r.right)/2-centerX);
+          if (d < dist){ dist=d; best=card; }
+        });
+        if (!best) return 0;
+        const id = best.dataset.promoId;
+        const idx = originals.findIndex(row => String(row.id) === String(id));
+        return idx < 0 ? 0 : idx;
+      }
+
+      function updateCenter(now=performance.now()){
+        if (now-lastCenter < 80) return;
+        lastCenter = now;
+
+        const centerX = viewport.getBoundingClientRect().left + viewport.clientWidth/2;
+        let best = null, dist = Infinity;
+
+        cards.forEach(card => {
+          const r = card.getBoundingClientRect();
+          const d = Math.abs((r.left+r.right)/2-centerX);
+          if (d < dist){ dist=d; best=card; }
+        });
+
+        cards.forEach(card => card.classList.toggle("is-center",cfg.bannerCenter !== false && card===best));
+
         if (best){
-          const id=best.dataset.promoId,idx=originals.findIndex(row=>String(row.id)===String(id));
-          section.querySelectorAll(".public-banner-dots i").forEach((dot,i)=>dot.classList.toggle("active",i===idx));
+          const id = best.dataset.promoId;
+          const idx = originals.findIndex(row => String(row.id) === String(id));
+          section.querySelectorAll(".public-banner-dots i").forEach((dot,i) => dot.classList.toggle("active",i===idx));
         }
       }
-      function frame(now){
-        const delta=Math.min(50,now-last); last=now;
-        const autoplay = state.delivery.promotions_autoplay !== false;
-        if (!paused && autoplay && cfg.bannerInfinite !== false){
-          x -= (Number(cfg.bannerSpeed)||34) * delta / 1000;
-          const rw=resetWidth(); if (rw>0 && -x>=rw) x+=rw;
-          track.style.transform=`translate3d(${x}px,0,0)`;
-        }
-        center(now);
-        state.promoAnimation=requestAnimationFrame(frame);
+
+      function snapToNearest(animate=true){
+        const {step,centerOffset} = dimensions();
+        const index = Math.round((centerOffset-x)/step);
+        x = centerOffset-index*step;
+        normalize();
+        paint(animate);
+        manualUntil = performance.now()+1800;
+        setTimeout(() => {
+          normalize();
+          paint(false);
+          updateCenter();
+        },380);
       }
-      if (cfg.bannerPauseHover){ viewport.addEventListener("mouseenter",()=>paused=true); viewport.addEventListener("mouseleave",()=>paused=false); }
-      state.promoAnimation=requestAnimationFrame(frame);
-    }
 
-    function normalizeMediaEntry(entry){
-      if (!entry) return null;
-      if (typeof entry === "string") return {url:entry,type:/\.(mp4|webm|mov)(\?|$)/i.test(entry)?"video":"image"};
-      const url=entry.url||entry.media_url||entry.src||entry.image_url||entry.video_url;
-      if (!url) return null;
-      const type=entry.type||entry.media_type||(/\.(mp4|webm|mov)(\?|$)/i.test(url)?"video":"image");
-      return {url,type:type==="video"?"video":"image",poster:entry.poster||entry.poster_url||null};
-    }
+      function moveOne(direction){
+        // direction: -1 = próximo / +1 = anterior
+        const {step} = dimensions();
+        manualUntil = performance.now()+2200;
+        x += direction*step;
+        normalize();
+        paint(true);
+        setTimeout(() => {
+          normalize();
+          paint(false);
+          updateCenter();
+        },380);
+      }
 
-    function itemMediaList(item){
-      const raw=[];
-      if (item?.image_url) raw.push({url:item.image_url,type:"image"});
-      ["media","media_urls","gallery","gallery_urls","image_urls","images","additional_media","media_gallery"].forEach(key=>{
-        let value=item?.[key]; if (!value) return;
-        if (typeof value === "string"){ try{ const p=JSON.parse(value); value=p; }catch{ value=value.split(",").map(v=>v.trim()).filter(Boolean); } }
-        if (Array.isArray(value)) raw.push(...value);
+      prevBtn?.addEventListener("click",event => {
+        event.preventDefault();
+        event.stopPropagation();
+        moveOne(+1);
       });
-      const seen=new Set(),result=[];
-      raw.map(normalizeMediaEntry).filter(Boolean).forEach(entry=>{if(!seen.has(entry.url)&&result.length<5){seen.add(entry.url);result.push(entry)}});
-      return result;
-    }
 
-    function galleryMainHTML(media,item){
-      if (!media) return `<div class="product-gallery-empty"><i class="ri-restaurant-2-line"></i></div>`;
-      if (media.type === "video") return `<video src="${esc(media.url)}" ${media.poster?`poster="${esc(media.poster)}"`:""} controls playsinline preload="metadata"></video>`;
-      return `<img src="${esc(media.url)}" alt="${esc(item?.name || "Produto")}">`;
-    }
+      nextBtn?.addEventListener("click",event => {
+        event.preventDefault();
+        event.stopPropagation();
+        moveOne(-1);
+      });
 
-    function bindProductGallery(item){
-      const medias=itemMediaList(item); if (medias.length<2) return;
-      const main=$("productModalBody")?.querySelector("[data-product-gallery-main]");
-      if(!main)return;
-      $$("[data-product-media-index]",$("productModalBody")).forEach(btn=>btn.addEventListener("click",()=>{
-        const index=Number(btn.dataset.productMediaIndex)||0;
-        main.innerHTML=galleryMainHTML(medias[index],item);
-        $$("[data-product-media-index]",$("productModalBody")).forEach(x=>x.classList.toggle("active",x===btn));
-      }));
+      viewport.addEventListener("pointerdown",event => {
+        if (event.pointerType === "mouse" && event.button !== 0) return;
+        pointerDown = true;
+        dragMoved = false;
+        dragStartX = event.clientX;
+        dragBaseX = x;
+        manualUntil = performance.now()+3000;
+        track.style.transition = "none";
+        viewport.setPointerCapture?.(event.pointerId);
+      });
+
+      viewport.addEventListener("pointermove",event => {
+        if (!pointerDown) return;
+        const delta = event.clientX-dragStartX;
+        if (Math.abs(delta)>5) dragMoved = true;
+        x = dragBaseX+delta;
+        paint(false);
+        updateCenter();
+      });
+
+      const finishDrag = event => {
+        if (!pointerDown) return;
+        pointerDown = false;
+        try{ viewport.releasePointerCapture?.(event.pointerId); }catch(_){}
+        snapToNearest(true);
+        if (dragMoved){
+          viewport.dataset.dragMoved = "1";
+          setTimeout(() => { delete viewport.dataset.dragMoved; },300);
+        }
+      };
+
+      viewport.addEventListener("pointerup",finishDrag);
+      viewport.addEventListener("pointercancel",finishDrag);
+
+      viewport.addEventListener("click",event => {
+        if (viewport.dataset.dragMoved === "1"){
+          event.preventDefault();
+          event.stopImmediatePropagation();
+        }
+      },true);
+
+      viewport.addEventListener("mouseenter",() => {
+        if (cfg.bannerPauseHover) manualUntil = Infinity;
+      });
+      viewport.addEventListener("mouseleave",() => {
+        if (manualUntil === Infinity) manualUntil = performance.now()+600;
+      });
+
+      function initializePosition(){
+        if (initialized) return;
+        const {centerOffset} = dimensions();
+        x = centerOffset;
+        paint(false);
+        initialized = true;
+        updateCenter();
+      }
+
+      function frame(now){
+        initializePosition();
+
+        const delta = Math.min(50,now-last);
+        last = now;
+
+        const autoplay = state.delivery?.promotions_autoplay !== false;
+        const canAuto = autoplay && cfg.bannerInfinite !== false && !pointerDown && now>manualUntil;
+
+        if (canAuto){
+          x -= (Number(cfg.bannerSpeed)||34) * delta / 1000;
+          normalize();
+          paint(false);
+        }
+
+        updateCenter(now);
+        state.promoAnimation = requestAnimationFrame(frame);
+      }
+
+      window.addEventListener("resize",() => {
+        initialized=false;
+        initializePosition();
+      },{once:true});
+
+      state.promoAnimation = requestAnimationFrame(frame);
     }
 
     function applyTheme(){
@@ -2033,46 +2296,230 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
       return String(item.availability || "").toLowerCase() === "soldout";
     }
 
-    function getOpenInfo(date){
-      const d = state.delivery;
+    function storeTimezone(){
+      return state.delivery?.timezone || "America/Bahia";
+    }
 
-      if (d.force_closed){
+    function storeClock(date=new Date()){
+      const timezone = storeTimezone();
+      try{
+        const parts = new Intl.DateTimeFormat("en-CA",{
+          timeZone:timezone,
+          year:"numeric",month:"2-digit",day:"2-digit",
+          hour:"2-digit",minute:"2-digit",second:"2-digit",
+          hourCycle:"h23",weekday:"short"
+        }).formatToParts(date);
+
+        const map = Object.fromEntries(parts.map(p => [p.type,p.value]));
+        const weekdayMap = {Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6};
+
+        return {
+          timezone,
+          year:Number(map.year),
+          month:Number(map.month),
+          day:Number(map.day),
+          hour:Number(map.hour),
+          minute:Number(map.minute),
+          second:Number(map.second),
+          dayOfWeek:weekdayMap[map.weekday] ?? date.getDay(),
+          dateKey:`${map.year}-${map.month}-${map.day}`,
+          minutes:Number(map.hour) * 60 + Number(map.minute)
+        };
+      }catch(error){
+        console.warn("[CLENA] Fuso inválido, usando horário do dispositivo:", timezone, error);
+        return {
+          timezone:Intl.DateTimeFormat().resolvedOptions().timeZone,
+          year:date.getFullYear(),
+          month:date.getMonth()+1,
+          day:date.getDate(),
+          hour:date.getHours(),
+          minute:date.getMinutes(),
+          second:date.getSeconds(),
+          dayOfWeek:date.getDay(),
+          dateKey:`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`,
+          minutes:date.getHours()*60+date.getMinutes()
+        };
+      }
+    }
+
+    function shiftDateKey(dateKey,days){
+      const [y,m,d] = String(dateKey).split("-").map(Number);
+      const dt = new Date(Date.UTC(y,m-1,d+days,12,0,0));
+      return `${dt.getUTCFullYear()}-${String(dt.getUTCMonth()+1).padStart(2,"0")}-${String(dt.getUTCDate()).padStart(2,"0")}`;
+    }
+
+    function boolValue(value, fallback=false){
+      if (value === true || value === 1 || value === "1" || String(value).toLowerCase() === "true") return true;
+      if (value === false || value === 0 || value === "0" || String(value).toLowerCase() === "false") return false;
+      return fallback;
+    }
+
+    function activeManualStatus(){
+      const d = state.delivery || {};
+      if (!d.force_open && !d.force_closed) return null;
+
+      if (d.manual_status_until){
+        const until = new Date(d.manual_status_until);
+        if (!Number.isNaN(until.getTime()) && until.getTime() <= Date.now()) return null;
+      }
+
+      if (boolValue(d.force_closed,false)) return "closed";
+      if (boolValue(d.force_open,false)) return "open";
+      return null;
+    }
+
+    function specialForDate(dateKey){
+      return (state.specialHours || []).find(row => String(row.special_date || "").slice(0,10) === dateKey) || null;
+    }
+
+    function regularPeriodsForDay(dayOfWeek){
+      return (state.hours || [])
+        .filter(row => Number(row.day_of_week) === Number(dayOfWeek) && row.active !== false && row.active !== 0 && String(row.active).toLowerCase() !== "false")
+        .sort((a,b) => Number(a.position || 0) - Number(b.position || 0));
+    }
+
+    function periodsForCalendarDate(dayOfWeek,dateKey){
+      const special = specialForDate(dateKey);
+      if (special){
+        if (boolValue(special.is_closed,false)) return [];
+        if (special.open_time && special.close_time){
+          return [{
+            open_time:special.open_time,
+            close_time:special.close_time,
+            active:true,
+            label:special.name || "Horário especial",
+            special:true
+          }];
+        }
+      }
+      return regularPeriodsForDay(dayOfWeek);
+    }
+
+    function periodWindow(period,fromPreviousDay=false){
+      const open = toMinutes(period.open_time);
+      const closeRaw = toMinutes(period.close_time);
+      const overnight = closeRaw <= open;
+      const close = overnight ? closeRaw + 1440 : closeRaw;
+      const lastOrder = Math.max(0,numberValue(state.delivery?.last_order_minutes));
+      const cutoff = Math.max(open,close-lastOrder);
+
+      return {
+        open,
+        close,
+        cutoff,
+        overnight,
+        currentOffset:fromPreviousDay ? 1440 : 0
+      };
+    }
+
+    function getOpenInfo(date=new Date()){
+      const d = state.delivery || {};
+      const manual = activeManualStatus();
+
+      if (manual === "closed"){
         return {open:false,reason:"forced_closed",message:d.closed_message || "A loja está fechada no momento."};
       }
-      if (d.force_open){
+      if (manual === "open"){
         return {open:true,reason:"forced_open",message:"Aberto agora"};
       }
 
-      const day = date.getDay();
-      const row = state.hours.find(hour => Number(hour.day_of_week) === day);
-      if (!row || !row.is_open){
-        return {open:false,reason:"day_closed",message:d.closed_message || "A loja está fechada hoje."};
+      const clock = storeClock(date);
+      const todaySpecial = specialForDate(clock.dateKey);
+
+      if (todaySpecial && boolValue(todaySpecial.is_closed,false)){
+        return {
+          open:false,
+          reason:"special_closed",
+          message:todaySpecial.name || d.closed_message || "A loja está fechada hoje."
+        };
       }
 
-      const openTime = String(row.open_time || "00:00").slice(0,5);
-      const closeTime = String(row.close_time || "23:59").slice(0,5);
-      const currentMinutes = date.getHours() * 60 + date.getMinutes();
-      const openMinutes = toMinutes(openTime);
-      let closeMinutes = toMinutes(closeTime);
-      let adjustedCurrent = currentMinutes;
+      const todayPeriods = periodsForCalendarDate(clock.dayOfWeek,clock.dateKey);
+      const yesterdayDay = (clock.dayOfWeek + 6) % 7;
+      const yesterdayKey = shiftDateKey(clock.dateKey,-1);
+      const yesterdayPeriods = periodsForCalendarDate(yesterdayDay,yesterdayKey);
 
-      if (closeMinutes <= openMinutes){
-        closeMinutes += 1440;
-        if (adjustedCurrent < openMinutes) adjustedCurrent += 1440;
+      let inLastOrderWindow = false;
+
+      // Períodos de hoje.
+      for (const period of todayPeriods){
+        const w = periodWindow(period,false);
+        let current = clock.minutes;
+
+        if (w.overnight){
+          // Parte do período que ocorre antes da meia-noite do dia em que ele começou.
+          if (current >= w.open){
+            if (current <= w.cutoff){
+              return {
+                open:true,
+                reason:period.special ? "special_schedule" : "schedule",
+                message:`Aberto até ${formatTimeFromMinutes(w.cutoff)}`,
+                cutoff:w.cutoff,
+                period
+              };
+            }
+            if (current <= Math.min(w.close,1439)) inLastOrderWindow = true;
+          }
+        }else{
+          if (current >= w.open && current <= w.cutoff){
+            return {
+              open:true,
+              reason:period.special ? "special_schedule" : "schedule",
+              message:`Aberto até ${formatTimeFromMinutes(w.cutoff)}`,
+              cutoff:w.cutoff,
+              period
+            };
+          }
+          if (current > w.cutoff && current <= w.close) inLastOrderWindow = true;
+        }
       }
 
-      const cutoff = Math.max(openMinutes, closeMinutes - numberValue(d.last_order_minutes));
-      const open = adjustedCurrent >= openMinutes && adjustedCurrent <= cutoff;
+      // Continuação de períodos de ontem que atravessam a meia-noite.
+      if (!todaySpecial){
+        for (const period of yesterdayPeriods){
+          const w = periodWindow(period,true);
+          if (!w.overnight) continue;
+          const current = clock.minutes + 1440;
 
-      if (open){
-        return {open:true,reason:"schedule",message:`Aberto até ${formatTimeFromMinutes(cutoff)}`,cutoff};
+          if (current >= w.open && current <= w.cutoff){
+            return {
+              open:true,
+              reason:period.special ? "special_schedule_overnight" : "schedule_overnight",
+              message:`Aberto até ${formatTimeFromMinutes(w.cutoff)}`,
+              cutoff:w.cutoff,
+              period
+            };
+          }
+          if (current > w.cutoff && current <= w.close) inLastOrderWindow = true;
+        }
       }
 
-      if (adjustedCurrent > cutoff && adjustedCurrent <= closeMinutes){
-        return {open:false,reason:"last_order",message:d.closed_message || "O horário para novos pedidos encerrou."};
+      if (inLastOrderWindow){
+        return {
+          open:false,
+          reason:"last_order",
+          message:d.closed_message || "O horário para novos pedidos encerrou."
+        };
       }
 
-      return {open:false,reason:"outside_schedule",message:d.closed_message || "A loja está fechada no momento."};
+      const futureToday = todayPeriods
+        .map(period => ({period,minutes:toMinutes(period.open_time)}))
+        .filter(x => x.minutes > clock.minutes)
+        .sort((a,b) => a.minutes-b.minutes)[0];
+
+      if (futureToday){
+        return {
+          open:false,
+          reason:"before_schedule",
+          message:`Abre hoje às ${String(futureToday.period.open_time || "").slice(0,5)}`
+        };
+      }
+
+      return {
+        open:false,
+        reason:"outside_schedule",
+        message:d.closed_message || "A loja está fechada no momento."
+      };
     }
 
     function toMinutes(time){
@@ -2342,6 +2789,19 @@ function syncStoreAvailability(showTransitionToast=false){
       });
     }
 
+    function publicWhatsappNumber(){
+      const raw = digits(state.delivery?.order_whatsapp || state.delivery?.whatsapp || state.delivery?.phone || "");
+      if (!raw) return "";
+      // Se a loja informou apenas DDD+número, assume Brasil.
+      if (raw.length === 10 || raw.length === 11) return `55${raw}`;
+      return raw;
+    }
+
+    function publicWhatsappLink(message="Olá! Vim pelo cardápio online."){
+      const phone = publicWhatsappNumber();
+      return phone ? `https://wa.me/${phone}?text=${encodeURIComponent(message)}` : "";
+    }
+
     function renderInformation(){
       const d = state.delivery;
       const payments = [
@@ -2352,12 +2812,16 @@ function syncStoreAvailability(showTransitionToast=false){
       ].filter(Boolean);
 
       const hoursHtml = DAYS.map((day,index) => {
-        const row = state.hours.find(hour => Number(hour.day_of_week) === index);
-        const isOpen = !!row?.is_open;
+        const periods = regularPeriodsForDay(index);
+        const isOpen = periods.length > 0;
+        const label = isOpen
+          ? periods.map(row => `${String(row.open_time || "").slice(0,5)} às ${String(row.close_time || "").slice(0,5)}`).join(" • ")
+          : "Fechado";
+
         return `
           <div class="hours-row ${isOpen ? "" : "closed"}">
             <span>${day}</span>
-            <strong>${isOpen ? `${String(row.open_time || "").slice(0,5)} às ${String(row.close_time || "").slice(0,5)}` : "Fechado"}</strong>
+            <strong>${esc(label)}</strong>
           </div>
         `;
       }).join("");
@@ -2400,6 +2864,19 @@ function syncStoreAvailability(showTransitionToast=false){
             ${d.description ? `<p class="muted" style="font-size:10px;line-height:1.5;margin:8px 0 0">${esc(d.description)}</p>` : ""}
           </div>
         </article>
+
+        ${publicWhatsappNumber() ? `
+          <article class="information-block information-whatsapp-block">
+            <div>
+              <h3><i class="ri-whatsapp-line"></i> Fale com a loja</h3>
+              <p>Precisa tirar uma dúvida? Chame a loja diretamente pelo WhatsApp.</p>
+            </div>
+            <a class="info-whatsapp-btn" href="${esc(publicWhatsappLink())}" target="_blank" rel="noopener noreferrer">
+              <i class="ri-whatsapp-line"></i>
+              Abrir WhatsApp
+            </a>
+          </article>
+        ` : ""}
       `;
     }
 
@@ -2434,6 +2911,8 @@ function syncStoreAvailability(showTransitionToast=false){
       if (!item || isSoldOut(item)) return;
 
       refreshOpenInfo();
+      renderClosedNotice();
+
       state.product = item;
       state.modalQty = 1;
       state.modalSelections = new Map();
@@ -2853,24 +3332,38 @@ function syncStoreAvailability(showTransitionToast=false){
     }
 
     function isScheduleValid(dateValue,timeValue){
-      const date = new Date(`${dateValue}T${timeValue}:00`);
-      if (Number.isNaN(date.getTime()) || date.getTime() < Date.now()) return false;
+      if (!dateValue || !timeValue) return false;
 
-      const row = state.hours.find(hour => Number(hour.day_of_week) === date.getDay());
-      if (!row?.is_open) return false;
+      const [y,m,d] = dateValue.split("-").map(Number);
+      const [hh,mm] = timeValue.split(":").map(Number);
+      if (![y,m,d,hh,mm].every(Number.isFinite)) return false;
 
-      const selected = date.getHours() * 60 + date.getMinutes();
-      const open = toMinutes(row.open_time);
-      let close = toMinutes(row.close_time);
-      let adjusted = selected;
+      const selectedDay = new Date(Date.UTC(y,m-1,d,12,0,0)).getUTCDay();
+      const periods = periodsForCalendarDate(selectedDay,dateValue);
+      const selectedMinutes = hh*60+mm;
+      const lastOrder = Math.max(0,numberValue(state.delivery?.last_order_minutes));
 
-      if (close <= open){
-        close += 1440;
-        if (adjusted < open) adjusted += 1440;
-      }
+      const validPeriod = periods.some(period => {
+        const open = toMinutes(period.open_time);
+        let close = toMinutes(period.close_time);
+        let selected = selectedMinutes;
 
-      const cutoff = close - numberValue(state.delivery.last_order_minutes);
-      return adjusted >= open && adjusted <= cutoff;
+        if (close <= open){
+          close += 1440;
+          if (selected < open) selected += 1440;
+        }
+
+        const cutoff = Math.max(open,close-lastOrder);
+        return selected >= open && selected <= cutoff;
+      });
+
+      if (!validPeriod) return false;
+
+      // Só compara com "agora" quando a data escolhida é hoje no fuso da loja.
+      const clock = storeClock(new Date());
+      if (dateValue === clock.dateKey && selectedMinutes < clock.minutes) return false;
+
+      return true;
     }
 
     /* =========================================================
@@ -3239,9 +3732,14 @@ function syncStoreAvailability(showTransitionToast=false){
       const estimate=d.estimated_time || "Consulte";
       $("storeInfo").innerHTML=`
         <div class="store-main-line">
-          <div style="min-width:0;flex:1">
-            <h1>${esc(d.name || "Delivery")}<span class="verified-dot"><i class="ri-check-line"></i></span></h1>
-            <p class="store-description">${esc(deliveryDescriptionLine())}</p>
+          <div class="store-brand-row">
+            <div class="store-main-logo">
+              ${d.logo_url ? `<img src="${esc(d.logo_url)}" alt="Logo de ${esc(d.name || "Delivery")}">` : `<i class="ri-store-3-line"></i>`}
+            </div>
+            <div class="store-brand-copy">
+              <h1>${esc(d.name || "Delivery")}<span class="verified-dot"><i class="ri-check-line"></i></span></h1>
+              <p class="store-description">${esc(deliveryDescriptionLine())}</p>
+            </div>
           </div>
           <span class="store-status-pill ${state.openInfo.open?"":"closed"}">${state.openInfo.open?"Aberto agora":"Fechado"}</span>
         </div>
