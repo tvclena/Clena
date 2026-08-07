@@ -23,9 +23,27 @@ button,input,select,textarea{font:inherit}.is-hidden{display:none!important}a{te
 
 .cart-page{padding:26px 0 50px}.cart-layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(300px,.75fr);gap:18px}.box{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px}.box h1,.box h2{margin:0}.box h1{font-size:1.5rem}.box h2{font-size:1rem}.muted{color:var(--muted);font-size:.78rem}.items{display:grid;margin-top:12px}.item{display:grid;grid-template-columns:64px 1fr;gap:11px;padding:12px 0;border-bottom:1px solid var(--line)}.item-img{width:64px;height:64px;border-radius:10px;overflow:hidden;background:#eef2f7}.item-img img{width:100%;height:100%;object-fit:cover}.item h3{font-size:.82rem;margin:0}.item p,.item small{font-size:.66rem;color:var(--muted);margin:3px 0}.item-head,.item-bottom{display:flex;justify-content:space-between;gap:8px}.remove{border:0;background:transparent;color:#ef4444}.qty{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}.qty button{width:28px;height:28px;border:0;background:transparent}.qty strong{min-width:24px;display:grid;place-items:center;font-size:.7rem}.checkout{position:sticky;top:86px;align-self:start}.summary{display:grid;gap:7px;margin:14px 0}.summary div{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted)}.summary .total{padding-top:9px;border-top:1px solid var(--line);color:var(--text);font-size:1rem;font-weight:900}.fields{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.field{display:grid;gap:5px}.field.full{grid-column:1/-1}.field span{font-size:.64rem;font-weight:800}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 10px;background:var(--card);color:var(--text);outline:0}.field textarea{min-height:64px;resize:vertical}.checkout-btn{width:100%;margin-top:12px}.warning{padding:8px 10px;border-radius:9px;background:#fff7ed;color:#9a3412;font-size:.68rem}.empty{text-align:center;padding:60px 20px}.empty i{font-size:34px;color:var(--primary)}
 @media(max-width:800px){.cart-layout{grid-template-columns:1fr}.checkout{position:relative;top:auto}}@media(max-width:480px){.fields{grid-template-columns:1fr}.field.full{grid-column:1}.box{padding:14px}}
-</style></head><body><div id="loader" class="loader"><span></span></div>
-<header class="site-header"><div class="header-inner shell"><a id="backLink" class="brand" href="/index.html"><span id="brandLogo" class="brand-logo"></span><span class="brand-copy"><strong id="storeName">Loja</strong><small id="storeStatus"></small></span></a><div class="icon-btn cart-link"><i class="ri-shopping-bag-3-line"></i><b id="cartCount" class="cart-count">0</b></div></div></header>
-<main class="cart-page shell"><div id="empty" class="box empty is-hidden"><i class="ri-shopping-bag-line"></i><h2>Seu carrinho está vazio</h2><p class="muted">Adicione produtos antes de finalizar.</p><a id="continue" class="btn btn-primary" href="/index.html">Ver produtos</a></div>
+
+/* CLENA V9 — navegação sutil, sem tela de carregamento */
+html{background:var(--bg)}
+body{
+  opacity:1;
+  transition:opacity .14s ease;
+}
+body.page-leaving{opacity:.68}
+.loader{display:none!important}
+.page-enter{
+  animation:clenaPageEnter .18s ease both;
+}
+@keyframes clenaPageEnter{
+  from{opacity:.88;transform:translateY(3px)}
+  to{opacity:1;transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  body,.page-enter{transition:none!important;animation:none!important}
+}
+</style></head><body><header class="site-header"><div class="header-inner shell"><a id="backLink" class="brand" href="/loja/"><span id="brandLogo" class="brand-logo"></span><span class="brand-copy"><strong id="storeName">Loja</strong><small id="storeStatus"></small></span></a><div class="icon-btn cart-link"><i class="ri-shopping-bag-3-line"></i><b id="cartCount" class="cart-count">0</b></div></div></header>
+<main class="cart-page shell page-enter"><div id="empty" class="box empty is-hidden"><i class="ri-shopping-bag-line"></i><h2>Seu carrinho está vazio</h2><p class="muted">Adicione produtos antes de finalizar.</p><a id="continue" class="btn btn-primary" href="/loja/">Ver produtos</a></div>
 <div id="cartContent" class="cart-layout"><section class="box"><h1>Seu carrinho</h1><p class="muted">Revise produtos, quantidades e observações.</p><div id="items" class="items"></div></section>
 <aside id="checkoutBox" class="box checkout"><h2>Finalizar pedido</h2><div class="fields"><label class="field"><span>Nome</span><input id="customerName" autocomplete="name"></label><label class="field"><span>WhatsApp</span><input id="customerPhone" inputmode="tel" autocomplete="tel"></label><label class="field full"><span>Entrega / retirada</span><select id="fee"></select></label><div id="addressFields" class="field full"><div class="fields"><label class="field"><span>Rua</span><input id="street"></label><label class="field"><span>Número</span><input id="number"></label><label class="field"><span>Bairro</span><input id="neighborhood"></label><label class="field"><span>Cidade</span><input id="city"></label><label class="field"><span>UF</span><input id="state" maxlength="2"></label><label class="field"><span>CEP</span><input id="zip"></label></div></div><label class="field full"><span>Pagamento</span><select id="payment"></select></label><label class="field full"><span>Observações</span><textarea id="notes"></textarea></label></div>
 <div class="summary"><div><span>Subtotal</span><strong id="subtotal"></strong></div><div><span>Entrega</span><strong id="delivery"></strong></div><div class="total"><span>Total</span><strong id="total"></strong></div></div><div id="warning" class="warning is-hidden"></div><button id="checkout" class="btn btn-primary checkout-btn">Finalizar pedido <i class="ri-whatsapp-line"></i></button></aside></div></main>
@@ -88,7 +106,22 @@ function setCartBadge(store){
 }
 
 let db,store,items=[],fees=[],selectedFee=null,mpConfig=null;
-function indexUrl(){return `/index.html?slug=${encodeURIComponent(store.slug)}`}
+function indexUrl(){return `/loja/${encodeURIComponent(store.slug)}`}
+
+function navigateSoft(url){
+  document.body.classList.add('page-leaving');
+  setTimeout(()=>location.assign(url),70);
+}
+function goBack(){
+  document.body.classList.add('page-leaving');
+  const sameOrigin = document.referrer && (()=>{try{return new URL(document.referrer).origin===location.origin}catch{return false}})();
+  if(sameOrigin && history.length>1){
+    setTimeout(()=>history.back(),60);
+  }else{
+    setTimeout(()=>location.assign(indexUrl()),60);
+  }
+}
+
 function unit(item){return productPrice(item.product)+Number(item.variation?.price_adjustment||0)}
 function subtotal(){return items.reduce((s,i)=>s+unit(i)*Number(i.quantity||0),0)}
 function delivery(){return Number(selectedFee?.fee||0)}
@@ -122,13 +155,21 @@ async function checkout(){
 }
 async function init(){
   try{
-    db=await getDb();store=await loadStore(db,slug());applyStoreTheme(store);setHeader(store);$('backLink').href=indexUrl(); $('backLink').onclick=(event)=>{event.preventDefault();location.assign(indexUrl());}; $('continue').href=indexUrl(); $('continue').onclick=(event)=>{event.preventDefault();location.assign(indexUrl());};items=readCart(store.id);setCartBadge(store);
+    db=await getDb();store=await loadStore(db,slug());applyStoreTheme(store);setHeader(store);$('backLink').href=indexUrl(); $('backLink').onclick=(event)=>{event.preventDefault();goBack();}; $('continue').href=indexUrl(); $('continue').onclick=(event)=>{event.preventDefault();goBack();};items=readCart(store.id);setCartBadge(store);
     const {data,error}=await db.from('store_delivery_fees').select('*').eq('store_id',store.id).eq('active',true).order('position');if(error)throw error;fees=data||[];
     $('fee').innerHTML=`<option value="">Selecione entrega/retirada</option>`+fees.map(f=>`<option value="${esc(f.id)}">${esc(f.name)}${Number(f.fee||0)?` — ${money(f.fee)}`:' — Grátis'}</option>`).join('');
     $('fee').onchange=()=>{selectedFee=fees.find(f=>f.id===$('fee').value)||null;$('addressFields').classList.toggle('is-hidden',selectedFee?.delivery_type==='pickup');render()};
     $('payment').innerHTML=`<option value="whatsapp">Combinar pelo WhatsApp</option><option value="cash">Dinheiro</option><option value="pix">Pix</option><option value="card">Cartão na entrega</option>`;
-    $('checkout').onclick=checkout;render();$('loader').classList.add('is-hidden');
+    $('checkout').onclick=checkout;render();
   }catch(e){document.body.innerHTML=`<main class="shell" style="padding:80px 0"><h1>Não foi possível abrir o carrinho</h1><p>${esc(e.message)}</p></main>`}
 }
+window.addEventListener('pageshow',()=>{
+  document.body.classList.remove('page-leaving');
+  if(store){
+    items=readCart(store.id);
+    setCartBadge(store);
+    render();
+  }
+});
 init();
 </script></body></html>

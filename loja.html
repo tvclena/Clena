@@ -1,4 +1,3 @@
-
 <!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Loja</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,10 +28,28 @@ button,input,select,textarea{font:inherit}.is-hidden{display:none!important}a{te
 .grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}.product{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 7px 22px rgba(15,23,42,.045);transition:.2s}.product:hover{transform:translateY(-3px);box-shadow:var(--shadow)}.product-media{position:relative;aspect-ratio:1;background:#eef2f7}.product-media img{width:100%;height:100%;object-fit:cover;display:block}.badge{position:absolute;left:8px;top:8px;padding:4px 6px;border-radius:99px;background:#ef4444;color:#fff;font-size:.52rem;font-weight:900}.product-body{padding:10px}.product-cat{font-size:.55rem;color:var(--primary);font-weight:900;text-transform:uppercase}.product h3{font-size:.78rem;line-height:1.25;margin:5px 0 8px;min-height:2.5em}.price{display:flex;align-items:baseline;gap:5px}.price strong{font-size:.82rem}.price small{text-decoration:line-through;color:var(--muted);font-size:.58rem}.product-footer{display:flex;justify-content:space-between;align-items:center;gap:5px}.view-btn{width:32px;height:32px;border:0;border-radius:9px;background:var(--primary);color:#fff;display:grid;place-items:center}
 .empty{text-align:center;padding:50px;color:var(--muted)}
 @media(max-width:1100px){.grid{grid-template-columns:repeat(5,1fr)}}@media(max-width:900px){.grid{grid-template-columns:repeat(4,1fr)}}@media(max-width:680px){.hero{min-height:240px}.hero-content{padding-top:58px}.catalog-head{display:block}.catalog-head p{margin-top:6px}.tools{grid-template-columns:1fr}.grid{grid-template-columns:repeat(3,1fr);gap:7px}.product-body{padding:7px}.product h3{font-size:.64rem}.price strong{font-size:.67rem}.view-btn{width:28px;height:28px}}@media(max-width:390px){.grid{grid-template-columns:repeat(2,1fr)}}
+
+/* CLENA V9 — navegação sutil, sem tela de carregamento */
+html{background:var(--bg)}
+body{
+  opacity:1;
+  transition:opacity .14s ease;
+}
+body.page-leaving{opacity:.68}
+.loader{display:none!important}
+.page-enter{
+  animation:clenaPageEnter .18s ease both;
+}
+@keyframes clenaPageEnter{
+  from{opacity:.88;transform:translateY(3px)}
+  to{opacity:1;transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  body,.page-enter{transition:none!important;animation:none!important}
+}
 </style></head>
-<body><div id="loader" class="loader"><span></span></div>
-<header class="site-header"><div class="header-inner shell"><a class="brand" href="#"><span id="brandLogo" class="brand-logo"></span><span class="brand-copy"><strong id="storeName">Loja</strong><small id="storeStatus"></small></span></a><div class="header-actions"><a id="cartLink" class="icon-btn cart-link" href="/carrinho.html" aria-label="Carrinho"><i class="ri-shopping-bag-3-line"></i><b id="cartCount" class="cart-count">0</b></a></div></div></header>
-<section id="hero" class="hero"><div id="heroMedia" class="hero-media"></div><div class="hero-content shell"><h1 id="heroTitle"></h1><p id="heroText"></p><a href="#catalog" class="btn btn-primary">Ver produtos <i class="ri-arrow-down-line"></i></a></div></section>
+<body><header class="site-header"><div class="header-inner shell"><a class="brand" href="#"><span id="brandLogo" class="brand-logo"></span><span class="brand-copy"><strong id="storeName">Loja</strong><small id="storeStatus"></small></span></a><div class="header-actions"><a id="cartLink" class="icon-btn cart-link" href="/carrinho/" aria-label="Carrinho"><i class="ri-shopping-bag-3-line"></i><b id="cartCount" class="cart-count">0</b></a></div></div></header>
+<section id="hero" class="hero page-enter"><div id="heroMedia" class="hero-media"></div><div class="hero-content shell"><h1 id="heroTitle"></h1><p id="heroText"></p><a href="#catalog" class="btn btn-primary">Ver produtos <i class="ri-arrow-down-line"></i></a></div></section>
 <main id="catalog" class="catalog shell"><div class="catalog-head"><div><h2>Produtos</h2><p>Escolha um item para abrir todos os detalhes.</p></div></div><div class="tools"><label class="search"><i class="ri-search-line"></i><input id="search" placeholder="Buscar produtos..."></label><label class="sort"><i class="ri-sort-desc"></i><select id="sort"><option value="">Ordenar</option><option value="name">Nome</option><option value="price_asc">Menor preço</option><option value="price_desc">Maior preço</option></select></label></div><div id="categories" class="categories"></div><div id="grid" class="grid"></div><div id="empty" class="empty is-hidden"><i class="ri-search-eye-line"></i><p>Nenhum produto encontrado.</p></div></main>
 <footer class="footer"><div class="footer-inner shell"><strong id="footerName">Loja</strong><small>Catálogo online</small></div></footer>
 <script type="module">
@@ -95,8 +112,37 @@ function setCartBadge(store){
 
 let db,store,categories=[],products=[],current='all';
 
-function productUrl(id){return `/pop_produto.html?slug=${encodeURIComponent(store.slug)}&id=${encodeURIComponent(id)}`}
-function cartUrl(){return `/carrinho.html?slug=${encodeURIComponent(store.slug)}`}
+function productUrl(id){return `/produto/${encodeURIComponent(store.slug)}/${encodeURIComponent(id)}`}
+function cartUrl(){return `/carrinho/${encodeURIComponent(store.slug)}`}
+
+function prefetchUrl(url){
+  if(!url || document.head.querySelector(`link[data-prefetch="${CSS.escape(url)}"]`)) return;
+  const link=document.createElement('link');
+  link.rel='prefetch';
+  link.href=url;
+  link.as='document';
+  link.dataset.prefetch=url;
+  document.head.appendChild(link);
+}
+
+function navigateSoft(url){
+  document.body.classList.add('page-leaving');
+  setTimeout(()=>location.assign(url),70);
+}
+
+function restoreCatalogPosition(){
+  const key=`clena_scroll_${store?.slug||''}`;
+  const saved=sessionStorage.getItem(key);
+  if(saved!==null){
+    requestAnimationFrame(()=>window.scrollTo({top:Number(saved)||0,behavior:'auto'}));
+  }
+}
+
+function rememberCatalogPosition(){
+  if(!store?.slug) return;
+  sessionStorage.setItem(`clena_scroll_${store.slug}`,String(window.scrollY||0));
+}
+
 
 function renderCategories(){
   $('categories').innerHTML=[`<button class="cat ${current==='all'?'active':''}" data-cat="all">Todos</button>`,
@@ -123,15 +169,22 @@ function renderProducts(){
   $$('[data-product-id]').forEach(link=>{
     link.addEventListener('click',(event)=>{
       event.preventDefault();
+      rememberCatalogPosition();
       const id=link.dataset.productId;
-      location.assign(productUrl(id));
+      navigateSoft(productUrl(id));
     });
+  });
+  $$('[data-product-id]').forEach(link=>{
+    const warm=()=>prefetchUrl(productUrl(link.dataset.productId));
+    link.addEventListener('mouseenter',warm,{once:true});
+    link.addEventListener('focus',warm,{once:true});
+    link.addEventListener('touchstart',warm,{once:true,passive:true});
   });
 }
 async function init(){
   try{
     db=await getDb(); store=await loadStore(db,slug()); applyStoreTheme(store); setHeader(store); setCartBadge(store);
-    $('cartLink').href=cartUrl(); $('cartLink').onclick=(event)=>{event.preventDefault();location.assign(cartUrl());};
+    $('cartLink').href=cartUrl(); $('cartLink').onclick=(event)=>{event.preventDefault();rememberCatalogPosition();navigateSoft(cartUrl());}; prefetchUrl(cartUrl());
     const [{data:cats,error:ce},{data:prods,error:pe}]=await Promise.all([
       db.from('store_categories').select('*').eq('store_id',store.id).order('position'),
       db.from('store_products').select('*').eq('store_id',store.id).eq('active',true).order('position')
@@ -142,11 +195,20 @@ async function init(){
     $('heroMedia').style.backgroundImage=store.banner_url?`url("${String(store.banner_url).replace(/"/g,'%22')}")`:'linear-gradient(135deg,var(--primary),var(--accent))';
     $('heroTitle').textContent=a.hero_title||store.name;
     $('heroText').textContent=a.hero_subtitle||store.description||store.order_note||'Explore nossos produtos.';
-    renderCategories();renderProducts();
+    renderCategories();renderProducts(); restoreCatalogPosition();
     $('search').oninput=renderProducts;$('sort').onchange=renderProducts;
     window.addEventListener('storage',()=>setCartBadge(store));
-    $('loader').classList.add('is-hidden');
+    
   }catch(e){document.body.innerHTML=`<main class="shell" style="padding:80px 0"><h1>Não foi possível abrir a loja</h1><p>${esc(e.message)}</p></main>`}
 }
+window.addEventListener('pageshow',(event)=>{
+  document.body.classList.remove('page-leaving');
+  if(event.persisted && store){
+    setCartBadge(store);
+    restoreCatalogPosition();
+  }
+});
+window.addEventListener('pagehide',rememberCatalogPosition);
+
 init();
 </script></body></html>
