@@ -1252,13 +1252,28 @@
     .metric small{display:block;margin-top:7px;color:#808080;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .metric.more .metric-top i{color:#111}
 
-    /* PROMOÇÃO */
-    .public-stories{display:none!important}
-    .public-banners{margin:0!important;padding:0 30px 18px!important;overflow:visible!important}
-    .promo-coupon{width:100%;min-height:86px;border:0;border-radius:18px;background:linear-gradient(90deg,#fff1e6,#fff7ef);padding:14px 18px;display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:14px;text-align:left;color:#111}
-    .promo-coupon-icon{width:46px;height:46px;border-radius:15px;background:#ef252f;color:#fff;display:grid;place-items:center;font-size:24px}
-    .promo-coupon b{display:block;font-size:14px}.promo-coupon b strong{color:#ef252f;font-size:17px}.promo-coupon small{display:block;margin-top:5px;color:#737373;font-size:11px}.promo-coupon small em{color:#ef252f;font-style:normal;font-weight:700}
-    .promo-coupon>i{font-size:24px;color:#333}
+    /* STORIES + BANNERS — mantidos como no delivery anterior */
+    .public-stories{display:block!important;margin:18px 0 4px!important;padding:0 30px!important;overflow:hidden!important}
+    .public-stories.hidden{display:none!important}
+    .public-stories-track{display:flex!important;gap:14px!important;overflow-x:auto!important;padding:3px 1px 10px!important;scrollbar-width:none!important;scroll-snap-type:x proximity}
+    .public-stories-track::-webkit-scrollbar{display:none!important}
+    .public-story{border:0!important;background:transparent!important;padding:0!important;flex:0 0 76px!important;text-align:center!important;color:#111!important;scroll-snap-align:start}
+    .public-story-ring{width:70px!important;height:70px!important;margin:auto!important;border-radius:50%!important;padding:3px!important;display:block!important;background:linear-gradient(135deg,#ef252f,#ff8a00)!important;box-shadow:0 7px 20px rgba(15,23,42,.10)!important}
+    .public-story-ring>span{display:block!important;width:100%!important;height:100%!important;border-radius:50%!important;overflow:hidden!important;border:3px solid #fff!important;background:#f1f1f1!important}
+    .public-story img,.public-story video{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important}
+    .public-story b{display:block!important;font-size:10px!important;margin-top:6px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;font-weight:650!important}
+
+    .public-banners{display:block!important;margin:4px 0 17px!important;padding:0!important;overflow:hidden!important}
+    .public-banners.hidden{display:none!important}
+    .public-banner-viewport{overflow:hidden!important;padding:12px 0!important}
+    .public-banner-track{display:flex!important;gap:14px!important;will-change:transform!important;width:max-content!important}
+    .public-banner{position:relative!important;overflow:hidden!important;flex:0 0 540px!important;width:540px!important;height:230px!important;border:0!important;border-radius:20px!important;padding:0!important;background:#e2e8f0!important;color:#fff!important;box-shadow:0 12px 32px rgba(15,23,42,.12)!important;transform:scale(.96)!important;opacity:.82!important;transition:transform .28s ease,opacity .28s ease,box-shadow .28s ease!important}
+    .public-banner.is-center{transform:scale(1)!important;opacity:1!important;box-shadow:0 22px 52px rgba(15,23,42,.20)!important}
+    .public-banner img,.public-banner video{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important}
+    .public-banner-shade{position:absolute!important;inset:42% 0 0!important;background:linear-gradient(transparent,rgba(2,6,23,.82))!important}
+    .public-banner-copy{position:absolute!important;z-index:2!important;left:18px!important;right:18px!important;bottom:16px!important;text-align:left!important}
+    .public-banner-copy b,.public-banner-copy small{display:block!important}.public-banner-copy b{font-size:16px!important}.public-banner-copy small{font-size:11px!important;margin-top:4px!important;color:rgba(255,255,255,.88)!important}
+    .public-banner-dots{display:flex!important;justify-content:center!important;gap:5px!important;margin-top:2px!important}.public-banner-dots i{width:6px!important;height:6px!important;border-radius:999px!important;background:#d5d5d5!important;transition:.2s!important}.public-banner-dots i.active{width:20px!important;background:#ef252f!important}
 
     .notice{margin:0 30px 16px!important;border-radius:15px!important}
 
@@ -1308,7 +1323,8 @@
       .shell{box-shadow:none!important}.hero{height:245px!important;min-height:245px!important}.hero-content{height:245px!important;min-height:245px!important}.hero-circle-btn{width:46px;height:46px;font-size:21px}
       .store-info-grid{padding:24px 18px 18px!important;margin-top:-23px!important}.store-main-line h1{font-size:25px}.store-description{font-size:12px}.store-status-pill{display:none}
       .store-metrics{margin-top:20px}.metric{padding:0 7px}.metric-top{font-size:12px;gap:5px}.metric-top i{font-size:18px}.metric small{font-size:9px;margin-top:5px}
-      .public-banners{padding:0 18px 15px!important}.promo-coupon{grid-template-columns:43px 1fr auto;padding:12px;gap:10px;min-height:78px}.promo-coupon-icon{width:42px;height:42px}.promo-coupon b{font-size:12px}.promo-coupon b strong{font-size:14px}.promo-coupon small{font-size:9px}
+      .public-stories{padding:0 18px!important;margin-top:14px!important}.public-story{flex-basis:66px!important}.public-story-ring{width:60px!important;height:60px!important}.public-story b{font-size:9px!important}
+      .public-banners{padding:0!important;margin-bottom:14px!important}.public-banner-viewport{padding:8px 18px!important;overflow:visible!important}.public-banner{flex-basis:82vw!important;width:82vw!important;height:auto!important;aspect-ratio:16/7!important;border-radius:17px!important}.public-banner-copy{left:14px!important;right:14px!important;bottom:12px!important}.public-banner-copy b{font-size:13px!important}.public-banner-copy small{font-size:9px!important}
       .notice{margin:0 18px 14px!important}.sticky-tools{padding:0 18px 6px!important}.toolbar{grid-template-columns:1fr!important}.toolbar-btn{display:none!important}.search-box{height:53px!important}.search-box input{height:51px!important}.category-row{margin-right:-18px;padding-right:18px!important}
       .delivery-section-head{padding:0 18px;margin-top:15px}.delivery-section-head h2{font-size:18px}.product-rail{padding:0 18px 15px;gap:11px}.product-card,.product-card.compact{flex-basis:190px!important;width:190px!important}.product-image,.product-card.compact .product-image{height:145px!important;min-height:145px!important}.product-body h3{font-size:14px!important}.product-description{font-size:10px!important}.price-block strong{font-size:15px!important}
       .menu-search-head{padding:0 18px}.empty-state{margin:0 18px!important}
@@ -1317,7 +1333,7 @@
     }
     @media(max-width:390px){
       .store-info-grid{padding-left:14px!important;padding-right:14px!important}.metric{padding:0 4px}.metric-top{font-size:10px}.metric small{font-size:8px}.metric-top i{font-size:16px}
-      .public-banners,.sticky-tools{padding-left:14px!important;padding-right:14px!important}.delivery-section-head{padding-left:14px;padding-right:14px}.product-rail{padding-left:14px;padding-right:14px}.product-card,.product-card.compact{flex-basis:174px!important;width:174px!important}.product-image,.product-card.compact .product-image{height:132px!important;min-height:132px!important}
+      .public-stories{padding-left:14px!important;padding-right:14px!important}.public-banner-viewport{padding-left:14px!important;padding-right:14px!important}.sticky-tools{padding-left:14px!important;padding-right:14px!important}.delivery-section-head{padding-left:14px;padding-right:14px}.product-rail{padding-left:14px;padding-right:14px}.product-card,.product-card.compact{flex-basis:174px!important;width:174px!important}.product-image,.product-card.compact .product-image{height:132px!important;min-height:132px!important}
       .cart-minimum-wrap{display:none}.floating-cart{grid-template-columns:48px 1fr!important}.cart-cta{font-size:13px}
     }
   </style>
@@ -1336,7 +1352,7 @@
 
     <section id="storeInfo" class="store-info-grid"></section>
 
-    <section id="storiesSection" class="public-stories hidden" aria-hidden="true"></section>
+    <section id="storiesSection" class="public-stories hidden" aria-label="Destaques da loja"></section>
     <section id="bannersSection" class="public-banners hidden" aria-label="Promoções da loja"></section>
 
     <div id="closedNotice"></div>
@@ -1653,8 +1669,10 @@
         ]);
 
         state.openInfo = getOpenInfo(new Date());
+        restoreCartFromStorage();
 
         renderAll();
+        restoreCheckoutDraftFromStorage();
         bindEvents();
         startAvailabilityWatcher();
 
@@ -2831,6 +2849,133 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
       return adjusted >= open && adjusted <= cutoff;
     }
 
+    /* =========================================================
+       STORAGE DO PEDIDO • ISOLADO PELO ID DA LOJA
+       Estrutura preparada para a futura sacolinha_delivery.html.
+    ========================================================= */
+    function orderDraftStorageKey(){
+      return state.delivery?.id ? `delivery:pedido:v1:${state.delivery.id}` : null;
+    }
+
+    function lastOrderStorageKey(){
+      return state.delivery?.id ? `delivery:ultimo-pedido:v1:${state.delivery.id}` : null;
+    }
+
+    function safeLocalStorageSet(key,value){
+      if (!key) return;
+      try{ localStorage.setItem(key,JSON.stringify(value)); }
+      catch(error){ console.warn("[DELIVERY] Não foi possível salvar no storage:",error); }
+    }
+
+    function safeLocalStorageGet(key){
+      if (!key) return null;
+      try{ return parseJSON(localStorage.getItem(key),null); }
+      catch(error){ console.warn("[DELIVERY] Não foi possível ler o storage:",error); return null; }
+    }
+
+    function serializeCartForStorage(){
+      return state.cart.map(row => ({
+        item_id:row.item?.id || null,
+        quantity:Math.max(1,Number(row.qty)||1),
+        addon_ids:(row.addons || []).map(addon => addon.id).filter(Boolean),
+        note:row.note || ""
+      })).filter(row => row.item_id);
+    }
+
+    function checkoutDraftFields(){
+      const checkedFulfillment=document.querySelector('input[name="fulfillment"]:checked');
+      const checkedPayment=document.querySelector('input[name="payment"]:checked');
+      return {
+        customer_name:$("customerName")?.value || "",
+        customer_phone:$("customerPhone")?.value || "",
+        address:$("customerAddress")?.value || "",
+        notes:$("orderNotes")?.value || "",
+        fulfillment:checkedFulfillment?.value || "",
+        zone_id:$("zoneSelect")?.value || "",
+        payment:checkedPayment?.value || "",
+        cash_change:$("cashChange")?.value || "",
+        schedule_date:$("scheduleDate")?.value || "",
+        schedule_time:$("scheduleTime")?.value || ""
+      };
+    }
+
+    function persistOrderDraft(){
+      const key=orderDraftStorageKey();
+      if (!key) return;
+      safeLocalStorageSet(key,{
+        version:1,
+        delivery_id:state.delivery.id,
+        delivery_slug:state.delivery.slug || null,
+        updated_at:new Date().toISOString(),
+        cart:serializeCartForStorage(),
+        checkout:checkoutDraftFields()
+      });
+    }
+
+    function restoreCartFromStorage(){
+      const saved=safeLocalStorageGet(orderDraftStorageKey());
+      if (!saved || String(saved.delivery_id)!==String(state.delivery?.id) || !Array.isArray(saved.cart)) return;
+      const itemMap=new Map(state.items.map(item=>[String(item.id),item]));
+      const addonMap=new Map(state.addonOptions.map(addon=>[String(addon.id),addon]));
+      state.cart=saved.cart.map(row=>{
+        const item=itemMap.get(String(row.item_id));
+        if (!item || isSoldOut(item)) return null;
+        return {
+          item,
+          qty:Math.max(1,Number(row.quantity)||1),
+          addons:(row.addon_ids||[]).map(id=>addonMap.get(String(id))).filter(Boolean),
+          note:String(row.note||"")
+        };
+      }).filter(Boolean);
+    }
+
+    function restoreCheckoutDraftFromStorage(){
+      const saved=safeLocalStorageGet(orderDraftStorageKey());
+      const draft=saved?.checkout;
+      if (!draft || String(saved.delivery_id)!==String(state.delivery?.id)) return;
+      if ($("customerName")) $("customerName").value=draft.customer_name || "";
+      if ($("customerPhone")) $("customerPhone").value=draft.customer_phone || "";
+      if ($("customerAddress")) $("customerAddress").value=draft.address || "";
+      if ($("orderNotes")) $("orderNotes").value=draft.notes || "";
+      if ($("zoneSelect") && [...$("zoneSelect").options].some(o=>String(o.value)===String(draft.zone_id))) $("zoneSelect").value=draft.zone_id;
+      if ($("cashChange")) $("cashChange").value=draft.cash_change || "";
+      if ($("scheduleDate")) $("scheduleDate").value=draft.schedule_date || "";
+      if ($("scheduleTime")) $("scheduleTime").value=draft.schedule_time || "";
+      if (draft.fulfillment){ const el=document.querySelector(`input[name="fulfillment"][value="${CSS.escape(String(draft.fulfillment))}"]`); if(el) el.checked=true; }
+      if (draft.payment){ const el=document.querySelector(`input[name="payment"][value="${CSS.escape(String(draft.payment))}"]`); if(el) el.checked=true; }
+      updateCheckoutVisibility();
+      renderOrderSummary();
+    }
+
+    function clearOrderDraftStorage(){
+      const key=orderDraftStorageKey();
+      if (!key) return;
+      try{ localStorage.removeItem(key); }catch{}
+    }
+
+    function saveLastOrderToStorage(payload,meta={}){
+      const key=lastOrderStorageKey();
+      if (!key) return;
+      safeLocalStorageSet(key,{
+        version:1,
+        delivery_id:state.delivery.id,
+        delivery_slug:state.delivery.slug || null,
+        saved_at:new Date().toISOString(),
+        channel:meta.channel || state.delivery.checkout_mode || "whatsapp",
+        order_id:meta.order_id || null,
+        payload,
+        items:state.cart.map(row=>({
+          item_id:row.item.id,
+          item_name:row.item.name,
+          quantity:row.qty,
+          unit_price:itemPrice(row.item),
+          addons:(row.addons||[]).map(addon=>({id:addon.id,name:addon.name,price:addonPrice(addon)})),
+          note:row.note || null,
+          line_total:cartLineUnit(row)*row.qty
+        }))
+      });
+    }
+
     function buildOrderPayload(){
       const fulfillment = selectedFulfillment();
       const zone = selectedZone();
@@ -2960,8 +3105,10 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
           const {error:itemError} = await state.db.from("delivery_order_items").insert(rows);
           if (itemError) throw itemError;
 
+          saveLastOrderToStorage(payload,{channel:"internal",order_id:order.id});
           toast(state.delivery.order_success_message || "Pedido recebido com sucesso!","success");
           state.cart = [];
+          clearOrderDraftStorage();
           renderCart();
           closeCart();
           return;
@@ -2970,6 +3117,8 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
         const phone = digits(state.delivery.order_whatsapp);
         if (!phone) throw new Error("O WhatsApp de pedidos não foi configurado.");
 
+        saveLastOrderToStorage(payload,{channel:"whatsapp"});
+        persistOrderDraft();
         const message = buildWhatsAppMessage(payload);
         location.href = whatsappUrl(phone,message);
       }catch(error){
@@ -3045,27 +3194,20 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
         ${cover ? `<img class="hero-cover" src="${esc(cover)}" alt="Capa de ${esc(d.name || "Delivery")}">` : ""}
         <div class="hero-shade"></div>
         <div class="hero-content">
-          <div class="hero-actions">
-            <button id="deliveryBackBtn" class="hero-circle-btn" type="button" aria-label="Voltar"><i class="ri-arrow-left-s-line"></i></button>
+          <div class="hero-actions hero-actions-share-only">
+            <div></div>
             <div class="hero-actions-right">
               <button id="deliveryShareBtn" class="hero-circle-btn" type="button" aria-label="Compartilhar"><i class="ri-share-line"></i></button>
-              <button id="deliveryFavoriteBtn" class="hero-circle-btn" type="button" aria-label="Favoritar"><i class="ri-heart-3-line"></i></button>
             </div>
           </div>
         </div>`;
 
-      $("deliveryBackBtn")?.addEventListener("click",()=> history.length > 1 ? history.back() : (location.href="/"));
       $("deliveryShareBtn")?.addEventListener("click",async()=>{
         try{
           if (navigator.share) await navigator.share({title:d.name || "Delivery",text:deliveryDescriptionLine(),url:location.href});
           else { await navigator.clipboard.writeText(location.href); toast("Link copiado para compartilhar.","success"); }
         }catch(error){ if (error?.name !== "AbortError") toast("Não foi possível compartilhar agora.","error"); }
       });
-      const favKey=`delivery-favorite:${d.id}`;
-      const favBtn=$("deliveryFavoriteBtn");
-      const syncFav=()=>{ const on=localStorage.getItem(favKey)==="1"; favBtn?.classList.toggle("is-favorite",on); if(favBtn) favBtn.innerHTML=`<i class="${on?"ri-heart-3-fill":"ri-heart-3-line"}"></i>`; };
-      syncFav();
-      favBtn?.addEventListener("click",()=>{ localStorage.setItem(favKey,localStorage.getItem(favKey)==="1"?"0":"1"); syncFav(); });
     }
 
     renderStoreInfo = function(){
@@ -3089,19 +3231,43 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
 
     renderPromotions = function(){
       stopPromoAnimation();
-      const storiesBox=$("storiesSection"), bannersBox=$("bannersSection");
-      storiesBox.innerHTML=""; storiesBox.classList.add("hidden");
-      const row=state.promotions?.[0];
-      if(!row){ bannersBox.innerHTML=""; bannersBox.classList.add("hidden"); return; }
-      bannersBox.classList.remove("hidden");
-      const title=row.title || "Oferta especial";
-      const subtitle=row.subtitle || "Confira os itens participantes";
-      bannersBox.innerHTML=`<button class="promo-coupon" type="button" data-reference-promo="${esc(row.id)}">
-        <span class="promo-coupon-icon"><i class="ri-price-tag-3-line"></i></span>
-        <span><b><strong>${esc(title)}</strong></b><small>${esc(subtitle)} <em>Ver oferta</em></small></span>
-        <i class="ri-arrow-right-s-line"></i>
-      </button>`;
-      bannersBox.querySelector("[data-reference-promo]")?.addEventListener("click",()=>handlePromoAction(row));
+      const storiesBox = $("storiesSection");
+      const bannersBox = $("bannersSection");
+      const rows = state.delivery?.promotions_enabled === false ? [] : (state.promotions || []);
+      const stories = rows.filter(row => (row.kind || "story") === "story");
+      const banners = rows.filter(row => row.kind === "vertical_banner");
+
+      storiesBox.classList.toggle("hidden",!stories.length);
+      bannersBox.classList.toggle("hidden",!banners.length);
+
+      storiesBox.innerHTML = stories.length ? `<div class="public-stories-track">${stories.slice(0,20).map(row => `
+        <button class="public-story" type="button" data-promo-id="${esc(row.id)}" aria-label="${esc(row.title || "Abrir destaque")}">
+          <span class="public-story-ring"><span>${promoMediaHTML(row)}</span></span>
+          <b>${esc(row.title || "Destaque")}</b>
+        </button>`).join("")}</div>` : "";
+
+      if (banners.length){
+        const source = banners.length === 1 ? [...banners,...banners,...banners] : banners;
+        const copies = source.length < 6 ? [...source,...source,...source] : [...source,...source];
+        bannersBox.style.setProperty("--promo-visible","1");
+        bannersBox.innerHTML = `
+          <div class="public-banner-viewport">
+            <div class="public-banner-track">${copies.map((row,index) => `
+              <button class="public-banner" type="button" data-promo-id="${esc(row.id)}" data-copy-index="${index}">
+                ${promoMediaHTML(row)}
+                <span class="public-banner-shade"></span>
+                <span class="public-banner-copy"><b>${esc(row.title || "Promoção")}</b>${row.subtitle ? `<small>${esc(row.subtitle)}</small>` : ""}</span>
+              </button>`).join("")}</div>
+          </div>
+          <div class="public-banner-dots">${banners.map((_,i)=>`<i class="${i===0?"active":""}"></i>`).join("")}</div>`;
+        startBannerLoop(banners);
+      } else bannersBox.innerHTML = "";
+
+      $$('[data-promo-id]',document).forEach(el => {
+        if (el.dataset.promoBound === "1") return;
+        el.dataset.promoBound = "1";
+        el.addEventListener("click",() => handlePromoAction(rows.find(row => String(row.id) === String(el.dataset.promoId))));
+      });
     }
 
     function visibleCategories(){
@@ -3180,6 +3346,7 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
     }
 
     renderCart = function(){
+      persistOrderDraft();
       const count=state.cart.reduce((sum,row)=>sum+row.qty,0), subtotal=cartSubtotal();
       refreshOpenInfo(); const storeOpen=!!state.openInfo.open;
       $("cartCount").textContent=count; $("cartButtonTotal").textContent=money(subtotal); $("cartButton").classList.remove("hidden");
@@ -3239,6 +3406,15 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
 
       $("addToCartBtn").addEventListener("click",addModalProductToCart);
       $("checkoutButton").addEventListener("click",checkout);
+
+      ["customerName","customerPhone","customerAddress","orderNotes","zoneSelect","cashChange","scheduleDate","scheduleTime"].forEach(id=>{
+        const el=$(id); if(!el) return;
+        el.addEventListener("input",persistOrderDraft);
+        el.addEventListener("change",persistOrderDraft);
+      });
+      $("checkoutForm")?.addEventListener("change",event=>{
+        if(event.target.matches('input[name="fulfillment"],input[name="payment"]')) persistOrderDraft();
+      });
 
       $("scheduleDate").min = new Date().toISOString().slice(0,10);
 
