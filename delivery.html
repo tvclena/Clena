@@ -1,6 +1,7 @@
 
 
 
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -1202,6 +1203,125 @@
     }
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.product-card,.public-banner{transition:none!important}}
   </style>
+
+  <style id="delivery-reference-ui-v1">
+    :root{
+      --primary:#ef252f!important;
+      --primary-dark:#d71922!important;
+      --accent:#111111!important;
+      --bg:#f5f5f5!important;
+      --card:#ffffff!important;
+      --text:#111111!important;
+      --muted:#737373!important;
+      --line:#ececec!important;
+      --success:#16a34a!important;
+      --danger:#dc2626!important;
+      --radius:24px!important;
+      --delivery-width:760px;
+    }
+    html{background:#f1f1f1!important;scroll-behavior:smooth}
+    body{background:#f1f1f1!important;color:#111!important;overflow-x:hidden}
+    body::before{content:"";position:fixed;inset:0;background:#f1f1f1;z-index:-2}
+    .shell{width:min(var(--delivery-width),100%)!important;margin:0 auto!important;padding:0 0 122px!important;background:#fff!important;min-height:100vh;box-shadow:0 0 50px rgba(0,0,0,.07)}
+    .loading-screen{background:#fff!important}
+
+    /* CAPA */
+    .hero{height:310px!important;min-height:310px!important;border-radius:0!important;box-shadow:none!important;background:#111!important;overflow:hidden!important}
+    .hero-cover{object-fit:cover!important;object-position:center!important}
+    .hero-shade{background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.02) 42%,rgba(0,0,0,.08))!important}
+    .hero-content{min-height:310px!important;height:310px!important;padding:0!important;display:block!important}
+    .hero-actions{position:absolute;z-index:5;top:max(18px,env(safe-area-inset-top));left:18px;right:18px;display:flex;justify-content:space-between;align-items:center}
+    .hero-actions-right{display:flex;gap:10px}
+    .hero-circle-btn{width:52px;height:52px;border-radius:50%;border:0;background:#fff;color:#111;display:grid;place-items:center;font-size:24px;box-shadow:0 8px 25px rgba(0,0,0,.16)}
+    .hero-circle-btn.is-favorite{color:#ef252f}
+
+    /* CARD DA LOJA SOBRE A CAPA */
+    .store-info-grid{display:block!important;position:relative;z-index:8;margin:-26px 0 0!important;padding:27px 30px 24px!important;border-radius:26px 26px 0 0!important;background:#fff!important;box-shadow:none!important}
+    .store-main-line{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+    .store-main-line h1{margin:0;font-size:30px;line-height:1.08;letter-spacing:-.04em;font-weight:800}
+    .verified-dot{display:inline-grid;place-items:center;width:17px;height:17px;margin-left:5px;border-radius:50%;background:#ef252f;color:#fff;font-size:10px;vertical-align:5px}
+    .store-description{margin:8px 0 0;color:#737373;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .store-status-pill{padding:7px 10px;border-radius:999px;background:#ecfdf5;color:#15803d;font-size:10px;font-weight:800;white-space:nowrap}
+    .store-status-pill.closed{background:#fef2f2;color:#b91c1c}
+    .store-metrics{display:grid;grid-template-columns:repeat(4,1fr);margin-top:23px;border-top:0}
+    .metric{min-width:0;text-align:center;padding:0 11px;border-right:1px solid #ededed;cursor:pointer}
+    .metric:first-child{text-align:left;padding-left:0}.metric:last-child{border-right:0;padding-right:0}
+    .metric-top{display:flex;align-items:center;justify-content:center;gap:7px;font-size:14px;font-weight:800;white-space:nowrap}
+    .metric:first-child .metric-top{justify-content:flex-start}
+    .metric-top i{font-size:20px;color:#8b8b8b}.metric.rating .metric-top i{color:#f59e0b}
+    .metric small{display:block;margin-top:7px;color:#808080;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .metric.more .metric-top i{color:#111}
+
+    /* PROMOÇÃO */
+    .public-stories{display:none!important}
+    .public-banners{margin:0!important;padding:0 30px 18px!important;overflow:visible!important}
+    .promo-coupon{width:100%;min-height:86px;border:0;border-radius:18px;background:linear-gradient(90deg,#fff1e6,#fff7ef);padding:14px 18px;display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:14px;text-align:left;color:#111}
+    .promo-coupon-icon{width:46px;height:46px;border-radius:15px;background:#ef252f;color:#fff;display:grid;place-items:center;font-size:24px}
+    .promo-coupon b{display:block;font-size:14px}.promo-coupon b strong{color:#ef252f;font-size:17px}.promo-coupon small{display:block;margin-top:5px;color:#737373;font-size:11px}.promo-coupon small em{color:#ef252f;font-style:normal;font-weight:700}
+    .promo-coupon>i{font-size:24px;color:#333}
+
+    .notice{margin:0 30px 16px!important;border-radius:15px!important}
+
+    /* BUSCA + CATEGORIAS */
+    .sticky-tools{position:sticky!important;top:0!important;z-index:40!important;padding:0 30px 8px!important;background:rgba(255,255,255,.96)!important;backdrop-filter:blur(14px)!important}
+    .toolbar{display:grid!important;grid-template-columns:1fr auto!important;gap:8px!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:transparent!important}
+    .search-box{height:57px!important;border:1px solid #e5e5e5!important;border-radius:16px!important;padding:0 16px!important;background:#fff!important;box-shadow:none!important}
+    .search-box i{font-size:23px!important;color:#111!important}.search-box input{height:55px!important;font-size:14px!important;color:#111!important}
+    .search-box input::placeholder{color:#a0a0a0}
+    .toolbar-btn{width:57px!important;height:57px!important;min-height:57px!important;padding:0!important;border-radius:16px!important;display:grid!important;place-items:center!important;border:1px solid #e5e5e5!important;background:#fff!important;color:#111!important;font-size:0!important}
+    .toolbar-btn i{font-size:22px!important}.toolbar-btn span{display:none!important}
+    .category-row{gap:9px!important;padding:14px 0 8px!important;overflow-x:auto!important;scrollbar-width:none}
+    .chip{height:45px!important;padding:0 17px!important;border:1px solid #e7e7e7!important;border-radius:999px!important;background:#fff!important;color:#171717!important;font-size:12px!important;font-weight:600!important;display:flex!important;align-items:center!important;gap:6px!important}
+    .chip i{margin:0!important}.chip.active{background:#111!important;color:#fff!important;border-color:#111!important}
+
+    /* SEÇÕES E PRODUTOS */
+    .menu-content{padding:0 0 5px}.menu-search-head{padding:0 30px}.section-head{margin:19px 0 12px!important;align-items:center!important}.section-head h2{font-size:21px!important;letter-spacing:-.025em!important}.section-head p{display:none!important}
+    .delivery-sections{display:block!important}
+    .delivery-section{padding:0 0 7px;margin:0 0 5px}
+    .delivery-section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 30px;margin:16px 0 12px}
+    .delivery-section-head h2{margin:0;font-size:21px;letter-spacing:-.03em}.delivery-section-head button{border:0;background:transparent;color:#ef252f;font-size:12px;font-weight:600;padding:4px 0}
+    .product-rail{display:flex;gap:13px;overflow-x:auto;padding:0 30px 17px;scroll-snap-type:x proximity;scrollbar-width:none}.product-rail::-webkit-scrollbar{display:none}
+    .product-card,.product-card.compact{flex:0 0 226px!important;width:226px!important;display:flex!important;flex-direction:column!important;min-height:0!important;border:0!important;border-radius:0!important;overflow:visible!important;box-shadow:none!important;background:#fff!important;scroll-snap-align:start;transition:none!important}
+    .product-card:hover{transform:none!important;box-shadow:none!important}
+    .product-image,.product-card.compact .product-image{width:100%!important;height:168px!important;min-height:168px!important;aspect-ratio:auto!important;border-radius:16px!important;overflow:hidden!important;background:#f1f1f1!important}
+    .product-image img{width:100%;height:100%;object-fit:cover}.featured-badge,.soldout-badge{left:10px!important;top:10px!important;padding:6px 9px!important;border-radius:999px!important;font-size:9px!important;font-weight:800!important}.featured-badge{background:#ef252f!important;color:#fff!important}.soldout-badge{background:#111!important;color:#fff!important}
+    .product-body{padding:11px 0 0!important;display:flex!important;min-height:105px!important}.product-body h3{font-size:15px!important;line-height:1.25!important;min-height:0!important;margin:0!important;font-weight:650!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block!important}
+    .product-description{display:block!important;font-size:11px!important;line-height:1.4!important;margin:5px 0 9px!important;color:#858585!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .product-footer{margin-top:auto!important;align-items:center!important}.price-block strong{font-size:16px!important;color:#111!important;font-weight:800}.price-block small{font-size:9px!important}.technical-price{display:none!important}
+    .add-btn{width:36px!important;height:36px!important;min-width:36px!important;border-radius:10px!important;background:#ef252f!important;color:#fff!important;box-shadow:none!important;font-size:20px!important}.add-btn:disabled{background:#d6d6d6!important}
+    .empty-state{margin:0 30px!important;padding:42px 20px!important;border-radius:18px!important}
+
+    /* RODAPÉ */
+    .restaurant-footer-note{padding:30px 30px 10px!important;font-size:9px!important}
+
+    /* BARRA FIXA DA SACOLA */
+    .floating-cart{left:50%!important;right:auto!important;bottom:max(12px,env(safe-area-inset-bottom))!important;transform:translateX(-50%)!important;width:min(700px,calc(100% - 28px))!important;min-height:82px!important;padding:11px 13px!important;border-radius:19px!important;background:#080808!important;color:#fff!important;display:grid!important;grid-template-columns:58px 1fr minmax(210px,280px)!important;gap:14px!important;align-items:center!important;box-shadow:0 18px 45px rgba(0,0,0,.25)!important}
+    .floating-cart.hidden{display:grid!important}
+    .cart-bag-icon{position:relative;width:52px;height:52px;border-radius:15px;background:#242424;display:grid;place-items:center;font-size:24px}.cart-count{position:absolute!important;right:-5px!important;top:-6px!important;min-width:20px!important;height:20px!important;background:#ef252f!important;color:#fff!important;font-size:9px!important;border:2px solid #080808!important}
+    .cart-minimum-wrap{min-width:0;text-align:left}.cart-minimum-wrap small{display:block;color:#d8d8d8;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cart-progress{display:block;height:5px;margin-top:9px;border-radius:999px;background:#333;overflow:hidden}.cart-progress i{display:block;width:0;height:100%;border-radius:inherit;background:#ef252f;transition:width .2s ease}
+    .cart-cta{min-height:56px;border-radius:16px;background:#ef252f;display:flex;align-items:center;justify-content:center;padding:0 18px;font-size:15px;white-space:nowrap}.cart-cta>span:first-child{opacity:.85;margin:0 4px}
+
+    /* MODAIS */
+    .modal-card,.drawer{font-family:Manrope,system-ui,sans-serif}.primary-btn{background:#ef252f!important}.product-modal-copy strong{color:#ef252f!important}
+
+    @media(max-width:650px){
+      .shell{box-shadow:none!important}.hero{height:245px!important;min-height:245px!important}.hero-content{height:245px!important;min-height:245px!important}.hero-circle-btn{width:46px;height:46px;font-size:21px}
+      .store-info-grid{padding:24px 18px 18px!important;margin-top:-23px!important}.store-main-line h1{font-size:25px}.store-description{font-size:12px}.store-status-pill{display:none}
+      .store-metrics{margin-top:20px}.metric{padding:0 7px}.metric-top{font-size:12px;gap:5px}.metric-top i{font-size:18px}.metric small{font-size:9px;margin-top:5px}
+      .public-banners{padding:0 18px 15px!important}.promo-coupon{grid-template-columns:43px 1fr auto;padding:12px;gap:10px;min-height:78px}.promo-coupon-icon{width:42px;height:42px}.promo-coupon b{font-size:12px}.promo-coupon b strong{font-size:14px}.promo-coupon small{font-size:9px}
+      .notice{margin:0 18px 14px!important}.sticky-tools{padding:0 18px 6px!important}.toolbar{grid-template-columns:1fr!important}.toolbar-btn{display:none!important}.search-box{height:53px!important}.search-box input{height:51px!important}.category-row{margin-right:-18px;padding-right:18px!important}
+      .delivery-section-head{padding:0 18px;margin-top:15px}.delivery-section-head h2{font-size:18px}.product-rail{padding:0 18px 15px;gap:11px}.product-card,.product-card.compact{flex-basis:190px!important;width:190px!important}.product-image,.product-card.compact .product-image{height:145px!important;min-height:145px!important}.product-body h3{font-size:14px!important}.product-description{font-size:10px!important}.price-block strong{font-size:15px!important}
+      .menu-search-head{padding:0 18px}.empty-state{margin:0 18px!important}
+      .floating-cart{width:calc(100% - 20px)!important;min-height:72px!important;grid-template-columns:49px 1fr minmax(145px,48%)!important;gap:9px!important;padding:9px!important;border-radius:17px!important}.cart-bag-icon{width:46px;height:46px;border-radius:13px;font-size:21px}.cart-minimum-wrap small{font-size:9px}.cart-progress{margin-top:7px;height:4px}.cart-cta{min-height:50px;border-radius:14px;font-size:12px;padding:0 10px}
+      .restaurant-footer-note{padding-left:18px!important;padding-right:18px!important}
+    }
+    @media(max-width:390px){
+      .store-info-grid{padding-left:14px!important;padding-right:14px!important}.metric{padding:0 4px}.metric-top{font-size:10px}.metric small{font-size:8px}.metric-top i{font-size:16px}
+      .public-banners,.sticky-tools{padding-left:14px!important;padding-right:14px!important}.delivery-section-head{padding-left:14px;padding-right:14px}.product-rail{padding-left:14px;padding-right:14px}.product-card,.product-card.compact{flex-basis:174px!important;width:174px!important}.product-image,.product-card.compact .product-image{height:132px!important;min-height:132px!important}
+      .cart-minimum-wrap{display:none}.floating-cart{grid-template-columns:48px 1fr!important}.cart-cta{font-size:13px}
+    }
+  </style>
+
 </head>
 
 <body>
@@ -1213,38 +1333,37 @@
 
   <main id="app" class="shell hidden">
     <section id="hero" class="hero"></section>
-    <section id="storiesSection" class="public-stories hidden" aria-label="Destaques da loja"></section>
-    <section id="bannersSection" class="public-banners hidden" aria-label="Promoções da loja"></section>
+
     <section id="storeInfo" class="store-info-grid"></section>
-    <div class="restaurant-topline">
-      <span><i class="ri-shield-check-line"></i> Pedido seguro e conferido antes do envio</span>
-      <span><i class="ri-restaurant-line"></i> Cardápio atualizado pela loja</span>
-    </div>
+
+    <section id="storiesSection" class="public-stories hidden" aria-hidden="true"></section>
+    <section id="bannersSection" class="public-banners hidden" aria-label="Promoções da loja"></section>
+
     <div id="closedNotice"></div>
 
     <div class="sticky-tools">
       <div class="toolbar">
         <label class="search-box">
           <i class="ri-search-line"></i>
-          <span class="sr-only">Buscar no cardápio</span>
-          <input id="searchInput" type="search" placeholder="Buscar no cardápio..." autocomplete="off">
+          <span class="sr-only">Buscar itens no cardápio</span>
+          <input id="searchInput" type="search" placeholder="Buscar itens no cardápio" autocomplete="off">
         </label>
-        <button id="infoJumpBtn" class="toolbar-btn" type="button">
-          <i class="ri-information-line"></i> Informações
+        <button id="infoJumpBtn" class="toolbar-btn" type="button" aria-label="Informações da loja">
+          <i class="ri-information-line"></i><span>Ver mais</span>
         </button>
       </div>
       <div id="categoryRow" class="category-row"></div>
     </div>
 
-    <section>
-      <div class="section-head">
+    <section class="menu-content">
+      <div class="section-head menu-search-head hidden" id="searchHead">
         <div>
-          <h2 id="menuTitle">Cardápio</h2>
-          <p id="menuSubtitle">Escolha seus produtos</p>
+          <h2 id="menuTitle">Resultados</h2>
+          <p id="menuSubtitle">Itens encontrados no cardápio</p>
         </div>
         <span id="resultCount" class="muted"></span>
       </div>
-      <div id="productsGrid" class="products-grid"></div>
+      <div id="productsGrid" class="products-grid delivery-sections"></div>
     </section>
 
     <div class="restaurant-footer-note">
@@ -1253,11 +1372,13 @@
     </div>
   </main>
 
-  <button id="cartButton" class="floating-cart hidden" type="button">
-    <i class="ri-shopping-bag-3-line"></i>
-    <span>Ver pedido</span>
-    <span id="cartCount" class="cart-count">0</span>
-    <strong id="cartButtonTotal">R$ 0,00</strong>
+  <button id="cartButton" class="floating-cart hidden" type="button" aria-label="Abrir sacola">
+    <span class="cart-bag-icon"><i class="ri-shopping-bag-3-line"></i><b id="cartCount" class="cart-count">0</b></span>
+    <span class="cart-minimum-wrap">
+      <small id="cartMinimumText">Pedido mínimo</small>
+      <span class="cart-progress"><i id="cartProgressBar"></i></span>
+    </span>
+    <strong class="cart-cta">Ver sacola <span>•</span> <span id="cartButtonTotal">R$ 0,00</span></strong>
   </button>
 
   <div id="cartOverlay" class="overlay hidden" aria-hidden="true">
@@ -2890,6 +3011,187 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
           event.preventDefault();
         }
       });
+    }
+
+
+    /* =========================================================
+       DELIVERY UI • ESTRUTURA FIXA INSPIRADA NA REFERÊNCIA
+       O visual abaixo independe das configurações do editor.
+    ========================================================= */
+    function deliveryRating(){
+      const d = state.delivery || {};
+      const raw = d.rating ?? d.average_rating ?? d.google_rating ?? d.review_rating;
+      const n = Number(raw);
+      return Number.isFinite(n) && n > 0 ? n.toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1}) : "—";
+    }
+
+    function deliveryFeeLabel(){
+      const d = state.delivery || {};
+      if (!d.delivery_enabled) return "Indisponível";
+      const fees = state.zones.map(z => numberValue(z.fee)).filter(v => v >= 0);
+      const fee = fees.length ? Math.min(...fees) : numberValue(d.default_delivery_fee);
+      return fee > 0 ? money(fee) : "Grátis";
+    }
+
+    function deliveryDescriptionLine(){
+      const d = state.delivery || {};
+      return d.business_type || d.description || "Cardápio, entrega e retirada";
+    }
+
+    renderHero = function(){
+      const d = state.delivery;
+      const cover = d.cover_url || state.items.map(item => itemMediaList(item).find(m => m.type === "image")?.url).find(Boolean);
+      $("hero").innerHTML = `
+        ${cover ? `<img class="hero-cover" src="${esc(cover)}" alt="Capa de ${esc(d.name || "Delivery")}">` : ""}
+        <div class="hero-shade"></div>
+        <div class="hero-content">
+          <div class="hero-actions">
+            <button id="deliveryBackBtn" class="hero-circle-btn" type="button" aria-label="Voltar"><i class="ri-arrow-left-s-line"></i></button>
+            <div class="hero-actions-right">
+              <button id="deliveryShareBtn" class="hero-circle-btn" type="button" aria-label="Compartilhar"><i class="ri-share-line"></i></button>
+              <button id="deliveryFavoriteBtn" class="hero-circle-btn" type="button" aria-label="Favoritar"><i class="ri-heart-3-line"></i></button>
+            </div>
+          </div>
+        </div>`;
+
+      $("deliveryBackBtn")?.addEventListener("click",()=> history.length > 1 ? history.back() : (location.href="/"));
+      $("deliveryShareBtn")?.addEventListener("click",async()=>{
+        try{
+          if (navigator.share) await navigator.share({title:d.name || "Delivery",text:deliveryDescriptionLine(),url:location.href});
+          else { await navigator.clipboard.writeText(location.href); toast("Link copiado para compartilhar.","success"); }
+        }catch(error){ if (error?.name !== "AbortError") toast("Não foi possível compartilhar agora.","error"); }
+      });
+      const favKey=`delivery-favorite:${d.id}`;
+      const favBtn=$("deliveryFavoriteBtn");
+      const syncFav=()=>{ const on=localStorage.getItem(favKey)==="1"; favBtn?.classList.toggle("is-favorite",on); if(favBtn) favBtn.innerHTML=`<i class="${on?"ri-heart-3-fill":"ri-heart-3-line"}"></i>`; };
+      syncFav();
+      favBtn?.addEventListener("click",()=>{ localStorage.setItem(favKey,localStorage.getItem(favKey)==="1"?"0":"1"); syncFav(); });
+    }
+
+    renderStoreInfo = function(){
+      const d=state.delivery;
+      const estimate=d.estimated_time || "Consulte";
+      $("storeInfo").innerHTML=`
+        <div class="store-main-line">
+          <div style="min-width:0;flex:1">
+            <h1>${esc(d.name || "Delivery")}<span class="verified-dot"><i class="ri-check-line"></i></span></h1>
+            <p class="store-description">${esc(deliveryDescriptionLine())}</p>
+          </div>
+          <span class="store-status-pill ${state.openInfo.open?"":"closed"}">${state.openInfo.open?"Aberto agora":"Fechado"}</span>
+        </div>
+        <div class="store-metrics">
+          <div class="metric rating" data-open-information="true"><div class="metric-top"><i class="ri-star-fill"></i><b>${deliveryRating()}</b></div><small>Avaliação</small></div>
+          <div class="metric" data-open-information="true"><div class="metric-top"><i class="ri-time-line"></i><b>${esc(estimate)}</b></div><small>Entrega</small></div>
+          <div class="metric" data-open-information="true"><div class="metric-top"><i class="ri-e-bike-2-line"></i><b>${esc(deliveryFeeLabel())}</b></div><small>Taxa de entrega</small></div>
+          <div class="metric more" data-open-information="true"><div class="metric-top"><i class="ri-arrow-right-s-line"></i></div><small>Ver mais</small></div>
+        </div>`;
+    }
+
+    renderPromotions = function(){
+      stopPromoAnimation();
+      const storiesBox=$("storiesSection"), bannersBox=$("bannersSection");
+      storiesBox.innerHTML=""; storiesBox.classList.add("hidden");
+      const row=state.promotions?.[0];
+      if(!row){ bannersBox.innerHTML=""; bannersBox.classList.add("hidden"); return; }
+      bannersBox.classList.remove("hidden");
+      const title=row.title || "Oferta especial";
+      const subtitle=row.subtitle || "Confira os itens participantes";
+      bannersBox.innerHTML=`<button class="promo-coupon" type="button" data-reference-promo="${esc(row.id)}">
+        <span class="promo-coupon-icon"><i class="ri-price-tag-3-line"></i></span>
+        <span><b><strong>${esc(title)}</strong></b><small>${esc(subtitle)} <em>Ver oferta</em></small></span>
+        <i class="ri-arrow-right-s-line"></i>
+      </button>`;
+      bannersBox.querySelector("[data-reference-promo]")?.addEventListener("click",()=>handlePromoAction(row));
+    }
+
+    function visibleCategories(){
+      const ids=new Set(state.items.map(i=>i.category_id).filter(Boolean));
+      return state.categories.filter(c=>ids.has(c.id));
+    }
+
+    renderCategories = function(){
+      const categories=visibleCategories();
+      const featured=state.items.some(i=>i.featured);
+      const active=state.category || (featured?"featured":categories[0]?.id||"all");
+      state.category=active;
+      $("categoryRow").innerHTML=`
+        ${featured?`<button class="chip ${active==="featured"?"active":""}" data-category="featured"><i class="ri-fire-line"></i>Destaques</button>`:""}
+        ${categories.map(category=>`<button class="chip ${active===category.id?"active":""}" data-category="${esc(category.id)}">${category.icon?`<i class="${esc(category.icon)}"></i>`:""}${esc(category.name)}</button>`).join("")}`;
+      $$("#categoryRow [data-category]").forEach(button=>button.addEventListener("click",()=>{
+        state.category=button.dataset.category;
+        $$("#categoryRow .chip").forEach(x=>x.classList.toggle("active",x===button));
+        const target=document.querySelector(`[data-menu-section="${CSS.escape(state.category)}"]`);
+        target?.scrollIntoView({behavior:"smooth",block:"start"});
+      }));
+    }
+
+    function productCardHTML(item,sectionKey){
+      const soldout=isSoldOut(item), blocked=soldout || !state.openInfo?.open;
+      const price=itemPrice(item);
+      const showOldPrice=item.price_source!=="technical_sheet" && numberValue(item.sale_price)>0 && numberValue(item.price)>numberValue(item.sale_price);
+      const media=itemMediaList(item).find(m=>m.type==="image");
+      return `<article class="product-card" data-product-card="${esc(item.id)}">
+        <div class="product-image" data-open-product="${esc(item.id)}">
+          ${media?`<img src="${esc(media.url)}" alt="${esc(item.name)}" loading="lazy">`:`<i class="ri-restaurant-2-line"></i>`}
+          ${soldout?`<span class="soldout-badge">ESGOTADO</span>`:item.featured&&sectionKey==="featured"?`<span class="featured-badge">MAIS PEDIDO</span>`:""}
+        </div>
+        <div class="product-body">
+          <h3 data-open-product="${esc(item.id)}">${esc(item.name)}</h3>
+          <p class="product-description">${esc(item.description || "")}</p>
+          <div class="product-footer">
+            <div class="price-block">${showOldPrice?`<small>${money(item.price)}</small>`:""}<strong>${money(price)}</strong></div>
+            <button class="add-btn" type="button" data-add-item="${esc(item.id)}" ${blocked?"disabled":""} aria-label="Adicionar ${esc(item.name)}"><i class="${soldout?"ri-forbid-line":!state.openInfo?.open?"ri-lock-2-line":"ri-add-line"}"></i></button>
+          </div>
+        </div>
+      </article>`;
+    }
+
+    renderProducts = function(){
+      const query=state.search.trim().toLowerCase();
+      const grid=$("productsGrid");
+      const searchHead=$("searchHead");
+      if(query){
+        const items=state.items.filter(item=>`${item.name||""} ${item.description||""} ${item.sku||""}`.toLowerCase().includes(query));
+        searchHead?.classList.remove("hidden");
+        $("resultCount").textContent=`${items.length} item(ns)`;
+        grid.innerHTML=`<section class="delivery-section" data-menu-section="search"><div class="product-rail">${items.map(i=>productCardHTML(i,"search")).join("")}</div></section>` || "";
+        if(!items.length) grid.innerHTML=`<div class="empty-state"><i class="ri-search-eye-line"></i><h3>Nenhum item encontrado</h3><p>Tente outro nome ou termo.</p></div>`;
+      }else{
+        searchHead?.classList.add("hidden");
+        const sections=[];
+        const featured=state.items.filter(i=>i.featured);
+        if(featured.length) sections.push({key:"featured",name:"Destaques da casa",items:featured});
+        for(const category of visibleCategories()){
+          const items=state.items.filter(i=>i.category_id===category.id);
+          if(items.length) sections.push({key:category.id,name:category.name,items});
+        }
+        if(!sections.length && state.items.length) sections.push({key:"all",name:"Cardápio",items:state.items});
+        grid.innerHTML=sections.map(section=>`<section class="delivery-section" data-menu-section="${esc(section.key)}">
+          <div class="delivery-section-head"><h2>${esc(section.name)}</h2>${section.items.length>3?`<button type="button" data-scroll-rail="${esc(section.key)}">Ver todos</button>`:""}</div>
+          <div class="product-rail" data-product-rail="${esc(section.key)}">${section.items.map(item=>productCardHTML(item,section.key)).join("")}</div>
+        </section>`).join("") || `<div class="empty-state"><i class="ri-restaurant-2-line"></i><h3>Cardápio indisponível</h3><p>Nenhum produto publicado no momento.</p></div>`;
+      }
+      $$("[data-add-item]",grid).forEach(button=>button.addEventListener("click",event=>{event.stopPropagation();openProductModal(button.dataset.addItem)}));
+      $$("[data-open-product]",grid).forEach(el=>el.addEventListener("click",()=>openProductModal(el.dataset.openProduct)));
+      $$('[data-scroll-rail]',grid).forEach(button=>button.addEventListener("click",()=>{
+        const rail=grid.querySelector(`[data-product-rail="${CSS.escape(button.dataset.scrollRail)}"]`);
+        rail?.scrollBy({left:Math.max(rail.clientWidth*.8,320),behavior:"smooth"});
+      }));
+    }
+
+    renderCart = function(){
+      const count=state.cart.reduce((sum,row)=>sum+row.qty,0), subtotal=cartSubtotal();
+      refreshOpenInfo(); const storeOpen=!!state.openInfo.open;
+      $("cartCount").textContent=count; $("cartButtonTotal").textContent=money(subtotal); $("cartButton").classList.remove("hidden");
+      const minimum=Math.max(0,numberValue(state.delivery.minimum_order));
+      const progress=minimum>0?Math.min(100,(subtotal/minimum)*100):(count?100:0);
+      if($("cartMinimumText")) $("cartMinimumText").textContent=minimum>0?`Pedido mínimo ${money(minimum)}`:(count?`${count} item(ns) na sacola`:"Sacola vazia");
+      if($("cartProgressBar")) $("cartProgressBar").style.width=`${progress}%`;
+      $("cartItems").innerHTML=state.cart.map((row,index)=>`<article class="cart-item"><div><h4>${row.qty}x ${esc(row.item.name)}</h4>${row.addons.length?`<small>${esc(row.addons.map(a=>a.name).join(", "))}</small>`:""}${row.note?`<small>Obs.: ${esc(row.note)}</small>`:""}</div><div class="cart-item-price">${money(cartLineUnit(row)*row.qty)}</div><div class="cart-item-actions"><div class="qty-control"><button type="button" data-cart-minus="${index}"><i class="ri-subtract-line"></i></button><strong>${row.qty}</strong><button type="button" data-cart-plus="${index}" ${storeOpen?"":"disabled"}><i class="${storeOpen?"ri-add-line":"ri-lock-2-line"}"></i></button></div><button class="remove-link" type="button" data-cart-remove="${index}">Remover</button></div></article>`).join("") || `<div class="empty-state" style="padding:38px 15px"><i class="ri-shopping-bag-3-line"></i><h3>Sua sacola está vazia</h3><p>Adicione produtos do cardápio para continuar.</p></div>`;
+      $$("[data-cart-minus]").forEach(button=>button.addEventListener("click",()=>{const i=Number(button.dataset.cartMinus),row=state.cart[i];if(!row)return;row.qty--;if(row.qty<=0)state.cart.splice(i,1);renderCart()}));
+      $$("[data-cart-plus]").forEach(button=>button.addEventListener("click",()=>{if(!guardStoreOpen(true)){renderCart();return}const row=state.cart[Number(button.dataset.cartPlus)];if(!row)return;row.qty++;renderCart()}));
+      $$("[data-cart-remove]").forEach(button=>button.addEventListener("click",()=>{state.cart.splice(Number(button.dataset.cartRemove),1);renderCart()}));
+      updateCheckoutVisibility(); renderOrderSummary();
     }
 
     function bindEvents(){
