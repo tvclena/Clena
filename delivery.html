@@ -2234,6 +2234,148 @@ cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
       state.promoAnimation = requestAnimationFrame(frame);
     }
 
+
+    function normalizeMediaEntry(entry){
+      if (!entry) return null;
+
+      if (typeof entry === "string"){
+        const url = entry.trim();
+        if (!url) return null;
+        return {
+          url,
+          type:/\.(mp4|webm|mov)(\?|$)/i.test(url) ? "video" : "image",
+          poster:null
+        };
+      }
+
+      if (typeof entry !== "object") return null;
+
+      const url =
+        entry.url ||
+        entry.media_url ||
+        entry.src ||
+        entry.image_url ||
+        entry.video_url ||
+        "";
+
+      if (!url) return null;
+
+      const detectedType =
+        entry.type ||
+        entry.media_type ||
+        (/\.(mp4|webm|mov)(\?|$)/i.test(url) ? "video" : "image");
+
+      return {
+        url:String(url),
+        type:String(detectedType).toLowerCase() === "video" ? "video" : "image",
+        poster:entry.poster || entry.poster_url || null
+      };
+    }
+
+    function itemMediaList(item){
+      const raw = [];
+
+      if (item?.image_url){
+        raw.push({url:item.image_url,type:"image"});
+      }
+
+      if (item?.video_url){
+        raw.push({url:item.video_url,type:"video",poster:item.poster_url || null});
+      }
+
+      [
+        "media",
+        "media_urls",
+        "gallery",
+        "gallery_urls",
+        "image_urls",
+        "images",
+        "additional_media",
+        "media_gallery"
+      ].forEach(key => {
+        let value = item?.[key];
+        if (!value) return;
+
+        if (typeof value === "string"){
+          const trimmed = value.trim();
+          if (!trimmed) return;
+
+          try{
+            value = JSON.parse(trimmed);
+          }catch{
+            value = trimmed
+              .split(",")
+              .map(v => v.trim())
+              .filter(Boolean);
+          }
+        }
+
+        if (Array.isArray(value)){
+          raw.push(...value);
+        }else if (value && typeof value === "object"){
+          raw.push(value);
+        }
+      });
+
+      const seen = new Set();
+      const result = [];
+
+      raw
+        .map(normalizeMediaEntry)
+        .filter(Boolean)
+        .forEach(entry => {
+          if (!seen.has(entry.url) && result.length < 8){
+            seen.add(entry.url);
+            result.push(entry);
+          }
+        });
+
+      return result;
+    }
+
+    function galleryMainHTML(media,item){
+      if (!media){
+        return `<div class="product-gallery-empty"><i class="ri-restaurant-2-line"></i></div>`;
+      }
+
+      if (media.type === "video"){
+        return `
+          <video
+            src="${esc(media.url)}"
+            ${media.poster ? `poster="${esc(media.poster)}"` : ""}
+            controls
+            playsinline
+            preload="metadata"
+          ></video>
+        `;
+      }
+
+      return `<img src="${esc(media.url)}" alt="${esc(item?.name || "Produto")}">`;
+    }
+
+    function bindProductGallery(item){
+      const medias = itemMediaList(item);
+      if (medias.length < 2) return;
+
+      const body = $("productModalBody");
+      const main = body?.querySelector("[data-product-gallery-main]");
+      if (!body || !main) return;
+
+      $$("[data-product-media-index]",body).forEach(btn => {
+        btn.addEventListener("click",() => {
+          const index = Number(btn.dataset.productMediaIndex) || 0;
+          const media = medias[index];
+          if (!media) return;
+
+          main.innerHTML = galleryMainHTML(media,item);
+
+          $$("[data-product-media-index]",body).forEach(x => {
+            x.classList.toggle("active",x === btn);
+          });
+        });
+      });
+    }
+
     function applyTheme(){
       const d = state.delivery;
       const primary = d.primary_color || "#f97316";
@@ -2745,7 +2887,7 @@ function syncStoreAvailability(showTransitionToast=false){
           numberValue(item.sale_price) > 0 &&
           numberValue(item.price) > numberValue(item.sale_price);
 
-        const cardMedia = itemMediaList(item).find(media => media.type === "image");
+        const cardMedia = (itemMediaList(item) || []).find(media => media && media.type === "image" && media.url);
         return `
           <article class="product-card ${layout === "compact" ? "compact" : ""}">
             <div class="product-image">
@@ -3706,7 +3848,7 @@ function syncStoreAvailability(showTransitionToast=false){
 
     renderHero = function(){
       const d = state.delivery;
-      const cover = d.cover_url || state.items.map(item => itemMediaList(item).find(m => m.type === "image")?.url).find(Boolean);
+      const cover = d.cover_url || state.items.map(item => (itemMediaList(item) || []).find(m => m && m.type === "image" && m.url)?.url).find(Boolean);
       $("hero").innerHTML = `
         ${cover ? `<img class="hero-cover" src="${esc(cover)}" alt="Capa de ${esc(d.name || "Delivery")}">` : ""}
         <div class="hero-shade"></div>
@@ -3817,7 +3959,7 @@ function syncStoreAvailability(showTransitionToast=false){
       const soldout=isSoldOut(item), blocked=soldout || !state.openInfo?.open;
       const price=itemPrice(item);
       const showOldPrice=item.price_source!=="technical_sheet" && numberValue(item.sale_price)>0 && numberValue(item.price)>numberValue(item.sale_price);
-      const media=itemMediaList(item).find(m=>m.type==="image");
+      const media=(itemMediaList(item) || []).find(m=>m && m.type==="image" && m.url);
       return `<article class="product-card" data-product-card="${esc(item.id)}">
         <div class="product-image" data-open-product="${esc(item.id)}">
           ${media?`<img src="${esc(media.url)}" alt="${esc(item.name)}" loading="lazy">`:`<i class="ri-restaurant-2-line"></i>`}
