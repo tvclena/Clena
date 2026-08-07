@@ -3429,20 +3429,18 @@ function syncStoreAvailability(showTransitionToast=false){
       const count = state.cart.reduce((sum,row) => sum + row.qty,0);
       const subtotal = cartSubtotal();
 
-      refreshOpenInfo();
-      const storeOpen = !!state.openInfo.open;
+refreshOpenInfo();
 
-      $("cartCount").textContent = count;
-      $("cartButtonTotal").textContent = money(subtotal);
-
+const storeOpen = !!state.openInfo.open;
 const visualAllowsCart = state.visual?.showCart !== false;
-const storeOpen = !!state.openInfo?.open;
+
+$("cartCount").textContent = count;
+$("cartButtonTotal").textContent = money(subtotal);
 
 $("cartButton").classList.toggle(
   "hidden",
   !visualAllowsCart || count <= 0 || !storeOpen
 );
-
 
 
       $("cartItems").innerHTML = state.cart.map((row,index) => `
