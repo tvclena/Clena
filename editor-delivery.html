@@ -1,5 +1,6 @@
 
 
+
 <!-- CLENA: HTML COMPLETO COM CSS E JAVASCRIPT INCORPORADOS -->
 <!doctype html>
 <html lang="pt-BR">
@@ -431,6 +432,69 @@ body{background:linear-gradient(180deg,#f8fafc 0,#f1f5f9 100%);min-height:100vh}
 .clena-full-stories{max-width:1200px;margin:14px auto 0;padding:0 28px}.clena-full-stories-track{display:flex;gap:14px;overflow-x:auto;padding:2px 2px 7px;scrollbar-width:none}.clena-full-stories-track::-webkit-scrollbar{display:none}.clena-full-story{flex:0 0 78px;text-align:center;cursor:pointer}.clena-full-story-media{width:74px;height:74px;border-radius:50%;padding:3px;background:linear-gradient(135deg,var(--preview-primary,var(--primary)),var(--accent,#111827));margin:auto}.clena-full-story-media>span{display:block;width:100%;height:100%;border:3px solid #fff;border-radius:50%;overflow:hidden;background:#f1f5f9}.clena-full-story-media img,.clena-full-story-media video{width:100%;height:100%;object-fit:cover}.clena-full-story small{display:block;font-size:9px;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#475569}
 .clena-full-promos{max-width:1200px;margin:12px auto 0;padding:0 28px}.clena-full-promos-track{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(310px,1fr);gap:12px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none}.clena-full-promos-track::-webkit-scrollbar{display:none}.clena-full-promo{height:260px;border-radius:18px;overflow:hidden;position:relative;background:#f1f5f9;cursor:pointer;box-shadow:0 12px 28px rgba(15,23,42,.12);scroll-snap-align:start}.clena-full-promo img,.clena-full-promo video{width:100%;height:100%;object-fit:cover}.clena-full-promo:after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,rgba(2,6,23,.78))}.clena-full-promo-copy{position:absolute;z-index:2;left:14px;right:14px;bottom:14px;color:#fff}.clena-full-promo-copy b,.clena-full-promo-copy small{display:block}.clena-full-promo-copy small{font-size:9px;color:rgba(255,255,255,.8);margin-top:3px}.clena-promo-dots{display:flex;justify-content:center;gap:5px;margin-top:9px}.clena-promo-dots i{width:6px;height:6px;border-radius:50%;background:#cbd5e1}.clena-promo-dots i.active{width:18px;border-radius:999px;background:var(--preview-primary,var(--primary))}
 @media(max-width:1100px){.promo-settings-grid{grid-template-columns:1fr 1fr}.promo-row{grid-template-columns:74px 1fr auto}.promo-row>:nth-child(3),.promo-row>:nth-child(4){display:none}}@media(max-width:700px){.promo-studio-head{display:grid}.promo-settings-grid,.promo-switch-row,.promo-editor-grid{grid-template-columns:1fr}.promo-row{grid-template-columns:65px 1fr}.promo-actions{grid-column:1/-1;justify-content:flex-end}.promo-media-preview{height:230px}.clena-full-promos{padding:0 14px}.clena-full-promos-track{grid-auto-columns:78%}.clena-full-promo{height:220px}}
+</style>
+
+
+<style id="clenaProfessionalFinalLayerStyles">
+/* =====================================================================
+   CLENA • PROFESSIONAL FINAL LAYER 2026
+   Camada final não destrutiva: preserva módulos legados e normaliza UX.
+   ===================================================================== */
+:root{
+  --pro-focus:0 0 0 4px color-mix(in srgb,var(--primary) 17%,transparent);
+  --pro-control-h:44px;
+  --pro-cover-height:260px;
+  --pro-logo-size:88px;
+  --pro-store-max:1200px;
+  --pro-product-cols:4;
+  --pro-card-gap:15px;
+  --pro-banner-radius:18px;
+  --pro-banner-gap:14px;
+  --pro-banner-height:260px;
+}
+html{scroll-behavior:smooth}
+body{font-feature-settings:"kern" 1,"liga" 1;text-rendering:optimizeLegibility}
+button,input,select,textarea{min-width:0}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:0;box-shadow:var(--pro-focus)!important;border-color:var(--primary)!important}
+button:disabled{opacity:.55;cursor:not-allowed;transform:none!important}
+.editor-sidebar{contain:layout paint style}.workspace{width:100%}
+.editor-section.active{animation:proSectionIn .2s ease both}@keyframes proSectionIn{from{opacity:.65;transform:translateY(4px)}to{opacity:1;transform:none}}
+.panel-card{isolation:isolate}.panel-card:hover{transform:none}
+.card-head h3,.section-toolbar h2{letter-spacing:-.025em}
+.field>span{display:flex;align-items:center;gap:6px}.field .pro-help{font-size:14px;color:#94a3b8;cursor:help}
+.pro-final-card{margin-top:18px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,#fff,#fbfdff);overflow:hidden}
+.pro-final-head{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:17px 18px;border-bottom:1px solid var(--line)}
+.pro-final-head>div{min-width:0}.pro-final-head small{display:block;color:#94a3b8;font-size:9px;font-weight:800;letter-spacing:.15em}.pro-final-head h4{margin:4px 0 2px;font-size:16px}.pro-final-head p{margin:0;color:var(--muted);font-size:10px;line-height:1.45}
+.pro-final-body{padding:18px}.pro-control-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.pro-control-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.pro-range-field{border:1px solid #e9eef5;border-radius:14px;padding:12px;background:#fff}.pro-range-field>span{display:flex;justify-content:space-between;gap:10px;font-size:11px;font-weight:800}.pro-range-field output{color:var(--primary);font-variant-numeric:tabular-nums}.pro-range-field input[type=range]{width:100%;margin:10px 0 0;accent-color:var(--primary)}
+.pro-select-field{display:block}.pro-select-field>span{display:block;font-size:11px;font-weight:800;margin-bottom:6px}.pro-select-field select{width:100%;height:var(--pro-control-h);border:1px solid var(--line);border-radius:12px;background:#fff;padding:0 11px}
+.pro-checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}.pro-check{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:13px;padding:11px;background:#fff}.pro-check input{accent-color:var(--primary)}.pro-check div{min-width:0}.pro-check b,.pro-check small{display:block}.pro-check b{font-size:11px}.pro-check small{font-size:9px;color:var(--muted);margin-top:2px}
+.pro-tip{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border-radius:13px;background:#eff6ff;color:#1e3a8a;margin-top:12px}.pro-tip i{font-size:18px}.pro-tip b,.pro-tip small{display:block}.pro-tip b{font-size:10px}.pro-tip small{font-size:9px;color:#475569;margin-top:2px;line-height:1.45}
+.pro-actions-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.pro-actions-row button{flex:1;min-width:150px}
+.pro-save-banner{position:fixed;left:50%;bottom:18px;z-index:450;transform:translate(-50%,20px);opacity:0;pointer-events:none;display:flex;align-items:center;gap:10px;background:#0f172a;color:#fff;border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:10px 14px;box-shadow:0 18px 45px rgba(2,6,23,.32);transition:.22s}.pro-save-banner.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}.pro-save-banner i{color:#f59e0b}.pro-save-banner button{border:0;background:#fff;color:#0f172a;padding:7px 11px;border-radius:999px;font-size:10px;font-weight:800}
+.pro-command{position:fixed;inset:0;z-index:700;display:none;place-items:start center;padding-top:min(16vh,140px);background:rgba(2,6,23,.55);backdrop-filter:blur(6px)}.pro-command.open{display:grid}.pro-command-box{width:min(92vw,650px);border-radius:20px;background:#fff;box-shadow:0 35px 100px rgba(2,6,23,.4);overflow:hidden}.pro-command-search{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}.pro-command-search input{flex:1;border:0;outline:0;font-size:15px}.pro-command-list{max-height:390px;overflow:auto;padding:8px}.pro-command-item{width:100%;border:0;background:#fff;border-radius:12px;padding:11px;display:flex;align-items:center;gap:11px;text-align:left}.pro-command-item:hover,.pro-command-item.active{background:#fff7ed}.pro-command-item>i{width:35px;height:35px;border-radius:10px;background:#fff7ed;color:#ea580c;display:grid;place-items:center}.pro-command-item b,.pro-command-item small{display:block}.pro-command-item small{color:var(--muted);font-size:9px;margin-top:2px}.pro-command-kbd{margin-left:auto;font-size:9px;border:1px solid var(--line);border-radius:6px;padding:3px 6px;color:#64748b}
+/* Aparência real: dimensões configuráveis */
+#phonePreview .phone-cover{height:clamp(90px,calc(var(--pro-cover-height) * .48),190px)!important;background-position:var(--pro-cover-position,center)!important;background-size:var(--pro-cover-fit,cover)!important;background-repeat:no-repeat!important}
+#fullDeliveryPreview .fdp-hero{height:var(--pro-cover-height)!important;background-position:var(--pro-cover-position,center)!important;background-size:var(--pro-cover-fit,cover)!important;background-repeat:no-repeat!important}
+#fullDeliveryPreview .fdp-hero-content,#fullDeliveryPreview .fdp-main,#fullDeliveryPreview .fdp-info,.clena-full-stories,.clena-full-promos{max-width:var(--pro-store-max)!important}
+#fullDeliveryPreview .fdp-logo{width:var(--pro-logo-size)!important;height:var(--pro-logo-size)!important;flex:0 0 var(--pro-logo-size)!important;border-radius:var(--pro-logo-radius,25px)!important}
+#previewLogo{width:clamp(38px,calc(var(--pro-logo-size) * .52),72px)!important;height:clamp(38px,calc(var(--pro-logo-size) * .52),72px)!important;border-radius:var(--pro-logo-radius-phone,14px)!important}
+#fullDeliveryPreview .fdp-products:not(.compact){grid-template-columns:repeat(var(--pro-product-cols),minmax(0,1fr))!important;gap:var(--pro-card-gap)!important}
+/* Banner profissional contínuo */
+.clena-full-promos{overflow:hidden}.clena-full-promos-track.pro-infinite-loop{display:flex!important;grid-auto-flow:unset!important;grid-auto-columns:unset!important;gap:var(--pro-banner-gap)!important;overflow:hidden!important;scroll-snap-type:none!important;width:max-content!important;max-width:none!important;will-change:transform;animation:proBannerLoop var(--pro-loop-duration,34s) linear infinite!important;transform:translate3d(0,0,0)}
+.clena-full-promos-track.pro-infinite-loop:hover{animation-play-state:var(--pro-loop-hover,paused)!important}
+.clena-full-promos-track.pro-infinite-loop .clena-full-promo{flex:0 0 var(--pro-banner-width,360px)!important;width:var(--pro-banner-width,360px)!important;height:var(--pro-banner-height)!important;border-radius:var(--pro-banner-radius)!important;transition:transform .28s ease,filter .28s ease,opacity .28s ease;transform:scale(.94);opacity:.82;filter:saturate(.9)}
+.clena-full-promos-track.pro-infinite-loop .clena-full-promo.is-center{transform:scale(1);opacity:1;filter:none;z-index:3;box-shadow:0 18px 44px rgba(15,23,42,.18)}
+@keyframes proBannerLoop{to{transform:translate3d(calc(-1 * var(--pro-loop-distance,1000px)),0,0)}}
+.clena-promo-dots.pro-loop-dots{display:none!important}
+#phonePreview .clena-preview-banner{aspect-ratio:var(--pro-phone-banner-ratio,16/7)!important;border-radius:calc(var(--pro-banner-radius) * .65)!important}
+/* Melhorias de tabela e modal */
+.table-wrap{overscroll-behavior:contain}.modal-shell.open{padding:14px}.modal-card{border:1px solid rgba(255,255,255,.8);box-shadow:0 35px 110px rgba(2,6,23,.32)}.modal-body{overscroll-behavior:contain}.modal-card header{background:linear-gradient(180deg,#fff,#fbfdff)}
+th{position:sticky;top:0;z-index:2}.filters-row{background:#fff;position:sticky;top:0;z-index:3}
+/* Mobile */
+@media(max-width:1100px){:root{--pro-product-cols:3}.pro-control-grid.three{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){:root{--pro-product-cols:1;--pro-banner-height:205px}.pro-control-grid,.pro-control-grid.three,.pro-checks{grid-template-columns:1fr}.pro-final-body{padding:14px}.pro-final-head{padding:14px}.pro-save-banner{width:calc(100vw - 24px);border-radius:16px;justify-content:space-between}.clena-full-promos-track.pro-infinite-loop .clena-full-promo{--pro-banner-width:78vw!important}#fullDeliveryPreview .fdp-products:not(.compact){grid-template-columns:repeat(var(--pro-mobile-cols,1),minmax(0,1fr))!important}.modal-shell.open{padding:0}.modal-card{border-radius:0!important;max-height:100dvh!important}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.clena-full-promos-track.pro-infinite-loop{animation:none!important;overflow-x:auto!important}}
 </style>
 
 </head>
@@ -2645,6 +2709,151 @@ function renderPreviews(){
 }
 function bind(){if(local.bound)return;local.bound=true;$('newPromoBtn').onclick=()=>open();$$('[data-close-promo]').forEach(x=>x.onclick=close);$('choosePromoMediaBtn').onclick=()=>$('promoMediaInput').click();$('removePromoMediaBtn').onclick=()=>{local.pendingFile=null;local.removeMedia=true;previewMedia(null)};$('promoMediaInput').onchange=e=>{const f=e.target.files[0];if(!f)return;if(f.size>25*1024*1024)return toast('A mídia deve ter no máximo 25 MB.','error');if(!f.type.startsWith('image/')&&!f.type.startsWith('video/'))return toast('Use imagem ou vídeo compatível.','error');local.pendingFile=f;previewMedia(URL.createObjectURL(f),f.type.startsWith('video/')?'video':'image')};$('promoActionType').onchange=syncAction;$('promoItemId').onchange=syncAction;$('savePromoBtn').onclick=save;$('promoList').onclick=e=>{const a=e.target.closest('[data-promo-edit]'),b=e.target.closest('[data-promo-delete]'),u=e.target.closest('[data-promo-up]'),d=e.target.closest('[data-promo-down]');if(a)open(a.dataset.promoEdit);if(b)remove(b.dataset.promoDelete);if(u)move(u.dataset.promoUp,-1);if(d)move(d.dataset.promoDown,1)};['promoEnabled','promoDisplayMode','promoTransition','promoVisibleCount','promoAutoplay','promoPauseHover'].forEach(id=>$(id).addEventListener('change',()=>{dirty();saveSettings()}));$('promoAutoplaySeconds').oninput=()=>{$('promoAutoplayValue').textContent=`${$('promoAutoplaySeconds').value} segundos`;renderPreviews()};$('promoAutoplaySeconds').onchange=()=>{dirty();saveSettings()};document.addEventListener('click',e=>{const el=e.target.closest('[data-preview-promo]');if(el){const r=local.rows.find(x=>x.id===el.dataset.previewPromo);if(r)targetClick(r)}});const obs=new MutationObserver(()=>{if($('promoEnabled')?.checked&&!document.querySelector('.clena-preview-stories')&&!document.querySelector('.clena-preview-banners'))setTimeout(renderPreviews,30)});['phonePreview','fullDeliveryPreview'].forEach(id=>{const el=$(id);if(el)obs.observe(el,{childList:true,subtree:true})});$('saveAllBtn')?.addEventListener('click',()=>setTimeout(saveSettings,50))}
 function wait(){const st=S();if(st?.sb&&st?.delivery&&$('promoList')){bind();syncSettings();load()}else setTimeout(wait,180)}wait();
+})();
+</script>
+
+
+<script id="clenaProfessionalFinalLayerScript">
+(()=>{
+'use strict';
+const $=(id)=>document.getElementById(id), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const KEY='clena_delivery_professional_ui_v1';
+const defaults={coverHeight:260,coverFit:'cover',coverPosition:'center',logoSize:88,logoShape:'rounded',storeMax:1200,desktopCols:4,mobileCols:1,cardGap:15,bannerHeight:260,bannerRadius:18,bannerGap:14,bannerSpeed:34,bannerInfinite:true,bannerCenter:true,bannerPauseHover:false,phoneBannerRatio:'16/7'};
+let cfg={...defaults}, dirty=false, centerTimer=0, loopRAF=0;
+try{cfg={...cfg,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(_){ }
+const saveLocal=()=>{try{localStorage.setItem(KEY,JSON.stringify(cfg))}catch(_){}};
+const n=(v,min,max,fallback)=>{v=Number(v);return Number.isFinite(v)?Math.min(max,Math.max(min,v)):fallback};
+const esc=(s)=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(msg,type='success'){
+ const host=$('toastHost'); if(!host)return;
+ const el=document.createElement('div');el.className=`toast ${type}`;el.textContent=msg;host.append(el);setTimeout(()=>el.remove(),3300);
+}
+function setDirty(value=true){dirty=value;const bar=$('proSaveBanner');bar?.classList.toggle('show',dirty)}
+function getAppearanceHost(){const sec=$('section-appearance');if(!sec)return null;return sec.querySelector('.settings-grid .panel-card:last-child')||sec}
+function selectOptions(value,arr){return arr.map(([v,t])=>`<option value="${esc(v)}" ${String(value)===String(v)?'selected':''}>${esc(t)}</option>`).join('')}
+function injectAppearanceStudio(){
+ if($('proAppearanceStudio'))return;
+ const host=getAppearanceHost(); if(!host)return;
+ const card=document.createElement('section');card.id='proAppearanceStudio';card.className='pro-final-card';
+ card.innerHTML=`
+  <div class="pro-final-head"><div><small>AJUSTE FINO PROFISSIONAL</small><h4>Capa, logo e estrutura da loja</h4><p>Controle dimensões e enquadramento sem alterar o arquivo da imagem.</p></div><i class="ri-layout-masonry-line" style="font-size:24px;color:var(--primary)"></i></div>
+  <div class="pro-final-body">
+   <div class="pro-control-grid three">
+    <label class="pro-range-field"><span>Altura da capa <output id="proCoverHeightOut">${cfg.coverHeight}px</output></span><input id="proCoverHeight" type="range" min="160" max="520" step="5" value="${cfg.coverHeight}"></label>
+    <label class="pro-range-field"><span>Tamanho do logo <output id="proLogoSizeOut">${cfg.logoSize}px</output></span><input id="proLogoSize" type="range" min="52" max="160" step="2" value="${cfg.logoSize}"></label>
+    <label class="pro-range-field"><span>Largura do conteúdo <output id="proStoreMaxOut">${cfg.storeMax}px</output></span><input id="proStoreMax" type="range" min="960" max="1600" step="20" value="${cfg.storeMax}"></label>
+    <label class="pro-select-field"><span>Encaixe da capa</span><select id="proCoverFit">${selectOptions(cfg.coverFit,[['cover','Preencher (recomendado)'],['contain','Mostrar imagem inteira']])}</select></label>
+    <label class="pro-select-field"><span>Posição da capa</span><select id="proCoverPosition">${selectOptions(cfg.coverPosition,[['center','Centro'],['top','Topo'],['bottom','Base'],['left','Esquerda'],['right','Direita']])}</select></label>
+    <label class="pro-select-field"><span>Formato do logo</span><select id="proLogoShape">${selectOptions(cfg.logoShape,[['rounded','Arredondado'],['circle','Circular'],['square','Quadrado suave']])}</select></label>
+    <label class="pro-select-field"><span>Colunas no desktop</span><select id="proDesktopCols">${selectOptions(cfg.desktopCols,[[2,'2 colunas'],[3,'3 colunas'],[4,'4 colunas'],[5,'5 colunas']])}</select></label>
+    <label class="pro-select-field"><span>Colunas no celular</span><select id="proMobileCols">${selectOptions(cfg.mobileCols,[[1,'1 coluna'],[2,'2 colunas']])}</select></label>
+    <label class="pro-range-field"><span>Espaço entre produtos <output id="proCardGapOut">${cfg.cardGap}px</output></span><input id="proCardGap" type="range" min="8" max="30" step="1" value="${cfg.cardGap}"></label>
+   </div>
+   <div class="pro-tip"><i class="ri-information-line"></i><div><b>Prévia fiel</b><small>Estes controles são aplicados simultaneamente à prévia de celular e à prévia completa. A imagem original continua intacta.</small></div></div>
+   <div class="pro-actions-row"><button id="proResetAppearance" class="outline-btn" type="button"><i class="ri-refresh-line"></i>Restaurar dimensões</button><button id="proOpenPreview" class="primary-btn" type="button"><i class="ri-fullscreen-line"></i>Ver prévia completa</button></div>
+  </div>`;
+ host.append(card);
+}
+function injectBannerStudio(){
+ if($('proBannerStudio'))return;
+ const promo=$('.promo-studio .panel-card');if(!promo)return;
+ const card=document.createElement('section');card.id='proBannerStudio';card.className='pro-final-card';
+ card.innerHTML=`<div class="pro-final-head"><div><small>CARROSSEL PREMIUM</small><h4>Banners com movimento contínuo</h4><p>Três banners visíveis no desktop, destaque automático do banner central e loop linear sem parada.</p></div><i class="ri-slideshow-3-line" style="font-size:24px;color:var(--primary)"></i></div>
+ <div class="pro-final-body">
+  <div class="pro-control-grid three">
+   <label class="pro-range-field"><span>Altura dos banners <output id="proBannerHeightOut">${cfg.bannerHeight}px</output></span><input id="proBannerHeight" type="range" min="180" max="420" step="5" value="${cfg.bannerHeight}"></label>
+   <label class="pro-range-field"><span>Velocidade do loop <output id="proBannerSpeedOut">${cfg.bannerSpeed}s</output></span><input id="proBannerSpeed" type="range" min="16" max="70" step="1" value="${cfg.bannerSpeed}"></label>
+   <label class="pro-range-field"><span>Arredondamento <output id="proBannerRadiusOut">${cfg.bannerRadius}px</output></span><input id="proBannerRadius" type="range" min="0" max="34" step="1" value="${cfg.bannerRadius}"></label>
+   <label class="pro-select-field"><span>Proporção no celular</span><select id="proPhoneBannerRatio">${selectOptions(cfg.phoneBannerRatio,[['16/7','Panorâmico 16:7'],['16/9','TV 16:9'],['4/3','Clássico 4:3'],['1/1','Quadrado 1:1']])}</select></label>
+   <label class="pro-range-field"><span>Espaçamento <output id="proBannerGapOut">${cfg.bannerGap}px</output></span><input id="proBannerGap" type="range" min="6" max="30" step="1" value="${cfg.bannerGap}"></label>
+  </div>
+  <div class="pro-checks">
+   <label class="pro-check"><input id="proBannerInfinite" type="checkbox" ${cfg.bannerInfinite?'checked':''}><div><b>Loop contínuo real</b><small>Movimento linear sem “pular” de banner em banner.</small></div></label>
+   <label class="pro-check"><input id="proBannerCenter" type="checkbox" ${cfg.bannerCenter?'checked':''}><div><b>Banner central em destaque</b><small>O card mais próximo do centro recebe destaque.</small></div></label>
+   <label class="pro-check"><input id="proBannerPauseHover" type="checkbox" ${cfg.bannerPauseHover?'checked':''}><div><b>Pausar ao passar o mouse</b><small>Desative para o loop nunca parar no desktop.</small></div></label>
+  </div>
+  <div class="pro-tip"><i class="ri-magic-line"></i><div><b>Ordem correta mantida</b><small>Capa → stories → banners → categorias/produtos. Banners continuam independentes dos stories.</small></div></div>
+ </div>`;
+ promo.append(card);
+}
+function injectGlobalUX(){
+ if(!$('proSaveBanner')){const el=document.createElement('div');el.id='proSaveBanner';el.className='pro-save-banner';el.innerHTML='<i class="ri-error-warning-line"></i><span>Há ajustes locais ainda não confirmados.</span><button id="proConfirmLocal" type="button">Confirmar</button>';document.body.append(el)}
+ if(!$('proCommand')){const el=document.createElement('div');el.id='proCommand';el.className='pro-command';el.innerHTML=`<div class="pro-command-box"><div class="pro-command-search"><i class="ri-search-line"></i><input id="proCommandInput" autocomplete="off" placeholder="Ir para uma seção…"><span class="pro-command-kbd">Esc</span></div><div id="proCommandList" class="pro-command-list"></div></div>`;document.body.append(el)}
+ const previewBtn=$('previewBtn'); if(previewBtn&&!previewBtn.title)previewBtn.title='Abrir prévia completa (Ctrl/⌘ + P)';
+}
+function applyVisuals(){
+ const root=document.documentElement;
+ cfg.coverHeight=n(cfg.coverHeight,160,520,260);cfg.logoSize=n(cfg.logoSize,52,160,88);cfg.storeMax=n(cfg.storeMax,960,1600,1200);cfg.desktopCols=n(cfg.desktopCols,2,5,4);cfg.mobileCols=n(cfg.mobileCols,1,2,1);cfg.cardGap=n(cfg.cardGap,8,30,15);cfg.bannerHeight=n(cfg.bannerHeight,180,420,260);cfg.bannerRadius=n(cfg.bannerRadius,0,34,18);cfg.bannerGap=n(cfg.bannerGap,6,30,14);cfg.bannerSpeed=n(cfg.bannerSpeed,16,70,34);
+ root.style.setProperty('--pro-cover-height',`${cfg.coverHeight}px`);root.style.setProperty('--pro-logo-size',`${cfg.logoSize}px`);root.style.setProperty('--pro-store-max',`${cfg.storeMax}px`);root.style.setProperty('--pro-product-cols',cfg.desktopCols);root.style.setProperty('--pro-mobile-cols',cfg.mobileCols);root.style.setProperty('--pro-card-gap',`${cfg.cardGap}px`);root.style.setProperty('--pro-banner-height',`${cfg.bannerHeight}px`);root.style.setProperty('--pro-banner-radius',`${cfg.bannerRadius}px`);root.style.setProperty('--pro-banner-gap',`${cfg.bannerGap}px`);root.style.setProperty('--pro-loop-duration',`${cfg.bannerSpeed}s`);root.style.setProperty('--pro-loop-hover',cfg.bannerPauseHover?'paused':'running');root.style.setProperty('--pro-cover-fit',cfg.coverFit);root.style.setProperty('--pro-cover-position',cfg.coverPosition);root.style.setProperty('--pro-phone-banner-ratio',cfg.phoneBannerRatio);
+ const radius=cfg.logoShape==='circle'?'50%':cfg.logoShape==='square'?'12px':'25px';const radiusPhone=cfg.logoShape==='circle'?'50%':cfg.logoShape==='square'?'9px':'14px';root.style.setProperty('--pro-logo-radius',radius);root.style.setProperty('--pro-logo-radius-phone',radiusPhone);
+ [['proCoverHeightOut',`${cfg.coverHeight}px`],['proLogoSizeOut',`${cfg.logoSize}px`],['proStoreMaxOut',`${cfg.storeMax}px`],['proCardGapOut',`${cfg.cardGap}px`],['proBannerHeightOut',`${cfg.bannerHeight}px`],['proBannerSpeedOut',`${cfg.bannerSpeed}s`],['proBannerRadiusOut',`${cfg.bannerRadius}px`],['proBannerGapOut',`${cfg.bannerGap}px`]].forEach(([id,v])=>{if($(id))$(id).textContent=v});
+ enhanceCarousels();
+}
+function bindAppearance(){
+ const map={proCoverHeight:'coverHeight',proCoverFit:'coverFit',proCoverPosition:'coverPosition',proLogoSize:'logoSize',proLogoShape:'logoShape',proStoreMax:'storeMax',proDesktopCols:'desktopCols',proMobileCols:'mobileCols',proCardGap:'cardGap',proBannerHeight:'bannerHeight',proBannerSpeed:'bannerSpeed',proBannerRadius:'bannerRadius',proPhoneBannerRatio:'phoneBannerRatio',proBannerGap:'bannerGap'};
+ Object.entries(map).forEach(([id,key])=>{const el=$(id);if(!el)return;const fn=()=>{cfg[key]=el.type==='range'||el.type==='number'?Number(el.value):el.value;saveLocal();setDirty();applyVisuals()};el.addEventListener('input',fn);el.addEventListener('change',fn)});
+ [['proBannerInfinite','bannerInfinite'],['proBannerCenter','bannerCenter'],['proBannerPauseHover','bannerPauseHover']].forEach(([id,key])=>{const el=$(id);if(!el)return;el.addEventListener('change',()=>{cfg[key]=el.checked;saveLocal();setDirty();applyVisuals()})});
+ $('proResetAppearance')?.addEventListener('click',()=>{cfg={...defaults};saveLocal();location.reload()});
+ $('proOpenPreview')?.addEventListener('click',()=>($('expandPreviewBtn')||$('previewBtn'))?.click());
+ $('proConfirmLocal')?.addEventListener('click',()=>{saveLocal();setDirty(false);toast('Ajustes visuais confirmados neste navegador.')});
+}
+function cloneForLoop(track){
+ if(track.dataset.proLoopBuilt==='1')return;
+ const originals=[...track.children].filter(x=>!x.dataset.proClone);if(originals.length<2)return;
+ originals.forEach((node,i)=>{node.dataset.proOriginal=String(i)});
+ originals.forEach(node=>{const c=node.cloneNode(true);c.dataset.proClone='1';c.setAttribute('aria-hidden','true');track.append(c)});
+ track.dataset.proLoopBuilt='1';
+}
+function sizeLoop(track){
+ const box=track.closest('.clena-full-promos');if(!box)return;
+ const w=box.clientWidth||1200,g=cfg.bannerGap;const cardW=Math.max(250,(w-g*2)/3);track.style.setProperty('--pro-banner-width',`${cardW}px`);
+ const originals=[...track.children].filter(x=>!x.dataset.proClone);if(!originals.length)return;
+ const distance=originals.length*(cardW+g);track.style.setProperty('--pro-loop-distance',`${distance}px`);
+}
+function enhanceCarousels(){
+ $$('.clena-full-promos-track').forEach(track=>{
+  const dots=track.parentElement?.querySelector('.clena-promo-dots');dots?.classList.toggle('pro-loop-dots',Boolean(cfg.bannerInfinite));
+  if(cfg.bannerInfinite){cloneForLoop(track);track.classList.add('pro-infinite-loop');sizeLoop(track);track.addEventListener('scroll',()=>{if(track.scrollLeft)track.scrollLeft=0},{passive:true,once:false})}else{track.classList.remove('pro-infinite-loop');$$('[data-pro-clone="1"]',track).forEach(x=>x.remove());track.dataset.proLoopBuilt='0'}
+ });
+ scheduleCenterHighlight();
+}
+function scheduleCenterHighlight(){
+ clearInterval(centerTimer);if(!cfg.bannerCenter)return;
+ centerTimer=setInterval(()=>{$$('.clena-full-promos-track.pro-infinite-loop').forEach(track=>{const r=track.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;const cx=r.left+r.width/2;let best=null,dist=Infinity;$$('.clena-full-promo',track).forEach(card=>{const cr=card.getBoundingClientRect(),d=Math.abs((cr.left+cr.width/2)-cx);card.classList.remove('is-center');if(d<dist){dist=d;best=card}});best?.classList.add('is-center')})},140);
+}
+function repairPromotionalDefaults(){
+ const visible=$('promoVisibleCount');if(visible&&Number(visible.value)!==3){visible.value='3';visible.dispatchEvent(new Event('change',{bubbles:true}))}
+ if(cfg.bannerInfinite){const auto=$('promoAutoplay');if(auto&&!auto.checked){auto.checked=true;auto.dispatchEvent(new Event('change',{bubbles:true}))}}
+}
+function commandEntries(){return $$('.nav-item[data-section]').map(btn=>({label:btn.querySelector('span')?.textContent?.trim()||btn.dataset.section,section:btn.dataset.section,icon:btn.querySelector('i')?.className||'ri-arrow-right-line'}))}
+function renderCommands(q=''){const list=$('proCommandList');if(!list)return;const query=q.trim().toLowerCase();const rows=commandEntries().filter(x=>!query||x.label.toLowerCase().includes(query));list.innerHTML=rows.map((x,i)=>`<button class="pro-command-item ${i===0?'active':''}" type="button" data-command-section="${esc(x.section)}"><i class="${esc(x.icon)}"></i><div><b>${esc(x.label)}</b><small>Abrir esta seção do editor</small></div><span class="pro-command-kbd">Enter</span></button>`).join('');$$('[data-command-section]',list).forEach(btn=>btn.addEventListener('click',()=>{document.querySelector(`.nav-item[data-section="${CSS.escape(btn.dataset.commandSection)}"]`)?.click();closeCommand()}))}
+function openCommand(){const el=$('proCommand');if(!el)return;el.classList.add('open');renderCommands();setTimeout(()=>$('proCommandInput')?.focus(),0)}
+function closeCommand(){$('proCommand')?.classList.remove('open')}
+function bindGlobal(){
+ $('proCommandInput')?.addEventListener('input',e=>renderCommands(e.target.value));$('proCommand')?.addEventListener('mousedown',e=>{if(e.target===$('proCommand'))closeCommand()});
+ document.addEventListener('keydown',e=>{const mod=e.ctrlKey||e.metaKey;if(mod&&e.key.toLowerCase()==='k'){e.preventDefault();openCommand()}if(mod&&e.key.toLowerCase()==='p'){e.preventDefault();($('previewBtn')||$('expandPreviewBtn'))?.click()}if(mod&&e.key.toLowerCase()==='s'){e.preventDefault();($('publishSaveBtn')||$('saveProfileBtn'))?.click();setDirty(false)}if(e.key==='Escape'){closeCommand();$$('.modal-shell.open,.preview-modal-shell.open').forEach(m=>{const close=m.querySelector('[data-close-item],[data-close-category],[data-close-addon],[data-close-zone],[data-close-delivery-preview],[data-close-promo],.preview-close-btn');close?.click()})}});
+ document.addEventListener('input',e=>{if(e.target.closest('.editor-section')&&!e.target.closest('#proAppearanceStudio,#proBannerStudio'))setDirty(true)},true);
+ document.addEventListener('change',e=>{if(e.target.closest('.editor-section')&&!e.target.closest('#proAppearanceStudio,#proBannerStudio'))setDirty(true)},true);
+ $('publishSaveBtn')?.addEventListener('click',()=>setTimeout(()=>setDirty(false),700));
+ addEventListener('beforeunload',e=>{if(!dirty)return;e.preventDefault();e.returnValue=''})
+ addEventListener('resize',()=>{$$('.clena-full-promos-track.pro-infinite-loop').forEach(sizeLoop)});
+ const nav=$('editorNav');nav?.addEventListener('click',e=>{const btn=e.target.closest('.nav-item[data-section]');if(btn)sessionStorage.setItem('clena_last_editor_section',btn.dataset.section)});
+ const last=sessionStorage.getItem('clena_last_editor_section');if(last)setTimeout(()=>document.querySelector(`.nav-item[data-section="${CSS.escape(last)}"]`)?.click(),250);
+}
+function observePreview(){
+ const targets=[$('phonePreview'),$('fullDeliveryPreview')].filter(Boolean);if(!targets.length)return;
+ const ob=new MutationObserver(()=>{clearTimeout(loopRAF);loopRAF=setTimeout(()=>{applyVisuals();repairPromotionalDefaults()},80)});targets.forEach(t=>ob.observe(t,{childList:true,subtree:true}));
+}
+function addAccessibility(){
+ $$('.icon-btn,.row-actions button,.list-actions button,.technical-sheet-actions button').forEach((b,i)=>{if(!b.getAttribute('aria-label')&&!b.title)b.setAttribute('aria-label',`Ação ${i+1}`)});
+ $$('.modal-shell').forEach(m=>{m.setAttribute('role','dialog');m.setAttribute('aria-modal','true')});
+}
+function boot(){
+ injectAppearanceStudio();injectBannerStudio();injectGlobalUX();bindAppearance();bindGlobal();applyVisuals();repairPromotionalDefaults();observePreview();addAccessibility();
+ console.info('[CLENA] Professional Final Layer ativa.');
+}
+function wait(){if($('app')&&!$('app').classList.contains('is-hidden'))boot();else setTimeout(wait,120)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wait,{once:true});else wait();
 })();
 </script>
 
