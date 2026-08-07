@@ -1,6 +1,8 @@
 {
   "rewrites": [
     { "source": "/loja/:slug", "destination": "/loja.html?slug=:slug" },
+    { "source": "/produto/:slug/:id", "destination": "/pop_produto.html?slug=:slug&id=:id" },
+    { "source": "/carrinho/:slug", "destination": "/carrinho.html?slug=:slug" },
     { "source": "/delivery/:slug", "destination": "/delivery.html?slug=:slug" },
     { "source": "/agendar/:slug", "destination": "/agendar.html?slug=:slug" }
   ]
