@@ -1,3 +1,5 @@
+
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -1130,6 +1132,75 @@
     }
 
   </style>
+
+  <style id="clena-public-professional-v3">
+    :root{
+      --store-max:1200px;--hero-height:280px;--logo-size:88px;
+      --product-cols-desktop:4;--product-cols-tablet:2;--product-cols-mobile:1;
+      --product-gap:15px;--card-radius:16px;--shadow-alpha:.45;
+      --banner-height:260px;--banner-radius:18px;--banner-gap:14px;
+      --cover-fit:cover;--cover-position:center;
+    }
+    .shell{width:min(var(--store-max),100%);padding-left:20px;padding-right:20px}
+    .hero,.hero-content{min-height:var(--hero-height)}
+    .hero-cover{object-fit:var(--cover-fit);object-position:var(--cover-position)}
+    .store-logo{width:var(--logo-size);height:var(--logo-size);flex-basis:var(--logo-size)}
+    body[data-logo="circle"] .store-logo{border-radius:50%}
+    body[data-logo="square"] .store-logo{border-radius:10px}
+    body[data-logo="rounded"] .store-logo{border-radius:24%}
+    body[data-logo="stamp"] .store-logo{border-radius:4px;transform:rotate(-2deg)}
+    .products-grid,.products-grid.compact{grid-template-columns:repeat(var(--product-cols-desktop),minmax(0,1fr));gap:var(--product-gap)}
+    .product-card{border-radius:var(--card-radius);box-shadow:0 12px 32px rgba(15,23,42,calc(.02 + var(--shadow-alpha)*.10))}
+    body[data-cards="flat"] .product-card{box-shadow:none}
+    body[data-cards="poster"] .product-card{border-radius:max(4px,calc(var(--card-radius)*.45))}
+    body[data-density="compact"] .product-body{padding:12px}
+    body[data-density="airy"] .product-body{padding:20px}
+    body[data-ratio="square"] .product-image{aspect-ratio:1/1;height:auto}
+    body[data-ratio="wide"] .product-image{aspect-ratio:16/8;height:auto}
+    body[data-ratio="landscape"] .product-image{aspect-ratio:4/3;height:auto}
+    body[data-categories="underline"] .chip{border:0;border-radius:0;background:transparent;border-bottom:2px solid transparent}
+    body[data-categories="underline"] .chip.active{color:var(--primary);border-bottom-color:var(--primary)}
+    body[data-categories="blocks"] .chip{border-radius:4px}
+    body[data-buttons="pill"] .add-btn,.body[data-buttons="pill"] .primary-btn{border-radius:999px}
+    body[data-buttons="cut"] .add-btn,body[data-buttons="cut"] .primary-btn{border-radius:3px}
+    body[data-hide-search="1"] .search-box{display:none}
+    body[data-hide-info="1"] #infoJumpBtn,body[data-hide-info="1"] .store-info-grid{display:none}
+    body[data-hide-cart="1"] .floating-cart{display:none!important}
+    body[data-hide-badges="1"] .featured-badge{display:none}
+    body[data-overlay="soft"] .hero-shade{background:linear-gradient(90deg,rgba(2,6,23,.42),rgba(2,6,23,.12))}
+    body[data-overlay="color"] .hero-shade{background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 82%,transparent),color-mix(in srgb,var(--primary) 38%,transparent))}
+    body[data-overlay="none"] .hero-shade{background:transparent}
+    body[data-align="offset"] .hero-content{align-items:center}.hero-content{transition:min-height .25s ease}
+
+    .public-stories{margin:15px 0 8px;overflow:hidden}.public-stories-track{display:flex;gap:14px;overflow:auto;padding:3px 2px 9px;scrollbar-width:none}.public-stories-track::-webkit-scrollbar{display:none}
+    .public-story{border:0;background:transparent;padding:0;flex:0 0 78px;text-align:center;color:var(--text)}
+    .public-story-ring{width:72px;height:72px;margin:auto;border-radius:50%;padding:3px;display:block;background:linear-gradient(135deg,var(--primary),var(--accent));box-shadow:0 7px 20px rgba(15,23,42,.10)}
+    .public-story-ring>span{display:block;width:100%;height:100%;border-radius:50%;overflow:hidden;border:3px solid var(--card);background:#f1f5f9}
+    .public-story img,.public-story video{width:100%;height:100%;object-fit:cover}.public-story b{display:block;font-size:9px;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .public-banners{margin:10px 0 16px;overflow:hidden}.public-banner-viewport{overflow:hidden;padding:12px 0}.public-banner-track{display:flex;gap:var(--banner-gap);will-change:transform;width:max-content}
+    .public-banner{position:relative;overflow:hidden;flex:0 0 calc((min(var(--store-max),100vw - 40px) - (var(--promo-visible,3) - 1)*var(--banner-gap))/var(--promo-visible,3));height:var(--banner-height);border:0;border-radius:var(--banner-radius);padding:0;background:#e2e8f0;color:#fff;box-shadow:0 12px 32px rgba(15,23,42,.12);transform:scale(.94);opacity:.78;transition:transform .28s ease,opacity .28s ease,box-shadow .28s ease}
+    .public-banner.is-center{transform:scale(1);opacity:1;box-shadow:0 22px 52px rgba(15,23,42,.20)}
+    .public-banner img,.public-banner video{width:100%;height:100%;object-fit:cover;display:block}.public-banner-shade{position:absolute;inset:42% 0 0;background:linear-gradient(transparent,rgba(2,6,23,.82))}.public-banner-copy{position:absolute;z-index:2;left:16px;right:16px;bottom:14px;text-align:left}.public-banner-copy b,.public-banner-copy small{display:block}.public-banner-copy b{font-size:15px}.public-banner-copy small{font-size:10px;margin-top:4px;color:rgba(255,255,255,.86)}
+    .public-banner-dots{display:flex;justify-content:center;gap:5px}.public-banner-dots i{width:6px;height:6px;border-radius:999px;background:#cbd5e1;transition:.2s}.public-banner-dots i.active{width:20px;background:var(--primary)}
+    .promo-media-fallback{width:100%;height:100%;display:grid;place-items:center;color:#94a3b8;font-size:35px}
+
+    .product-gallery{min-width:0}.product-gallery-thumbs{display:flex;gap:8px;overflow:auto;margin-top:9px;padding-bottom:2px;scrollbar-width:none}.product-gallery-thumbs::-webkit-scrollbar{display:none}
+    .product-gallery-thumb{width:54px;height:54px;flex:0 0 54px;border:2px solid transparent;border-radius:11px;padding:0;overflow:hidden;background:#f1f5f9}.product-gallery-thumb.active{border-color:var(--primary)}.product-gallery-thumb img{width:100%;height:100%;object-fit:cover}.product-gallery-thumb span{display:grid;place-items:center;width:100%;height:100%;font-size:22px;color:var(--primary)}
+    .product-modal-image video{width:100%;height:100%;object-fit:contain;background:#020617}.product-gallery-empty{width:100%;height:100%;display:grid;place-items:center}
+
+    @media(max-width:950px){.products-grid,.products-grid.compact{grid-template-columns:repeat(var(--product-cols-tablet),minmax(0,1fr))}}
+    @media(max-width:650px){
+      .shell{padding-left:10px;padding-right:10px}.hero,.hero-content{min-height:min(var(--hero-height),300px)}.store-logo{width:min(var(--logo-size),82px);height:min(var(--logo-size),82px);flex-basis:min(var(--logo-size),82px)}
+      .products-grid,.products-grid.compact{grid-template-columns:repeat(var(--product-cols-mobile),minmax(0,1fr));gap:max(6px,calc(var(--product-gap)*.6))}
+      .products-grid .product-card,.products-grid.compact .product-card{display:flex;flex-direction:column;min-width:0}
+      .products-grid .product-image,.products-grid.compact .product-image{height:auto;min-height:0;aspect-ratio:1/1}
+      .products-grid .product-description{display:-webkit-box;-webkit-line-clamp:2}.products-grid .product-body h3{font-size:11px;min-height:auto}.products-grid .price-block strong{font-size:11px}.products-grid .add-btn{width:30px;height:30px;min-width:30px}
+      .public-story{flex-basis:64px}.public-story-ring{width:60px;height:60px}.public-banner-viewport{margin-left:-10px;margin-right:-10px;padding:9px 10px}
+      .public-banner{flex-basis:78vw;height:auto;aspect-ratio:var(--phone-banner-ratio,16/7);transform:scale(.96)}.public-banner.is-center{transform:scale(1)}.public-banner-copy b{font-size:12px}.public-banner-copy small{font-size:8px}
+      .product-modal-grid{grid-template-columns:1fr}.product-modal-image{height:min(48vh,360px)}
+    }
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.product-card,.public-banner{transition:none!important}}
+  </style>
 </head>
 
 <body>
@@ -1141,6 +1212,8 @@
 
   <main id="app" class="shell hidden">
     <section id="hero" class="hero"></section>
+    <section id="storiesSection" class="public-stories hidden" aria-label="Destaques da loja"></section>
+    <section id="bannersSection" class="public-banners hidden" aria-label="Promoções da loja"></section>
     <section id="storeInfo" class="store-info-grid"></section>
     <div class="restaurant-topline">
       <span><i class="ri-shield-check-line"></i> Pedido seguro e conferido antes do envio</span>
@@ -1333,6 +1406,9 @@
       itemAddons:[],
       zones:[],
       hours:[],
+      promotions:[],
+      promoAnimation:null,
+      visual:null,
       cart:[],
       category:"all",
       search:"",
@@ -1415,15 +1491,20 @@
           auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}
         });
 
-        const {data:delivery,error:deliveryError} = await state.db
+        const {data:deliveryRows,error:deliveryError} = await state.db
           .from("delivery_profiles")
           .select("*")
           .eq("slug", slug)
           .eq("is_published", true)
-          .maybeSingle();
+          .order("updated_at",{ascending:false})
+          .limit(2);
 
         if (deliveryError) throw deliveryError;
+        const delivery = Array.isArray(deliveryRows) ? deliveryRows[0] : null;
         if (!delivery) throw new Error("Delivery não encontrado ou ainda não publicado.");
+        if ((deliveryRows || []).length > 1){
+          console.warn("[CLENA] Mais de um delivery publicado usa o mesmo slug. A loja usará o cadastro atualizado mais recentemente.", deliveryRows.map(row => row.id));
+        }
 
         state.delivery = delivery;
         applyTheme();
@@ -1443,8 +1524,11 @@
         state.zones = zones;
         state.hours = hours;
 
-        await loadEffectivePrices();
-        await loadAddonData();
+        await Promise.all([
+          loadEffectivePrices(),
+          loadAddonData(),
+          loadPromotionalMedia()
+        ]);
 
         state.openInfo = getOpenInfo(new Date());
 
@@ -1513,13 +1597,285 @@
       }
     }
 
+    function parseJSON(value,fallback={}){
+      if (!value) return fallback;
+      if (typeof value === "object") return value;
+      try{ const parsed = JSON.parse(value); return parsed && typeof parsed === "object" ? parsed : fallback; }
+      catch{ return fallback; }
+    }
+
+    function localJSON(key){
+      try{ return parseJSON(localStorage.getItem(key),{}); }
+      catch{ return {}; }
+    }
+
+    function clamp(value,min,max,fallback){
+      const n = Number(value);
+      return Number.isFinite(n) ? Math.min(max,Math.max(min,n)) : fallback;
+    }
+
+    function getVisualSettings(){
+      const d = state.delivery || {};
+      const persisted = {
+        ...parseJSON(d.appearance_settings,{}),
+        ...parseJSON(d.visual_settings,{}),
+        ...parseJSON(d.theme_settings,{}),
+        ...parseJSON(d.store_settings,{})
+      };
+      const studio = localJSON("clena_delivery_visual_studio_v4");
+      const fine = localJSON("clena_delivery_professional_ui_v1");
+      const theme = d.store_theme || d.theme || persisted.theme || studio.theme || "atelier";
+      const presets = {
+        atelier:{hero:"cinematic",font:"editorial",cards:"floating",ratio:"landscape",categories:"underline",buttons:"rounded",density:"airy",motion:"reveal",texture:"grain",alignment:"left",logo:"square",overlay:"gradient",radius:10,shadow:42,heroHeight:300},
+        botanica:{hero:"split",font:"rounded",cards:"flat",ratio:"square",categories:"pills",buttons:"pill",density:"comfortable",motion:"soft",texture:"none",alignment:"offset",logo:"circle",overlay:"soft",radius:24,shadow:28,heroHeight:255},
+        pulse:{hero:"poster",font:"condensed",cards:"poster",ratio:"wide",categories:"blocks",buttons:"cut",density:"compact",motion:"energetic",texture:"grid",alignment:"left",logo:"stamp",overlay:"color",radius:4,shadow:65,heroHeight:285}
+      };
+      const base = presets[theme] || presets.atelier;
+      const merged = {...base,...studio,...persisted,...fine};
+      return {
+        ...merged,
+        theme,
+        heroHeight:clamp(d.hero_height ?? d.cover_height ?? merged.coverHeight ?? merged.heroHeight,180,520,base.heroHeight),
+        coverFit:d.cover_fit || merged.coverFit || "cover",
+        coverPosition:d.cover_position || merged.coverPosition || "center",
+        logoSize:clamp(d.logo_size ?? merged.logoSize,48,180,88),
+        logoShape:d.logo_shape || merged.logoShape || merged.logo || "rounded",
+        storeMax:clamp(d.store_max_width ?? merged.storeMax,760,1800,1200),
+        desktopCols:clamp(d.desktop_columns ?? d.product_columns_desktop ?? merged.desktopCols,1,6,4),
+        tabletCols:clamp(d.tablet_columns ?? d.product_columns_tablet ?? merged.tabletCols,1,4,2),
+        mobileCols:clamp(d.mobile_columns ?? d.product_columns_mobile ?? merged.mobileCols,1,3,1),
+        cardGap:clamp(d.product_gap ?? merged.cardGap,4,36,15),
+        bannerHeight:clamp(d.banner_height ?? merged.bannerHeight,120,520,260),
+        bannerRadius:clamp(d.banner_radius ?? merged.bannerRadius,0,48,18),
+        bannerGap:clamp(d.banner_gap ?? merged.bannerGap,4,36,14),
+        bannerSpeed:clamp(d.banner_speed ?? merged.bannerSpeed,8,120,34),
+        bannerInfinite:d.banner_infinite ?? merged.bannerInfinite ?? true,
+        bannerCenter:d.banner_center_highlight ?? merged.bannerCenter ?? true,
+        bannerPauseHover:d.promotions_pause_on_hover ?? merged.bannerPauseHover ?? false,
+        phoneBannerRatio:d.mobile_banner_ratio || merged.phoneBannerRatio || "16/7",
+        showSearch:d.show_search ?? merged.showSearch ?? true,
+        showInfo:d.show_info ?? merged.showInfo ?? true,
+        showCart:d.show_cart ?? merged.showCart ?? true,
+        showBadges:d.show_badges ?? merged.showBadges ?? true,
+        radius:clamp(d.card_radius ?? merged.radius,0,40,16),
+        shadow:clamp(d.shadow_strength ?? merged.shadow,0,100,45)
+      };
+    }
+
+    async function loadPromotionalMedia(){
+      if (!state.db || !state.delivery?.id || state.delivery.promotions_enabled === false){ state.promotions=[]; return; }
+      const rows = await safeQuery(
+        state.db.from("delivery_promotional_media")
+          .select("*")
+          .eq("delivery_id",state.delivery.id)
+          .eq("active",true)
+          .order("position",{ascending:true})
+          .order("created_at",{ascending:true}),
+        []
+      );
+      const now = Date.now();
+      state.promotions = rows.filter(row => {
+        const start = row.starts_at ? new Date(row.starts_at).getTime() : -Infinity;
+        const end = row.ends_at ? new Date(row.ends_at).getTime() : Infinity;
+        return now >= start && now <= end;
+      });
+    }
+
+    function promoMediaHTML(row,cls=""){
+      if (!row?.media_url) return `<span class="promo-media-fallback"><i class="ri-image-line"></i></span>`;
+      if (row.media_type === "video"){
+        return `<video class="${cls}" src="${esc(row.media_url)}" ${row.video_muted === false ? "" : "muted"} ${row.video_loop === false ? "" : "loop"} autoplay playsinline preload="metadata"></video>`;
+      }
+      return `<img class="${cls}" src="${esc(row.media_url)}" alt="${esc(row.title || "Promoção")}" loading="lazy">`;
+    }
+
+    function handlePromoAction(row){
+      if (!row) return;
+      if (row.action_type === "item" && row.item_id){ openProductModal(row.item_id); return; }
+      if (row.action_type === "category" && row.category_id){
+        state.category = row.category_id; renderCategories(); renderProducts();
+        document.querySelector(".sticky-tools")?.scrollIntoView({behavior:"smooth",block:"start"}); return;
+      }
+      if (row.action_type === "external_url" && /^https?:\/\//i.test(row.external_url || "")){
+        window.open(row.external_url,"_blank","noopener,noreferrer");
+      }
+    }
+
+    function stopPromoAnimation(){
+      if (state.promoAnimation){ cancelAnimationFrame(state.promoAnimation); state.promoAnimation=null; }
+    }
+
+    function renderPromotions(){
+      stopPromoAnimation();
+      const storiesBox = $("storiesSection");
+      const bannersBox = $("bannersSection");
+      const d = state.delivery || {};
+      const enabled = d.promotions_enabled !== false;
+      const mode = d.promotions_display_mode || "mixed";
+      const rows = enabled ? state.promotions : [];
+      const stories = rows.filter(row => (row.kind || "story") === "story");
+      const banners = rows.filter(row => row.kind === "vertical_banner");
+      const showStories = mode === "stories" || mode === "mixed";
+      const showBanners = mode === "vertical" || mode === "mixed" || (!!banners.length && mode !== "stories");
+
+      storiesBox.classList.toggle("hidden",!showStories || !stories.length);
+      bannersBox.classList.toggle("hidden",!showBanners || !banners.length);
+
+      if (showStories && stories.length){
+        storiesBox.innerHTML = `<div class="public-stories-track">${stories.slice(0,20).map(row => `
+          <button class="public-story" type="button" data-promo-id="${esc(row.id)}" aria-label="${esc(row.title || "Abrir destaque")}">
+            <span class="public-story-ring"><span>${promoMediaHTML(row)}</span></span>
+            <b>${esc(row.title || "Destaque")}</b>
+          </button>`).join("")}</div>`;
+      }else storiesBox.innerHTML="";
+
+      if (showBanners && banners.length){
+        const visible = Math.max(1,Math.min(5,Number(d.promotions_visible_count || 3)));
+        const source = banners.length === 1 ? [...banners,...banners,...banners] : banners;
+        const copies = source.length < visible * 2 ? [...source,...source,...source] : [...source,...source];
+        bannersBox.style.setProperty("--promo-visible",String(visible));
+        bannersBox.innerHTML = `
+          <div class="public-banner-viewport">
+            <div class="public-banner-track">${copies.map((row,index) => `
+              <button class="public-banner" type="button" data-promo-id="${esc(row.id)}" data-copy-index="${index}">
+                ${promoMediaHTML(row)}
+                <span class="public-banner-shade"></span>
+                <span class="public-banner-copy"><b>${esc(row.title || "Promoção")}</b>${row.subtitle ? `<small>${esc(row.subtitle)}</small>` : ""}</span>
+              </button>`).join("")}</div>
+          </div>
+          <div class="public-banner-dots">${banners.map((_,i)=>`<i class="${i===0?"active":""}"></i>`).join("")}</div>`;
+        startBannerLoop(banners);
+      }else bannersBox.innerHTML="";
+
+      $$('[data-promo-id]',document).forEach(el => {
+        if (el.dataset.promoBound === "1") return;
+        el.dataset.promoBound="1";
+        el.addEventListener("click",() => handlePromoAction(rows.find(row => String(row.id) === String(el.dataset.promoId))));
+      });
+    }
+
+    function startBannerLoop(originals){
+      const section = $("bannersSection");
+      const viewport = section?.querySelector(".public-banner-viewport");
+      const track = section?.querySelector(".public-banner-track");
+      if (!viewport || !track || !originals.length) return;
+      const cfg = state.visual || getVisualSettings();
+      let x=0,last=performance.now(),paused=false,lastCenter=0;
+      const cards=[...track.querySelectorAll(".public-banner")];
+      const firstSequence = Math.max(1,Math.floor(cards.length / 2));
+      const resetWidth = () => cards.slice(0,firstSequence).reduce((sum,card)=>sum+card.getBoundingClientRect().width+(Number(cfg.bannerGap)||14),0);
+      function center(now){
+        if (now-lastCenter < 120) return; lastCenter=now;
+        const centerX=viewport.getBoundingClientRect().left+viewport.clientWidth/2;
+        let best=null,dist=Infinity;
+        cards.forEach(card=>{const r=card.getBoundingClientRect(),d=Math.abs((r.left+r.right)/2-centerX);if(d<dist){dist=d;best=card}});
+        cards.forEach(card=>card.classList.toggle("is-center",cfg.bannerCenter && card===best));
+        if (best){
+          const id=best.dataset.promoId,idx=originals.findIndex(row=>String(row.id)===String(id));
+          section.querySelectorAll(".public-banner-dots i").forEach((dot,i)=>dot.classList.toggle("active",i===idx));
+        }
+      }
+      function frame(now){
+        const delta=Math.min(50,now-last); last=now;
+        const autoplay = state.delivery.promotions_autoplay !== false;
+        if (!paused && autoplay && cfg.bannerInfinite !== false){
+          x -= (Number(cfg.bannerSpeed)||34) * delta / 1000;
+          const rw=resetWidth(); if (rw>0 && -x>=rw) x+=rw;
+          track.style.transform=`translate3d(${x}px,0,0)`;
+        }
+        center(now);
+        state.promoAnimation=requestAnimationFrame(frame);
+      }
+      if (cfg.bannerPauseHover){ viewport.addEventListener("mouseenter",()=>paused=true); viewport.addEventListener("mouseleave",()=>paused=false); }
+      state.promoAnimation=requestAnimationFrame(frame);
+    }
+
+    function normalizeMediaEntry(entry){
+      if (!entry) return null;
+      if (typeof entry === "string") return {url:entry,type:/\.(mp4|webm|mov)(\?|$)/i.test(entry)?"video":"image"};
+      const url=entry.url||entry.media_url||entry.src||entry.image_url||entry.video_url;
+      if (!url) return null;
+      const type=entry.type||entry.media_type||(/\.(mp4|webm|mov)(\?|$)/i.test(url)?"video":"image");
+      return {url,type:type==="video"?"video":"image",poster:entry.poster||entry.poster_url||null};
+    }
+
+    function itemMediaList(item){
+      const raw=[];
+      if (item?.image_url) raw.push({url:item.image_url,type:"image"});
+      ["media","media_urls","gallery","gallery_urls","image_urls","images","additional_media","media_gallery"].forEach(key=>{
+        let value=item?.[key]; if (!value) return;
+        if (typeof value === "string"){ try{ const p=JSON.parse(value); value=p; }catch{ value=value.split(",").map(v=>v.trim()).filter(Boolean); } }
+        if (Array.isArray(value)) raw.push(...value);
+      });
+      const seen=new Set(),result=[];
+      raw.map(normalizeMediaEntry).filter(Boolean).forEach(entry=>{if(!seen.has(entry.url)&&result.length<5){seen.add(entry.url);result.push(entry)}});
+      return result;
+    }
+
+    function galleryMainHTML(media,item){
+      if (!media) return `<div class="product-gallery-empty"><i class="ri-restaurant-2-line"></i></div>`;
+      if (media.type === "video") return `<video src="${esc(media.url)}" ${media.poster?`poster="${esc(media.poster)}"`:""} controls playsinline preload="metadata"></video>`;
+      return `<img src="${esc(media.url)}" alt="${esc(item?.name || "Produto")}">`;
+    }
+
+    function bindProductGallery(item){
+      const medias=itemMediaList(item); if (medias.length<2) return;
+      const main=$("productModalBody")?.querySelector("[data-product-gallery-main]");
+      if(!main)return;
+      $$("[data-product-media-index]",$("productModalBody")).forEach(btn=>btn.addEventListener("click",()=>{
+        const index=Number(btn.dataset.productMediaIndex)||0;
+        main.innerHTML=galleryMainHTML(medias[index],item);
+        $$("[data-product-media-index]",$("productModalBody")).forEach(x=>x.classList.toggle("active",x===btn));
+      }));
+    }
+
     function applyTheme(){
       const d = state.delivery;
       const primary = d.primary_color || "#f97316";
       const accent = d.accent_color || "#111827";
-      document.documentElement.style.setProperty("--primary",primary);
-      document.documentElement.style.setProperty("--primary-dark",primary);
-      document.documentElement.style.setProperty("--accent",accent);
+      const bg = d.background_color || d.bg_color || "#fffaf5";
+      const card = d.card_color || "#ffffff";
+      const text = d.text_color || "#172033";
+      state.visual = getVisualSettings();
+      const v = state.visual;
+      const root=document.documentElement;
+      root.style.setProperty("--primary",primary);
+      root.style.setProperty("--primary-dark",primary);
+      root.style.setProperty("--accent",accent);
+      root.style.setProperty("--bg",bg);
+      root.style.setProperty("--card",card);
+      root.style.setProperty("--text",text);
+      root.style.setProperty("--store-max",`${v.storeMax}px`);
+      root.style.setProperty("--hero-height",`${v.heroHeight}px`);
+      root.style.setProperty("--logo-size",`${v.logoSize}px`);
+      root.style.setProperty("--product-cols-desktop",String(v.desktopCols));
+      root.style.setProperty("--product-cols-tablet",String(v.tabletCols));
+      root.style.setProperty("--product-cols-mobile",String(v.mobileCols));
+      root.style.setProperty("--product-gap",`${v.cardGap}px`);
+      root.style.setProperty("--card-radius",`${v.radius}px`);
+      root.style.setProperty("--shadow-alpha",String(v.shadow/100));
+      root.style.setProperty("--banner-height",`${v.bannerHeight}px`);
+      root.style.setProperty("--banner-radius",`${v.bannerRadius}px`);
+      root.style.setProperty("--banner-gap",`${v.bannerGap}px`);
+      root.style.setProperty("--phone-banner-ratio",String(v.phoneBannerRatio || "16/7"));
+      document.body.dataset.storeTheme=v.theme||"atelier";
+      document.body.dataset.hero=v.hero||"cinematic";
+      document.body.dataset.cards=v.cards||"floating";
+      document.body.dataset.ratio=v.ratio||"landscape";
+      document.body.dataset.categories=v.categories||"pills";
+      document.body.dataset.buttons=v.buttons||"rounded";
+      document.body.dataset.density=v.density||"comfortable";
+      document.body.dataset.motion=v.motion||"soft";
+      document.body.dataset.texture=v.texture||"none";
+      document.body.dataset.align=v.alignment||"left";
+      document.body.dataset.overlay=v.overlay||"gradient";
+      document.body.dataset.logo=v.logoShape||"rounded";
+      document.body.dataset.hideSearch=v.showSearch?"0":"1";
+      document.body.dataset.hideInfo=v.showInfo?"0":"1";
+      document.body.dataset.hideCart=v.showCart?"0":"1";
+      document.body.dataset.hideBadges=v.showBadges?"0":"1";
+      root.style.setProperty("--cover-fit",v.coverFit);
+      root.style.setProperty("--cover-position",v.coverPosition);
       document.querySelector('meta[name="theme-color"]').setAttribute("content",primary);
     }
 
@@ -1589,6 +1945,7 @@
 
     function renderAll(){
       renderHero();
+      renderPromotions();
       renderStoreInfo();
       renderClosedNotice();
       renderCategories();
@@ -1723,10 +2080,11 @@
           numberValue(item.sale_price) > 0 &&
           numberValue(item.price) > numberValue(item.sale_price);
 
+        const cardMedia = itemMediaList(item).find(media => media.type === "image");
         return `
           <article class="product-card ${layout === "compact" ? "compact" : ""}">
             <div class="product-image">
-              ${item.image_url ? `<img src="${esc(item.image_url)}" alt="${esc(item.name)}" loading="lazy">` : `<i class="ri-restaurant-2-line"></i>`}
+              ${cardMedia ? `<img src="${esc(cardMedia.url)}" alt="${esc(item.name)}" loading="lazy">` : `<i class="ri-restaurant-2-line"></i>`}
               ${soldout ? `<span class="soldout-badge">ESGOTADO</span>` : item.featured ? `<span class="featured-badge">DESTAQUE</span>` : ""}
             </div>
             <div class="product-body">
@@ -1854,12 +2212,14 @@
       state.modalSelections = new Map();
 
       const groups = groupsForItem(item.id);
+      const medias = itemMediaList(item);
       $("productModalTitle").textContent = item.name;
 
       $("productModalBody").innerHTML = `
         <div class="product-modal-grid">
-          <div class="product-modal-image">
-            ${item.image_url ? `<img src="${esc(item.image_url)}" alt="${esc(item.name)}">` : `<i class="ri-restaurant-2-line"></i>`}
+          <div class="product-gallery">
+            <div class="product-modal-image" data-product-gallery-main>${galleryMainHTML(medias[0],item)}</div>
+            ${medias.length > 1 ? `<div class="product-gallery-thumbs">${medias.map((media,index)=>`<button type="button" class="product-gallery-thumb ${index===0?"active":""}" data-product-media-index="${index}">${media.type==="video"?`<span><i class="ri-play-fill"></i></span>`:`<img src="${esc(media.url)}" alt="Mídia ${index+1}">`}</button>`).join("")}</div>` : ""}
           </div>
           <div class="product-modal-copy">
             <h2>${esc(item.name)}</h2>
@@ -1909,6 +2269,8 @@
           </label>
         ` : ""}
       `;
+
+      bindProductGallery(item);
 
       $$("[data-addon-option]", $("productModalBody")).forEach(input => {
         input.addEventListener("change", event => {
@@ -2343,13 +2705,15 @@
 
       try{
         if (mode === "internal"){
-          const {data:order,error} = await state.db
+          const {data:orderRows,error} = await state.db
             .from("delivery_orders")
             .insert(payload)
             .select()
-            .single();
+            .limit(1);
 
           if (error) throw error;
+          const order = Array.isArray(orderRows) ? orderRows[0] : orderRows;
+          if (!order?.id) throw new Error("O pedido foi enviado, mas o identificador do pedido não foi retornado.");
 
           const rows = state.cart.map(row => ({
             order_id:order.id,
