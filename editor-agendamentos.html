@@ -1,190 +1,339 @@
-<!-- CLENA: HTML COMPLETO COM CSS E JAVASCRIPT INCORPORADOS -->
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#eef7ff" />
-  <meta name="description" content="Editor completo de agendamentos e reservas." />
+  <meta name="theme-color" content="#f4f7fb" />
+  <meta name="description" content="Editor profissional de agendamentos e reservas Clena." />
   <title>Editor de Agendamentos | Clena</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet" />
-  <style data-original-href="./assets/css/base.css">
-:root {
-  --bg: #f4f8fc;
-  --surface: #ffffff;
-  --surface-soft: #f8fbfe;
-  --text: #132238;
-  --muted: #6d7d91;
-  --line: #e3ebf3;
-  --primary: #2386e8;
-  --primary-dark: #126ccc;
-  --primary-soft: #eaf5ff;
-  --navy: #10273f;
-  --success: #18a66b;
-  --success-soft: #e7f8f1;
-  --danger: #dc3d55;
-  --danger-soft: #fff0f2;
-  --warning: #ef9b25;
-  --violet: #7b65e9;
-  --shadow-sm: 0 8px 24px rgba(22, 52, 83, 0.07);
-  --shadow-md: 0 22px 60px rgba(18, 55, 90, 0.13);
-  --radius-sm: 12px;
-  --radius-md: 18px;
-  --radius-lg: 26px;
-}
 
-* { box-sizing: border-box; }
-html { min-width: 320px; background: var(--bg); }
-body {
-  min-height: 100vh;
-  margin: 0;
-  color: var(--text);
-  background: var(--bg);
-  font-family: "Manrope", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
-button, input { font: inherit; }
-button { cursor: pointer; }
-button:disabled { cursor: not-allowed; }
-img { display: block; max-width: 100%; }
-.is-hidden { display: none !important; }
+  <style>
+    :root{
+      --bg:#f4f7fb;
+      --surface:#ffffff;
+      --surface-soft:#f8fafc;
+      --surface-muted:#f1f5f9;
+      --text:#172033;
+      --muted:#66758a;
+      --border:#e4eaf1;
+      --primary:#2563eb;
+      --primary-rgb:37,99,235;
+      --primary-dark:#1d4ed8;
+      --primary-soft:#eff6ff;
+      --success:#16a34a;
+      --success-soft:#ecfdf5;
+      --danger:#dc2626;
+      --danger-soft:#fef2f2;
+      --warning:#d97706;
+      --warning-soft:#fff7ed;
+      --sidebar:#0f172a;
+      --sidebar-card:#182235;
+      --sidebar-border:#263247;
+      --shadow-sm:0 8px 28px rgba(15,23,42,.06);
+      --shadow-md:0 18px 55px rgba(15,23,42,.14);
+      --radius-sm:11px;
+      --radius-md:16px;
+      --radius-lg:24px;
+    }
 
-.brand { display: inline-flex; align-items: center; gap: 11px; }
-.brand-mark {
-  width: 38px;
-  height: 38px;
-  display: grid;
-  place-items: center;
-  border-radius: 12px;
-  color: #fff;
-  background: linear-gradient(145deg, #2f98f4, #176fc8);
-  box-shadow: 0 10px 24px rgba(35, 134, 232, 0.28);
-  font-size: 20px;
-  font-weight: 800;
-}
-.brand-name { letter-spacing: 0.16em; font-size: 17px; font-weight: 800; }
-.brand-light .brand-name { color: #fff; }
-.brand-light .brand-mark { color: var(--primary); background: #fff; box-shadow: 0 12px 30px rgba(0, 0, 0, .18); }
+    *{box-sizing:border-box}
+    html{min-width:320px;background:var(--bg);scroll-behavior:smooth}
+    body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font-family:"Manrope",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+    body.is-locked{overflow:hidden}
+    button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    button:disabled{cursor:not-allowed;opacity:.62}
+    img{display:block;max-width:100%}
+    a{color:inherit}
+    .is-hidden{display:none!important}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
-.app-loader {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: grid;
-  place-content: center;
-  justify-items: center;
-  gap: 14px;
-  background: #f5f9fd;
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 700;
-}
-.loader-mark {
-  width: 58px;
-  height: 58px;
-  display: grid;
-  place-items: center;
-  border-radius: 19px;
-  color: #fff;
-  background: linear-gradient(145deg, #2f98f4, #176fc8);
-  box-shadow: 0 18px 36px rgba(35, 134, 232, .25);
-  font-size: 27px;
-  font-weight: 800;
-  animation: loaderPulse 1.1s ease-in-out infinite alternate;
-}
-@keyframes loaderPulse { to { transform: translateY(-5px) scale(1.03); } }
+    .page-loader,.fatal-state{
+      min-height:100vh;display:grid;place-content:center;justify-items:center;text-align:center;gap:14px;padding:28px
+    }
+    .loader-dot{width:46px;height:46px;border:4px solid #dbeafe;border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .fatal-card{width:min(560px,100%);background:#fff;border:1px solid var(--border);border-radius:22px;padding:30px;box-shadow:var(--shadow-md)}
+    .fatal-card i{font-size:44px;color:var(--danger)}
+    .fatal-card h2{margin:10px 0 6px}
+    .fatal-card p{margin:0;color:var(--muted);line-height:1.6}
 
-.field { display: grid; gap: 8px; }
-.field > span { color: #42536a; font-size: 12px; font-weight: 750; }
-.input-wrap {
-  min-height: 49px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0 14px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: #fff;
-  transition: border-color .2s, box-shadow .2s, background .2s;
-}
-.input-wrap:focus-within { border-color: rgba(35, 134, 232, .6); box-shadow: 0 0 0 4px rgba(35, 134, 232, .1); }
-.input-wrap > i { flex: 0 0 auto; color: #8ba0b6; font-size: 18px; }
-.input-wrap input { width: 100%; min-width: 0; border: 0; outline: 0; color: var(--text); background: transparent; font-size: 13px; font-weight: 600; }
-.input-wrap input::placeholder { color: #a6b3c2; font-weight: 500; }
-.input-wrap.is-readonly { background: #f5f8fb; }
-.input-action { width: 32px; height: 32px; display: grid; place-items: center; flex: 0 0 auto; border: 0; border-radius: 9px; color: #718398; background: transparent; }
-.input-action:hover { background: #f0f5f9; }
+    .app-shell{min-height:100vh}
+    .sidebar{
+      position:fixed;inset:0 auto 0 0;width:272px;background:var(--sidebar);color:#fff;padding:22px 16px;display:flex;flex-direction:column;z-index:30
+    }
+    .brand{display:flex;align-items:center;gap:11px;text-decoration:none;font-weight:800;font-size:20px;padding:0 10px 20px}
+    .brand-mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#3b82f6,#22c55e);display:grid;place-items:center;box-shadow:0 12px 26px rgba(37,99,235,.24)}
+    .business-mini{display:flex;gap:12px;align-items:center;padding:14px;background:var(--sidebar-card);border:1px solid var(--sidebar-border);border-radius:16px;margin-bottom:18px}
+    .avatar{width:44px;height:44px;flex:0 0 auto;border-radius:14px;background:#dbeafe;color:#2563eb;display:grid;place-items:center;font-weight:800;overflow:hidden}
+    .avatar img{width:100%;height:100%;object-fit:cover}
+    .business-mini div{min-width:0}
+    .business-mini strong,.business-mini small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .business-mini small{color:#9ca3af;margin-top:3px}
+    .section-nav{display:grid;gap:5px;overflow:auto;padding-right:2px}
+    .nav-item{border:0;background:transparent;color:#cbd5e1;display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:11px;text-align:left}
+    .nav-item:hover,.nav-item.is-active{background:#22304a;color:#fff}
+    .nav-item i{font-size:19px}
+    .nav-item small{margin-left:auto;background:#334155;padding:2px 7px;border-radius:999px}
+    .sidebar-footer{margin-top:auto;padding-top:15px}
+    .back-link{color:#cbd5e1;text-decoration:none;display:flex;gap:8px;padding:10px;border-radius:10px}
+    .back-link:hover{background:#182235}
+    .sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(15,23,42,.56);z-index:25}
 
-.primary-button, .secondary-button, .ghost-button, .small-button, .upload-button {
-  border: 0;
-  border-radius: 13px;
-  font-weight: 800;
-  transition: transform .18s, box-shadow .18s, background .18s;
-}
-.primary-button {
-  min-height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  padding: 0 18px;
-  color: #fff;
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  box-shadow: 0 13px 25px rgba(35, 134, 232, .23);
-}
-.primary-button:hover { transform: translateY(-1px); box-shadow: 0 17px 30px rgba(35, 134, 232, .28); }
-.primary-button:disabled { opacity: .65; transform: none; box-shadow: none; }
-.secondary-button { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; color: #176fc8; background: #fff; box-shadow: var(--shadow-sm); }
-.ghost-button { min-height: 44px; padding: 0 17px; color: #53657a; background: #f1f5f9; }
-.small-button { min-height: 35px; padding: 0 14px; color: #176fc8; background: var(--primary-soft); }
+    .workspace{margin-left:272px;min-height:100vh}
+    .topbar{
+      min-height:78px;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);
+      display:flex;align-items:center;justify-content:space-between;gap:18px;padding:12px 28px;position:sticky;top:0;z-index:20
+    }
+    .topbar-title{display:flex;align-items:center;gap:12px;min-width:0}
+    .topbar-title small,.eyebrow,.panel-head small,.modal-card header small{font-size:11px;letter-spacing:.12em;color:#64748b;font-weight:800}
+    .topbar h1{font-size:22px;margin:3px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .topbar-actions{display:flex;gap:9px;align-items:center;position:relative}
+    .save-state{font-size:11px;font-weight:800;color:var(--muted);white-space:nowrap}
+    .save-state.is-dirty{color:var(--warning)}
+    .save-state.is-saving{color:var(--primary)}
+    .save-state.is-saved{color:var(--success)}
+    .profile-menu{position:absolute;right:0;top:52px;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-md);padding:8px;width:160px}
+    .profile-menu button{width:100%;border:0;background:none;text-align:left;padding:10px;border-radius:8px}
+    .profile-menu button:hover{background:var(--surface-muted)}
 
-.icon-button {
-  width: 42px;
-  height: 42px;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--line);
-  border-radius: 13px;
-  color: #566980;
-  background: #fff;
-  font-size: 19px;
-}
-.icon-button:hover { color: var(--primary); border-color: #c6e0f8; background: #fafdff; }
+    .content{padding:28px;max-width:1540px;margin:auto}
+    .editor-section{display:none}
+    .editor-section.is-active{display:block}
+    .section-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:20px}
+    .section-header h2{margin:4px 0;font-size:27px}
+    .section-header p{margin:5px 0;color:var(--muted);line-height:1.55}
+    .section-actions{display:flex;gap:9px;flex-wrap:wrap}
 
-.avatar { position: relative; overflow: hidden; display: grid; place-items: center; flex: 0 0 auto; border-radius: 50%; color: #fff; background: linear-gradient(145deg, #2f98f4, #176fc8); font-weight: 800; box-shadow: inset 0 0 0 2px rgba(255,255,255,.45); }
-.avatar img { width: 100%; height: 100%; object-fit: cover; }
-.avatar-small { width: 40px; height: 40px; font-size: 12px; }
-.avatar-large { width: 70px; height: 70px; font-size: 18px; }
+    .hero-card{
+      background:linear-gradient(135deg,#0f4cbd,#1d79e9);color:#fff;border-radius:var(--radius-lg);padding:38px;
+      display:grid;grid-template-columns:1.6fr .6fr;align-items:center;overflow:hidden;box-shadow:0 18px 50px rgba(37,99,235,.17)
+    }
+    .hero-card .eyebrow{color:#dbeafe}
+    .hero-card h2{font-size:34px;line-height:1.15;max-width:780px;margin:10px 0}
+    .hero-card p{color:#dbeafe;max-width:800px;line-height:1.65}
+    .hero-actions{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+    .hero-card .primary-btn{background:#fff;color:#1d4ed8}
+    .hero-card .secondary-btn{background:#ffffff20;color:#fff;border-color:#ffffff36}
+    .hero-visual{font-size:112px;text-align:center;opacity:.85}
 
-.toast-region { position: fixed; right: 18px; bottom: 18px; z-index: 10000; display: grid; gap: 10px; width: min(360px, calc(100vw - 28px)); }
-.toast { display: flex; align-items: flex-start; gap: 10px; padding: 14px 15px; border: 1px solid var(--line); border-radius: 15px; background: rgba(255,255,255,.98); box-shadow: var(--shadow-md); animation: toastIn .22s ease-out; }
-.toast > i { margin-top: 1px; color: var(--primary); font-size: 20px; }
-.toast strong { display: block; margin-bottom: 3px; font-size: 13px; }
-.toast p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
-.toast.is-error > i { color: var(--danger); }
-.toast.is-success > i { color: var(--success); }
-@keyframes toastIn { from { opacity: 0; transform: translateY(10px); } }
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:20px 0}
+    .stats-grid article{background:#fff;border:1px solid var(--border);border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-sm)}
+    .stats-grid article>span{width:46px;height:46px;border-radius:14px;background:var(--primary-soft);color:var(--primary);display:grid;place-items:center;font-size:22px}
+    .stats-grid small,.stats-grid strong{display:block}
+    .stats-grid small{color:var(--muted)}
+    .stats-grid strong{font-size:24px;margin-top:3px}
 
-</style>
-  <style data-original-href="./assets/css/scheduling-editor.css">
-:root{--primary:#2563eb;--bg:#f4f7fb;--surface:#fff;--text:#172033;--muted:#6b7280;--border:#e5eaf2;--danger:#dc2626;--success:#16a34a;--sidebar:#101827}*{box-sizing:border-box}body{margin:0;font-family:Manrope,sans-serif;background:var(--bg);color:var(--text)}button,input,select,textarea{font:inherit}.is-hidden{display:none!important}.page-loader{min-height:100vh;display:grid;place-content:center;text-align:center;gap:14px}.loader-dot{width:42px;height:42px;border:4px solid #dbeafe;border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;margin:auto}@keyframes spin{to{transform:rotate(360deg)}}.app-shell{min-height:100vh}.sidebar{position:fixed;inset:0 auto 0 0;width:265px;background:var(--sidebar);color:#fff;padding:24px 16px;display:flex;flex-direction:column;z-index:20}.brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:800;font-size:20px;padding:0 10px 20px}.brand-mark{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,#3b82f6,#22c55e);display:grid;place-items:center}.business-mini{display:flex;gap:12px;align-items:center;padding:14px;background:#182235;border:1px solid #263247;border-radius:16px;margin-bottom:18px}.avatar{width:42px;height:42px;border-radius:14px;background:#dbeafe;color:#2563eb;display:grid;place-items:center}.business-mini div{min-width:0}.business-mini strong,.business-mini small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.business-mini small{color:#9ca3af;margin-top:3px}.section-nav{display:grid;gap:5px;overflow:auto}.nav-item{border:0;background:transparent;color:#cbd5e1;display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:11px;text-align:left;cursor:pointer}.nav-item:hover,.nav-item.is-active{background:#23314a;color:#fff}.nav-item i{font-size:19px}.nav-item small{margin-left:auto;background:#334155;padding:2px 7px;border-radius:10px}.sidebar-footer{margin-top:auto;padding-top:15px}.back-link{color:#cbd5e1;text-decoration:none;display:flex;gap:8px;padding:10px}.workspace{margin-left:265px;min-height:100vh}.topbar{height:78px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:15}.topbar-title{display:flex;align-items:center;gap:12px}.topbar-title small,.eyebrow,.panel-head small,.modal-card header small{font-size:11px;letter-spacing:.12em;color:#64748b;font-weight:800}.topbar h1{font-size:22px;margin:3px 0 0}.topbar-actions{display:flex;gap:10px;align-items:center;position:relative}.primary-btn,.secondary-btn,.text-btn,.icon-btn,.profile-pill{border:0;cursor:pointer}.primary-btn,.secondary-btn{padding:11px 16px;border-radius:11px;font-weight:700;display:inline-flex;gap:8px;align-items:center}.primary-btn{background:var(--primary);color:#fff}.secondary-btn{background:#eef4ff;color:#1d4ed8}.text-btn{background:transparent;color:#2563eb;font-weight:700}.icon-btn{width:40px;height:40px;border-radius:11px;background:#eef2f7;display:grid;place-items:center}.profile-pill{display:flex;align-items:center;gap:6px;background:#f1f5f9;padding:5px 8px;border-radius:13px}.profile-pill span{width:30px;height:30px;border-radius:10px;background:#dbeafe;color:#2563eb;display:grid;place-items:center;font-weight:800}.profile-menu{position:absolute;right:0;top:52px;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 15px 40px #0f172a1f;padding:8px;width:150px}.profile-menu button{width:100%;border:0;background:none;text-align:left;padding:10px;border-radius:8px}.content{padding:28px;max-width:1500px;margin:auto}.editor-section{display:none}.editor-section.is-active{display:block}.hero-card{background:linear-gradient(135deg,#0f4cbd,#1d79e9);color:#fff;border-radius:24px;padding:38px;display:grid;grid-template-columns:1.6fr .6fr;align-items:center;overflow:hidden}.hero-card h2{font-size:34px;line-height:1.15;max-width:750px;margin:10px 0}.hero-card p{color:#dbeafe;max-width:760px}.hero-actions{display:flex;gap:10px;margin-top:22px}.hero-card .primary-btn{background:#fff;color:#1d4ed8}.hero-card .secondary-btn{background:#ffffff20;color:#fff}.hero-visual{font-size:110px;text-align:center;opacity:.8}.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:20px 0}.stats-grid article{background:#fff;border:1px solid var(--border);border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px}.stats-grid article>span{width:46px;height:46px;border-radius:14px;background:#eff6ff;color:#2563eb;display:grid;place-items:center;font-size:22px}.stats-grid small,.stats-grid strong{display:block}.stats-grid strong{font-size:24px;margin-top:3px}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}.align-start{align-items:start}.panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:22px}.panel-head,.section-header{display:flex;justify-content:space-between;align-items:flex-start;gap:15px}.panel-head h3,.section-header h2{margin:4px 0}.section-header{margin-bottom:20px}.section-header p{margin:5px 0;color:var(--muted)}.progress{height:9px;background:#edf2f7;border-radius:10px;overflow:hidden;margin:18px 0}.progress span{height:100%;display:block;background:var(--primary);width:0}.checklist{display:grid;gap:10px}.check-item{display:flex;gap:10px;padding:10px;border-radius:10px;background:#f8fafc}.check-item.done i{color:var(--success)}.empty-state{text-align:center;color:var(--muted);padding:35px}.empty-state i{font-size:36px}.form-stack{display:grid;gap:18px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.field{display:grid;gap:7px}.field>span,.field b{font-size:13px;font-weight:700}.field input,.field select,.field textarea,.toolbar input,.toolbar select,.slug-input{width:100%;border:1px solid var(--border);border-radius:11px;background:#fff;padding:11px 12px;outline:none}.field input:focus,.field select:focus,.field textarea:focus{border-color:#60a5fa;box-shadow:0 0 0 3px #dbeafe}.field small{color:var(--muted)}.full{grid-column:1/-1}.media-grid{display:grid;grid-template-columns:1fr 180px;gap:16px}.image-uploader{border:2px dashed #cbd5e1;border-radius:16px;overflow:hidden;cursor:pointer;min-height:150px}.image-uploader span{height:100%;min-height:150px;display:grid;place-content:center;text-align:center;color:#64748b;background-size:cover;background-position:center}.image-uploader i{font-size:30px}.image-uploader b,.image-uploader small{display:block}.image-uploader.square{aspect-ratio:1}.toolbar{display:flex;gap:12px;margin-bottom:16px}.toolbar.wrap{flex-wrap:wrap}.search{position:relative;flex:1}.search i{position:absolute;left:13px;top:13px;color:#94a3b8}.search input{padding-left:38px}.card-list{display:grid;gap:12px}.item-card{background:#fff;border:1px solid var(--border);border-radius:15px;padding:16px;display:flex;align-items:center;gap:14px}.item-card .thumb{width:56px;height:56px;border-radius:13px;background:#eff6ff;color:#2563eb;display:grid;place-items:center;font-size:23px;background-size:cover;background-position:center}.item-main{flex:1}.item-main h4{margin:0 0 4px}.item-main p,.item-main small{margin:0;color:var(--muted)}.item-actions{display:flex;gap:6px}.item-actions button{border:0;background:#f1f5f9;width:36px;height:36px;border-radius:10px;cursor:pointer}.badge{display:inline-flex;padding:4px 8px;border-radius:20px;background:#ecfdf5;color:#15803d;font-size:11px;font-weight:800}.badge.off{background:#f1f5f9;color:#64748b}.week-list{display:grid;gap:10px}.day-row{display:grid;grid-template-columns:110px 70px 1fr auto;gap:10px;align-items:center;padding:10px;border:1px solid var(--border);border-radius:12px}.day-times{display:flex;gap:8px}.day-times input{width:110px;border:1px solid var(--border);border-radius:9px;padding:8px}.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px;border:1px solid var(--border);border-radius:12px}.toggle-row span b,.toggle-row span small{display:block}.toggle-row span small{color:var(--muted);margin-top:3px}.toggle-row input{width:20px;height:20px}.payment-mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.payment-mode-grid label input{display:none}.payment-mode-grid label span{display:grid;gap:4px;border:1px solid var(--border);border-radius:13px;padding:14px;cursor:pointer}.payment-mode-grid label input:checked+span{border-color:#3b82f6;background:#eff6ff}.payment-mode-grid i{font-size:23px;color:#2563eb}.payment-mode-grid small{color:var(--muted)}.slug-input{display:flex;padding:0;align-items:center;overflow:hidden}.slug-input span{padding:11px;background:#f1f5f9;color:#64748b}.slug-input input{border:0}.phone-preview{width:330px;max-width:100%;margin:auto;background:#111827;border-radius:34px;padding:12px;box-shadow:0 20px 50px #0f172a30}.phone-preview.large{width:370px}.phone-top{width:90px;height:18px;background:#111827;border-radius:0 0 14px 14px;margin:-1px auto -10px;position:relative;z-index:2}.preview-content{background:#fff;border-radius:25px;min-height:600px;overflow:hidden;padding-bottom:25px}.preview-cover{height:140px;background:linear-gradient(135deg,var(--primary),#60a5fa);background-size:cover;background-position:center}.preview-brand{padding:0 18px;margin-top:-36px}.preview-logo{width:74px;height:74px;border:4px solid #fff;border-radius:20px;background:#dbeafe;display:grid;place-items:center;background-size:cover;background-position:center}.preview-brand h3{margin:10px 0 3px}.preview-brand p{font-size:12px;color:var(--muted)}.preview-service{margin:10px 14px;padding:12px;border:1px solid var(--border);border-radius:13px}.preview-service strong,.preview-service small{display:block}.preview-service small{color:var(--muted);margin-top:4px}.table-wrap{background:#fff;border:1px solid var(--border);border-radius:15px;overflow:auto}.data-table{width:100%;border-collapse:collapse}.data-table th,.data-table td{padding:13px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}.timeline{display:grid;gap:10px}.appointment-card{background:#fff;border-left:4px solid #3b82f6;border-radius:12px;padding:15px;display:grid;grid-template-columns:100px 1fr auto;gap:14px;align-items:center}.appointment-time strong,.appointment-time small{display:block}.appointment-meta h4{margin:0 0 4px}.appointment-meta p{margin:0;color:var(--muted)}.modal,.drawer{position:fixed;inset:0;z-index:100}.modal-backdrop,.drawer-backdrop{position:absolute;inset:0;background:#0f172a99}.modal-card{position:relative;background:#fff;width:min(760px,calc(100% - 30px));max-height:90vh;overflow:auto;margin:5vh auto;border-radius:20px}.modal-card header,.drawer aside>header{display:flex;justify-content:space-between;align-items:center;padding:20px;border-bottom:1px solid var(--border)}.modal-card header h2{margin:4px 0}.modal-card #modalBody{padding:20px}.modal-footer{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}.drawer aside{position:absolute;right:0;top:0;bottom:0;width:min(500px,100%);background:#f1f5f9;overflow:auto}.drawer .phone-preview{margin:30px auto}.toast-region{position:fixed;right:20px;bottom:20px;z-index:200;display:grid;gap:8px}.toast{background:#111827;color:#fff;padding:12px 16px;border-radius:11px;box-shadow:0 10px 30px #0003}.toast.error{background:#b91c1c}#mobileMenu{display:none}@media(max-width:1050px){.stats-grid{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}.sidebar{transform:translateX(-100%);transition:.2s}.sidebar.is-open{transform:none}.workspace{margin-left:0}#mobileMenu{display:grid}}@media(max-width:700px){.content{padding:16px}.topbar{padding:0 14px}.topbar-actions .secondary-btn{display:none}.hero-card{grid-template-columns:1fr;padding:25px}.hero-card h2{font-size:27px}.hero-visual{display:none}.stats-grid,.form-grid,.media-grid,.payment-mode-grid{grid-template-columns:1fr}.full{grid-column:auto}.day-row{grid-template-columns:1fr}.topbar-title small{display:none}.appointment-card{grid-template-columns:1fr}.phone-preview{width:100%}}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .align-start{align-items:start}
+    .panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:22px;box-shadow:var(--shadow-sm)}
+    .panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:15px}
+    .panel-head h3{margin:4px 0}
+    .progress{height:9px;background:#edf2f7;border-radius:10px;overflow:hidden;margin:18px 0}
+    .progress span{height:100%;display:block;background:var(--primary);width:0;transition:width .25s}
+    .checklist{display:grid;gap:10px}
+    .check-item{display:flex;gap:10px;padding:10px;border-radius:10px;background:#f8fafc}
+    .check-item.done i{color:var(--success)}
+    .empty-state{text-align:center;color:var(--muted);padding:34px 20px}
+    .empty-state i{font-size:36px}
+    .empty-state p{margin:8px 0 0}
 
-</style>
+    .primary-btn,.secondary-btn,.danger-btn,.text-btn,.icon-btn,.profile-pill{
+      border:0;cursor:pointer;transition:transform .16s,box-shadow .16s,background .16s,border-color .16s
+    }
+    .primary-btn,.secondary-btn,.danger-btn{min-height:42px;padding:10px 15px;border-radius:11px;font-weight:800;display:inline-flex;justify-content:center;gap:8px;align-items:center}
+    .primary-btn{background:var(--primary);color:#fff;box-shadow:0 10px 24px rgba(var(--primary-rgb),.18)}
+    .primary-btn:hover:not(:disabled){transform:translateY(-1px);background:var(--primary-dark)}
+    .secondary-btn{background:#eef4ff;color:#1d4ed8;border:1px solid #dbeafe}
+    .danger-btn{background:var(--danger);color:#fff}
+    .text-btn{background:transparent;color:var(--primary);font-weight:800;padding:7px 3px}
+    .icon-btn{width:40px;height:40px;border-radius:11px;background:#eef2f7;display:grid;place-items:center;color:#475569}
+    .icon-btn:hover{background:#e2e8f0}
+    .profile-pill{display:flex;align-items:center;gap:6px;background:#f1f5f9;padding:5px 8px;border-radius:13px}
+    .profile-pill span{width:30px;height:30px;border-radius:10px;background:#dbeafe;color:#2563eb;display:grid;place-items:center;font-weight:800}
+
+    .form-stack{display:grid;gap:18px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .field{display:grid;gap:7px}
+    .field>span,.field>b{font-size:13px;font-weight:800;color:#374151}
+    .field small{color:var(--muted);line-height:1.45}
+    .field input,.field select,.field textarea,.toolbar input,.toolbar select,.slug-input{
+      width:100%;border:1px solid var(--border);border-radius:11px;background:#fff;padding:11px 12px;outline:none;color:var(--text)
+    }
+    .field textarea{resize:vertical}
+    .field input:focus,.field select:focus,.field textarea:focus,.toolbar input:focus,.toolbar select:focus{border-color:#60a5fa;box-shadow:0 0 0 3px #dbeafe}
+    .full{grid-column:1/-1}
+    .helper-box{padding:13px 14px;border:1px solid #dbeafe;background:#f8fbff;border-radius:12px;color:#475569;font-size:12px;line-height:1.55}
+    .warning-box{padding:13px 14px;border:1px solid #fed7aa;background:var(--warning-soft);border-radius:12px;color:#9a3412;font-size:12px;line-height:1.55}
+    .danger-box{padding:13px 14px;border:1px solid #fecaca;background:var(--danger-soft);border-radius:12px;color:#991b1b;font-size:12px;line-height:1.55}
+
+    .media-grid{display:grid;grid-template-columns:1fr 190px;gap:16px}
+    .image-uploader{position:relative;border:2px dashed #cbd5e1;border-radius:16px;overflow:hidden;cursor:pointer;min-height:180px;background:#f8fafc}
+    .image-uploader span{height:100%;min-height:180px;display:grid;place-content:center;text-align:center;color:#64748b;background-size:cover;background-position:center;padding:16px}
+    .image-uploader i{font-size:30px}
+    .image-uploader b,.image-uploader small{display:block}
+    .image-uploader.square{aspect-ratio:1;min-height:0}
+    .media-actions{display:flex;gap:8px;flex-wrap:wrap}
+
+    .toolbar{display:flex;gap:12px;margin-bottom:16px}
+    .toolbar.wrap{flex-wrap:wrap}
+    .toolbar>*{min-width:150px}
+    .search{position:relative;flex:1;min-width:220px}
+    .search i{position:absolute;left:13px;top:13px;color:#94a3b8}
+    .search input{padding-left:38px}
+    .card-list{display:grid;gap:12px}
+    .item-card{background:#fff;border:1px solid var(--border);border-radius:15px;padding:16px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-sm)}
+    .item-card .thumb{width:58px;height:58px;flex:0 0 auto;border-radius:13px;background:#eff6ff;color:#2563eb;display:grid;place-items:center;font-size:23px;background-size:cover;background-position:center}
+    .item-main{flex:1;min-width:0}
+    .item-main h4{margin:0 0 4px}
+    .item-main p,.item-main small{margin:0;color:var(--muted)}
+    .item-main p{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:760px}
+    .item-actions{display:flex;gap:6px}
+    .item-actions button{border:0;background:#f1f5f9;width:36px;height:36px;border-radius:10px;cursor:pointer;color:#475569}
+    .item-actions button:hover{background:#e2e8f0}
+    .item-actions button.is-danger:hover{background:#fee2e2;color:var(--danger)}
+    .badge{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;background:var(--success-soft);color:#15803d;font-size:10px;font-weight:800;white-space:nowrap}
+    .badge.off{background:#f1f5f9;color:#64748b}
+    .badge.pending{background:#fff7ed;color:#c2410c}
+    .badge.info{background:#eff6ff;color:#1d4ed8}
+
+    .week-list{display:grid;gap:10px}
+    .day-row{display:grid;grid-template-columns:130px 90px 1fr;gap:12px;align-items:center;padding:12px;border:1px solid var(--border);border-radius:12px}
+    .day-times{display:grid;grid-template-columns:repeat(4,minmax(95px,1fr));gap:8px}
+    .day-times label{display:grid;gap:5px;font-size:10px;font-weight:800;color:var(--muted)}
+    .day-times input{width:100%;border:1px solid var(--border);border-radius:9px;padding:8px}
+    .day-row.is-closed{opacity:.62;background:#f8fafc}
+    .toggle-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px;border:1px solid var(--border);border-radius:12px}
+    .toggle-row span b,.toggle-row span small{display:block}
+    .toggle-row span small{color:var(--muted);margin-top:3px;line-height:1.45}
+    .toggle-row input[type="checkbox"]{width:20px;height:20px;accent-color:var(--primary)}
+    .payment-mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .payment-mode-grid label input{display:none}
+    .payment-mode-grid label span{display:grid;gap:4px;border:1px solid var(--border);border-radius:13px;padding:14px;cursor:pointer}
+    .payment-mode-grid label input:checked+span{border-color:#3b82f6;background:#eff6ff;box-shadow:0 0 0 2px #dbeafe}
+    .payment-mode-grid i{font-size:23px;color:#2563eb}
+    .payment-mode-grid small{color:var(--muted)}
+
+    .slug-input{display:flex;padding:0;align-items:center;overflow:hidden}
+    .slug-input span{padding:11px;background:#f1f5f9;color:#64748b;border-right:1px solid var(--border)}
+    .slug-input input{border:0!important;box-shadow:none!important;border-radius:0!important}
+    .slug-status{font-size:11px;font-weight:800}
+    .slug-status.ok{color:var(--success)}
+    .slug-status.error{color:var(--danger)}
+
+    .phone-preview{width:350px;max-width:100%;margin:auto;background:#111827;border-radius:34px;padding:12px;box-shadow:0 20px 50px #0f172a30}
+    .phone-preview.large{width:390px}
+    .phone-top{width:92px;height:18px;background:#111827;border-radius:0 0 14px 14px;margin:-1px auto -10px;position:relative;z-index:2}
+    .preview-content{background:#fff;border-radius:25px;min-height:620px;overflow:hidden;padding-bottom:28px}
+    .preview-cover{height:155px;background:linear-gradient(135deg,var(--primary),#60a5fa);background-size:cover;background-position:center}
+    .preview-brand{padding:0 18px;margin-top:-38px}
+    .preview-logo{width:78px;height:78px;border:4px solid #fff;border-radius:20px;background:#dbeafe;display:grid;place-items:center;background-size:cover;background-position:center;box-shadow:0 8px 22px rgba(15,23,42,.12)}
+    .preview-brand h3{margin:10px 0 3px}
+    .preview-brand p{font-size:12px;color:var(--muted);line-height:1.55}
+    .preview-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .preview-meta span{font-size:10px;padding:5px 8px;border-radius:999px;background:#f1f5f9;color:#475569}
+    .preview-service{margin:10px 14px;padding:13px;border:1px solid var(--border);border-radius:13px}
+    .preview-service strong,.preview-service small{display:block}
+    .preview-service small{color:var(--muted);margin-top:4px}
+    .preview-cta{margin:14px;padding:12px;border:0;border-radius:12px;background:var(--primary);color:#fff;font-weight:800;width:calc(100% - 28px)}
+
+    .table-wrap{background:#fff;border:1px solid var(--border);border-radius:15px;overflow:auto;box-shadow:var(--shadow-sm)}
+    .data-table{width:100%;border-collapse:collapse}
+    .data-table th,.data-table td{padding:13px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+    .data-table th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#64748b;background:#f8fafc}
+
+    .timeline{display:grid;gap:10px}
+    .appointment-card{background:#fff;border:1px solid var(--border);border-left:4px solid var(--primary);border-radius:12px;padding:15px;display:grid;grid-template-columns:110px 1fr auto;gap:14px;align-items:center;box-shadow:var(--shadow-sm)}
+    .appointment-time strong,.appointment-time small{display:block}
+    .appointment-time small{color:var(--muted);margin-top:3px}
+    .appointment-meta h4{margin:0 0 4px}
+    .appointment-meta p{margin:0;color:var(--muted)}
+    .appointment-meta small{display:block;margin-top:6px;color:#64748b}
+    .appointment-flags{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+
+    .modal,.drawer{position:fixed;inset:0;z-index:100}
+    .modal-backdrop,.drawer-backdrop{position:absolute;inset:0;background:#0f172a99}
+    .modal-card{position:relative;background:#fff;width:min(820px,calc(100% - 30px));max-height:90vh;overflow:auto;margin:5vh auto;border-radius:20px;box-shadow:var(--shadow-md)}
+    .modal-card header,.drawer aside>header{display:flex;justify-content:space-between;align-items:center;padding:20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:#fff;z-index:2}
+    .modal-card header h2{margin:4px 0}
+    .modal-card #modalBody{padding:20px}
+    .modal-footer{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+    .drawer aside{position:absolute;right:0;top:0;bottom:0;width:min(520px,100%);background:#f1f5f9;overflow:auto}
+    .drawer .phone-preview{margin:30px auto}
+    .toast-region{position:fixed;right:20px;bottom:20px;z-index:220;display:grid;gap:8px;width:min(380px,calc(100vw - 28px))}
+    .toast{background:#111827;color:#fff;padding:13px 15px;border-radius:11px;box-shadow:0 10px 30px #0003;display:flex;gap:9px;align-items:flex-start}
+    .toast.error{background:#991b1b}
+    .toast.success{background:#166534}
+    .toast i{font-size:19px}
+    #mobileMenu{display:none}
+
+    @media(max-width:1100px){
+      .stats-grid{grid-template-columns:1fr 1fr}
+      .two-col,.three-col{grid-template-columns:1fr}
+      .sidebar{transform:translateX(-100%);transition:.2s}
+      .sidebar.is-open{transform:none}
+      .sidebar-backdrop.is-open{display:block}
+      .workspace{margin-left:0}
+      #mobileMenu{display:grid}
+    }
+    @media(max-width:760px){
+      .content{padding:16px}
+      .topbar{padding:10px 14px}
+      .topbar-actions .secondary-btn{display:none}
+      .save-state{display:none}
+      .hero-card{grid-template-columns:1fr;padding:25px}
+      .hero-card h2{font-size:27px}
+      .hero-visual{display:none}
+      .stats-grid,.form-grid,.media-grid,.payment-mode-grid{grid-template-columns:1fr}
+      .full{grid-column:auto}
+      .day-row{grid-template-columns:1fr}
+      .day-times{grid-template-columns:1fr 1fr}
+      .topbar-title small{display:none}
+      .appointment-card{grid-template-columns:1fr}
+      .phone-preview{width:100%}
+      .section-header{display:grid}
+      .item-card{align-items:flex-start;flex-wrap:wrap}
+      .item-main{min-width:calc(100% - 76px)}
+    }
+    @media(max-width:430px){
+      .day-times{grid-template-columns:1fr}
+      .stats-grid{grid-template-columns:1fr}
+      .hero-actions>*{width:100%}
+    }
+  </style>
 </head>
 <body>
-  <div id="pageLoader" class="page-loader"><span class="loader-dot"></span><p>Carregando agendamentos...</p></div>
+  <div id="pageLoader" class="page-loader">
+    <span class="loader-dot"></span>
+    <p>Carregando editor de agendamentos...</p>
+  </div>
+
+  <div id="fatalState" class="fatal-state is-hidden">
+    <div class="fatal-card">
+      <i class="ri-error-warning-line"></i>
+      <h2>Não foi possível abrir o editor</h2>
+      <p id="fatalMessage">Ocorreu um erro ao carregar os dados.</p>
+      <div style="margin-top:18px"><button id="retryButton" class="primary-btn"><i class="ri-refresh-line"></i> Tentar novamente</button></div>
+    </div>
+  </div>
 
   <div id="app" class="app-shell is-hidden">
-    <aside class="sidebar">
+    <aside class="sidebar" aria-label="Navegação do editor">
       <a class="brand" href="./index.html"><span class="brand-mark">C</span><span>Clena</span></a>
+
       <div class="business-mini">
         <span id="sidebarAvatar" class="avatar"><i class="ri-calendar-check-line"></i></span>
         <div><strong id="sidebarName">Meu negócio</strong><small id="sidebarStatus">Rascunho</small></div>
       </div>
-      <nav id="sectionNav" class="section-nav">
+
+      <nav class="section-nav">
         <button class="nav-item is-active" data-section="overview"><i class="ri-dashboard-line"></i><span>Visão geral</span></button>
         <button class="nav-item" data-section="business"><i class="ri-building-4-line"></i><span>Negócio</span></button>
         <button class="nav-item" data-section="services"><i class="ri-service-line"></i><span>Serviços</span><small id="navServiceCount">0</small></button>
@@ -197,18 +346,25 @@ img { display: block; max-width: 100%; }
         <button class="nav-item" data-section="notifications"><i class="ri-notification-3-line"></i><span>Notificações</span></button>
         <button class="nav-item" data-section="publish"><i class="ri-global-line"></i><span>Publicação</span></button>
       </nav>
+
       <div class="sidebar-footer">
         <a class="back-link" href="./index.html"><i class="ri-arrow-left-line"></i> Voltar à dashboard</a>
       </div>
     </aside>
+    <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
 
     <main class="workspace">
       <header class="topbar">
-        <div class="topbar-title"><button id="mobileMenu" class="icon-btn"><i class="ri-menu-line"></i></button><div><small>EDITOR DE AGENDAMENTOS</small><h1 id="pageTitle">Visão geral</h1></div></div>
+        <div class="topbar-title">
+          <button id="mobileMenu" class="icon-btn" aria-label="Abrir menu"><i class="ri-menu-line"></i></button>
+          <div><small>EDITOR DE AGENDAMENTOS</small><h1 id="pageTitle">Visão geral</h1></div>
+        </div>
+
         <div class="topbar-actions">
+          <span id="saveState" class="save-state">Tudo salvo</span>
           <button id="previewButton" class="secondary-btn"><i class="ri-smartphone-line"></i> Prévia</button>
           <button id="saveAllButton" class="primary-btn"><i class="ri-save-line"></i> Salvar tudo</button>
-          <button id="profileButton" class="profile-pill"><span id="profileInitial">C</span><i class="ri-arrow-down-s-line"></i></button>
+          <button id="profileButton" class="profile-pill" aria-expanded="false"><span id="profileInitial">C</span><i class="ri-arrow-down-s-line"></i></button>
           <div id="profileMenu" class="profile-menu is-hidden"><button id="logoutButton"><i class="ri-logout-box-r-line"></i> Sair</button></div>
         </div>
       </header>
@@ -216,59 +372,125 @@ img { display: block; max-width: 100%; }
       <div class="content">
         <section id="section-overview" class="editor-section is-active">
           <div class="hero-card">
-            <div><span class="eyebrow">CENTRAL DE RESERVAS</span><h2>Configure uma agenda profissional para qualquer tipo de negócio.</h2><p>Atenda por serviço, profissional, mesa, sala, equipamento, unidade ou recurso. Controle pagamentos antecipados, confirmações, cancelamentos e disponibilidade.</p><div class="hero-actions"><button class="primary-btn" data-go="services"><i class="ri-add-line"></i> Cadastrar serviço</button><button class="secondary-btn" data-go="appointments"><i class="ri-calendar-line"></i> Abrir agenda</button></div></div>
+            <div>
+              <span class="eyebrow">CENTRAL DE RESERVAS</span>
+              <h2>Uma agenda profissional para serviços, mesas, salas, profissionais e recursos.</h2>
+              <p>Configure horários, pagamentos, confirmações, bloqueios, capacidade, clientes e página pública em um único fluxo.</p>
+              <div class="hero-actions">
+                <button class="primary-btn" data-go="services"><i class="ri-add-line"></i> Cadastrar serviço</button>
+                <button class="secondary-btn" data-go="appointments"><i class="ri-calendar-line"></i> Abrir agenda</button>
+              </div>
+            </div>
             <div class="hero-visual"><i class="ri-calendar-schedule-line"></i></div>
           </div>
+
           <div class="stats-grid">
             <article><span><i class="ri-service-line"></i></span><div><small>Serviços</small><strong id="statServices">0</strong></div></article>
             <article><span><i class="ri-team-line"></i></span><div><small>Recursos</small><strong id="statResources">0</strong></div></article>
             <article><span><i class="ri-calendar-check-line"></i></span><div><small>Agendamentos</small><strong id="statAppointments">0</strong></div></article>
-            <article><span><i class="ri-money-dollar-circle-line"></i></span><div><small>Sinais pendentes</small><strong id="statPendingPayments">0</strong></div></article>
+            <article><span><i class="ri-money-dollar-circle-line"></i></span><div><small>Pagamentos pendentes</small><strong id="statPendingPayments">0</strong></div></article>
           </div>
+
           <div class="two-col">
-            <article class="panel"><div class="panel-head"><div><small>CONFIGURAÇÃO</small><h3>Progresso da agenda</h3></div><strong id="setupPercent">0%</strong></div><div class="progress"><span id="setupBar"></span></div><div id="setupChecklist" class="checklist"></div></article>
-            <article class="panel"><div class="panel-head"><div><small>PRÓXIMOS</small><h3>Agendamentos recentes</h3></div><button class="text-btn" data-go="appointments">Ver agenda</button></div><div id="recentAppointments" class="empty-state"><i class="ri-calendar-todo-line"></i><p>Nenhum agendamento ainda.</p></div></article>
+            <article class="panel">
+              <div class="panel-head"><div><small>CONFIGURAÇÃO</small><h3>Progresso da agenda</h3></div><strong id="setupPercent">0%</strong></div>
+              <div class="progress"><span id="setupBar"></span></div>
+              <div id="setupChecklist" class="checklist"></div>
+            </article>
+            <article class="panel">
+              <div class="panel-head"><div><small>PRÓXIMOS</small><h3>Próximos agendamentos</h3></div><button class="text-btn" data-go="appointments">Ver agenda</button></div>
+              <div id="recentAppointments" class="empty-state"><i class="ri-calendar-todo-line"></i><p>Nenhum agendamento.</p></div>
+            </article>
           </div>
         </section>
 
         <section id="section-business" class="editor-section">
-          <div class="section-header"><div><span class="eyebrow">IDENTIDADE</span><h2>Dados do negócio</h2><p>Informações mostradas na página pública de agendamento.</p></div></div>
-          <form id="businessForm" class="panel form-stack">
+          <div class="section-header">
+            <div><span class="eyebrow">IDENTIDADE</span><h2>Dados do negócio</h2><p>Informações exibidas na página pública e utilizadas nas regras de agenda.</p></div>
+          </div>
+
+          <form id="businessForm" class="panel form-stack" onsubmit="return false">
             <div class="media-grid">
-              <label class="image-uploader wide"><input id="coverInput" type="file" accept="image/*" hidden><span id="coverPreview"><i class="ri-image-add-line"></i><b>Adicionar capa</b><small>Recomendado: 1600 × 600</small></span></label>
-              <label class="image-uploader square"><input id="logoInput" type="file" accept="image/*" hidden><span id="logoPreview"><i class="ri-store-2-line"></i><b>Logo</b></span></label>
+              <div class="form-stack">
+                <label class="image-uploader">
+                  <input id="coverInput" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+                  <span id="coverPreview"><i class="ri-image-add-line"></i><b>Adicionar capa</b><small>PNG, JPG ou WebP · recomendado 1600 × 600</small></span>
+                </label>
+                <div class="media-actions"><button id="removeCoverButton" type="button" class="text-btn"><i class="ri-delete-bin-line"></i> Remover capa</button></div>
+              </div>
+              <div class="form-stack">
+                <label class="image-uploader square">
+                  <input id="logoInput" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+                  <span id="logoPreview"><i class="ri-store-2-line"></i><b>Logo</b><small>Quadrada recomendada</small></span>
+                </label>
+                <div class="media-actions"><button id="removeLogoButton" type="button" class="text-btn"><i class="ri-delete-bin-line"></i> Remover logo</button></div>
+              </div>
             </div>
+
             <div class="form-grid">
               <label class="field"><span>Nome do negócio</span><input id="businessName" maxlength="120" required></label>
-              <label class="field"><span>Segmento</span><select id="businessType"><option value="restaurant">Restaurante</option><option value="salon">Salão ou barbearia</option><option value="clinic">Clínica ou consultório</option><option value="service">Prestador de serviço</option><option value="classes">Aulas e treinamentos</option><option value="space">Espaço e locações</option><option value="other">Outro</option></select></label>
-              <label class="field full"><span>Descrição</span><textarea id="businessDescription" rows="4" maxlength="800"></textarea></label>
-              <label class="field"><span>WhatsApp</span><input id="businessWhatsapp" inputmode="tel"></label>
+              <label class="field"><span>Segmento</span><select id="businessType">
+                <option value="restaurant">Restaurante</option><option value="salon">Salão ou barbearia</option><option value="clinic">Clínica ou consultório</option>
+                <option value="service">Prestador de serviço</option><option value="classes">Aulas e treinamentos</option><option value="space">Espaço e locações</option><option value="other">Outro</option>
+              </select></label>
+              <label class="field full"><span>Descrição</span><textarea id="businessDescription" rows="4" maxlength="800"></textarea><small><span id="descriptionCount">0</span>/800</small></label>
+              <label class="field"><span>WhatsApp</span><input id="businessWhatsapp" inputmode="tel" placeholder="+55 77 99999-9999"></label>
               <label class="field"><span>Instagram</span><input id="businessInstagram" placeholder="@seunegocio"></label>
               <label class="field"><span>Telefone</span><input id="businessPhone" inputmode="tel"></label>
               <label class="field"><span>E-mail comercial</span><input id="businessEmail" type="email"></label>
-              <label class="field full"><span>Endereço</span><input id="businessAddress"></label>
+              <label class="field full"><span>Endereço</span><input id="businessAddress" autocomplete="street-address"></label>
               <label class="field"><span>Cor principal</span><input id="primaryColor" type="color" value="#2563eb"></label>
-              <label class="field"><span>Fuso horário</span><select id="timezone"><option value="America/Sao_Paulo">Brasília</option><option value="America/Manaus">Manaus</option><option value="America/Fortaleza">Fortaleza</option><option value="America/Recife">Recife</option><option value="America/Bahia">Bahia</option></select></label>
+              <label class="field"><span>Fuso horário</span><select id="timezone">
+                <option value="America/Sao_Paulo">Brasília / São Paulo</option>
+                <option value="America/Bahia">Bahia</option>
+                <option value="America/Fortaleza">Fortaleza</option>
+                <option value="America/Recife">Recife</option>
+                <option value="America/Manaus">Manaus</option>
+              </select></label>
             </div>
           </form>
         </section>
 
         <section id="section-services" class="editor-section">
-          <div class="section-header"><div><span class="eyebrow">CATÁLOGO</span><h2>Serviços e experiências</h2><p>Cadastre cortes, consultas, mesas, aulas, reservas, procedimentos, locações e qualquer atividade agendável.</p></div><button id="newServiceButton" class="primary-btn"><i class="ri-add-line"></i> Novo serviço</button></div>
-          <div class="toolbar"><div class="search"><i class="ri-search-line"></i><input id="serviceSearch" placeholder="Buscar serviço..."></div><select id="serviceStatusFilter"><option value="all">Todos</option><option value="active">Ativos</option><option value="inactive">Inativos</option></select></div>
+          <div class="section-header">
+            <div><span class="eyebrow">CATÁLOGO</span><h2>Serviços e experiências</h2><p>Cadastre tudo o que pode ser reservado.</p></div>
+            <button id="newServiceButton" class="primary-btn"><i class="ri-add-line"></i> Novo serviço</button>
+          </div>
+          <div class="toolbar">
+            <div class="search"><i class="ri-search-line"></i><input id="serviceSearch" placeholder="Buscar serviço..."></div>
+            <select id="serviceStatusFilter"><option value="all">Todos</option><option value="active">Ativos</option><option value="inactive">Inativos</option></select>
+          </div>
           <div id="serviceList" class="card-list"></div>
         </section>
 
         <section id="section-resources" class="editor-section">
-          <div class="section-header"><div><span class="eyebrow">CAPACIDADE</span><h2>Profissionais, mesas e recursos</h2><p>Use recursos para representar funcionários, salas, cadeiras, mesas, equipamentos, quadras ou unidades.</p></div><button id="newResourceButton" class="primary-btn"><i class="ri-add-line"></i> Novo recurso</button></div>
+          <div class="section-header">
+            <div><span class="eyebrow">CAPACIDADE</span><h2>Profissionais, mesas e recursos</h2><p>Represente funcionários, salas, mesas, equipamentos, cadeiras ou unidades.</p></div>
+            <button id="newResourceButton" class="primary-btn"><i class="ri-add-line"></i> Novo recurso</button>
+          </div>
+          <div class="toolbar">
+            <div class="search"><i class="ri-search-line"></i><input id="resourceSearch" placeholder="Buscar recurso..."></div>
+            <select id="resourceTypeFilter"><option value="all">Todos os tipos</option><option value="professional">Profissionais</option><option value="table">Mesas</option><option value="room">Salas</option><option value="equipment">Equipamentos</option><option value="unit">Unidades</option><option value="other">Outros</option></select>
+            <select id="resourceStatusFilter"><option value="all">Todos</option><option value="active">Ativos</option><option value="inactive">Inativos</option></select>
+          </div>
           <div id="resourceList" class="card-list"></div>
         </section>
 
         <section id="section-availability" class="editor-section">
-          <div class="section-header"><div><span class="eyebrow">HORÁRIOS</span><h2>Disponibilidade</h2><p>Defina dias, turnos, intervalos e exceções.</p></div><button id="addBlockButton" class="secondary-btn"><i class="ri-calendar-close-line"></i> Bloquear período</button></div>
+          <div class="section-header">
+            <div><span class="eyebrow">HORÁRIOS</span><h2>Disponibilidade</h2><p>Defina a semana padrão e os bloqueios especiais.</p></div>
+            <button id="addBlockButton" class="secondary-btn"><i class="ri-calendar-close-line"></i> Bloquear período</button>
+          </div>
           <div class="two-col align-start">
-            <article class="panel"><div class="panel-head"><div><small>SEMANA PADRÃO</small><h3>Horários de atendimento</h3></div><button id="copyMondayButton" class="text-btn">Copiar segunda</button></div><div id="weeklySchedule" class="week-list"></div></article>
-            <article class="panel"><div class="panel-head"><div><small>EXCEÇÕES</small><h3>Bloqueios e datas especiais</h3></div></div><div id="blockList" class="card-list compact"></div></article>
+            <article class="panel">
+              <div class="panel-head"><div><small>SEMANA PADRÃO</small><h3>Horários de atendimento</h3></div><button id="copyMondayButton" class="text-btn">Copiar segunda</button></div>
+              <div class="helper-box" style="margin:14px 0">Esta versão mantém compatibilidade com sua tabela atual: um período principal e um intervalo por dia. O motor abaixo já valida fechamento, intervalo e sobreposição.</div>
+              <div id="weeklySchedule" class="week-list"></div>
+            </article>
+            <article class="panel">
+              <div class="panel-head"><div><small>EXCEÇÕES</small><h3>Bloqueios e datas especiais</h3></div></div>
+              <div id="blockList" class="card-list compact" style="margin-top:14px"></div>
+            </article>
           </div>
         </section>
 
@@ -277,23 +499,24 @@ img { display: block; max-width: 100%; }
           <div class="panel form-grid">
             <label class="field"><span>Intervalo da grade</span><select id="slotInterval"><option value="5">5 minutos</option><option value="10">10 minutos</option><option value="15">15 minutos</option><option value="30">30 minutos</option><option value="60">60 minutos</option></select></label>
             <label class="field"><span>Antecedência mínima</span><input id="minNotice" type="number" min="0"><small>Em minutos</small></label>
-            <label class="field"><span>Janela máxima</span><input id="maxAdvanceDays" type="number" min="1"><small>Quantos dias no futuro</small></label>
-            <label class="field"><span>Intervalo entre atendimentos</span><input id="bufferMinutes" type="number" min="0"><small>Em minutos</small></label>
+            <label class="field"><span>Janela máxima</span><input id="maxAdvanceDays" type="number" min="1" max="730"><small>Quantos dias no futuro</small></label>
+            <label class="field"><span>Intervalo entre atendimentos</span><input id="bufferMinutes" type="number" min="0" max="1440"><small>Em minutos</small></label>
             <label class="field"><span>Prazo para cancelamento</span><input id="cancellationHours" type="number" min="0"><small>Horas antes</small></label>
-            <label class="field"><span>Limite por cliente/dia</span><input id="maxPerCustomerDay" type="number" min="0"></label>
-            <label class="toggle-row full"><span><b>Confirmação automática</b><small>O agendamento entra confirmado sem análise.</small></span><input id="autoConfirm" type="checkbox"></label>
-            <label class="toggle-row full"><span><b>Permitir lista de espera</b><small>Registra interessados quando não houver horário.</small></span><input id="waitlistEnabled" type="checkbox"></label>
-            <label class="toggle-row full"><span><b>Permitir reagendamento</b><small>Cliente pode escolher outro horário pelo link.</small></span><input id="rescheduleEnabled" type="checkbox"></label>
-            <label class="toggle-row full"><span><b>Solicitar aprovação manual</b><small>Útil para eventos, mesas especiais e procedimentos.</small></span><input id="manualApproval" type="checkbox"></label>
-            <label class="toggle-row full"><span><b>Exigir CPF</b><small>Solicita CPF no checkout.</small></span><input id="requireCpf" type="checkbox"></label>
-            <label class="toggle-row full"><span><b>Exigir aceite dos termos</b><small>Cliente precisa aceitar políticas antes de concluir.</small></span><input id="requireTerms" type="checkbox"></label>
+            <label class="field"><span>Limite por cliente/dia</span><input id="maxPerCustomerDay" type="number" min="0"><small>0 = sem limite</small></label>
+
+            <label class="toggle-row full"><span><b>Confirmação automática</b><small>Confirma imediatamente quando não houver aprovação manual.</small></span><input id="autoConfirm" type="checkbox"></label>
+            <label class="toggle-row full"><span><b>Solicitar aprovação manual</b><small>Ao ativar, a confirmação automática é desligada.</small></span><input id="manualApproval" type="checkbox"></label>
+            <label class="toggle-row full"><span><b>Permitir lista de espera</b><small>Disponibiliza cadastro quando não houver vaga.</small></span><input id="waitlistEnabled" type="checkbox"></label>
+            <label class="toggle-row full"><span><b>Permitir reagendamento</b><small>Cliente pode selecionar outro horário pelo fluxo público.</small></span><input id="rescheduleEnabled" type="checkbox"></label>
+            <label class="toggle-row full"><span><b>Exigir CPF</b><small>Solicita CPF antes da conclusão.</small></span><input id="requireCpf" type="checkbox"></label>
+            <label class="toggle-row full"><span><b>Exigir aceite dos termos</b><small>Cliente precisa aceitar as políticas antes de concluir.</small></span><input id="requireTerms" type="checkbox"></label>
             <label class="field full"><span>Política de cancelamento</span><textarea id="cancellationPolicy" rows="4"></textarea></label>
             <label class="field full"><span>Termos e observações</span><textarea id="termsText" rows="5"></textarea></label>
           </div>
         </section>
 
         <section id="section-payments" class="editor-section">
-          <div class="section-header"><div><span class="eyebrow">FINANCEIRO</span><h2>Pagamento antecipado e sinal</h2><p>Defina cobrança total, percentual, valor fixo ou reserva sem pagamento.</p></div></div>
+          <div class="section-header"><div><span class="eyebrow">FINANCEIRO</span><h2>Pagamento antecipado e sinal</h2><p>Configure uma regra financeiramente coerente com a reserva.</p></div></div>
           <div class="two-col align-start">
             <article class="panel form-stack">
               <div class="payment-mode-grid">
@@ -303,52 +526,83 @@ img { display: block; max-width: 100%; }
                 <label><input type="radio" name="paymentMode" value="fixed"><span><i class="ri-money-dollar-circle-line"></i><b>Sinal fixo</b><small>Valor definido</small></span></label>
               </div>
               <div class="form-grid">
-                <label class="field"><span>Percentual do sinal</span><input id="depositPercentage" type="number" min="0" max="100"></label>
-                <label class="field"><span>Valor fixo do sinal</span><input id="depositFixed" type="number" min="0" step="0.01"></label>
-                <label class="field"><span>Prazo para pagamento</span><input id="paymentDeadlineMinutes" type="number" min="1"><small>Minutos após reservar</small></label>
+                <label id="depositPercentageField" class="field"><span>Percentual do sinal</span><input id="depositPercentage" type="number" min="0" max="100"></label>
+                <label id="depositFixedField" class="field"><span>Valor fixo do sinal</span><input id="depositFixed" type="number" min="0" step="0.01"></label>
+                <label id="paymentDeadlineField" class="field"><span>Prazo para pagamento</span><input id="paymentDeadlineMinutes" type="number" min="1"><small>Minutos após reservar</small></label>
                 <label class="field"><span>Política de reembolso</span><select id="refundPolicy"><option value="manual">Análise manual</option><option value="full">Reembolso integral</option><option value="partial">Reembolso parcial</option><option value="none">Não reembolsável</option></select></label>
               </div>
+              <div id="paymentValidation" class="warning-box is-hidden"></div>
             </article>
-            <article class="panel form-stack"><div class="panel-head"><div><small>FORMAS ACEITAS</small><h3>Métodos de pagamento</h3></div></div>
+
+            <article class="panel form-stack">
+              <div class="panel-head"><div><small>FORMAS ACEITAS</small><h3>Métodos de pagamento</h3></div></div>
               <label class="toggle-row"><span><b>PIX</b><small>Cobrança via chave ou integração.</small></span><input id="payPix" type="checkbox"></label>
-              <label class="field"><span>Chave PIX</span><input id="pixKey"></label>
-              <label class="field"><span>Nome do recebedor</span><input id="pixReceiver"></label>
-              <label class="toggle-row"><span><b>Cartão online</b><small>Estrutura pronta para gateway.</small></span><input id="payCardOnline" type="checkbox"></label>
+              <div id="pixFields" class="form-stack">
+                <label class="field"><span>Chave PIX</span><input id="pixKey"></label>
+                <label class="field"><span>Nome do recebedor</span><input id="pixReceiver"></label>
+              </div>
+              <label class="toggle-row"><span><b>Cartão online</b><small>Estrutura preparada para gateway.</small></span><input id="payCardOnline" type="checkbox"></label>
               <label class="toggle-row"><span><b>Pagar no local</b><small>Dinheiro, cartão ou PIX presencial.</small></span><input id="payOnSite" type="checkbox"></label>
-              <label class="toggle-row"><span><b>Comprovante obrigatório</b><small>Cliente envia comprovante para validar.</small></span><input id="requireReceipt" type="checkbox"></label>
+              <label class="toggle-row"><span><b>Comprovante obrigatório</b><small>Cliente envia comprovante para validação.</small></span><input id="requireReceipt" type="checkbox"></label>
             </article>
           </div>
         </section>
 
         <section id="section-customers" class="editor-section">
-          <div class="section-header"><div><span class="eyebrow">RELACIONAMENTO</span><h2>Clientes</h2><p>Histórico de reservas, observações, faltas e bloqueios.</p></div><button id="newCustomerButton" class="secondary-btn"><i class="ri-user-add-line"></i> Novo cliente</button></div>
+          <div class="section-header">
+            <div><span class="eyebrow">RELACIONAMENTO</span><h2>Clientes</h2><p>Histórico, observações, faltas e bloqueios.</p></div>
+            <button id="newCustomerButton" class="secondary-btn"><i class="ri-user-add-line"></i> Novo cliente</button>
+          </div>
           <div class="toolbar"><div class="search"><i class="ri-search-line"></i><input id="customerSearch" placeholder="Buscar por nome, telefone ou e-mail..."></div></div>
           <div id="customerList" class="table-wrap"></div>
         </section>
 
         <section id="section-appointments" class="editor-section">
-          <div class="section-header"><div><span class="eyebrow">AGENDA</span><h2>Agendamentos</h2><p>Acompanhe reservas, pagamentos, presença e cancelamentos.</p></div><button id="newAppointmentButton" class="primary-btn"><i class="ri-add-line"></i> Novo agendamento</button></div>
-          <div class="toolbar wrap"><input id="appointmentDate" type="date"><select id="appointmentStatus"><option value="all">Todos os status</option><option value="pending">Pendente</option><option value="confirmed">Confirmado</option><option value="completed">Concluído</option><option value="cancelled">Cancelado</option><option value="no_show">Não compareceu</option></select><select id="appointmentResource"><option value="all">Todos os recursos</option></select></div>
+          <div class="section-header">
+            <div><span class="eyebrow">AGENDA</span><h2>Agendamentos</h2><p>Acompanhe reservas, pagamentos, presença e cancelamentos.</p></div>
+            <button id="newAppointmentButton" class="primary-btn"><i class="ri-add-line"></i> Novo agendamento</button>
+          </div>
+          <div class="toolbar wrap">
+            <input id="appointmentDate" type="date">
+            <select id="appointmentStatus"><option value="all">Todos os status</option><option value="pending">Pendente</option><option value="confirmed">Confirmado</option><option value="completed">Concluído</option><option value="cancelled">Cancelado</option><option value="no_show">Não compareceu</option></select>
+            <select id="appointmentResource"><option value="all">Todos os recursos</option></select>
+            <div class="search"><i class="ri-search-line"></i><input id="appointmentSearch" placeholder="Buscar cliente ou serviço..."></div>
+          </div>
           <div id="appointmentList" class="timeline"></div>
         </section>
 
         <section id="section-notifications" class="editor-section">
-          <div class="section-header"><div><span class="eyebrow">AUTOMAÇÃO</span><h2>Notificações e lembretes</h2><p>Mensagens para confirmação, lembrete, pagamento e pós-atendimento.</p></div></div>
+          <div class="section-header"><div><span class="eyebrow">AUTOMAÇÃO</span><h2>Notificações e lembretes</h2><p>Defina os templates usados pelos seus canais de comunicação.</p></div></div>
           <div class="panel form-stack">
             <label class="toggle-row"><span><b>Enviar confirmação</b><small>Ao criar ou confirmar o agendamento.</small></span><input id="notifyConfirmation" type="checkbox"></label>
             <label class="toggle-row"><span><b>Lembrete automático</b><small>Envia antes do horário marcado.</small></span><input id="notifyReminder" type="checkbox"></label>
-            <div class="form-grid"><label class="field"><span>Antecedência do lembrete</span><input id="reminderHours" type="number" min="1"><small>Horas antes</small></label><label class="field"><span>Canal preferencial</span><select id="notificationChannel"><option value="whatsapp">WhatsApp</option><option value="email">E-mail</option><option value="both">WhatsApp e e-mail</option></select></label></div>
+            <div class="form-grid">
+              <label class="field"><span>Antecedência do lembrete</span><input id="reminderHours" type="number" min="1"><small>Horas antes</small></label>
+              <label class="field"><span>Canal preferencial</span><select id="notificationChannel"><option value="whatsapp">WhatsApp</option><option value="email">E-mail</option><option value="both">WhatsApp e e-mail</option></select></label>
+            </div>
             <label class="toggle-row"><span><b>Lembrete de pagamento</b><small>Avisa quando o sinal estiver pendente.</small></span><input id="notifyPayment" type="checkbox"></label>
             <label class="toggle-row"><span><b>Mensagem pós-atendimento</b><small>Solicita avaliação ou envia agradecimento.</small></span><input id="notifyAftercare" type="checkbox"></label>
+            <div class="helper-box">Variáveis disponíveis: <b>{cliente}</b>, <b>{servico}</b>, <b>{data}</b>, <b>{hora}</b>, <b>{negocio}</b>.</div>
             <label class="field full"><span>Mensagem de confirmação</span><textarea id="confirmationMessage" rows="4"></textarea></label>
             <label class="field full"><span>Mensagem de lembrete</span><textarea id="reminderMessage" rows="4"></textarea></label>
           </div>
         </section>
 
         <section id="section-publish" class="editor-section">
-          <div class="section-header"><div><span class="eyebrow">PÁGINA PÚBLICA</span><h2>Publicar agenda</h2><p>Defina o endereço, status e aparência do agendamento online.</p></div></div>
+          <div class="section-header"><div><span class="eyebrow">PÁGINA PÚBLICA</span><h2>Publicar agenda</h2><p>Defina endereço, status e conteúdo da experiência pública.</p></div></div>
           <div class="two-col align-start">
-            <article class="panel form-stack"><label class="field"><span>Endereço público</span><div class="slug-input"><span>/agendar/</span><input id="publicSlug" maxlength="80"></div></label><label class="toggle-row"><span><b>Página publicada</b><small>Permite que clientes façam reservas.</small></span><input id="isPublished" type="checkbox"></label><label class="toggle-row"><span><b>Mostrar preços</b><small>Exibe os valores dos serviços.</small></span><input id="showPrices" type="checkbox"></label><label class="toggle-row"><span><b>Mostrar profissionais</b><small>Cliente pode escolher o profissional ou recurso.</small></span><input id="showResources" type="checkbox"></label><label class="toggle-row"><span><b>Permitir escolha automática</b><small>O sistema seleciona qualquer recurso disponível.</small></span><input id="allowAnyResource" type="checkbox"></label><button id="copyPublicLink" class="secondary-btn"><i class="ri-file-copy-line"></i> Copiar link</button></article>
+            <article class="panel form-stack">
+              <label class="field"><span>Endereço público</span><div class="slug-input"><span>/agendar/</span><input id="publicSlug" maxlength="80"></div><small id="slugStatus" class="slug-status">Use letras, números e hífen.</small></label>
+              <label class="toggle-row"><span><b>Página publicada</b><small>Só pode ser publicada quando a configuração mínima estiver válida.</small></span><input id="isPublished" type="checkbox"></label>
+              <label class="toggle-row"><span><b>Mostrar preços</b><small>Exibe valores dos serviços.</small></span><input id="showPrices" type="checkbox"></label>
+              <label class="toggle-row"><span><b>Mostrar profissionais</b><small>Cliente pode visualizar recursos/profissionais.</small></span><input id="showResources" type="checkbox"></label>
+              <label class="toggle-row"><span><b>Permitir escolha automática</b><small>O sistema pode selecionar um recurso disponível.</small></span><input id="allowAnyResource" type="checkbox"></label>
+              <div id="publishValidation" class="warning-box is-hidden"></div>
+              <div class="section-actions">
+                <button id="copyPublicLink" type="button" class="secondary-btn"><i class="ri-file-copy-line"></i> Copiar link</button>
+                <button id="openPublicLink" type="button" class="secondary-btn"><i class="ri-external-link-line"></i> Abrir página</button>
+              </div>
+            </article>
             <article class="phone-preview"><div class="phone-top"></div><div id="publicPreview" class="preview-content"></div></article>
           </div>
         </section>
@@ -356,56 +610,1030 @@ img { display: block; max-width: 100%; }
     </main>
   </div>
 
-  <div id="modal" class="modal is-hidden"><div class="modal-backdrop" data-close-modal></div><section class="modal-card"><header><div><small id="modalKicker">CADASTRO</small><h2 id="modalTitle">Novo item</h2></div><button class="icon-btn" data-close-modal><i class="ri-close-line"></i></button></header><div id="modalBody"></div></section></div>
-  <div id="previewDrawer" class="drawer is-hidden"><div class="drawer-backdrop" data-close-preview></div><aside><header><h3>Prévia da página</h3><button class="icon-btn" data-close-preview><i class="ri-close-line"></i></button></header><div class="phone-preview large"><div class="phone-top"></div><div id="drawerPreview" class="preview-content"></div></div></aside></div>
-  <div id="toastRegion" class="toast-region"></div>
+  <div id="modal" class="modal is-hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-backdrop" data-close-modal></div>
+    <section class="modal-card">
+      <header>
+        <div><small id="modalKicker">CADASTRO</small><h2 id="modalTitle">Novo item</h2></div>
+        <button class="icon-btn" data-close-modal aria-label="Fechar"><i class="ri-close-line"></i></button>
+      </header>
+      <div id="modalBody"></div>
+    </section>
+  </div>
 
-  
-<script type="module">
-const __clenaSources = {"assets/js/config.js": "let cachedConfig = null;\n\nexport async function getPublicConfig() {\n  if (cachedConfig) return cachedConfig;\n\n  const response = await fetch(\"/api/public-config\", {\n    method: \"GET\",\n    headers: { \"Accept\": \"application/json\" },\n    cache: \"no-store\"\n  });\n\n  if (!response.ok) {\n    throw new Error(\"Não foi possível carregar as configurações públicas da Vercel.\");\n  }\n\n  const config = await response.json();\n\n  if (!config.supabaseUrl || !config.supabaseAnonKey) {\n    throw new Error(\"SUPABASE_URL ou SUPABASE_ANON_KEY não foram configuradas na Vercel.\");\n  }\n\n  cachedConfig = Object.freeze(config);\n  return cachedConfig;\n}\n", "assets/js/supabase-client.js": "import { createClient } from \"https://esm.sh/@supabase/supabase-js@2\";\nimport { getPublicConfig } from \"./config.js\";\n\nlet client = null;\n\nexport async function getSupabase() {\n  if (client) return client;\n\n  const config = await getPublicConfig();\n\n  client = createClient(config.supabaseUrl, config.supabaseAnonKey, {\n    auth: {\n      persistSession: true,\n      autoRefreshToken: true,\n      detectSessionInUrl: true\n    }\n  });\n\n  return client;\n}\n", "assets/js/scheduling-editor.js": "import { getSupabase } from './supabase-client.js';\n\nconst supabase = await getSupabase();\nconst $ = (id) => document.getElementById(id);\nconst qsa = (selector, root = document) => [...root.querySelectorAll(selector)];\nconst money = (value) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(value || 0));\nconst esc = (value = '') => String(value).replace(/[&<>'\"]/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;',\"'\":'&#39;','\"':'&quot;'}[c]));\nconst uid = () => crypto.randomUUID();\n\nconst state = {\n  user: null,\n  profile: null,\n  business: null,\n  services: [],\n  resources: [],\n  schedules: [],\n  blocks: [],\n  customers: [],\n  appointments: [],\n  pendingLogo: null,\n  pendingCover: null\n};\n\nconst defaultBusiness = {\n  name: '', business_type: 'service', description: '', whatsapp: '', instagram: '', phone: '', email: '', address: '',\n  primary_color: '#2563eb', timezone: 'America/Sao_Paulo', slot_interval: 15, min_notice_minutes: 60, max_advance_days: 60,\n  buffer_minutes: 0, cancellation_hours: 24, max_per_customer_day: 0, auto_confirm: true, waitlist_enabled: false,\n  reschedule_enabled: true, manual_approval: false, require_cpf: false, require_terms: false, cancellation_policy: '', terms_text: '',\n  payment_mode: 'none', deposit_percentage: 30, deposit_fixed: 0, payment_deadline_minutes: 30, refund_policy: 'manual',\n  pay_pix: true, pix_key: '', pix_receiver: '', pay_card_online: false, pay_on_site: true, require_receipt: false,\n  notify_confirmation: true, notify_reminder: true, reminder_hours: 24, notification_channel: 'whatsapp', notify_payment: true,\n  notify_aftercare: false, confirmation_message: 'Olá, {cliente}! Seu agendamento para {servico} foi recebido para {data} às {hora}.',\n  reminder_message: 'Olá, {cliente}! Lembrete do seu agendamento de {servico} amanhã às {hora}.',\n  slug: '', is_published: false, show_prices: true, show_resources: true, allow_any_resource: true, logo_url: '', cover_url: ''\n};\n\nconst weekdays = [\n  ['monday','Segunda-feira'],['tuesday','Terça-feira'],['wednesday','Quarta-feira'],['thursday','Quinta-feira'],\n  ['friday','Sexta-feira'],['saturday','Sábado'],['sunday','Domingo']\n];\n\nfunction toast(message, type = 'ok') {\n  const el = document.createElement('div'); el.className = `toast ${type === 'error' ? 'error' : ''}`; el.textContent = message;\n  $('toastRegion').appendChild(el); setTimeout(() => el.remove(), 3200);\n}\n\nfunction setSection(name) {\n  qsa('.editor-section').forEach((el) => el.classList.toggle('is-active', el.id === `section-${name}`));\n  qsa('.nav-item[data-section]').forEach((el) => el.classList.toggle('is-active', el.dataset.section === name));\n  const active = document.querySelector(`.nav-item[data-section=\"${name}\"] span`);\n  $('pageTitle').textContent = active?.textContent || 'Editor';\n  document.querySelector('.sidebar')?.classList.remove('is-open');\n}\n\nfunction bindNavigation() {\n  qsa('[data-section]').forEach((btn) => btn.addEventListener('click', () => setSection(btn.dataset.section)));\n  qsa('[data-go]').forEach((btn) => btn.addEventListener('click', () => setSection(btn.dataset.go)));\n  $('mobileMenu').addEventListener('click', () => document.querySelector('.sidebar').classList.toggle('is-open'));\n}\n\nasync function requireAuth() {\n  const { data: { session } } = await supabase.auth.getSession();\n  if (!session) { window.location.href = './index.html'; return false; }\n  state.user = session.user;\n  const { data: profile } = await supabase.from('profiles').select('*').eq('id', state.user.id).maybeSingle();\n  state.profile = profile;\n  $('profileInitial').textContent = (profile?.store_name || state.user.email || 'C').charAt(0).toUpperCase();\n  return true;\n}\n\nasync function loadAll() {\n  const userId = state.user.id;\n  const [businessRes, servicesRes, resourcesRes, schedulesRes, blocksRes, customersRes, appointmentsRes] = await Promise.all([\n    supabase.from('scheduling_businesses').select('*').eq('user_id', userId).maybeSingle(),\n    supabase.from('scheduling_services').select('*').eq('user_id', userId).order('sort_order'),\n    supabase.from('scheduling_resources').select('*').eq('user_id', userId).order('name'),\n    supabase.from('scheduling_weekly_hours').select('*').eq('user_id', userId),\n    supabase.from('scheduling_blocks').select('*').eq('user_id', userId).order('starts_at'),\n    supabase.from('scheduling_customers').select('*').eq('user_id', userId).order('name'),\n    supabase.from('scheduling_appointments').select('*, scheduling_services(name), scheduling_resources(name), scheduling_customers(name,phone)').eq('user_id', userId).order('starts_at', { ascending: false }).limit(300)\n  ]);\n  for (const res of [businessRes, servicesRes, resourcesRes, schedulesRes, blocksRes, customersRes, appointmentsRes]) {\n    if (res.error) console.error(res.error);\n  }\n  state.business = { ...defaultBusiness, ...(businessRes.data || {}), user_id: userId };\n  state.services = servicesRes.data || [];\n  state.resources = resourcesRes.data || [];\n  state.schedules = schedulesRes.data || [];\n  state.blocks = blocksRes.data || [];\n  state.customers = customersRes.data || [];\n  state.appointments = appointmentsRes.data || [];\n  if (!state.schedules.length) state.schedules = weekdays.map(([day]) => ({ id: uid(), user_id: userId, weekday: day, is_open: !['sunday'].includes(day), start_time: '08:00', end_time: '18:00', break_start: '', break_end: '' }));\n}\n\nfunction fillBusiness() {\n  const b = state.business;\n  const map = {\n    businessName:'name', businessType:'business_type', businessDescription:'description', businessWhatsapp:'whatsapp', businessInstagram:'instagram',\n    businessPhone:'phone', businessEmail:'email', businessAddress:'address', primaryColor:'primary_color', timezone:'timezone', slotInterval:'slot_interval',\n    minNotice:'min_notice_minutes', maxAdvanceDays:'max_advance_days', bufferMinutes:'buffer_minutes', cancellationHours:'cancellation_hours',\n    maxPerCustomerDay:'max_per_customer_day', autoConfirm:'auto_confirm', waitlistEnabled:'waitlist_enabled', rescheduleEnabled:'reschedule_enabled',\n    manualApproval:'manual_approval', requireCpf:'require_cpf', requireTerms:'require_terms', cancellationPolicy:'cancellation_policy', termsText:'terms_text',\n    depositPercentage:'deposit_percentage', depositFixed:'deposit_fixed', paymentDeadlineMinutes:'payment_deadline_minutes', refundPolicy:'refund_policy',\n    payPix:'pay_pix', pixKey:'pix_key', pixReceiver:'pix_receiver', payCardOnline:'pay_card_online', payOnSite:'pay_on_site', requireReceipt:'require_receipt',\n    notifyConfirmation:'notify_confirmation', notifyReminder:'notify_reminder', reminderHours:'reminder_hours', notificationChannel:'notification_channel',\n    notifyPayment:'notify_payment', notifyAftercare:'notify_aftercare', confirmationMessage:'confirmation_message', reminderMessage:'reminder_message',\n    publicSlug:'slug', isPublished:'is_published', showPrices:'show_prices', showResources:'show_resources', allowAnyResource:'allow_any_resource'\n  };\n  Object.entries(map).forEach(([id,key]) => { const el = $(id); if (!el) return; if (el.type === 'checkbox') el.checked = !!b[key]; else el.value = b[key] ?? ''; });\n  qsa('input[name=\"paymentMode\"]').forEach((el) => el.checked = el.value === b.payment_mode);\n  updateMediaPreview();\n}\n\nfunction collectBusiness() {\n  const get = (id) => $(id)?.value ?? '';\n  const checked = (id) => !!$(id)?.checked;\n  return {\n    ...state.business, user_id: state.user.id, name:get('businessName').trim(), business_type:get('businessType'), description:get('businessDescription').trim(),\n    whatsapp:get('businessWhatsapp').trim(), instagram:get('businessInstagram').trim(), phone:get('businessPhone').trim(), email:get('businessEmail').trim(),\n    address:get('businessAddress').trim(), primary_color:get('primaryColor'), timezone:get('timezone'), slot_interval:Number(get('slotInterval') || 15),\n    min_notice_minutes:Number(get('minNotice') || 0), max_advance_days:Number(get('maxAdvanceDays') || 60), buffer_minutes:Number(get('bufferMinutes') || 0),\n    cancellation_hours:Number(get('cancellationHours') || 0), max_per_customer_day:Number(get('maxPerCustomerDay') || 0), auto_confirm:checked('autoConfirm'),\n    waitlist_enabled:checked('waitlistEnabled'), reschedule_enabled:checked('rescheduleEnabled'), manual_approval:checked('manualApproval'), require_cpf:checked('requireCpf'),\n    require_terms:checked('requireTerms'), cancellation_policy:get('cancellationPolicy'), terms_text:get('termsText'),\n    payment_mode:document.querySelector('input[name=\"paymentMode\"]:checked')?.value || 'none', deposit_percentage:Number(get('depositPercentage') || 0),\n    deposit_fixed:Number(get('depositFixed') || 0), payment_deadline_minutes:Number(get('paymentDeadlineMinutes') || 30), refund_policy:get('refundPolicy'),\n    pay_pix:checked('payPix'), pix_key:get('pixKey'), pix_receiver:get('pixReceiver'), pay_card_online:checked('payCardOnline'), pay_on_site:checked('payOnSite'),\n    require_receipt:checked('requireReceipt'), notify_confirmation:checked('notifyConfirmation'), notify_reminder:checked('notifyReminder'), reminder_hours:Number(get('reminderHours') || 24),\n    notification_channel:get('notificationChannel'), notify_payment:checked('notifyPayment'), notify_aftercare:checked('notifyAftercare'), confirmation_message:get('confirmationMessage'),\n    reminder_message:get('reminderMessage'), slug:slugify(get('publicSlug')), is_published:checked('isPublished'), show_prices:checked('showPrices'), show_resources:checked('showResources'),\n    allow_any_resource:checked('allowAnyResource')\n  };\n}\n\nfunction slugify(v) { return String(v || '').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,80); }\n\nfunction updateMediaPreview() {\n  const logo = state.pendingLogo ? URL.createObjectURL(state.pendingLogo) : state.business.logo_url;\n  const cover = state.pendingCover ? URL.createObjectURL(state.pendingCover) : state.business.cover_url;\n  $('logoPreview').style.backgroundImage = logo ? `url(\"${logo}\")` : '';\n  $('logoPreview').innerHTML = logo ? '' : '<i class=\"ri-store-2-line\"></i><b>Logo</b>';\n  $('coverPreview').style.backgroundImage = cover ? `url(\"${cover}\")` : '';\n  $('coverPreview').innerHTML = cover ? '' : '<i class=\"ri-image-add-line\"></i><b>Adicionar capa</b><small>Recomendado: 1600 × 600</small>';\n}\n\nasync function uploadImage(file, kind) {\n  if (!file) return state.business[`${kind}_url`] || '';\n  const ext = file.name.split('.').pop().toLowerCase();\n  const path = `${state.user.id}/scheduling/${kind}-${Date.now()}.${ext}`;\n  const { error } = await supabase.storage.from('scheduling-media').upload(path, file, { upsert: true, contentType: file.type });\n  if (error) throw error;\n  return supabase.storage.from('scheduling-media').getPublicUrl(path).data.publicUrl;\n}\n\nasync function saveAll() {\n  try {\n    $('saveAllButton').disabled = true;\n    const business = collectBusiness();\n    business.logo_url = await uploadImage(state.pendingLogo, 'logo');\n    business.cover_url = await uploadImage(state.pendingCover, 'cover');\n    const { data, error } = await supabase.from('scheduling_businesses').upsert(business, { onConflict: 'user_id' }).select().single();\n    if (error) throw error;\n    state.business = data; state.pendingLogo = null; state.pendingCover = null;\n    const schedulePayload = state.schedules.map(({id, ...r}) => ({ ...r, user_id: state.user.id }));\n    await supabase.from('scheduling_weekly_hours').delete().eq('user_id', state.user.id);\n    if (schedulePayload.length) { const { error: se } = await supabase.from('scheduling_weekly_hours').insert(schedulePayload); if (se) throw se; }\n    await loadAll(); renderAll(); toast('Configurações salvas com sucesso.');\n  } catch (err) { console.error(err); toast(err.message || 'Erro ao salvar.', 'error'); }\n  finally { $('saveAllButton').disabled = false; }\n}\n\nfunction renderAll() {\n  fillBusiness(); renderStats(); renderServices(); renderResources(); renderSchedule(); renderBlocks(); renderCustomers(); renderAppointments(); renderResourceFilter(); renderPreview();\n  $('sidebarName').textContent = state.business.name || state.profile?.store_name || 'Meu negócio';\n  $('sidebarStatus').textContent = state.business.is_published ? 'Publicado' : 'Rascunho';\n  document.documentElement.style.setProperty('--primary', state.business.primary_color || '#2563eb');\n}\n\nfunction renderStats() {\n  $('statServices').textContent = state.services.length; $('navServiceCount').textContent = state.services.length;\n  $('statResources').textContent = state.resources.length; $('statAppointments').textContent = state.appointments.length;\n  $('statPendingPayments').textContent = state.appointments.filter(a => ['pending','partial'].includes(a.payment_status)).length;\n  const checks = [!!state.business.name, state.services.length>0, state.resources.length>0, state.schedules.some(s=>s.is_open), !!state.business.slug, state.business.payment_mode==='none'||state.business.pay_pix||state.business.pay_card_online||state.business.pay_on_site];\n  const labels = ['Dados do negócio','Serviço cadastrado','Profissional ou recurso','Horários configurados','Endereço público','Pagamento definido'];\n  const done = checks.filter(Boolean).length, percent = Math.round(done/checks.length*100);\n  $('setupPercent').textContent = `${percent}%`; $('setupBar').style.width = `${percent}%`;\n  $('setupChecklist').innerHTML = labels.map((l,i)=>`<div class=\"check-item ${checks[i]?'done':''}\"><i class=\"${checks[i]?'ri-checkbox-circle-fill':'ri-checkbox-blank-circle-line'}\"></i><span>${l}</span></div>`).join('');\n  const recent = state.appointments.slice(0,5);\n  $('recentAppointments').className = recent.length ? 'card-list compact' : 'empty-state';\n  $('recentAppointments').innerHTML = recent.length ? recent.map(a=>`<div class=\"item-card\"><div class=\"thumb\"><i class=\"ri-calendar-event-line\"></i></div><div class=\"item-main\"><h4>${esc(a.scheduling_customers?.name || a.customer_name || 'Cliente')}</h4><small>${formatDateTime(a.starts_at)} · ${esc(a.scheduling_services?.name || '')}</small></div></div>`).join('') : '<i class=\"ri-calendar-todo-line\"></i><p>Nenhum agendamento ainda.</p>';\n}\n\nfunction renderServices() {\n  const term = $('serviceSearch').value.toLowerCase(), filter = $('serviceStatusFilter').value;\n  const list = state.services.filter(s => (!term || `${s.name} ${s.description}`.toLowerCase().includes(term)) && (filter==='all'||(filter==='active'?s.is_active:!s.is_active)));\n  $('serviceList').innerHTML = list.length ? list.map(s=>`<article class=\"item-card\"><div class=\"thumb\" ${s.image_url?`style=\"background-image:url('${esc(s.image_url)}')\"`:''}>${s.image_url?'':'<i class=\"ri-service-line\"></i>'}</div><div class=\"item-main\"><h4>${esc(s.name)}</h4><p>${esc(s.description || 'Sem descrição')}</p><small>${s.duration_minutes} min · ${money(s.price)} · Capacidade ${s.capacity || 1}</small></div><span class=\"badge ${s.is_active?'':'off'}\">${s.is_active?'ATIVO':'INATIVO'}</span><div class=\"item-actions\"><button data-edit-service=\"${s.id}\"><i class=\"ri-pencil-line\"></i></button><button data-delete-service=\"${s.id}\"><i class=\"ri-delete-bin-line\"></i></button></div></article>`).join('') : '<div class=\"empty-state\"><i class=\"ri-service-line\"></i><p>Nenhum serviço encontrado.</p></div>';\n  qsa('[data-edit-service]').forEach(b=>b.onclick=()=>openServiceModal(state.services.find(s=>s.id===b.dataset.editService)));\n  qsa('[data-delete-service]').forEach(b=>b.onclick=()=>deleteRow('scheduling_services',b.dataset.deleteService));\n}\n\nfunction renderResources() {\n  $('resourceList').innerHTML = state.resources.length ? state.resources.map(r=>`<article class=\"item-card\"><div class=\"thumb\" ${r.image_url?`style=\"background-image:url('${esc(r.image_url)}')\"`:''}>${r.image_url?'':`<i class=\"${r.resource_type==='professional'?'ri-user-star-line':'ri-building-line'}\"></i>`}</div><div class=\"item-main\"><h4>${esc(r.name)}</h4><p>${esc(r.title || resourceTypeLabel(r.resource_type))}</p><small>Capacidade: ${r.capacity || 1}${r.email?` · ${esc(r.email)}`:''}</small></div><span class=\"badge ${r.is_active?'':'off'}\">${r.is_active?'ATIVO':'INATIVO'}</span><div class=\"item-actions\"><button data-edit-resource=\"${r.id}\"><i class=\"ri-pencil-line\"></i></button><button data-delete-resource=\"${r.id}\"><i class=\"ri-delete-bin-line\"></i></button></div></article>`).join('') : '<div class=\"empty-state\"><i class=\"ri-team-line\"></i><p>Nenhum profissional ou recurso cadastrado.</p></div>';\n  qsa('[data-edit-resource]').forEach(b=>b.onclick=()=>openResourceModal(state.resources.find(r=>r.id===b.dataset.editResource)));\n  qsa('[data-delete-resource]').forEach(b=>b.onclick=()=>deleteRow('scheduling_resources',b.dataset.deleteResource));\n}\nfunction resourceTypeLabel(v){return {professional:'Profissional',table:'Mesa',room:'Sala',equipment:'Equipamento',unit:'Unidade',other:'Outro'}[v]||'Recurso';}\n\nfunction renderSchedule() {\n  $('weeklySchedule').innerHTML = weekdays.map(([day,label])=>{const s=state.schedules.find(x=>x.weekday===day)||{};return `<div class=\"day-row\" data-day=\"${day}\"><strong>${label}</strong><label><input class=\"day-open\" type=\"checkbox\" ${s.is_open?'checked':''}> Aberto</label><div class=\"day-times\"><input class=\"day-start\" type=\"time\" value=\"${s.start_time||'08:00'}\"><input class=\"day-end\" type=\"time\" value=\"${s.end_time||'18:00'}\"><input class=\"break-start\" type=\"time\" value=\"${s.break_start||''}\" title=\"Início do intervalo\"><input class=\"break-end\" type=\"time\" value=\"${s.break_end||''}\" title=\"Fim do intervalo\"></div></div>`}).join('');\n  qsa('.day-row').forEach(row=>qsa('input',row).forEach(inp=>inp.onchange=()=>{const s=state.schedules.find(x=>x.weekday===row.dataset.day);s.is_open=row.querySelector('.day-open').checked;s.start_time=row.querySelector('.day-start').value;s.end_time=row.querySelector('.day-end').value;s.break_start=row.querySelector('.break-start').value||null;s.break_end=row.querySelector('.break-end').value||null;}));\n}\n\nfunction renderBlocks() {\n  $('blockList').innerHTML = state.blocks.length ? state.blocks.map(b=>`<article class=\"item-card\"><div class=\"thumb\"><i class=\"ri-calendar-close-line\"></i></div><div class=\"item-main\"><h4>${esc(b.title || 'Bloqueio')}</h4><small>${formatDateTime(b.starts_at)} até ${formatDateTime(b.ends_at)}</small></div><div class=\"item-actions\"><button data-delete-block=\"${b.id}\"><i class=\"ri-delete-bin-line\"></i></button></div></article>`).join('') : '<div class=\"empty-state\"><i class=\"ri-calendar-close-line\"></i><p>Nenhum bloqueio cadastrado.</p></div>';\n  qsa('[data-delete-block]').forEach(b=>b.onclick=()=>deleteRow('scheduling_blocks',b.dataset.deleteBlock));\n}\n\nfunction renderCustomers() {\n  const term=$('customerSearch').value.toLowerCase(); const list=state.customers.filter(c=>!term||`${c.name} ${c.phone} ${c.email}`.toLowerCase().includes(term));\n  $('customerList').innerHTML = `<table class=\"data-table\"><thead><tr><th>Cliente</th><th>Contato</th><th>Agendamentos</th><th>Faltas</th><th>Status</th><th></th></tr></thead><tbody>${list.map(c=>`<tr><td><strong>${esc(c.name)}</strong></td><td>${esc(c.phone||'—')}<br><small>${esc(c.email||'')}</small></td><td>${c.total_appointments||0}</td><td>${c.no_show_count||0}</td><td><span class=\"badge ${c.is_blocked?'off':''}\">${c.is_blocked?'BLOQUEADO':'ATIVO'}</span></td><td><button class=\"icon-btn\" data-edit-customer=\"${c.id}\"><i class=\"ri-pencil-line\"></i></button></td></tr>`).join('')}</tbody></table>`;\n  qsa('[data-edit-customer]').forEach(b=>b.onclick=()=>openCustomerModal(state.customers.find(c=>c.id===b.dataset.editCustomer)));\n}\n\nfunction renderResourceFilter(){ $('appointmentResource').innerHTML='<option value=\"all\">Todos os recursos</option>'+state.resources.map(r=>`<option value=\"${r.id}\">${esc(r.name)}</option>`).join(''); }\n\nfunction renderAppointments() {\n  const date=$('appointmentDate').value,status=$('appointmentStatus').value,res=$('appointmentResource').value;\n  const list=state.appointments.filter(a=>(!date||a.starts_at?.slice(0,10)===date)&&(status==='all'||a.status===status)&&(res==='all'||a.resource_id===res));\n  $('appointmentList').innerHTML=list.length?list.map(a=>`<article class=\"appointment-card\"><div class=\"appointment-time\"><strong>${new Date(a.starts_at).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}</strong><small>${new Date(a.starts_at).toLocaleDateString('pt-BR')}</small></div><div class=\"appointment-meta\"><h4>${esc(a.scheduling_customers?.name||a.customer_name||'Cliente')}</h4><p>${esc(a.scheduling_services?.name||'Serviço')} · ${esc(a.scheduling_resources?.name||'Sem recurso')}</p><small>${statusLabel(a.status)} · ${paymentLabel(a.payment_status)} · ${money(a.total_amount)}</small></div><div class=\"item-actions\"><button data-edit-appointment=\"${a.id}\"><i class=\"ri-pencil-line\"></i></button></div></article>`).join(''):'<div class=\"empty-state\"><i class=\"ri-calendar-event-line\"></i><p>Nenhum agendamento neste filtro.</p></div>';\n  qsa('[data-edit-appointment]').forEach(b=>b.onclick=()=>openAppointmentModal(state.appointments.find(a=>a.id===b.dataset.editAppointment)));\n}\nfunction statusLabel(v){return {pending:'Pendente',confirmed:'Confirmado',completed:'Concluído',cancelled:'Cancelado',no_show:'Não compareceu'}[v]||v;}\nfunction paymentLabel(v){return {not_required:'Sem cobrança',pending:'Pagamento pendente',partial:'Sinal pago',paid:'Pago',refunded:'Reembolsado'}[v]||v||'Sem cobrança';}\nfunction formatDateTime(v){return v?new Date(v).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'}):'—';}\n\nfunction renderPreview() {\n  const b=collectBusiness(); const services=state.services.filter(s=>s.is_active).slice(0,5);\n  const logo = state.pendingLogo ? URL.createObjectURL(state.pendingLogo) : b.logo_url; const cover=state.pendingCover?URL.createObjectURL(state.pendingCover):b.cover_url;\n  const html=`<div class=\"preview-cover\" ${cover?`style=\"background-image:url('${cover}')\"`:''}></div><div class=\"preview-brand\"><div class=\"preview-logo\" ${logo?`style=\"background-image:url('${logo}')\"`:''}>${logo?'':'<i class=\"ri-calendar-check-line\"></i>'}</div><h3>${esc(b.name||'Seu negócio')}</h3><p>${esc(b.description||'Escolha um serviço e reserve seu horário.')}</p></div><div>${services.map(s=>`<div class=\"preview-service\"><strong>${esc(s.name)}</strong><small>${s.duration_minutes} min${b.show_prices?` · ${money(s.price)}`:''}</small></div>`).join('')||'<div class=\"empty-state\"><p>Cadastre seus serviços.</p></div>'}</div>`;\n  $('publicPreview').innerHTML=html; $('drawerPreview').innerHTML=html;\n}\n\nfunction openModal(title,kicker,body){$('modalTitle').textContent=title;$('modalKicker').textContent=kicker;$('modalBody').innerHTML=body;$('modal').classList.remove('is-hidden');}\nfunction closeModal(){$('modal').classList.add('is-hidden');}\n\nfunction openServiceModal(item={}) {\n  openModal(item.id?'Editar serviço':'Novo serviço','SERVIÇO',`<form id=\"serviceForm\" class=\"form-stack\"><div class=\"form-grid\"><label class=\"field full\"><span>Nome</span><input id=\"mServiceName\" value=\"${esc(item.name||'')}\" required></label><label class=\"field full\"><span>Descrição</span><textarea id=\"mServiceDescription\" rows=\"3\">${esc(item.description||'')}</textarea></label><label class=\"field\"><span>Duração</span><input id=\"mServiceDuration\" type=\"number\" min=\"5\" value=\"${item.duration_minutes||60}\"></label><label class=\"field\"><span>Preço</span><input id=\"mServicePrice\" type=\"number\" step=\"0.01\" min=\"0\" value=\"${item.price||0}\"></label><label class=\"field\"><span>Capacidade por horário</span><input id=\"mServiceCapacity\" type=\"number\" min=\"1\" value=\"${item.capacity||1}\"></label><label class=\"field\"><span>Modalidade</span><select id=\"mServiceLocation\"><option value=\"onsite\" ${item.location_type==='onsite'?'selected':''}>No estabelecimento</option><option value=\"online\" ${item.location_type==='online'?'selected':''}>Online</option><option value=\"customer\" ${item.location_type==='customer'?'selected':''}>No endereço do cliente</option><option value=\"hybrid\" ${item.location_type==='hybrid'?'selected':''}>Híbrido</option></select></label><label class=\"field\"><span>Preço antecipado próprio</span><select id=\"mServicePayment\"><option value=\"inherit\">Usar regra geral</option><option value=\"none\">Sem pagamento</option><option value=\"full\">Integral</option><option value=\"percentage\">Percentual</option><option value=\"fixed\">Sinal fixo</option></select></label><label class=\"field\"><span>Valor/percentual</span><input id=\"mServiceDeposit\" type=\"number\" step=\"0.01\" min=\"0\" value=\"${item.deposit_value||0}\"></label><label class=\"toggle-row full\"><span><b>Serviço ativo</b></span><input id=\"mServiceActive\" type=\"checkbox\" ${item.is_active!==false?'checked':''}></label><label class=\"toggle-row full\"><span><b>Permitir escolha de recurso</b></span><input id=\"mServiceResourceChoice\" type=\"checkbox\" ${item.allow_resource_choice!==false?'checked':''}></label></div><div class=\"modal-footer\"><button type=\"button\" class=\"secondary-btn\" data-close-modal>Cancelar</button><button class=\"primary-btn\">Salvar serviço</button></div></form>`);\n  $('mServicePayment').value=item.payment_mode||'inherit';\n  $('serviceForm').onsubmit=async e=>{e.preventDefault();const payload={id:item.id||uid(),user_id:state.user.id,name:$('mServiceName').value.trim(),description:$('mServiceDescription').value.trim(),duration_minutes:Number($('mServiceDuration').value),price:Number($('mServicePrice').value),capacity:Number($('mServiceCapacity').value),location_type:$('mServiceLocation').value,payment_mode:$('mServicePayment').value,deposit_value:Number($('mServiceDeposit').value),is_active:$('mServiceActive').checked,allow_resource_choice:$('mServiceResourceChoice').checked,sort_order:item.sort_order??state.services.length};const {error}=await supabase.from('scheduling_services').upsert(payload);if(error)return toast(error.message,'error');closeModal();await loadAll();renderAll();toast('Serviço salvo.');};\n}\n\nfunction openResourceModal(item={}) {\n  openModal(item.id?'Editar recurso':'Novo recurso','RECURSO',`<form id=\"resourceForm\" class=\"form-stack\"><div class=\"form-grid\"><label class=\"field\"><span>Tipo</span><select id=\"mResourceType\"><option value=\"professional\">Profissional</option><option value=\"table\">Mesa</option><option value=\"room\">Sala</option><option value=\"equipment\">Equipamento</option><option value=\"unit\">Unidade</option><option value=\"other\">Outro</option></select></label><label class=\"field\"><span>Nome</span><input id=\"mResourceName\" value=\"${esc(item.name||'')}\" required></label><label class=\"field\"><span>Cargo/descrição</span><input id=\"mResourceTitle\" value=\"${esc(item.title||'')}\"></label><label class=\"field\"><span>Capacidade</span><input id=\"mResourceCapacity\" type=\"number\" min=\"1\" value=\"${item.capacity||1}\"></label><label class=\"field\"><span>E-mail</span><input id=\"mResourceEmail\" type=\"email\" value=\"${esc(item.email||'')}\"></label><label class=\"field\"><span>Telefone</span><input id=\"mResourcePhone\" value=\"${esc(item.phone||'')}\"></label><label class=\"field full\"><span>Observações</span><textarea id=\"mResourceNotes\" rows=\"3\">${esc(item.notes||'')}</textarea></label><label class=\"toggle-row full\"><span><b>Ativo</b></span><input id=\"mResourceActive\" type=\"checkbox\" ${item.is_active!==false?'checked':''}></label></div><div class=\"modal-footer\"><button type=\"button\" class=\"secondary-btn\" data-close-modal>Cancelar</button><button class=\"primary-btn\">Salvar recurso</button></div></form>`);\n  $('mResourceType').value=item.resource_type||'professional';\n  $('resourceForm').onsubmit=async e=>{e.preventDefault();const payload={id:item.id||uid(),user_id:state.user.id,resource_type:$('mResourceType').value,name:$('mResourceName').value.trim(),title:$('mResourceTitle').value.trim(),capacity:Number($('mResourceCapacity').value),email:$('mResourceEmail').value.trim(),phone:$('mResourcePhone').value.trim(),notes:$('mResourceNotes').value.trim(),is_active:$('mResourceActive').checked};const {error}=await supabase.from('scheduling_resources').upsert(payload);if(error)return toast(error.message,'error');closeModal();await loadAll();renderAll();toast('Recurso salvo.');};\n}\n\nfunction openBlockModal(){openModal('Bloquear período','DISPONIBILIDADE',`<form id=\"blockForm\" class=\"form-stack\"><div class=\"form-grid\"><label class=\"field full\"><span>Motivo</span><input id=\"mBlockTitle\" placeholder=\"Feriado, manutenção, folga...\"></label><label class=\"field\"><span>Início</span><input id=\"mBlockStart\" type=\"datetime-local\" required></label><label class=\"field\"><span>Fim</span><input id=\"mBlockEnd\" type=\"datetime-local\" required></label><label class=\"field full\"><span>Recurso específico</span><select id=\"mBlockResource\"><option value=\"\">Todo o negócio</option>${state.resources.map(r=>`<option value=\"${r.id}\">${esc(r.name)}</option>`).join('')}</select></label></div><div class=\"modal-footer\"><button type=\"button\" class=\"secondary-btn\" data-close-modal>Cancelar</button><button class=\"primary-btn\">Criar bloqueio</button></div></form>`);$('blockForm').onsubmit=async e=>{e.preventDefault();const {error}=await supabase.from('scheduling_blocks').insert({user_id:state.user.id,title:$('mBlockTitle').value,starts_at:new Date($('mBlockStart').value).toISOString(),ends_at:new Date($('mBlockEnd').value).toISOString(),resource_id:$('mBlockResource').value||null});if(error)return toast(error.message,'error');closeModal();await loadAll();renderAll();toast('Período bloqueado.');};}\n\nfunction openCustomerModal(item={}){openModal(item.id?'Editar cliente':'Novo cliente','CLIENTE',`<form id=\"customerForm\" class=\"form-stack\"><div class=\"form-grid\"><label class=\"field\"><span>Nome</span><input id=\"mCustomerName\" value=\"${esc(item.name||'')}\" required></label><label class=\"field\"><span>Telefone</span><input id=\"mCustomerPhone\" value=\"${esc(item.phone||'')}\"></label><label class=\"field\"><span>E-mail</span><input id=\"mCustomerEmail\" type=\"email\" value=\"${esc(item.email||'')}\"></label><label class=\"field\"><span>CPF</span><input id=\"mCustomerCpf\" value=\"${esc(item.cpf||'')}\"></label><label class=\"field full\"><span>Observações internas</span><textarea id=\"mCustomerNotes\" rows=\"4\">${esc(item.notes||'')}</textarea></label><label class=\"toggle-row full\"><span><b>Cliente bloqueado</b><small>Impede novos agendamentos online.</small></span><input id=\"mCustomerBlocked\" type=\"checkbox\" ${item.is_blocked?'checked':''}></label></div><div class=\"modal-footer\"><button type=\"button\" class=\"secondary-btn\" data-close-modal>Cancelar</button><button class=\"primary-btn\">Salvar cliente</button></div></form>`);$('customerForm').onsubmit=async e=>{e.preventDefault();const payload={id:item.id||uid(),user_id:state.user.id,name:$('mCustomerName').value.trim(),phone:$('mCustomerPhone').value.trim(),email:$('mCustomerEmail').value.trim(),cpf:$('mCustomerCpf').value.trim(),notes:$('mCustomerNotes').value.trim(),is_blocked:$('mCustomerBlocked').checked,total_appointments:item.total_appointments||0,no_show_count:item.no_show_count||0};const {error}=await supabase.from('scheduling_customers').upsert(payload);if(error)return toast(error.message,'error');closeModal();await loadAll();renderAll();toast('Cliente salvo.');};}\n\nfunction openAppointmentModal(item={}){openModal(item.id?'Editar agendamento':'Novo agendamento','AGENDA',`<form id=\"appointmentForm\" class=\"form-stack\"><div class=\"form-grid\"><label class=\"field\"><span>Cliente existente</span><select id=\"mAppointmentCustomer\"><option value=\"\">Cadastrar pelo nome abaixo</option>${state.customers.map(c=>`<option value=\"${c.id}\">${esc(c.name)} · ${esc(c.phone||'')}</option>`).join('')}</select></label><label class=\"field\"><span>Nome avulso</span><input id=\"mAppointmentCustomerName\" value=\"${esc(item.customer_name||'')}\"></label><label class=\"field\"><span>Serviço</span><select id=\"mAppointmentService\" required>${state.services.filter(s=>s.is_active).map(s=>`<option value=\"${s.id}\">${esc(s.name)}</option>`).join('')}</select></label><label class=\"field\"><span>Profissional/recurso</span><select id=\"mAppointmentResource\"><option value=\"\">Sem recurso</option>${state.resources.filter(r=>r.is_active).map(r=>`<option value=\"${r.id}\">${esc(r.name)}</option>`).join('')}</select></label><label class=\"field\"><span>Início</span><input id=\"mAppointmentStart\" type=\"datetime-local\" required></label><label class=\"field\"><span>Status</span><select id=\"mAppointmentStatus\"><option value=\"pending\">Pendente</option><option value=\"confirmed\">Confirmado</option><option value=\"completed\">Concluído</option><option value=\"cancelled\">Cancelado</option><option value=\"no_show\">Não compareceu</option></select></label><label class=\"field\"><span>Status do pagamento</span><select id=\"mAppointmentPaymentStatus\"><option value=\"not_required\">Sem cobrança</option><option value=\"pending\">Pendente</option><option value=\"partial\">Sinal pago</option><option value=\"paid\">Pago</option><option value=\"refunded\">Reembolsado</option></select></label><label class=\"field\"><span>Total</span><input id=\"mAppointmentTotal\" type=\"number\" step=\"0.01\" min=\"0\" value=\"${item.total_amount||0}\"></label><label class=\"field full\"><span>Observações</span><textarea id=\"mAppointmentNotes\" rows=\"3\">${esc(item.notes||'')}</textarea></label></div><div class=\"modal-footer\"><button type=\"button\" class=\"secondary-btn\" data-close-modal>Cancelar</button><button class=\"primary-btn\">Salvar agendamento</button></div></form>`);\n  $('mAppointmentCustomer').value=item.customer_id||'';$('mAppointmentService').value=item.service_id||state.services[0]?.id||'';$('mAppointmentResource').value=item.resource_id||'';$('mAppointmentStatus').value=item.status||'confirmed';$('mAppointmentPaymentStatus').value=item.payment_status||'not_required';$('mAppointmentStart').value=item.starts_at?new Date(new Date(item.starts_at).getTime()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16):'';\n  $('appointmentForm').onsubmit=async e=>{e.preventDefault();const service=state.services.find(s=>s.id===$('mAppointmentService').value);const start=new Date($('mAppointmentStart').value);const payload={id:item.id||uid(),user_id:state.user.id,customer_id:$('mAppointmentCustomer').value||null,customer_name:$('mAppointmentCustomerName').value.trim(),service_id:$('mAppointmentService').value,resource_id:$('mAppointmentResource').value||null,starts_at:start.toISOString(),ends_at:new Date(start.getTime()+(service?.duration_minutes||60)*60000).toISOString(),status:$('mAppointmentStatus').value,payment_status:$('mAppointmentPaymentStatus').value,total_amount:Number($('mAppointmentTotal').value),notes:$('mAppointmentNotes').value.trim(),source:item.source||'admin'};const {error}=await supabase.from('scheduling_appointments').upsert(payload);if(error)return toast(error.message,'error');closeModal();await loadAll();renderAll();toast('Agendamento salvo.');};}\n\nasync function deleteRow(table,id){if(!confirm('Excluir este registro?'))return;const {error}=await supabase.from(table).delete().eq('id',id).eq('user_id',state.user.id);if(error)return toast(error.message,'error');await loadAll();renderAll();toast('Registro excluído.');}\n\nfunction bindEvents(){\n  bindNavigation(); $('saveAllButton').onclick=saveAll; $('newServiceButton').onclick=()=>openServiceModal(); $('newResourceButton').onclick=()=>openResourceModal(); $('addBlockButton').onclick=openBlockModal; $('newCustomerButton').onclick=()=>openCustomerModal(); $('newAppointmentButton').onclick=()=>openAppointmentModal();\n  $('serviceSearch').oninput=renderServices; $('serviceStatusFilter').onchange=renderServices; $('customerSearch').oninput=renderCustomers; $('appointmentDate').onchange=renderAppointments; $('appointmentStatus').onchange=renderAppointments; $('appointmentResource').onchange=renderAppointments;\n  $('copyMondayButton').onclick=()=>{const m=state.schedules.find(s=>s.weekday==='monday');state.schedules.forEach(s=>Object.assign(s,{is_open:m.is_open,start_time:m.start_time,end_time:m.end_time,break_start:m.break_start,break_end:m.break_end}));renderSchedule();toast('Horário de segunda copiado.');};\n  $('logoInput').onchange=e=>{state.pendingLogo=e.target.files[0]||null;updateMediaPreview();renderPreview();}; $('coverInput').onchange=e=>{state.pendingCover=e.target.files[0]||null;updateMediaPreview();renderPreview();};\n  $('publicSlug').oninput=e=>{e.target.value=slugify(e.target.value);renderPreview();}; qsa('input,select,textarea',document).forEach(el=>el.addEventListener('input',()=>{if(!el.closest('#modal'))renderPreview();}));\n  qsa('[data-close-modal]').forEach(el=>el.onclick=closeModal); $('modal').addEventListener('click',e=>{if(e.target.matches('[data-close-modal]'))closeModal();});\n  $('previewButton').onclick=()=>{$('previewDrawer').classList.remove('is-hidden');renderPreview();}; qsa('[data-close-preview]').forEach(el=>el.onclick=()=>$('previewDrawer').classList.add('is-hidden'));\n  $('profileButton').onclick=()=>$('profileMenu').classList.toggle('is-hidden'); $('logoutButton').onclick=async()=>{await supabase.auth.signOut();location.href='./index.html';};\n  $('copyPublicLink').onclick=async()=>{const link=`${location.origin}/agendar/${slugify($('publicSlug').value)}`;await navigator.clipboard.writeText(link);toast('Link copiado.');};\n}\n\nasync function init(){try{if(!await requireAuth())return;await loadAll();bindEvents();renderAll();$('pageLoader').classList.add('is-hidden');$('app').classList.remove('is-hidden');}catch(err){console.error(err);toast(err.message||'Erro ao abrir editor.','error');}}\ninit();\n"};
-const __clenaUrls = new Map();
-const __clenaCreating = new Set();
+  <div id="previewDrawer" class="drawer is-hidden">
+    <div class="drawer-backdrop" data-close-preview></div>
+    <aside>
+      <header><h3>Prévia da página</h3><button class="icon-btn" data-close-preview aria-label="Fechar prévia"><i class="ri-close-line"></i></button></header>
+      <div class="phone-preview large"><div class="phone-top"></div><div id="drawerPreview" class="preview-content"></div></div>
+    </aside>
+  </div>
 
-function __clenaResolve(fromPath, specifier) {
-  if (specifier.startsWith('/')) return specifier.slice(1);
-  const base = fromPath.split('/').slice(0, -1);
-  for (const part of specifier.split('/')) {
-    if (!part || part === '.') continue;
-    if (part === '..') base.pop();
-    else base.push(part);
-  }
-  return base.join('/');
-}
+  <div id="toastRegion" class="toast-region" aria-live="polite"></div>
 
-async function __clenaModuleUrl(path) {
-  if (__clenaUrls.has(path)) return __clenaUrls.get(path);
-  if (__clenaCreating.has(path)) throw new Error('Dependência circular em ' + path);
-  __clenaCreating.add(path);
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 
-  let source = __clenaSources[path];
-  if (typeof source !== 'string') throw new Error('Módulo não incorporado: ' + path);
+    const $ = id => document.getElementById(id);
+    const qsa = (selector, root = document) => [...root.querySelectorAll(selector)];
+    const uid = () => crypto.randomUUID();
 
-  const importPattern = /(^\s*import\s+(?:[\s\S]*?\s+from\s+)?["'])([^"']+)(["'];?\s*$)/gm;
-  const matches = [...source.matchAll(importPattern)];
+    const state = {
+      supabase:null,user:null,profile:null,business:null,services:[],resources:[],schedules:[],blocks:[],customers:[],appointments:[],
+      stats:{appointments:0,pendingPayments:0},pendingLogo:null,pendingCover:null,pendingServiceImage:null,pendingResourceImage:null,
+      logoObjectUrl:null,coverObjectUrl:null,dirty:false,saving:false,lastFocus:null
+    };
 
-  for (const match of matches) {
-    const spec = match[2];
-    if (spec.startsWith('http://') || spec.startsWith('https://') || spec.startsWith('data:') || spec.startsWith('blob:')) continue;
-    const depPath = __clenaResolve(path, spec);
-    const depUrl = await __clenaModuleUrl(depPath);
-    source = source.replace(match[0], match[1] + depUrl + match[3]);
-  }
+    const defaultBusiness = {
+      name:'',business_type:'service',description:'',whatsapp:'',instagram:'',phone:'',email:'',address:'',
+      primary_color:'#2563eb',timezone:'America/Bahia',slot_interval:15,min_notice_minutes:60,max_advance_days:60,
+      buffer_minutes:0,cancellation_hours:24,max_per_customer_day:0,auto_confirm:true,waitlist_enabled:false,
+      reschedule_enabled:true,manual_approval:false,require_cpf:false,require_terms:false,cancellation_policy:'',terms_text:'',
+      payment_mode:'none',deposit_percentage:30,deposit_fixed:0,payment_deadline_minutes:30,refund_policy:'manual',
+      pay_pix:true,pix_key:'',pix_receiver:'',pay_card_online:false,pay_on_site:true,require_receipt:false,
+      notify_confirmation:true,notify_reminder:true,reminder_hours:24,notification_channel:'whatsapp',notify_payment:true,
+      notify_aftercare:false,confirmation_message:'Olá, {cliente}! Seu agendamento para {servico} foi recebido para {data} às {hora}.',
+      reminder_message:'Olá, {cliente}! Lembrete do seu agendamento de {servico} em {data} às {hora}.',
+      slug:'',is_published:false,show_prices:true,show_resources:true,allow_any_resource:true,logo_url:'',cover_url:''
+    };
 
-  const url = URL.createObjectURL(new Blob([source], { type: 'text/javascript' }));
-  __clenaUrls.set(path, url);
-  __clenaCreating.delete(path);
-  return url;
-}
+    const weekdays = [
+      ['monday','Segunda-feira'],['tuesday','Terça-feira'],['wednesday','Quarta-feira'],['thursday','Quinta-feira'],
+      ['friday','Sexta-feira'],['saturday','Sábado'],['sunday','Domingo']
+    ];
+    const jsDayToWeekday = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
 
-for (const entry of ["assets/js/scheduling-editor.js"]) {
-  const url = await __clenaModuleUrl(entry);
-  await import(url);
-}
-</script>
+    const esc = (value='') => String(value).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+    const money = value => new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number(value||0));
+    const normalize = value => String(value ?? '').toLocaleLowerCase('pt-BR');
+    const slugify = value => String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,80);
+
+    function hexToRgb(hex){
+      const v=String(hex||'#2563eb').replace('#','');
+      const n=parseInt(v.length===3?v.split('').map(x=>x+x).join(''):v,16);
+      return `${(n>>16)&255},${(n>>8)&255},${n&255}`;
+    }
+
+    function toast(message,type='ok'){
+      const el=document.createElement('div');
+      el.className=`toast ${type==='error'?'error':type==='success'?'success':''}`;
+      el.innerHTML=`<i class="${type==='error'?'ri-error-warning-line':type==='success'?'ri-checkbox-circle-line':'ri-information-line'}"></i><div>${esc(message)}</div>`;
+      $('toastRegion').appendChild(el);
+      setTimeout(()=>el.remove(),3800);
+    }
+
+    function setDirty(value=true){
+      state.dirty=value;
+      const el=$('saveState');
+      el.className='save-state '+(state.saving?'is-saving':value?'is-dirty':'is-saved');
+      el.textContent=state.saving?'Salvando...':value?'Alterações não salvas':'Tudo salvo';
+    }
+
+    function setSaving(value){
+      state.saving=value;
+      $('saveAllButton').disabled=value;
+      setDirty(state.dirty);
+    }
+
+    async function getPublicConfig(){
+      const response=await fetch('/api/public-config',{headers:{Accept:'application/json'},cache:'no-store'});
+      if(!response.ok) throw new Error('Não foi possível carregar /api/public-config.');
+      const config=await response.json();
+      if(!config.supabaseUrl||!config.supabaseAnonKey) throw new Error('SUPABASE_URL ou SUPABASE_ANON_KEY não configuradas.');
+      return config;
+    }
+
+    async function initSupabase(){
+      const config=await getPublicConfig();
+      state.supabase=createClient(config.supabaseUrl,config.supabaseAnonKey,{
+        auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}
+      });
+    }
+
+    async function requireAuth(){
+      const {data:{session},error}=await state.supabase.auth.getSession();
+      if(error) throw error;
+      if(!session){ location.href='./index.html'; return false; }
+      state.user=session.user;
+      const {data:profile,error:pe}=await state.supabase.from('profiles').select('*').eq('id',state.user.id).maybeSingle();
+      if(pe) console.warn('Perfil:',pe.message);
+      state.profile=profile||null;
+      $('profileInitial').textContent=(profile?.store_name||state.user.email||'C').charAt(0).toUpperCase();
+      return true;
+    }
+
+    function defaultSchedules(){
+      return weekdays.map(([day])=>({
+        id:uid(),user_id:state.user.id,weekday:day,is_open:day!=='sunday',start_time:'08:00',end_time:'18:00',break_start:null,break_end:null
+      }));
+    }
+
+    async function loadAll(){
+      const userId=state.user.id;
+      const [
+        businessRes,servicesRes,resourcesRes,schedulesRes,blocksRes,customersRes,appointmentsRes,
+        appointmentCountRes,pendingCountRes
+      ]=await Promise.all([
+        state.supabase.from('scheduling_businesses').select('*').eq('user_id',userId).maybeSingle(),
+        state.supabase.from('scheduling_services').select('*').eq('user_id',userId).order('sort_order',{ascending:true}),
+        state.supabase.from('scheduling_resources').select('*').eq('user_id',userId).order('name',{ascending:true}),
+        state.supabase.from('scheduling_weekly_hours').select('*').eq('user_id',userId),
+        state.supabase.from('scheduling_blocks').select('*').eq('user_id',userId).order('starts_at',{ascending:true}),
+        state.supabase.from('scheduling_customers').select('*').eq('user_id',userId).order('name',{ascending:true}).limit(1000),
+        state.supabase.from('scheduling_appointments')
+          .select('*, scheduling_services(name,duration_minutes,price), scheduling_resources(name), scheduling_customers(name,phone,email)')
+          .eq('user_id',userId).order('starts_at',{ascending:true}).limit(1000),
+        state.supabase.from('scheduling_appointments').select('id',{count:'exact',head:true}).eq('user_id',userId),
+        state.supabase.from('scheduling_appointments').select('id',{count:'exact',head:true}).eq('user_id',userId).eq('payment_status','pending')
+      ]);
+
+      const critical=[businessRes,servicesRes,resourcesRes,schedulesRes,blocksRes,customersRes,appointmentsRes];
+      const failure=critical.find(r=>r.error);
+      if(failure) throw failure.error;
+
+      state.business={...defaultBusiness,...(businessRes.data||{}),user_id:userId};
+      state.services=servicesRes.data||[];
+      state.resources=resourcesRes.data||[];
+      state.schedules=schedulesRes.data?.length?schedulesRes.data:defaultSchedules();
+      state.blocks=blocksRes.data||[];
+      state.customers=customersRes.data||[];
+      state.appointments=appointmentsRes.data||[];
+      state.stats.appointments=appointmentCountRes.count ?? state.appointments.length;
+      state.stats.pendingPayments=pendingCountRes.count ?? state.appointments.filter(a=>a.payment_status==='pending').length;
+    }
+
+    function setSection(name){
+      qsa('.editor-section').forEach(el=>el.classList.toggle('is-active',el.id===`section-${name}`));
+      qsa('.nav-item[data-section]').forEach(el=>el.classList.toggle('is-active',el.dataset.section===name));
+      const active=document.querySelector(`.nav-item[data-section="${name}"] span`);
+      $('pageTitle').textContent=active?.textContent||'Editor';
+      closeSidebar();
+    }
+
+    function openSidebar(){ document.querySelector('.sidebar').classList.add('is-open'); $('sidebarBackdrop').classList.add('is-open'); document.body.classList.add('is-locked'); }
+    function closeSidebar(){ document.querySelector('.sidebar').classList.remove('is-open'); $('sidebarBackdrop').classList.remove('is-open'); if($('modal').classList.contains('is-hidden')&&$('previewDrawer').classList.contains('is-hidden')) document.body.classList.remove('is-locked'); }
+
+    function fillBusiness(){
+      const b=state.business;
+      const map={
+        businessName:'name',businessType:'business_type',businessDescription:'description',businessWhatsapp:'whatsapp',businessInstagram:'instagram',
+        businessPhone:'phone',businessEmail:'email',businessAddress:'address',primaryColor:'primary_color',timezone:'timezone',slotInterval:'slot_interval',
+        minNotice:'min_notice_minutes',maxAdvanceDays:'max_advance_days',bufferMinutes:'buffer_minutes',cancellationHours:'cancellation_hours',
+        maxPerCustomerDay:'max_per_customer_day',autoConfirm:'auto_confirm',waitlistEnabled:'waitlist_enabled',rescheduleEnabled:'reschedule_enabled',
+        manualApproval:'manual_approval',requireCpf:'require_cpf',requireTerms:'require_terms',cancellationPolicy:'cancellation_policy',termsText:'terms_text',
+        depositPercentage:'deposit_percentage',depositFixed:'deposit_fixed',paymentDeadlineMinutes:'payment_deadline_minutes',refundPolicy:'refund_policy',
+        payPix:'pay_pix',pixKey:'pix_key',pixReceiver:'pix_receiver',payCardOnline:'pay_card_online',payOnSite:'pay_on_site',requireReceipt:'require_receipt',
+        notifyConfirmation:'notify_confirmation',notifyReminder:'notify_reminder',reminderHours:'reminder_hours',notificationChannel:'notification_channel',
+        notifyPayment:'notify_payment',notifyAftercare:'notify_aftercare',confirmationMessage:'confirmation_message',reminderMessage:'reminder_message',
+        publicSlug:'slug',isPublished:'is_published',showPrices:'show_prices',showResources:'show_resources',allowAnyResource:'allow_any_resource'
+      };
+      Object.entries(map).forEach(([id,key])=>{
+        const el=$(id); if(!el) return;
+        if(el.type==='checkbox') el.checked=!!b[key]; else el.value=b[key]??'';
+      });
+      qsa('input[name="paymentMode"]').forEach(el=>el.checked=el.value===b.payment_mode);
+      $('descriptionCount').textContent=String(b.description||'').length;
+      applyTheme(b.primary_color);
+      updateConditionalUI();
+      updateMediaPreview();
+    }
+
+    function collectBusiness(){
+      const get=id=>$(id)?.value??'';
+      const checked=id=>!!$(id)?.checked;
+      return {
+        ...state.business,user_id:state.user.id,name:get('businessName').trim(),business_type:get('businessType'),
+        description:get('businessDescription').trim(),whatsapp:get('businessWhatsapp').trim(),instagram:get('businessInstagram').trim(),
+        phone:get('businessPhone').trim(),email:get('businessEmail').trim(),address:get('businessAddress').trim(),
+        primary_color:get('primaryColor'),timezone:get('timezone'),slot_interval:Number(get('slotInterval')||15),
+        min_notice_minutes:Number(get('minNotice')||0),max_advance_days:Number(get('maxAdvanceDays')||60),buffer_minutes:Number(get('bufferMinutes')||0),
+        cancellation_hours:Number(get('cancellationHours')||0),max_per_customer_day:Number(get('maxPerCustomerDay')||0),
+        auto_confirm:checked('autoConfirm'),waitlist_enabled:checked('waitlistEnabled'),reschedule_enabled:checked('rescheduleEnabled'),
+        manual_approval:checked('manualApproval'),require_cpf:checked('requireCpf'),require_terms:checked('requireTerms'),
+        cancellation_policy:get('cancellationPolicy'),terms_text:get('termsText'),
+        payment_mode:document.querySelector('input[name="paymentMode"]:checked')?.value||'none',
+        deposit_percentage:Number(get('depositPercentage')||0),deposit_fixed:Number(get('depositFixed')||0),
+        payment_deadline_minutes:Number(get('paymentDeadlineMinutes')||30),refund_policy:get('refundPolicy'),
+        pay_pix:checked('payPix'),pix_key:get('pixKey').trim(),pix_receiver:get('pixReceiver').trim(),
+        pay_card_online:checked('payCardOnline'),pay_on_site:checked('payOnSite'),require_receipt:checked('requireReceipt'),
+        notify_confirmation:checked('notifyConfirmation'),notify_reminder:checked('notifyReminder'),reminder_hours:Number(get('reminderHours')||24),
+        notification_channel:get('notificationChannel'),notify_payment:checked('notifyPayment'),notify_aftercare:checked('notifyAftercare'),
+        confirmation_message:get('confirmationMessage'),reminder_message:get('reminderMessage'),
+        slug:slugify(get('publicSlug')),is_published:checked('isPublished'),show_prices:checked('showPrices'),
+        show_resources:checked('showResources'),allow_any_resource:checked('allowAnyResource')
+      };
+    }
+
+    function applyTheme(color){
+      const c=color||'#2563eb';
+      document.documentElement.style.setProperty('--primary',c);
+      document.documentElement.style.setProperty('--primary-rgb',hexToRgb(c));
+    }
+
+    function revokeMediaUrls(){
+      if(state.logoObjectUrl){URL.revokeObjectURL(state.logoObjectUrl);state.logoObjectUrl=null}
+      if(state.coverObjectUrl){URL.revokeObjectURL(state.coverObjectUrl);state.coverObjectUrl=null}
+    }
+
+    function getMediaUrls(){
+      if(state.logoObjectUrl){URL.revokeObjectURL(state.logoObjectUrl);state.logoObjectUrl=null}
+      if(state.coverObjectUrl){URL.revokeObjectURL(state.coverObjectUrl);state.coverObjectUrl=null}
+      if(state.pendingLogo) state.logoObjectUrl=URL.createObjectURL(state.pendingLogo);
+      if(state.pendingCover) state.coverObjectUrl=URL.createObjectURL(state.pendingCover);
+      return {
+        logo:state.pendingLogo?state.logoObjectUrl:(state.business.logo_url||''),
+        cover:state.pendingCover?state.coverObjectUrl:(state.business.cover_url||'')
+      };
+    }
+
+    function updateMediaPreview(){
+      const {logo,cover}=getMediaUrls();
+      $('logoPreview').style.backgroundImage=logo?`url("${logo}")`:'';
+      $('logoPreview').innerHTML=logo?'':'<i class="ri-store-2-line"></i><b>Logo</b><small>Quadrada recomendada</small>';
+      $('coverPreview').style.backgroundImage=cover?`url("${cover}")`:'';
+      $('coverPreview').innerHTML=cover?'':'<i class="ri-image-add-line"></i><b>Adicionar capa</b><small>PNG, JPG ou WebP · recomendado 1600 × 600</small>';
+    }
+
+    function validateImage(file){
+      if(!file) return;
+      const allowed=['image/png','image/jpeg','image/webp'];
+      if(!allowed.includes(file.type)) throw new Error('Use imagem PNG, JPG ou WebP.');
+      if(file.size>6*1024*1024) throw new Error('A imagem deve ter no máximo 6 MB.');
+    }
+
+    async function uploadImage(file,kind,currentUrl=''){
+      if(!file) return currentUrl||'';
+      validateImage(file);
+      const ext={ 'image/png':'png','image/jpeg':'jpg','image/webp':'webp' }[file.type]||'webp';
+      const path=`${state.user.id}/scheduling/${kind}.${ext}`;
+      const {error}=await state.supabase.storage.from('scheduling-media').upload(path,file,{upsert:true,contentType:file.type,cacheControl:'3600'});
+      if(error) throw error;
+      const {data}=state.supabase.storage.from('scheduling-media').getPublicUrl(path);
+      return `${data.publicUrl}?v=${Date.now()}`;
+    }
+
+    function validateBusiness(b,{forPublish=false}={}){
+      const errors=[];
+      if(!b.name) errors.push('Informe o nome do negócio.');
+      if(b.max_advance_days<1) errors.push('A janela máxima precisa ser de pelo menos 1 dia.');
+      if(b.payment_mode==='percentage'&&(b.deposit_percentage<=0||b.deposit_percentage>100)) errors.push('O percentual do sinal deve ficar entre 1% e 100%.');
+      if(b.payment_mode==='fixed'&&b.deposit_fixed<=0) errors.push('Informe um valor fixo de sinal maior que zero.');
+      if(b.payment_mode!=='none'&&!b.pay_pix&&!b.pay_card_online&&!b.pay_on_site) errors.push('Ative ao menos uma forma de pagamento.');
+      if(b.pay_pix&&!b.pix_key) errors.push('Informe a chave PIX ou desative PIX.');
+      if(b.auto_confirm&&b.manual_approval) errors.push('Confirmação automática e aprovação manual não podem estar ativas ao mesmo tempo.');
+      if(forPublish){
+        if(!b.slug) errors.push('Defina o endereço público.');
+        if(!state.services.some(s=>s.is_active)) errors.push('Cadastre ao menos um serviço ativo.');
+        if(!state.schedules.some(s=>s.is_open)) errors.push('Configure ao menos um dia de atendimento.');
+      }
+      return errors;
+    }
+
+    async function saveAll(){
+      if(state.saving) return;
+      try{
+        setSaving(true);
+        const business=collectBusiness();
+        const errors=validateBusiness(business,{forPublish:business.is_published});
+        if(errors.length) throw new Error(errors[0]);
+
+        if(state.pendingLogo) business.logo_url=await uploadImage(state.pendingLogo,'logo',business.logo_url);
+        if(state.pendingCover) business.cover_url=await uploadImage(state.pendingCover,'cover',business.cover_url);
+
+        const {data,error}=await state.supabase.from('scheduling_businesses').upsert(business,{onConflict:'user_id'}).select().single();
+        if(error) throw error;
+
+        const payload=state.schedules.map(row=>({
+          id:row.id,user_id:state.user.id,weekday:row.weekday,is_open:!!row.is_open,
+          start_time:row.start_time||'08:00',end_time:row.end_time||'18:00',
+          break_start:row.break_start||null,break_end:row.break_end||null
+        }));
+
+        // Compatibilidade com a estrutura atual. O delete é executado somente após validar o payload em memória.
+        for(const s of payload){
+          if(s.is_open && s.start_time>=s.end_time) throw new Error(`Horário inválido em ${weekdays.find(x=>x[0]===s.weekday)?.[1]||s.weekday}.`);
+          if((s.break_start&&!s.break_end)||(!s.break_start&&s.break_end)) throw new Error('Preencha início e fim do intervalo juntos.');
+          if(s.break_start && !(s.start_time<s.break_start && s.break_start<s.break_end && s.break_end<s.end_time)) throw new Error('O intervalo precisa ficar dentro do horário de atendimento.');
+        }
+
+        const {error:deleteError}=await state.supabase.from('scheduling_weekly_hours').delete().eq('user_id',state.user.id);
+        if(deleteError) throw deleteError;
+        if(payload.length){
+          const {error:scheduleError}=await state.supabase.from('scheduling_weekly_hours').insert(payload);
+          if(scheduleError) throw new Error(`Negócio salvo, mas houve erro nos horários: ${scheduleError.message}`);
+        }
+
+        state.business=data;
+        state.pendingLogo=null; state.pendingCover=null;
+        revokeMediaUrls();
+        await loadAll();
+        renderAll();
+        setDirty(false);
+        toast('Configurações salvas com sucesso.','success');
+      }catch(err){
+        console.error(err);
+        toast(err.message||'Erro ao salvar.','error');
+      }finally{
+        setSaving(false);
+      }
+    }
+
+    function renderAll(){
+      fillBusiness();
+      renderStats();
+      renderServices();
+      renderResources();
+      renderSchedule();
+      renderBlocks();
+      renderCustomers();
+      renderResourceFilter();
+      renderAppointments();
+      renderPreview();
+      $('sidebarName').textContent=state.business.name||state.profile?.store_name||'Meu negócio';
+      $('sidebarStatus').textContent=state.business.is_published?'Publicado':'Rascunho';
+      const avatar=state.business.logo_url?`<img src="${esc(state.business.logo_url)}" alt="">`:'<i class="ri-calendar-check-line"></i>';
+      $('sidebarAvatar').innerHTML=avatar;
+      setDirty(false);
+    }
+
+    function renderStats(){
+      $('statServices').textContent=state.services.length;
+      $('navServiceCount').textContent=state.services.length;
+      $('statResources').textContent=state.resources.length;
+      $('statAppointments').textContent=state.stats.appointments;
+      $('statPendingPayments').textContent=state.stats.pendingPayments;
+
+      const checks=[
+        !!state.business.name,
+        state.services.some(s=>s.is_active),
+        state.resources.some(r=>r.is_active),
+        state.schedules.some(s=>s.is_open),
+        !!state.business.slug,
+        state.business.payment_mode==='none'||state.business.pay_pix||state.business.pay_card_online||state.business.pay_on_site
+      ];
+      const labels=['Dados do negócio','Serviço ativo cadastrado','Profissional ou recurso','Horários configurados','Endereço público','Pagamento definido'];
+      const done=checks.filter(Boolean).length;
+      const percent=Math.round(done/checks.length*100);
+      $('setupPercent').textContent=`${percent}%`;
+      $('setupBar').style.width=`${percent}%`;
+      $('setupChecklist').innerHTML=labels.map((label,i)=>`<div class="check-item ${checks[i]?'done':''}"><i class="${checks[i]?'ri-checkbox-circle-fill':'ri-checkbox-blank-circle-line'}"></i><span>${label}</span></div>`).join('');
+
+      const now=Date.now();
+      const recent=state.appointments.filter(a=>new Date(a.starts_at).getTime()>=now && !['cancelled','completed','no_show'].includes(a.status)).sort((a,b)=>new Date(a.starts_at)-new Date(b.starts_at)).slice(0,5);
+      $('recentAppointments').className=recent.length?'card-list compact':'empty-state';
+      $('recentAppointments').innerHTML=recent.length?recent.map(a=>`<div class="item-card"><div class="thumb"><i class="ri-calendar-event-line"></i></div><div class="item-main"><h4>${esc(a.scheduling_customers?.name||a.customer_name||'Cliente')}</h4><small>${formatDateTime(a.starts_at)} · ${esc(a.scheduling_services?.name||'Serviço')}</small></div></div>`).join(''):'<i class="ri-calendar-todo-line"></i><p>Nenhum próximo agendamento.</p>';
+    }
+
+    function renderServices(){
+      const term=normalize($('serviceSearch').value);
+      const filter=$('serviceStatusFilter').value;
+      const list=state.services.filter(s=>(!term||normalize(`${s.name||''} ${s.description||''}`).includes(term))&&(filter==='all'||(filter==='active'?s.is_active:!s.is_active)));
+      $('serviceList').innerHTML=list.length?list.map(s=>`
+        <article class="item-card">
+          <div class="thumb" ${s.image_url?`style="background-image:url('${esc(s.image_url)}')"`:''}>${s.image_url?'':'<i class="ri-service-line"></i>'}</div>
+          <div class="item-main"><h4>${esc(s.name)}</h4><p>${esc(s.description||'Sem descrição')}</p><small>${Number(s.duration_minutes||0)} min · ${money(s.price)} · Capacidade ${Number(s.capacity||1)}</small></div>
+          <span class="badge ${s.is_active?'':'off'}">${s.is_active?'ATIVO':'INATIVO'}</span>
+          <div class="item-actions">
+            <button data-edit-service="${s.id}" aria-label="Editar serviço"><i class="ri-pencil-line"></i></button>
+            <button data-delete-service="${s.id}" class="is-danger" aria-label="Excluir serviço"><i class="ri-delete-bin-line"></i></button>
+          </div>
+        </article>`).join(''):'<div class="empty-state"><i class="ri-service-line"></i><p>Nenhum serviço encontrado.</p></div>';
+      qsa('[data-edit-service]').forEach(b=>b.onclick=()=>openServiceModal(state.services.find(s=>s.id===b.dataset.editService)));
+      qsa('[data-delete-service]').forEach(b=>b.onclick=()=>confirmDelete('scheduling_services',b.dataset.deleteService,'serviço'));
+    }
+
+    function resourceTypeLabel(v){return {professional:'Profissional',table:'Mesa',room:'Sala',equipment:'Equipamento',unit:'Unidade',other:'Outro'}[v]||'Recurso'}
+
+    function renderResources(){
+      const term=normalize($('resourceSearch').value);
+      const type=$('resourceTypeFilter').value;
+      const status=$('resourceStatusFilter').value;
+      const list=state.resources.filter(r=>(!term||normalize(`${r.name||''} ${r.title||''} ${r.email||''}`).includes(term))&&(type==='all'||r.resource_type===type)&&(status==='all'||(status==='active'?r.is_active:!r.is_active)));
+      $('resourceList').innerHTML=list.length?list.map(r=>`
+        <article class="item-card">
+          <div class="thumb" ${r.image_url?`style="background-image:url('${esc(r.image_url)}')"`:''}>${r.image_url?'':`<i class="${r.resource_type==='professional'?'ri-user-star-line':'ri-building-line'}"></i>`}</div>
+          <div class="item-main"><h4>${esc(r.name)}</h4><p>${esc(r.title||resourceTypeLabel(r.resource_type))}</p><small>${resourceTypeLabel(r.resource_type)} · Capacidade ${Number(r.capacity||1)}${r.email?` · ${esc(r.email)}`:''}</small></div>
+          <span class="badge ${r.is_active?'':'off'}">${r.is_active?'ATIVO':'INATIVO'}</span>
+          <div class="item-actions">
+            <button data-edit-resource="${r.id}" aria-label="Editar recurso"><i class="ri-pencil-line"></i></button>
+            <button data-delete-resource="${r.id}" class="is-danger" aria-label="Excluir recurso"><i class="ri-delete-bin-line"></i></button>
+          </div>
+        </article>`).join(''):'<div class="empty-state"><i class="ri-team-line"></i><p>Nenhum profissional ou recurso encontrado.</p></div>';
+      qsa('[data-edit-resource]').forEach(b=>b.onclick=()=>openResourceModal(state.resources.find(r=>r.id===b.dataset.editResource)));
+      qsa('[data-delete-resource]').forEach(b=>b.onclick=()=>confirmDelete('scheduling_resources',b.dataset.deleteResource,'recurso'));
+    }
+
+    function renderSchedule(){
+      $('weeklySchedule').innerHTML=weekdays.map(([day,label])=>{
+        const s=state.schedules.find(x=>x.weekday===day)||{weekday:day,is_open:false,start_time:'08:00',end_time:'18:00',break_start:null,break_end:null};
+        return `<div class="day-row ${s.is_open?'':'is-closed'}" data-day="${day}">
+          <strong>${label}</strong>
+          <label><input class="day-open" type="checkbox" ${s.is_open?'checked':''}> Aberto</label>
+          <div class="day-times">
+            <label>ABRE<input class="day-start" type="time" value="${s.start_time||'08:00'}"></label>
+            <label>FECHA<input class="day-end" type="time" value="${s.end_time||'18:00'}"></label>
+            <label>INTERVALO<input class="break-start" type="time" value="${s.break_start||''}"></label>
+            <label>RETORNO<input class="break-end" type="time" value="${s.break_end||''}"></label>
+          </div>
+        </div>`;
+      }).join('');
+
+      qsa('.day-row').forEach(row=>qsa('input',row).forEach(inp=>inp.addEventListener('change',()=>{
+        let s=state.schedules.find(x=>x.weekday===row.dataset.day);
+        if(!s){s={id:uid(),user_id:state.user.id,weekday:row.dataset.day};state.schedules.push(s)}
+        s.is_open=row.querySelector('.day-open').checked;
+        s.start_time=row.querySelector('.day-start').value;
+        s.end_time=row.querySelector('.day-end').value;
+        s.break_start=row.querySelector('.break-start').value||null;
+        s.break_end=row.querySelector('.break-end').value||null;
+        row.classList.toggle('is-closed',!s.is_open);
+        setDirty(true);
+      })));
+    }
+
+    function renderBlocks(){
+      $('blockList').innerHTML=state.blocks.length?state.blocks.map(b=>`
+        <article class="item-card">
+          <div class="thumb"><i class="ri-calendar-close-line"></i></div>
+          <div class="item-main"><h4>${esc(b.title||'Bloqueio')}</h4><small>${formatDateTime(b.starts_at)} até ${formatDateTime(b.ends_at)}${b.resource_id?` · ${esc(state.resources.find(r=>r.id===b.resource_id)?.name||'Recurso')}`:' · Todo o negócio'}</small></div>
+          <div class="item-actions"><button data-delete-block="${b.id}" class="is-danger" aria-label="Excluir bloqueio"><i class="ri-delete-bin-line"></i></button></div>
+        </article>`).join(''):'<div class="empty-state"><i class="ri-calendar-close-line"></i><p>Nenhum bloqueio cadastrado.</p></div>';
+      qsa('[data-delete-block]').forEach(b=>b.onclick=()=>confirmDelete('scheduling_blocks',b.dataset.deleteBlock,'bloqueio'));
+    }
+
+    function renderCustomers(){
+      const term=normalize($('customerSearch').value);
+      const list=state.customers.filter(c=>!term||normalize(`${c.name||''} ${c.phone||''} ${c.email||''}`).includes(term));
+      $('customerList').innerHTML=`<table class="data-table"><thead><tr><th>Cliente</th><th>Contato</th><th>Agendamentos</th><th>Faltas</th><th>Status</th><th></th></tr></thead><tbody>${
+        list.map(c=>`<tr><td><strong>${esc(c.name)}</strong></td><td>${esc(c.phone||'—')}<br><small>${esc(c.email||'')}</small></td><td>${Number(c.total_appointments||0)}</td><td>${Number(c.no_show_count||0)}</td><td><span class="badge ${c.is_blocked?'off':''}">${c.is_blocked?'BLOQUEADO':'ATIVO'}</span></td><td><button class="icon-btn" data-edit-customer="${c.id}" aria-label="Editar cliente"><i class="ri-pencil-line"></i></button></td></tr>`).join('')
+      }</tbody></table>`;
+      qsa('[data-edit-customer]').forEach(b=>b.onclick=()=>openCustomerModal(state.customers.find(c=>c.id===b.dataset.editCustomer)));
+    }
+
+    function renderResourceFilter(){
+      const current=$('appointmentResource').value||'all';
+      $('appointmentResource').innerHTML='<option value="all">Todos os recursos</option>'+state.resources.map(r=>`<option value="${r.id}">${esc(r.name)}</option>`).join('');
+      if([...$('appointmentResource').options].some(o=>o.value===current)) $('appointmentResource').value=current;
+    }
+
+    function getZonedParts(date,timeZone=state.business?.timezone||'America/Bahia'){
+      const parts=new Intl.DateTimeFormat('en-CA',{timeZone,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(date);
+      return Object.fromEntries(parts.filter(p=>p.type!=='literal').map(p=>[p.type,p.value]));
+    }
+
+    function localDateInBusiness(iso){
+      const p=getZonedParts(new Date(iso));
+      return `${p.year}-${p.month}-${p.day}`;
+    }
+
+    function formatDateTime(iso){
+      if(!iso) return '—';
+      return new Intl.DateTimeFormat('pt-BR',{timeZone:state.business?.timezone||'America/Bahia',dateStyle:'short',timeStyle:'short'}).format(new Date(iso));
+    }
+
+    function formatTime(iso){
+      if(!iso) return '—';
+      return new Intl.DateTimeFormat('pt-BR',{timeZone:state.business?.timezone||'America/Bahia',hour:'2-digit',minute:'2-digit'}).format(new Date(iso));
+    }
+
+    function renderAppointments(){
+      const date=$('appointmentDate').value;
+      const status=$('appointmentStatus').value;
+      const resource=$('appointmentResource').value;
+      const term=normalize($('appointmentSearch').value);
+
+      const list=state.appointments.filter(a=>{
+        const hay=normalize(`${a.scheduling_customers?.name||a.customer_name||''} ${a.scheduling_services?.name||''} ${a.scheduling_resources?.name||''}`);
+        return (!date||localDateInBusiness(a.starts_at)===date)
+          &&(status==='all'||a.status===status)
+          &&(resource==='all'||a.resource_id===resource)
+          &&(!term||hay.includes(term));
+      }).sort((a,b)=>new Date(a.starts_at)-new Date(b.starts_at));
+
+      $('appointmentList').innerHTML=list.length?list.map(a=>`
+        <article class="appointment-card">
+          <div class="appointment-time"><strong>${formatTime(a.starts_at)}</strong><small>${localDateInBusiness(a.starts_at).split('-').reverse().join('/')}</small></div>
+          <div class="appointment-meta">
+            <h4>${esc(a.scheduling_customers?.name||a.customer_name||'Cliente')}</h4>
+            <p>${esc(a.scheduling_services?.name||'Serviço')} · ${esc(a.scheduling_resources?.name||'Sem recurso')}</p>
+            <small>${money(a.total_amount)} · ${paymentLabel(a.payment_status)}</small>
+            <div class="appointment-flags"><span class="badge ${a.status==='pending'?'pending':a.status==='cancelled'||a.status==='no_show'?'off':'info'}">${statusLabel(a.status)}</span></div>
+          </div>
+          <div class="item-actions"><button data-edit-appointment="${a.id}" aria-label="Editar agendamento"><i class="ri-pencil-line"></i></button></div>
+        </article>`).join(''):'<div class="empty-state"><i class="ri-calendar-event-line"></i><p>Nenhum agendamento neste filtro.</p></div>';
+
+      qsa('[data-edit-appointment]').forEach(b=>b.onclick=()=>openAppointmentModal(state.appointments.find(a=>a.id===b.dataset.editAppointment)));
+    }
+
+    function statusLabel(v){return {pending:'Pendente',confirmed:'Confirmado',completed:'Concluído',cancelled:'Cancelado',no_show:'Não compareceu'}[v]||v}
+    function paymentLabel(v){return {not_required:'Sem cobrança',pending:'Pagamento pendente',partial:'Sinal pago',paid:'Pago',refunded:'Reembolsado'}[v]||v||'Sem cobrança'}
+
+    function renderPreview(){
+      const b=collectBusiness();
+      applyTheme(b.primary_color);
+      const services=state.services.filter(s=>s.is_active).slice(0,5);
+      const logo=state.pendingLogo?state.logoObjectUrl:b.logo_url;
+      const cover=state.pendingCover?state.coverObjectUrl:b.cover_url;
+      const html=`
+        <div class="preview-cover" ${cover?`style="background-image:url('${esc(cover)}')"`:''}></div>
+        <div class="preview-brand">
+          <div class="preview-logo" ${logo?`style="background-image:url('${esc(logo)}')"`:''}>${logo?'':'<i class="ri-calendar-check-line"></i>'}</div>
+          <h3>${esc(b.name||'Seu negócio')}</h3>
+          <p>${esc(b.description||'Escolha um serviço e reserve seu horário.')}</p>
+          <div class="preview-meta">${b.address?`<span><i class="ri-map-pin-line"></i> ${esc(b.address)}</span>`:''}${b.whatsapp?`<span><i class="ri-whatsapp-line"></i> WhatsApp</span>`:''}</div>
+        </div>
+        <div>${services.map(s=>`<div class="preview-service"><strong>${esc(s.name)}</strong><small>${Number(s.duration_minutes||0)} min${b.show_prices?` · ${money(s.price)}`:''}</small></div>`).join('')||'<div class="empty-state"><p>Cadastre seus serviços.</p></div>'}</div>
+        <button class="preview-cta" type="button">Escolher data e horário</button>`;
+      $('publicPreview').innerHTML=html;
+      $('drawerPreview').innerHTML=html;
+      updatePublishValidation();
+    }
+
+    function updateConditionalUI(){
+      const mode=document.querySelector('input[name="paymentMode"]:checked')?.value||'none';
+      $('depositPercentageField').classList.toggle('is-hidden',mode!=='percentage');
+      $('depositFixedField').classList.toggle('is-hidden',mode!=='fixed');
+      $('paymentDeadlineField').classList.toggle('is-hidden',mode==='none');
+      $('pixFields').classList.toggle('is-hidden',!$('payPix').checked);
+
+      const b=collectBusiness();
+      const errors=validateBusiness(b);
+      $('paymentValidation').classList.toggle('is-hidden',!errors.some(e=>/pagamento|PIX|sinal/i.test(e)));
+      $('paymentValidation').textContent=errors.find(e=>/pagamento|PIX|sinal/i.test(e))||'';
+    }
+
+    function updatePublishValidation(){
+      const b=collectBusiness();
+      const errors=validateBusiness(b,{forPublish:true});
+      $('publishValidation').classList.toggle('is-hidden',!errors.length);
+      $('publishValidation').innerHTML=errors.length?`<b>Antes de publicar:</b><br>${errors.map(e=>`• ${esc(e)}`).join('<br>')}`:'';
+      $('copyPublicLink').disabled=!b.slug;
+      $('openPublicLink').disabled=!b.slug;
+    }
+
+    function openModal(title,kicker,body){
+      state.lastFocus=document.activeElement;
+      $('modalTitle').textContent=title;
+      $('modalKicker').textContent=kicker;
+      $('modalBody').innerHTML=body;
+      $('modal').classList.remove('is-hidden');
+      document.body.classList.add('is-locked');
+      requestAnimationFrame(()=>$('modal').querySelector('input,select,textarea,button')?.focus());
+    }
+
+    function closeModal(){
+      $('modal').classList.add('is-hidden');
+      $('modalBody').innerHTML='';
+      if($('previewDrawer').classList.contains('is-hidden')&&!document.querySelector('.sidebar').classList.contains('is-open')) document.body.classList.remove('is-locked');
+      state.lastFocus?.focus?.();
+    }
+
+    async function modalSubmit(form,button,fn){
+      button.disabled=true;
+      const original=button.innerHTML;
+      button.innerHTML='<i class="ri-loader-4-line"></i> Salvando...';
+      try{await fn()}finally{button.disabled=false;button.innerHTML=original}
+    }
+
+    function imageInputPreviewMarkup(existing,kind){
+      return `<label class="field full"><span>Imagem</span>
+        <input id="${kind}ImageInput" type="file" accept="image/png,image/jpeg,image/webp">
+        <small>${existing?'Uma nova imagem substituirá a atual.':'PNG, JPG ou WebP · até 6 MB.'}</small>
+      </label>`;
+    }
+
+    function openServiceModal(item={}){
+      state.pendingServiceImage=null;
+      openModal(item.id?'Editar serviço':'Novo serviço','SERVIÇO',`
+        <form id="serviceForm" class="form-stack">
+          <div class="form-grid">
+            <label class="field full"><span>Nome</span><input id="mServiceName" value="${esc(item.name||'')}" maxlength="120" required></label>
+            <label class="field full"><span>Descrição</span><textarea id="mServiceDescription" rows="3" maxlength="600">${esc(item.description||'')}</textarea></label>
+            ${imageInputPreviewMarkup(item.image_url,'mService')}
+            <label class="field"><span>Duração</span><input id="mServiceDuration" type="number" min="5" max="1440" value="${Number(item.duration_minutes||60)}"></label>
+            <label class="field"><span>Preço</span><input id="mServicePrice" type="number" step="0.01" min="0" value="${Number(item.price||0)}"></label>
+            <label class="field"><span>Capacidade por horário</span><input id="mServiceCapacity" type="number" min="1" max="9999" value="${Number(item.capacity||1)}"></label>
+            <label class="field"><span>Modalidade</span><select id="mServiceLocation"><option value="onsite">No estabelecimento</option><option value="online">Online</option><option value="customer">No endereço do cliente</option><option value="hybrid">Híbrido</option></select></label>
+            <label class="field"><span>Regra de pagamento</span><select id="mServicePayment"><option value="inherit">Usar regra geral</option><option value="none">Sem pagamento</option><option value="full">Integral</option><option value="percentage">Percentual</option><option value="fixed">Sinal fixo</option></select></label>
+            <label class="field"><span>Valor/percentual específico</span><input id="mServiceDeposit" type="number" step="0.01" min="0" value="${Number(item.deposit_value||0)}"></label>
+            <label class="toggle-row full"><span><b>Serviço ativo</b><small>Serviços inativos ficam ocultos da página pública.</small></span><input id="mServiceActive" type="checkbox" ${item.is_active!==false?'checked':''}></label>
+            <label class="toggle-row full"><span><b>Permitir escolha de recurso</b><small>Permite escolher profissional, mesa, sala ou recurso.</small></span><input id="mServiceResourceChoice" type="checkbox" ${item.allow_resource_choice!==false?'checked':''}></label>
+          </div>
+          <div class="modal-footer"><button type="button" class="secondary-btn" data-close-modal>Cancelar</button><button id="mServiceSave" class="primary-btn">Salvar serviço</button></div>
+        </form>`);
+      $('mServiceLocation').value=item.location_type||'onsite';
+      $('mServicePayment').value=item.payment_mode||'inherit';
+      $('mServiceImageInput').onchange=e=>{try{validateImage(e.target.files[0]);state.pendingServiceImage=e.target.files[0]||null}catch(err){e.target.value='';toast(err.message,'error')}};
+      qsa('[data-close-modal]',$('modalBody')).forEach(el=>el.onclick=closeModal);
+      $('serviceForm').onsubmit=async e=>{
+        e.preventDefault();
+        await modalSubmit(e.currentTarget,$('mServiceSave'),async()=>{
+          const name=$('mServiceName').value.trim();
+          if(!name) throw new Error('Informe o nome do serviço.');
+          let imageUrl=item.image_url||'';
+          if(state.pendingServiceImage) imageUrl=await uploadImage(state.pendingServiceImage,`service-${item.id||'new-'+Date.now()}`,imageUrl);
+          const payload={
+            id:item.id||uid(),user_id:state.user.id,name,description:$('mServiceDescription').value.trim(),
+            duration_minutes:Number($('mServiceDuration').value||60),price:Number($('mServicePrice').value||0),
+            capacity:Number($('mServiceCapacity').value||1),location_type:$('mServiceLocation').value,
+            payment_mode:$('mServicePayment').value,deposit_value:Number($('mServiceDeposit').value||0),
+            is_active:$('mServiceActive').checked,allow_resource_choice:$('mServiceResourceChoice').checked,
+            sort_order:item.sort_order??state.services.length,image_url:imageUrl
+          };
+          const {error}=await state.supabase.from('scheduling_services').upsert(payload);
+          if(error) throw error;
+          closeModal(); await loadAll(); renderAll(); toast('Serviço salvo.','success');
+        }).catch(err=>toast(err.message||'Erro ao salvar serviço.','error'));
+      };
+    }
+
+    function openResourceModal(item={}){
+      state.pendingResourceImage=null;
+      openModal(item.id?'Editar recurso':'Novo recurso','RECURSO',`
+        <form id="resourceForm" class="form-stack">
+          <div class="form-grid">
+            <label class="field"><span>Tipo</span><select id="mResourceType"><option value="professional">Profissional</option><option value="table">Mesa</option><option value="room">Sala</option><option value="equipment">Equipamento</option><option value="unit">Unidade</option><option value="other">Outro</option></select></label>
+            <label class="field"><span>Nome</span><input id="mResourceName" value="${esc(item.name||'')}" required></label>
+            ${imageInputPreviewMarkup(item.image_url,'mResource')}
+            <label class="field"><span>Cargo/descrição</span><input id="mResourceTitle" value="${esc(item.title||'')}"></label>
+            <label class="field"><span>Capacidade</span><input id="mResourceCapacity" type="number" min="1" value="${Number(item.capacity||1)}"></label>
+            <label class="field"><span>E-mail</span><input id="mResourceEmail" type="email" value="${esc(item.email||'')}"></label>
+            <label class="field"><span>Telefone</span><input id="mResourcePhone" value="${esc(item.phone||'')}"></label>
+            <label class="field full"><span>Observações</span><textarea id="mResourceNotes" rows="3">${esc(item.notes||'')}</textarea></label>
+            <label class="toggle-row full"><span><b>Ativo</b><small>Recursos inativos não ficam disponíveis para novos agendamentos.</small></span><input id="mResourceActive" type="checkbox" ${item.is_active!==false?'checked':''}></label>
+          </div>
+          <div class="modal-footer"><button type="button" class="secondary-btn" data-close-modal>Cancelar</button><button id="mResourceSave" class="primary-btn">Salvar recurso</button></div>
+        </form>`);
+      $('mResourceType').value=item.resource_type||'professional';
+      $('mResourceImageInput').onchange=e=>{try{validateImage(e.target.files[0]);state.pendingResourceImage=e.target.files[0]||null}catch(err){e.target.value='';toast(err.message,'error')}};
+      qsa('[data-close-modal]',$('modalBody')).forEach(el=>el.onclick=closeModal);
+      $('resourceForm').onsubmit=async e=>{
+        e.preventDefault();
+        await modalSubmit(e.currentTarget,$('mResourceSave'),async()=>{
+          let imageUrl=item.image_url||'';
+          if(state.pendingResourceImage) imageUrl=await uploadImage(state.pendingResourceImage,`resource-${item.id||'new-'+Date.now()}`,imageUrl);
+          const payload={
+            id:item.id||uid(),user_id:state.user.id,resource_type:$('mResourceType').value,name:$('mResourceName').value.trim(),
+            title:$('mResourceTitle').value.trim(),capacity:Number($('mResourceCapacity').value||1),email:$('mResourceEmail').value.trim(),
+            phone:$('mResourcePhone').value.trim(),notes:$('mResourceNotes').value.trim(),is_active:$('mResourceActive').checked,image_url:imageUrl
+          };
+          const {error}=await state.supabase.from('scheduling_resources').upsert(payload);
+          if(error) throw error;
+          closeModal(); await loadAll(); renderAll(); toast('Recurso salvo.','success');
+        }).catch(err=>toast(err.message||'Erro ao salvar recurso.','error'));
+      };
+    }
+
+    function openBlockModal(){
+      openModal('Bloquear período','DISPONIBILIDADE',`
+        <form id="blockForm" class="form-stack">
+          <div class="form-grid">
+            <label class="field full"><span>Motivo</span><input id="mBlockTitle" maxlength="160" placeholder="Feriado, manutenção, folga..."></label>
+            <label class="field"><span>Início</span><input id="mBlockStart" type="datetime-local" required></label>
+            <label class="field"><span>Fim</span><input id="mBlockEnd" type="datetime-local" required></label>
+            <label class="field full"><span>Recurso específico</span><select id="mBlockResource"><option value="">Todo o negócio</option>${state.resources.map(r=>`<option value="${r.id}">${esc(r.name)}</option>`).join('')}</select></label>
+          </div>
+          <div class="modal-footer"><button type="button" class="secondary-btn" data-close-modal>Cancelar</button><button id="mBlockSave" class="primary-btn">Criar bloqueio</button></div>
+        </form>`);
+      qsa('[data-close-modal]',$('modalBody')).forEach(el=>el.onclick=closeModal);
+      $('blockForm').onsubmit=async e=>{
+        e.preventDefault();
+        await modalSubmit(e.currentTarget,$('mBlockSave'),async()=>{
+          const start=new Date($('mBlockStart').value),end=new Date($('mBlockEnd').value);
+          if(!(start<end)) throw new Error('O fim do bloqueio precisa ser posterior ao início.');
+          const {error}=await state.supabase.from('scheduling_blocks').insert({
+            user_id:state.user.id,title:$('mBlockTitle').value.trim()||'Bloqueio',
+            starts_at:start.toISOString(),ends_at:end.toISOString(),resource_id:$('mBlockResource').value||null
+          });
+          if(error) throw error;
+          closeModal(); await loadAll(); renderAll(); toast('Período bloqueado.','success');
+        }).catch(err=>toast(err.message||'Erro ao criar bloqueio.','error'));
+      };
+    }
+
+    function openCustomerModal(item={}){
+      openModal(item.id?'Editar cliente':'Novo cliente','CLIENTE',`
+        <form id="customerForm" class="form-stack">
+          <div class="form-grid">
+            <label class="field"><span>Nome</span><input id="mCustomerName" value="${esc(item.name||'')}" required></label>
+            <label class="field"><span>Telefone</span><input id="mCustomerPhone" value="${esc(item.phone||'')}"></label>
+            <label class="field"><span>E-mail</span><input id="mCustomerEmail" type="email" value="${esc(item.email||'')}"></label>
+            <label class="field"><span>CPF</span><input id="mCustomerCpf" value="${esc(item.cpf||'')}" inputmode="numeric"></label>
+            <label class="field full"><span>Observações internas</span><textarea id="mCustomerNotes" rows="4">${esc(item.notes||'')}</textarea></label>
+            <label class="toggle-row full"><span><b>Cliente bloqueado</b><small>Impede novos agendamentos online.</small></span><input id="mCustomerBlocked" type="checkbox" ${item.is_blocked?'checked':''}></label>
+          </div>
+          <div class="modal-footer"><button type="button" class="secondary-btn" data-close-modal>Cancelar</button><button id="mCustomerSave" class="primary-btn">Salvar cliente</button></div>
+        </form>`);
+      qsa('[data-close-modal]',$('modalBody')).forEach(el=>el.onclick=closeModal);
+      $('customerForm').onsubmit=async e=>{
+        e.preventDefault();
+        await modalSubmit(e.currentTarget,$('mCustomerSave'),async()=>{
+          const payload={
+            id:item.id||uid(),user_id:state.user.id,name:$('mCustomerName').value.trim(),phone:$('mCustomerPhone').value.trim(),
+            email:$('mCustomerEmail').value.trim(),cpf:$('mCustomerCpf').value.replace(/\D/g,''),notes:$('mCustomerNotes').value.trim(),
+            is_blocked:$('mCustomerBlocked').checked,total_appointments:item.total_appointments||0,no_show_count:item.no_show_count||0
+          };
+          const {error}=await state.supabase.from('scheduling_customers').upsert(payload);
+          if(error) throw error;
+          closeModal(); await loadAll(); renderAll(); toast('Cliente salvo.','success');
+        }).catch(err=>toast(err.message||'Erro ao salvar cliente.','error'));
+      };
+    }
+
+    function toLocalInputValue(iso){
+      if(!iso) return '';
+      const p=getZonedParts(new Date(iso));
+      return `${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}`;
+    }
+
+    // Conversão de datetime-local interpretado no timezone do negócio para UTC.
+    function zonedLocalToUtc(localString,timeZone=state.business?.timezone||'America/Bahia'){
+      if(!localString) return null;
+      const [datePart,timePart]=localString.split('T');
+      const [y,m,d]=datePart.split('-').map(Number);
+      const [hh,mm]=timePart.split(':').map(Number);
+      let guess=Date.UTC(y,m-1,d,hh,mm,0);
+      for(let i=0;i<3;i++){
+        const p=getZonedParts(new Date(guess),timeZone);
+        const asUtc=Date.UTC(Number(p.year),Number(p.month)-1,Number(p.day),Number(p.hour),Number(p.minute),Number(p.second||0));
+        const target=Date.UTC(y,m-1,d,hh,mm,0);
+        guess += target-asUtc;
+      }
+      return new Date(guess);
+    }
+
+    function minutesOf(time){const [h,m]=String(time||'00:00').split(':').map(Number);return h*60+m}
+    function overlaps(aStart,aEnd,bStart,bEnd){return aStart<bEnd && aEnd>bStart}
+
+    function validateAppointmentAvailability({item,start,end,resourceId,customerId,service}){
+      const errors=[];
+      const now=new Date();
+      const minNotice=Number(state.business.min_notice_minutes||0)*60000;
+      if(start.getTime()<now.getTime()+minNotice) errors.push(`Respeite a antecedência mínima de ${state.business.min_notice_minutes||0} minutos.`);
+      const max=now.getTime()+Number(state.business.max_advance_days||60)*86400000;
+      if(start.getTime()>max) errors.push(`A reserva ultrapassa a janela de ${state.business.max_advance_days||60} dias.`);
+
+      const local=getZonedParts(start);
+      const localDate=new Date(Number(local.year),Number(local.month)-1,Number(local.day));
+      const weekday=jsDayToWeekday[localDate.getDay()];
+      const schedule=state.schedules.find(s=>s.weekday===weekday);
+      if(!schedule?.is_open) errors.push('O negócio está fechado neste dia.');
+      if(schedule?.is_open){
+        const startMin=Number(local.hour)*60+Number(local.minute);
+        const endParts=getZonedParts(end);
+        const endMin=Number(endParts.hour)*60+Number(endParts.minute);
+        if(startMin<minutesOf(schedule.start_time)||endMin>minutesOf(schedule.end_time)) errors.push('O horário está fora do expediente configurado.');
+        if(schedule.break_start&&schedule.break_end&&startMin<minutesOf(schedule.break_end)&&endMin>minutesOf(schedule.break_start)) errors.push('O horário cruza o intervalo de atendimento.');
+      }
+
+      const buffer=Number(state.business.buffer_minutes||0)*60000;
+      const s=start.getTime()-buffer,e=end.getTime()+buffer;
+      const blockConflict=state.blocks.some(b=>(!b.resource_id||!resourceId||b.resource_id===resourceId)&&overlaps(s,e,new Date(b.starts_at).getTime(),new Date(b.ends_at).getTime()));
+      if(blockConflict) errors.push('Existe um bloqueio nesse período.');
+
+      const conflicts=state.appointments.filter(a=>a.id!==item?.id&&!['cancelled','no_show'].includes(a.status)&&(!resourceId||a.resource_id===resourceId)&&overlaps(s,e,new Date(a.starts_at).getTime(),new Date(a.ends_at).getTime()));
+      if(resourceId && conflicts.length) errors.push('O recurso escolhido já possui outro agendamento nesse período.');
+
+      if(!resourceId && Number(service?.capacity||1)<=1){
+        const sameService=state.appointments.filter(a=>a.id!==item?.id&&!['cancelled','no_show'].includes(a.status)&&a.service_id===service?.id&&overlaps(start.getTime(),end.getTime(),new Date(a.starts_at).getTime(),new Date(a.ends_at).getTime()));
+        if(sameService.length>=Number(service?.capacity||1)) errors.push('A capacidade deste serviço foi atingida nesse horário.');
+      }
+
+      const maxPer=Number(state.business.max_per_customer_day||0);
+      if(maxPer>0&&customerId){
+        const d=localDateInBusiness(start.toISOString());
+        const count=state.appointments.filter(a=>a.id!==item?.id&&a.customer_id===customerId&&!['cancelled','no_show'].includes(a.status)&&localDateInBusiness(a.starts_at)===d).length;
+        if(count>=maxPer) errors.push(`Este cliente atingiu o limite de ${maxPer} agendamento(s) no dia.`);
+      }
+      return errors;
+    }
+
+    function openAppointmentModal(item={}){
+      openModal(item.id?'Editar agendamento':'Novo agendamento','AGENDA',`
+        <form id="appointmentForm" class="form-stack">
+          <div class="form-grid">
+            <label class="field"><span>Cliente existente</span><select id="mAppointmentCustomer"><option value="">Cadastrar pelo nome abaixo</option>${state.customers.map(c=>`<option value="${c.id}">${esc(c.name)} · ${esc(c.phone||'')}</option>`).join('')}</select></label>
+            <label class="field"><span>Nome avulso</span><input id="mAppointmentCustomerName" value="${esc(item.customer_name||'')}"></label>
+            <label class="field"><span>Serviço</span><select id="mAppointmentService" required>${state.services.filter(s=>s.is_active||s.id===item.service_id).map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('')}</select></label>
+            <label class="field"><span>Profissional/recurso</span><select id="mAppointmentResource"><option value="">Sem recurso</option>${state.resources.filter(r=>r.is_active||r.id===item.resource_id).map(r=>`<option value="${r.id}">${esc(r.name)}</option>`).join('')}</select></label>
+            <label class="field"><span>Início</span><input id="mAppointmentStart" type="datetime-local" required></label>
+            <label class="field"><span>Status</span><select id="mAppointmentStatus"><option value="pending">Pendente</option><option value="confirmed">Confirmado</option><option value="completed">Concluído</option><option value="cancelled">Cancelado</option><option value="no_show">Não compareceu</option></select></label>
+            <label class="field"><span>Status do pagamento</span><select id="mAppointmentPaymentStatus"><option value="not_required">Sem cobrança</option><option value="pending">Pendente</option><option value="partial">Sinal pago</option><option value="paid">Pago</option><option value="refunded">Reembolsado</option></select></label>
+            <label class="field"><span>Total</span><input id="mAppointmentTotal" type="number" step="0.01" min="0" value="${Number(item.total_amount||0)}"></label>
+            <label class="field full"><span>Observações</span><textarea id="mAppointmentNotes" rows="3">${esc(item.notes||'')}</textarea></label>
+          </div>
+          <div id="appointmentValidation" class="danger-box is-hidden"></div>
+          <div class="modal-footer"><button type="button" class="secondary-btn" data-close-modal>Cancelar</button><button id="mAppointmentSave" class="primary-btn">Salvar agendamento</button></div>
+        </form>`);
+      qsa('[data-close-modal]',$('modalBody')).forEach(el=>el.onclick=closeModal);
+      $('mAppointmentCustomer').value=item.customer_id||'';
+      $('mAppointmentService').value=item.service_id||state.services.find(s=>s.is_active)?.id||'';
+      $('mAppointmentResource').value=item.resource_id||'';
+      $('mAppointmentStatus').value=item.status||(state.business.manual_approval?'pending':state.business.auto_confirm?'confirmed':'pending');
+      $('mAppointmentPaymentStatus').value=item.payment_status||'not_required';
+      $('mAppointmentStart').value=toLocalInputValue(item.starts_at);
+
+      const updateTotal=()=>{
+        if(item.id) return;
+        const service=state.services.find(s=>s.id===$('mAppointmentService').value);
+        $('mAppointmentTotal').value=Number(service?.price||0).toFixed(2);
+      };
+      $('mAppointmentService').onchange=updateTotal;
+      if(!item.id) updateTotal();
+
+      $('appointmentForm').onsubmit=async e=>{
+        e.preventDefault();
+        await modalSubmit(e.currentTarget,$('mAppointmentSave'),async()=>{
+          const service=state.services.find(s=>s.id===$('mAppointmentService').value);
+          if(!service) throw new Error('Selecione um serviço válido.');
+          const start=zonedLocalToUtc($('mAppointmentStart').value);
+          if(!start||Number.isNaN(start.getTime())) throw new Error('Informe data e horário válidos.');
+          const end=new Date(start.getTime()+Number(service.duration_minutes||60)*60000);
+          const resourceId=$('mAppointmentResource').value||null;
+          const customerId=$('mAppointmentCustomer').value||null;
+          const errors=validateAppointmentAvailability({item,start,end,resourceId,customerId,service});
+          $('appointmentValidation').classList.toggle('is-hidden',!errors.length);
+          $('appointmentValidation').innerHTML=errors.map(x=>`• ${esc(x)}`).join('<br>');
+          if(errors.length) throw new Error(errors[0]);
+
+          const payload={
+            id:item.id||uid(),user_id:state.user.id,customer_id:customerId,customer_name:$('mAppointmentCustomerName').value.trim(),
+            service_id:service.id,resource_id:resourceId,starts_at:start.toISOString(),ends_at:end.toISOString(),
+            status:$('mAppointmentStatus').value,payment_status:$('mAppointmentPaymentStatus').value,
+            total_amount:Number($('mAppointmentTotal').value||0),notes:$('mAppointmentNotes').value.trim(),source:item.source||'admin'
+          };
+          const {error}=await state.supabase.from('scheduling_appointments').upsert(payload);
+          if(error) throw error;
+          closeModal(); await loadAll(); renderAll(); toast('Agendamento salvo.','success');
+        }).catch(err=>toast(err.message||'Erro ao salvar agendamento.','error'));
+      };
+    }
+
+    function openCopyMondayModal(){
+      const monday=state.schedules.find(s=>s.weekday==='monday');
+      if(!monday) return toast('Configure a segunda-feira primeiro.','error');
+      openModal('Copiar horário de segunda','DISPONIBILIDADE',`
+        <form id="copyScheduleForm" class="form-stack">
+          <div class="helper-box">Selecione os dias que devem receber exatamente o mesmo horário e intervalo de segunda-feira.</div>
+          <div class="form-stack">
+            ${weekdays.filter(([d])=>d!=='monday').map(([d,l])=>`<label class="toggle-row"><span><b>${l}</b></span><input type="checkbox" value="${d}" ${!['sunday'].includes(d)?'checked':''}></label>`).join('')}
+          </div>
+          <div class="modal-footer"><button type="button" class="secondary-btn" data-close-modal>Cancelar</button><button class="primary-btn">Copiar horários</button></div>
+        </form>`);
+      qsa('[data-close-modal]',$('modalBody')).forEach(el=>el.onclick=closeModal);
+      $('copyScheduleForm').onsubmit=e=>{
+        e.preventDefault();
+        const selected=qsa('input[type="checkbox"]',$('copyScheduleForm')).filter(x=>x.checked).map(x=>x.value);
+        selected.forEach(day=>{
+          let s=state.schedules.find(x=>x.weekday===day);
+          if(!s){s={id:uid(),user_id:state.user.id,weekday:day};state.schedules.push(s)}
+          Object.assign(s,{is_open:monday.is_open,start_time:monday.start_time,end_time:monday.end_time,break_start:monday.break_start,break_end:monday.break_end});
+        });
+        closeModal();renderSchedule();setDirty(true);toast('Horários copiados.');
+      };
+    }
+
+    function confirmDelete(table,id,label){
+      openModal(`Excluir ${label}?`,'CONFIRMAÇÃO',`
+        <div class="form-stack">
+          <div class="danger-box">Esta ação remove o registro. Se ele já tiver histórico relacionado, o banco pode impedir a exclusão para preservar integridade.</div>
+          <div class="modal-footer"><button type="button" class="secondary-btn" data-close-modal>Cancelar</button><button id="confirmDeleteButton" type="button" class="danger-btn"><i class="ri-delete-bin-line"></i> Excluir</button></div>
+        </div>`);
+      qsa('[data-close-modal]',$('modalBody')).forEach(el=>el.onclick=closeModal);
+      $('confirmDeleteButton').onclick=async()=>{
+        const btn=$('confirmDeleteButton');btn.disabled=true;
+        try{
+          const {error}=await state.supabase.from(table).delete().eq('id',id).eq('user_id',state.user.id);
+          if(error) throw error;
+          closeModal();await loadAll();renderAll();toast('Registro excluído.','success');
+        }catch(err){toast(err.message||'Não foi possível excluir.','error');btn.disabled=false}
+      };
+    }
+
+    function bindEvents(){
+      qsa('[data-section]').forEach(btn=>btn.addEventListener('click',()=>setSection(btn.dataset.section)));
+      qsa('[data-go]').forEach(btn=>btn.addEventListener('click',()=>setSection(btn.dataset.go)));
+      $('mobileMenu').onclick=openSidebar;
+      $('sidebarBackdrop').onclick=closeSidebar;
+
+      $('saveAllButton').onclick=saveAll;
+      $('newServiceButton').onclick=()=>openServiceModal();
+      $('newResourceButton').onclick=()=>openResourceModal();
+      $('addBlockButton').onclick=openBlockModal;
+      $('newCustomerButton').onclick=()=>openCustomerModal();
+      $('newAppointmentButton').onclick=()=>openAppointmentModal();
+      $('copyMondayButton').onclick=openCopyMondayModal;
+
+      $('serviceSearch').oninput=renderServices;
+      $('serviceStatusFilter').onchange=renderServices;
+      $('resourceSearch').oninput=renderResources;
+      $('resourceTypeFilter').onchange=renderResources;
+      $('resourceStatusFilter').onchange=renderResources;
+      $('customerSearch').oninput=renderCustomers;
+      $('appointmentDate').onchange=renderAppointments;
+      $('appointmentStatus').onchange=renderAppointments;
+      $('appointmentResource').onchange=renderAppointments;
+      $('appointmentSearch').oninput=renderAppointments;
+
+      $('logoInput').onchange=e=>{
+        try{validateImage(e.target.files[0]);state.pendingLogo=e.target.files[0]||null;updateMediaPreview();renderPreview();setDirty(true)}
+        catch(err){e.target.value='';toast(err.message,'error')}
+      };
+      $('coverInput').onchange=e=>{
+        try{validateImage(e.target.files[0]);state.pendingCover=e.target.files[0]||null;updateMediaPreview();renderPreview();setDirty(true)}
+        catch(err){e.target.value='';toast(err.message,'error')}
+      };
+      $('removeLogoButton').onclick=()=>{state.pendingLogo=null;state.business.logo_url='';updateMediaPreview();renderPreview();setDirty(true)};
+      $('removeCoverButton').onclick=()=>{state.pendingCover=null;state.business.cover_url='';updateMediaPreview();renderPreview();setDirty(true)};
+
+      $('businessDescription').oninput=e=>$('descriptionCount').textContent=e.target.value.length;
+      $('primaryColor').oninput=e=>applyTheme(e.target.value);
+      $('publicSlug').oninput=e=>{e.target.value=slugify(e.target.value);renderPreview()};
+      $('autoConfirm').onchange=()=>{if($('autoConfirm').checked)$('manualApproval').checked=false;updateConditionalUI()};
+      $('manualApproval').onchange=()=>{if($('manualApproval').checked)$('autoConfirm').checked=false;updateConditionalUI()};
+      qsa('input[name="paymentMode"]').forEach(el=>el.onchange=updateConditionalUI);
+      ['payPix','payCardOnline','payOnSite','requireReceipt','depositPercentage','depositFixed','pixKey'].forEach(id=>$(id)?.addEventListener('input',updateConditionalUI));
+
+      qsa('#app input,#app select,#app textarea').forEach(el=>{
+        if(['serviceSearch','resourceSearch','customerSearch','appointmentSearch','appointmentDate','appointmentStatus','appointmentResource','serviceStatusFilter','resourceTypeFilter','resourceStatusFilter'].includes(el.id)) return;
+        el.addEventListener('input',()=>{setDirty(true);renderPreview()});
+        el.addEventListener('change',()=>{setDirty(true);renderPreview()});
+      });
+
+      qsa('[data-close-modal]').forEach(el=>el.onclick=closeModal);
+      $('modal').addEventListener('click',e=>{if(e.target.matches('[data-close-modal]'))closeModal()});
+
+      $('previewButton').onclick=()=>{$('previewDrawer').classList.remove('is-hidden');document.body.classList.add('is-locked');renderPreview()};
+      qsa('[data-close-preview]').forEach(el=>el.onclick=()=>{$('previewDrawer').classList.add('is-hidden');if($('modal').classList.contains('is-hidden'))document.body.classList.remove('is-locked')});
+
+      $('profileButton').onclick=()=>{
+        const hidden=$('profileMenu').classList.toggle('is-hidden');
+        $('profileButton').setAttribute('aria-expanded',String(!hidden));
+      };
+      $('logoutButton').onclick=async()=>{await state.supabase.auth.signOut();location.href='./index.html'};
+
+      $('copyPublicLink').onclick=async()=>{
+        const slug=slugify($('publicSlug').value);
+        if(!slug) return toast('Defina o endereço público primeiro.','error');
+        const link=`${location.origin}/agendar/${slug}`;
+        await navigator.clipboard.writeText(link);
+        toast('Link copiado.','success');
+      };
+      $('openPublicLink').onclick=()=>{
+        const slug=slugify($('publicSlug').value);
+        if(!slug) return toast('Defina o endereço público primeiro.','error');
+        window.open(`${location.origin}/agendar/${slug}`,'_blank','noopener,noreferrer');
+      };
+
+      $('isPublished').addEventListener('change',()=>{
+        if(!$('isPublished').checked) return;
+        const errors=validateBusiness(collectBusiness(),{forPublish:true});
+        if(errors.length){$('isPublished').checked=false;updatePublishValidation();toast(errors[0],'error')}
+      });
+
+      document.addEventListener('keydown',e=>{
+        if(e.key==='Escape'){
+          if(!$('modal').classList.contains('is-hidden')) closeModal();
+          else if(!$('previewDrawer').classList.contains('is-hidden')){$('previewDrawer').classList.add('is-hidden');document.body.classList.remove('is-locked')}
+          else closeSidebar();
+        }
+      });
+
+      window.addEventListener('beforeunload',e=>{
+        if(!state.dirty) return;
+        e.preventDefault();
+        e.returnValue='';
+      });
+    }
+
+    async function init(){
+      try{
+        $('fatalState').classList.add('is-hidden');
+        $('pageLoader').classList.remove('is-hidden');
+        $('app').classList.add('is-hidden');
+
+        await initSupabase();
+        if(!await requireAuth()) return;
+        await loadAll();
+        bindEvents();
+
+        const todayParts=getZonedParts(new Date());
+        $('appointmentDate').value=`${todayParts.year}-${todayParts.month}-${todayParts.day}`;
+        renderAll();
+
+        $('pageLoader').classList.add('is-hidden');
+        $('app').classList.remove('is-hidden');
+      }catch(err){
+        console.error(err);
+        $('pageLoader').classList.add('is-hidden');
+        $('app').classList.add('is-hidden');
+        $('fatalMessage').textContent=err.message||'Erro inesperado ao carregar.';
+        $('fatalState').classList.remove('is-hidden');
+      }
+    }
+
+    $('retryButton').onclick=()=>location.reload();
+    init();
+  </script>
 </body>
 </html>
