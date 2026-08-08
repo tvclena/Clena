@@ -237,7 +237,8 @@ const state={
   sb:null,user:null,delivery:null,orders:[],itemsByOrder:new Map(),current:null,
   filterStatus:'active',realtime:null,lastIds:new Set(),initialLoaded:false,
   usbDevice:null,usbInterface:null,usbEndpoint:null,
-  settings:{sound:true,notifications:false,autoPrint:false,paper:'80',copies:1,soundRepeat:15,printMode:'browser',receiptHeader:'',printCustomer:true,printValues:true}
+  settings:{sound:true,notifications:false,autoPrint:false,paper:'80',copies:1,soundRepeat:15,printMode:'browser',receiptHeader:'',printCustomer:true,printValues:true},
+  seenOrders:new Set()
 };
 
 function toast(msg,type='success'){const n=document.createElement('div');n.className='toast '+type;n.textContent=msg;$('toastHost').appendChild(n);setTimeout(()=>n.remove(),4200)}
@@ -331,7 +332,7 @@ function renderOrders(){
   if(!rows.length){list.innerHTML=`<div class="empty"><i class="ri-inbox-2-line"></i><h3>Nenhum pedido aqui</h3><p>Os pedidos aparecerão automaticamente quando chegarem.</p></div>`;return}
   list.innerHTML=rows.map(o=>{
     const items=state.itemsByOrder.get(o.id)||[],summary=items.slice(0,2).map(i=>`${i.quantity||1}x ${i.product_name||i.name||'Item'}`).join(' • ');
-    const isnew=orderStatus(o)==='pending'&&!o.viewed_at;
+    const isnew=orderStatus(o)==='pending'&&!state.seenOrders.has(String(o.id));
     return `<article class="order-card ${isnew?'new-order':''}" data-open-order="${esc(o.id)}">
       <div><div class="order-num">#${esc(orderNumber(o))}</div><div class="order-time">${esc(localTime(o.created_at))}</div></div>
       <div class="customer"><b>${esc(orderName(o))}</b><small>${esc(orderPhone(o)||'Sem telefone')}</small></div>
@@ -367,7 +368,9 @@ function addonsText(it){
 }
 async function openOrder(id){
   const o=state.orders.find(x=>String(x.id)===String(id));if(!o)return;state.current=o;
-  if(!o.viewed_at){const now=new Date().toISOString();o.viewed_at=now;state.sb.from('delivery_orders').update({viewed_at:now}).eq('id',o.id).then(()=>{renderOrders()})}
+  state.seenOrders.add(String(o.id));
+  try{localStorage.setItem('delivery_order_manager_seen_v1',JSON.stringify([...state.seenOrders].slice(-1000)))}catch{}
+  renderOrders();
   $('drawerTitle').textContent='Pedido #'+orderNumber(o);$('drawerStatusText').textContent=localDate(o.created_at)+' • '+(STATUS[orderStatus(o)]?.label||orderStatus(o));
   const items=orderItems(o);
   $('drawerBody').innerHTML=`
@@ -396,25 +399,20 @@ async function openOrder(id){
 function closeDrawer(){$('orderDrawer').classList.remove('open');$('drawerBackdrop').classList.remove('open');state.current=null}
 async function updateOrder(payload){
   if(!state.current)return;
-  const {data,error}=await state.sb.from('delivery_orders').update({...payload,updated_at:new Date().toISOString()}).eq('id',state.current.id).select('*').maybeSingle();
+  const {data,error}=await state.sb.from('delivery_orders').update(payload).eq('id',state.current.id).select('*').maybeSingle();
   if(error)throw error;
   if(data){Object.assign(state.current,data);const i=state.orders.findIndex(x=>x.id===data.id);if(i>=0)state.orders[i]=data}
   updateUI();await openOrder(state.current.id);
 }
 async function advance(){
   const o=state.current,cfg=STATUS[orderStatus(o)];if(!cfg?.next)return;
-  const payload={status:cfg.next};
-  if(cfg.next==='confirmed')payload.accepted_at=new Date().toISOString();
-  if(cfg.next==='preparing')payload.preparing_at=new Date().toISOString();
-  if(cfg.next==='ready')payload.ready_at=new Date().toISOString();
-  if(cfg.next==='out_for_delivery')payload.out_for_delivery_at=new Date().toISOString();
-  if(cfg.next==='completed')payload.completed_at=new Date().toISOString();
-  try{await updateOrder(payload);toast('Status atualizado.')}catch(e){toast(e.message,'error')}
+  // Compatibilidade máxima com tabelas delivery_orders já existentes:
+  // altera somente a coluna status, sem depender de accepted_at/preparing_at/ready_at/etc.
+  try{await updateOrder({status:cfg.next});toast('Status atualizado.')}catch(e){toast(e.message,'error')}
 }
 async function cancelOrder(){
   if(!state.current||!confirm('Cancelar este pedido?'))return;
-  const reason=prompt('Motivo do cancelamento (opcional):')||'';
-  try{await updateOrder({status:'cancelled',cancelled_at:new Date().toISOString(),cancellation_reason:reason});toast('Pedido cancelado.')}catch(e){toast(e.message,'error')}
+  try{await updateOrder({status:'cancelled'});toast('Pedido cancelado.')}catch(e){toast(e.message,'error')}
 }
 
 function loadSettings(){
@@ -538,11 +536,13 @@ function bind(){
 async function init(){
   try{
     if(!await auth())return;
-    await loadDelivery();loadSettings();syncSettingsUI();bind();await fetchOrders();await setupRealtime();
+    await loadDelivery();loadSettings();
+    try{state.seenOrders=new Set(JSON.parse(localStorage.getItem('delivery_order_manager_seen_v1')||'[]').map(String))}catch{state.seenOrders=new Set()}
+    syncSettingsUI();bind();await fetchOrders();await setupRealtime();
     state.lastIds=new Set(state.orders.map(x=>x.id));state.initialLoaded=true;
     $('app').classList.remove('hidden');$('loader').remove();
   }catch(e){
-    console.error(e);$('loader').innerHTML=`<div class="loader-box" style="max-width:540px;padding:24px"><div style="font-size:42px;color:#b42318"><i class="ri-error-warning-line"></i></div><h2>Não foi possível abrir o gerenciador</h2><p style="color:#667085;line-height:1.6">${esc(e.message)}</p><button class="btn primary" onclick="location.reload()">Tentar novamente</button><p style="font-size:12px;color:#98a2b3">Confira se as tabelas delivery_orders e delivery_order_items existem e se o Realtime/RLS estão configurados. Este gerenciador não exige created_at em delivery_order_items.</p></div>`;
+    console.error(e);$('loader').innerHTML=`<div class="loader-box" style="max-width:540px;padding:24px"><div style="font-size:42px;color:#b42318"><i class="ri-error-warning-line"></i></div><h2>Não foi possível abrir o gerenciador</h2><p style="color:#667085;line-height:1.6">${esc(e.message)}</p><button class="btn primary" onclick="location.reload()">Tentar novamente</button><p style="font-size:12px;color:#98a2b3">Confira se as tabelas delivery_orders e delivery_order_items existem e se o Realtime/RLS estão configurados. Este gerenciador não exige created_at em delivery_order_items e não depende das colunas opcionais accepted_at, preparing_at, ready_at, out_for_delivery_at, completed_at, cancelled_at ou viewed_at.</p></div>`;
   }
 }
 init();
