@@ -254,7 +254,14 @@ function orderPhone(o){return o.customer_phone||o.customer?.phone||o.phone||''}
 function orderTotal(o){return Number(o.total_amount??o.total??0)}
 function orderSubtotal(o){return Number(o.subtotal_amount??o.subtotal??Math.max(0,orderTotal(o)-Number(o.delivery_fee||0)))}
 function orderStatus(o){return o.status||'pending'}
-function paymentStatus(o){return o.payment_status||((o.payment_method==='cash')?'pending':'pending')}
+function paymentStatus(o){
+  const raw=String(o.payment_status||'pending').toLowerCase();
+  if(['approved','authorized'].includes(raw))return 'paid';
+  if(['rejected'].includes(raw))return 'failed';
+  if(['in_process','in_mediation'].includes(raw))return 'pending';
+  if(['charged_back','refunded'].includes(raw))return 'cancelled';
+  return raw||'pending';
+}
 function paymentMethod(o){return o.payment_method||o.payment||''}
 function deliveryType(o){return o.delivery_type||o.fulfillment_type||o.order_type||'delivery'}
 function addressText(o){const a=o.address||o.delivery_address||{};if(typeof a==='string')return a;const parts=[a.street||o.street,a.number||o.number,a.complement||o.complement,a.neighborhood||o.neighborhood,a.city||o.city].filter(Boolean);return parts.join(', ')}
