@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -291,10 +292,17 @@ async function fetchOrders(){
   state.orders=rows;
   if(rows.length){
     const ids=rows.map(x=>x.id);
-    const {data:items,error:itemErr}=await state.sb.from('delivery_order_items').select('*').in('order_id',ids).order('created_at',{ascending:true});
+    const {data:items,error:itemErr}=await state.sb.from('delivery_order_items').select('*').in('order_id',ids);
     if(itemErr)throw new Error('Erro em delivery_order_items: '+itemErr.message);
     state.itemsByOrder=new Map();
-    (items||[]).forEach(it=>{const a=state.itemsByOrder.get(it.order_id)||[];a.push(it);state.itemsByOrder.set(it.order_id,a)});
+    (items||[])
+      .sort((a,b)=>{
+        const ad=a.created_at?new Date(a.created_at).getTime():0;
+        const bd=b.created_at?new Date(b.created_at).getTime():0;
+        if(ad&&bd&&ad!==bd)return ad-bd;
+        return String(a.id||'').localeCompare(String(b.id||''));
+      })
+      .forEach(it=>{const a=state.itemsByOrder.get(it.order_id)||[];a.push(it);state.itemsByOrder.set(it.order_id,a)});
   }else state.itemsByOrder=new Map();
   updateUI();
 }
@@ -534,7 +542,7 @@ async function init(){
     state.lastIds=new Set(state.orders.map(x=>x.id));state.initialLoaded=true;
     $('app').classList.remove('hidden');$('loader').remove();
   }catch(e){
-    console.error(e);$('loader').innerHTML=`<div class="loader-box" style="max-width:540px;padding:24px"><div style="font-size:42px;color:#b42318"><i class="ri-error-warning-line"></i></div><h2>Não foi possível abrir o gerenciador</h2><p style="color:#667085;line-height:1.6">${esc(e.message)}</p><button class="btn primary" onclick="location.reload()">Tentar novamente</button><p style="font-size:12px;color:#98a2b3">Confira se as tabelas delivery_orders e delivery_order_items existem e se o Realtime/RLS estão configurados.</p></div>`;
+    console.error(e);$('loader').innerHTML=`<div class="loader-box" style="max-width:540px;padding:24px"><div style="font-size:42px;color:#b42318"><i class="ri-error-warning-line"></i></div><h2>Não foi possível abrir o gerenciador</h2><p style="color:#667085;line-height:1.6">${esc(e.message)}</p><button class="btn primary" onclick="location.reload()">Tentar novamente</button><p style="font-size:12px;color:#98a2b3">Confira se as tabelas delivery_orders e delivery_order_items existem e se o Realtime/RLS estão configurados. Este gerenciador não exige created_at em delivery_order_items.</p></div>`;
   }
 }
 init();
